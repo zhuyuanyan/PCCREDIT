@@ -22,12 +22,14 @@
                      <label for="">催收类型:</label>
                      #if($!collectionType == "age")
 				 	 <input id="AccountAge" value="age" type="radio" name="reminderClass" onclick="age()" checked/>账龄
+				 	 <input id="OutOfDate" value="date" type="radio" name="reminderClass" onclick="date()"/>逾期天数
 				 	 #end
 					 #if($!collectionType == "date")
-                     <input id="OutOfDate" value="date" type="radio" name="reminderClass" onclick="date()" checked/>逾期天数
-                    #end
+                     <input id="AccountAge" value="age" type="radio" name="reminderClass" onclick="age()" />账龄
+				 	 <input id="OutOfDate" value="date" type="radio" name="reminderClass" onclick="date()" checked/>逾期天数
+                     #end
                     </div>
-					<table id="age" class="table-bd" bordercolor="#CCCCCC" border="1" style="width: 100%; display:none;">
+					<table id="age" class="table-bd" bordercolor="#CCCCCC" border="1" style="width: 100%;  #if($!collectionType == "date") display:none;" #end>
 						<colgroup>
 							<col width="5%" />
 							<col width="10%" />
@@ -169,7 +171,7 @@
              
                     </table>
 					
-                    <table id="date" class="table-bd" bordercolor="#CCCCCC" border="1" style="width: 100%;display:none;">
+                    <table id="date" class="table-bd" bordercolor="#CCCCCC" border="1" style="width: 100%; #if($!collectionType == "age") display:none; #end ">
 						<colgroup>
 							<col width="5%" />
 							<col width="10%" />

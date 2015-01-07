@@ -34,43 +34,26 @@
                          
                          #set($test=$args)
 					      #set($total = ($accessorie.size()/4)) 
-					      #foreach ($!index in [0 .. $total])
-					       
+					    #foreach ($!index in [0 .. $total])
 					      <tr>
 					      <td>&nbsp;</td>
 						  #set($current = $!index * 4 ) 
 						  #if($current<$accessorie.size())
-						 	#if($test.contains($accessorie.get($current).typeCode))
-						     <td><input type="checkbox" checked="checked" name="accessorieId" value="$accessorie.get($current).typeCode" disabled="true"/> $accessorie.get($current).typeName</td>
-						  
-						    #end
+						     <td><input type="checkbox"  #if($test.contains($accessorie.get($current).typeCode)) checked="checked" #end disabled name="accessorieId" value="$accessorie.get($current).typeCode" /> $accessorie.get($current).typeName</td>
 						  #end
-						 
 						  #set($current = $!index * 4+1 )
 						  #if($current<$accessorie.size())
-						     #if($test.contains($accessorie.get($current).typeCode))
-						     <td><input type="checkbox" checked="checked" name="accessorieId" value="$accessorie.get($current).typeCode" disabled="true"/> $accessorie.get($current).typeName</td>
-						   
-						    #end
+						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).typeCode)) checked="checked" #end disabled name="accessorieId" value="$accessorie.get($current).typeCode" /> $accessorie.get($current).typeName</td>
 						  #end
-						  
 						  #set($current = $!index * 4+2 )
 						  #if($current<$accessorie.size())
-						     #if($test.contains($accessorie.get($current).typeCode))
-						     <td><input type="checkbox" checked="checked" name="accessorieId" value="$accessorie.get($current).typeCode" disabled="true"/> $accessorie.get($current).typeName</td>
-						 
-						    #end
+						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).typeCode)) checked="checked" #end disabled name="accessorieId" value="$accessorie.get($current).typeCode" /> $accessorie.get($current).typeName</td>
 						  #end
-                          
                           #set($current = $!index * 4+3 )
 						  #if($current<$accessorie.size())
-						     #if($test.contains($accessorie.get($current).typeCode))
-						     <td><input type="checkbox" checked="checked" name="accessorieId" value="$accessorie.get($current).typeCode" disabled="true"/> $accessorie.get($current).typeName</td>
-						   
-						    #end
+						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).typeCode)) checked="checked" #end disabled name="accessorieId" value="$accessorie.get($current).typeCode" /> $accessorie.get($current).typeName</td>
 						  #end
-                        </tr>
-                       
+                          </tr>
                         #end
 						</table>
 						
