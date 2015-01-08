@@ -570,6 +570,9 @@ public class ProductController extends BaseController {
 				}
 				mv.addObject("collectionType", collectionType);
 			}
+			if(productCollectionRules == null || productCollectionRules.size() == 0){
+				mv.addObject("collectionType", "age");
+			}
 			mv.addObject("pcrf", pcrf);
 		}
 		mv.addObject("productId", productId);
@@ -922,6 +925,9 @@ public class ProductController extends BaseController {
 
 				}
 				mv.addObject("collectionType", collectionType);
+			}
+			if(productCollectionRules == null || productCollectionRules.size() == 0){
+				mv.addObject("collectionType", "age");
 			}
 			mv.addObject("pcrf", pcrf);
 		}

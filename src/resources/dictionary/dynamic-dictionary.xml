@@ -368,5 +368,12 @@ AND A.IS_DELETED = '0'
 		b.seq_no asc
 
 	</dictionary>
-
+	
+	<dictionary name="allFilterValue" title="所有数据字典" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+	</dictionary>
+	
 </dictionaries>
