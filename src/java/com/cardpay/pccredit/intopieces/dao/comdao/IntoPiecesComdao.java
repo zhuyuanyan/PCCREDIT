@@ -50,8 +50,16 @@ public class IntoPiecesComdao {
 		String userId = filter.getUserId();
 		String cardId = filter.getCardId();
 		String status = filter.getStatus();
-		params.put("userId", userId);
-		StringBuffer sql = new StringBuffer("select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and b.user_id =#{userId} and t.product_id=p.id  ");
+		StringBuffer sql = null;
+		//卡中心可以查看所有进件
+		System.out.println("userId:"+userId);
+		if(userId.equals("-1")){
+			System.out.println("----------");
+			sql = new StringBuffer("select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		}else{
+			params.put("userId", userId);
+			sql = new StringBuffer("select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and b.user_id =#{userId} and t.product_id=p.id  ");
+		}
 		if(StringUtils.trimToNull(productName)!=null){
 			params.put("productName", productName);
 			 sql.append(" and p.product_name like '%'||#{productName}||'%' ");
@@ -78,6 +86,7 @@ public class IntoPiecesComdao {
 		}
 		
 		sql.append(" order by t.id asc");
+		System.out.println(sql);
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql.toString(), params,
 				filter.getStart(), filter.getLimit());
 	}

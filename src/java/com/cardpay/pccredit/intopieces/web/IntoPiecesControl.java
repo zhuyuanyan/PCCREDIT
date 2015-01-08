@@ -101,9 +101,15 @@ public class IntoPiecesControl extends BaseController {
 			HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		QueryResult<IntoPieces> result=null;
+		if(user.getUserType().toString().equals("2")){
+			filter.setUserId("-1");
+			result = intoPiecesService.findintoPiecesByFilter(filter);
+		}else{
 		String userId = user.getId();
 		filter.setUserId(userId);
-		QueryResult<IntoPieces> result = intoPiecesService.findintoPiecesByFilter(filter);
+		result = intoPiecesService.findintoPiecesByFilter(filter);
+		}
 		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
 				filter, result);
 

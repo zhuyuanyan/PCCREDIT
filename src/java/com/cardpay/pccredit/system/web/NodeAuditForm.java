@@ -137,5 +137,5 @@ public class NodeAuditForm extends BaseForm{
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 }
