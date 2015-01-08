@@ -54,11 +54,11 @@
             <td><label>负责客户经理</label></td>
             <td><input type="text"  value="$!user.displayName"  disabled="disabled"  ></td>
             <td><label>审核金额</label></td>
-            #if($!nodeAuditOperationType == "entering")
+            <!-- #if($!nodeAuditOperationType == "entering")
            		<td><input type="text" id="examineAmount" readonly="readonly"  name="examineAmount"  value="$format.formatNumber($!customerApplicationProcess.examineAmount, 2, 100)" ></td>
-            #else
+            #else -->
 				<td><input type="text"  id="examineAmount"  name="examineAmount"  value="$format.formatNumber($!customerApplicationProcess.examineAmount, 2, 100)" ></td>            
-            #end
+            <!-- #end -->
             </tr>
           </table>
 

@@ -17,6 +17,8 @@ public class NodeAudit extends BusinessModel{
 	private String nodeType;
 	
 	private String type;
+	
+	private Boolean isDeleted;
 
 	public String getProductId() {
 		return productId;
@@ -65,4 +67,13 @@ public class NodeAudit extends BusinessModel{
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 }
