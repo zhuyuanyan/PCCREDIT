@@ -30,34 +30,26 @@
 						<tr>
                           <td colspan="5" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">产品筛选规则</td>
                          </tr>
-                          #set($test=$args)
+                           #set($test=$args)
 					      #set($total = ($accessorie.size()/4)) 
 					    #foreach ($!index in [0 .. $total])
 					      <tr>
 					      <td>&nbsp;</td>
 						  #set($current = $!index * 4 ) 
 						  #if($current<$accessorie.size())
-						  #if($test.contains($accessorie.get($current).id))
-						     <td><input type="checkbox"  #if($test.contains($accessorie.get($current).id)) checked="checked" #end name="accessorieId" value="$accessorie.get($current).id" disabled="true"/> #dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
-						  #end
+						     <td><input type="checkbox"  #if($test.contains($accessorie.get($current).id)) checked="checked" #end disabled name="accessorieId" value="$accessorie.get($current).id" /> #dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
 						  #end
 						  #set($current = $!index * 4+1 )
 						  #if($current<$accessorie.size())
-						  #if($test.contains($accessorie.get($current).id))
-						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).id)) checked="checked" #end name="accessorieId" value="$accessorie.get($current).id" disabled="true"/> #dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
-						  #end
+						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).id)) checked="checked" #end disabled name="accessorieId" value="$accessorie.get($current).id" /> #dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
 						  #end
 						  #set($current = $!index * 4+2 )
 						  #if($current<$accessorie.size())
-						  #if($test.contains($accessorie.get($current).id))
-						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).id)) checked="checked" #end name="accessorieId" value="$accessorie.get($current).id" disabled="true"/> #dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
-						  #end
+						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).id)) checked="checked" #end disabled name="accessorieId" value="$accessorie.get($current).id" /> #dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
 						  #end
                           #set($current = $!index * 4+3 )
 						  #if($current<$accessorie.size())
-						  #if($test.contains($accessorie.get($current).id))
-						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).id)) checked="checked" #end  name="accessorieId" value="$accessorie.get($current).id" disabled="true"/>#dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
-						  #end
+						     <td><input type="checkbox" #if($test.contains($accessorie.get($current).id)) checked="checked" #end disabled name="accessorieId" value="$accessorie.get($current).id" />#dictVal('tableName',$!accessorie.get($current).tableName)#dictVal('columnName',$accessorie.get($current).columnName)#dictVal('operateName',$accessorie.get($current).operate)#dictVal('allFilterValue',$accessorie.get($current).value)</td>
 						  #end
                           </tr>
                         #end
