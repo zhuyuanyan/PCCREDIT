@@ -5,7 +5,7 @@
 		<menu id="030000" name="intopieces" title="进件管理" url="" img="images/icon_sys.gif" operations="">
 			<menu id="030010" name="intopiecesquery" title="进件查询" url="/intopieces/intopiecesquery/browse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse"/>
 			<!-- <menu id="030020" name="applyintopieces" title="申请审批进件" url="/intopieces/applyintopieces/browse.page" img="" operations="create|change|delete|display|browse"></menu> -->
-			<menu id="030020" name="applyintopiecewait" title="申请件待审核" url="/intopieces/applyintopiecewait/browse.page" img="" operations="approve|applyapprove|browse"></menu>
+			<menu id="030020" name="applyintopiecewait" title="申请件待审核" url="/intopieces/applyintopiecewait/browse.page" img="" operations="approve|applyapprove|approvelog|browse"></menu>
 			<!-- <menu id="030030" name="applyintopiecesquery" title="申请件上传银联" url="/intopieces/applyintopiecesquery/applyIntopiecesQuery.page" img="" operations="exportupload|display|browse"></menu> -->
 			<menu id="030040" name="carcenter" title="卡中心卡片管理" url="/intopieces/carcenter/queryCard.page" img="" operations="create|issuedorg|display|browse"></menu>
 			<menu id="030050" name="orgnization" title="分支机构卡片管理" url="/intopieces/orgnization/managerQueryCard.page" img="" operations="issuedcustomer|display|browse"></menu>
@@ -39,7 +39,7 @@
 		<menu id="070000" name="manager" title="客户经理管理" url="" img="images/icon_sys.gif" operations="">
 		    <menu id="070001" name="managercreate" title="客户经理参数配置" url="/manager/managercreate/browse.page" img="" operations="create|change|delete|display|browse"/>
 			<menu id="070002" name="ledgeraccount" title="客户经理台账列表" url="/manager/ledgeraccount/browse.page" img="" operations="change|display|browse"/>
-			<menu id="070003" name="managerPromotionRule" title="客户经理层级信息维护" url="/manager/managerPromotionRule/updatejigz.page" img="" operations="browse|change|create"/>
+			<menu id="070003" name="managerPromotionRule" title="客户经理层级信息维护" url="/manager/managerPromotionRule/updatejjgz.page" img="" operations="browse|change|create"/>
 			<menu id="070004" name="leveladjustment" title="客户经理级别调整" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
 			<menu id="070005" name="belongmap" title="客户经理从属设置" url="/manager/belongmap/browse.page" img="" operations="create|subturnother|delete|browse"/>
 			<menu id="070006" name="retraining" title="客户经理培训计划列表（卡中心、组长）" url="/manager/retraining/browse.page" img="" operations="create|change|delete|display|browse"/>

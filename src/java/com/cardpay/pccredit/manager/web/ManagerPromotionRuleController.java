@@ -67,7 +67,7 @@ public class ManagerPromotionRuleController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "updatejigz.page", method = { RequestMethod.GET })
+	@RequestMapping(value = "updatejjgz.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browsejjgz(HttpServletRequest request) {
 		List<ManagerPromotionRule> managerPromotionRulelist = managerPromotionRuleService.getManagerPromotionRule();

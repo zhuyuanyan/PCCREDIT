@@ -81,6 +81,7 @@
         <div class="controlbtn">
         #btnpriv("approve")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="审批">审核</a>#end
         #btnpriv("applyapprove")<a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="申请审核">申请审核</a>#end
+        #btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>#end
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -115,6 +116,20 @@
 		prepareOperations(opsObj);
 		
 	});
+	
+	function viewIntoPicesApproveHistory(ifHideUser){
+		var id = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("@")[2];
+		});
+		if(id!=null){
+			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id="+id+"&ifHideUser="+ifHideUser+"&dataType=application";
+			Dialog.table(url, "查看审批历史", "get", null, 800, 230);
+		}else{
+			Dialog.message("请选择要被查看的进件!");
+		}
+	}
+	
 </script>
 
 </body>

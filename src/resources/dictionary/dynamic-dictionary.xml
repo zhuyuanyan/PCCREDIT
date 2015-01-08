@@ -43,7 +43,8 @@
 	<dictionary name="Organizations" title="机构列表" timeout="1000">
 		select t.id as name,
 		t.name as title
-		from SYS_ORGANIZATION t
+		from SYS_ORGANIZATION t 
+		where t.is_deleted = 0
 	</dictionary>
 
 	<dictionary name="CMMSCLNM" title="贷款担保方式" timeout="1000">
