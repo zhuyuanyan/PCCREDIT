@@ -6,6 +6,7 @@
 			type : "post",
 			dataType : "json",
 			success : function(data) {
+				var data = eval("("+data+")");
 				if (data.success) {
 					$("#oldPasswordDiv > span").text(data.message);
 // 					$("#oldPasswordDiv").show();
@@ -23,6 +24,7 @@
 				}
 			},
 			error : function(data) {
+				var data = eval("("+data+")");
 				$("#oldPasswordDiv > span").text(data.message);
 // 				$("#oldPasswordDiv").show();
 				$("#form_diaog input[name='password1']").val();
@@ -64,6 +66,7 @@
 					type : "post",
 					dataType : "json",
 					success : function(data) {
+						var data = eval("("+data+")");
 						if (data.success) {
 							Dialog.message(data.message, function() {
 								window.location.href = "${contextPath}/logout.page";
@@ -139,7 +142,7 @@
             <td>&nbsp;</td>
           </tr>
         </table>
-    </div>
     </form>
+    </div>
   </div>
   </body>
