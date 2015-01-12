@@ -329,18 +329,17 @@ public class CustomerInforUpdateService {
 	 * @return String
 	 */
     public String StoD(String val){
-		
-		if(val !=null && val!=""){
-			Double monthDouble = Double.parseDouble(val) * 100;
-			String monthValue = monthDouble.toString();
-			return monthValue;
-		}else{
-			
-		return val;
-		
-        }
-		
-		
+		try {
+			if(val !=null && val!=""){
+				Double monthDouble = Double.parseDouble(val) * 100;
+				String monthValue = monthDouble.toString();
+				return monthValue;
+			}else{
+				return val;
+			}
+		} catch (Exception e) {
+			return val;
+		}
 	}
 	/**
 	 * 修改客户维护信息

@@ -41,7 +41,6 @@ public class NodeAuditService {
 	 */
 	public QueryResult<NodeAuditForm> findProductsNodeAuditByFilter(NodeAuditFilter filter) {
 		QueryResult<NodeAudit> result = commonDao.findObjectsByFilter(NodeAudit.class, filter);
-		
 		List<NodeAuditForm> items = new ArrayList<NodeAuditForm>();
 		for(NodeAudit audit : result.getItems()){
 			NodeAuditForm nodeAuditForm = new NodeAuditForm();
@@ -94,8 +93,9 @@ public class NodeAuditService {
 	 * 插入节点信息
 	 * @param nodeAudit
 	 */
-	public void insertNodeAudit(NodeAuditForm nodeAuditForm) {
+	public String insertNodeAudit(NodeAuditForm nodeAuditForm) {
 		NodeAudit nodeAudit = nodeAuditForm.createModel(NodeAudit.class);
+		nodeAudit.setIsDeleted(false);
 		commonDao.insertObject(nodeAudit);
 		if(StringUtils.isNotEmpty(nodeAuditForm.getAuditUserIds())){
 			for(String userId : nodeAuditForm.getAuditUserIds().split(",")){
@@ -105,6 +105,7 @@ public class NodeAuditService {
 				commonDao.insertObject(auditUser);
 			}
 		}
+		return nodeAudit.getId();
 	}
 
 	/**
