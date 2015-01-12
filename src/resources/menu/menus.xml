@@ -29,7 +29,7 @@
 			<menu id="050010" name="customerallot" title="客户主管分配" url="/divisional/customerallot/browse.page" img="" operations="distribution|browse"/>
 			<menu id="050011" name="cfccllot" title="卡中心分配（卡中心）" url="/divisional/cfccllot/browse.page" img="" operations="distribution|browse"/>
 			<menu id="050012" name="customeraltransfer" title="移交客户" url="/divisional/customeraltransfer/browse.page" img="" operations="browse"/>
-			<menu id="050013" name="customeralreceive" title="接受客户" url="/divisional/customeralreceive/browse.page" img="" operations="display|browse"/>
+			<menu id="050013" name="customeralreceive" title="接受客户" url="/divisional/customeralreceive/browse.page" img="" operations="display|browse|change"/>
 		</menu>
 		<menu id="060000" name="product" title="产品管理" url="" img="images/icon_sys.gif" operations="">
 			<menu id="060010" name="productinformation" title="产品信息" url="/product/productinformation/browse.page" img="" operations="create|change|display|browse|confignodeintopieces|confignodeamountadjustment"/>

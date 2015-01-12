@@ -53,12 +53,8 @@
 			<if test="resTblId!=null and resTblId != ''">
 				RES_TBL_ID=#{resTblId},
 			</if>
-			<if test="ruleSql!=null and ruleSql != ''">
 				RULE_SQL=#{ruleSql},
-			</if>
-			<if test="divHtml!=null">
 				DIV_HTML=#{divHtml,javaType=byte[],jdbcType=BLOB,typeHandler=org.apache.ibatis.type.BlobTypeHandler},
-			</if>
 			<if test="modifiedTime!=null">
 				MODIFIED_TIME=#{modifiedTime},
 			</if>
