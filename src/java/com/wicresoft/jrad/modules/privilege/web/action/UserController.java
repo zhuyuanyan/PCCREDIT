@@ -321,8 +321,7 @@ public class UserController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "modifyOnwerPasswordSubmit.json", method = { RequestMethod.POST })
-	@JRadOperation(JRadOperation.CHANGE)
-	public ModelAndView modifyOnwerPasswordSubmit(HttpServletRequest request,
+	public String modifyOnwerPasswordSubmit(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
@@ -331,15 +330,13 @@ public class UserController extends BaseController {
 			result.put(MESSAGE, ModulesConstants.USER_PWD_RESET_SUCCESS_LOGIN);
 			result.put(SUCCESS, true);
 			JSONObject obj = JSONObject.fromObject(result);
-			response.getWriter().print(obj.toString());
-			return null;
+			return obj.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put(MESSAGE, ModulesConstants.USER_PWD_RESET_FAILED);
 			result.put(SUCCESS, false);
 			JSONObject obj = JSONObject.fromObject(result);
-			response.getWriter().print(obj.toString());
-			return null;
+			return obj.toString();
 		}
 	}
 	
@@ -352,8 +349,7 @@ public class UserController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "checkOnwerOldPassword.json", method = { RequestMethod.POST })
-	@JRadOperation(JRadOperation.CHANGE)
-	public ModelAndView checkOnwerOldPassword(HttpServletRequest request,
+	public  String checkOnwerOldPassword(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
@@ -369,15 +365,13 @@ public class UserController extends BaseController {
 				result.put(MESSAGE, ModulesConstants.USER_PWD_RESET_OLD_ERROR_1);
 			}
 			JSONObject obj = JSONObject.fromObject(result);
-			response.getWriter().print(obj.toString());
-			return null;
+			return obj.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.put(MESSAGE, ModulesConstants.USER_PWD_RESET_OLD_ERROR_1);
 			result.put(SUCCESS, false); 
 			JSONObject obj = JSONObject.fromObject(result);
-			response.getWriter().print(obj.toString());
-			return null;
+			return obj.toString();
 		}
 	}
 
