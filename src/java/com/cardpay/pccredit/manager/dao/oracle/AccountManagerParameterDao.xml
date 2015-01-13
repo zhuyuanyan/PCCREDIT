@@ -43,7 +43,7 @@
 		1 = 1
 		AND s.USER_TYPE = '1'
 		<if test="displayName != null and displayName != '' ">
-			AND s.DISPLAY_NAME=#{displayName}
+			<![CDATA[ and s.DISPLAY_NAME like '%'||#{displayName}||'%']]>
 		</if>
 		ORDER BY t.CREATED_TIME DESC
 		 <![CDATA[		

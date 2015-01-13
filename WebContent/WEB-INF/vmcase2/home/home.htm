@@ -104,25 +104,25 @@
 						<li>
 						   <a href="#">
 						      <span>今日计划营销客户</span>
-							  <em>5</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>今日计划维护客户   </span>
-							  <em>2</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>7日内预期还款</span>
-							  <em>2</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>新品发布</span>
-							  <em>5</em>
+							  <em></em>
 						   </a>
 						</li>
 					 </ul>
@@ -140,25 +140,25 @@
 						<li>
 						   <a href="#">
 						      <span>今日计划营销客户</span>
-							  <em>4</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>今日计划维护客户   </span>
-							  <em>4</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>7日内预期还款</span>
-							  <em>4</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>新品发布</span>
-							  <em>3</em>
+							  <em></em>
 						   </a>
 						</li>
 					 </ul>
@@ -176,25 +176,25 @@
 						<li>
 						   <a href="#">
 						      <span>今日计划营销客户</span>
-							  <em>3</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>今日计划维护客户   </span>
-							  <em>2</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>7日内预期还款</span>
-							  <em>3</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>新品发布</span>
-							  <em>3</em>
+							  <em></em>
 						   </a>
 						</li>
 					 </ul>
@@ -212,25 +212,25 @@
 						<li>
 						   <a href="#">
 						      <span>今日计划营销客户</span>
-							  <em>2</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>今日计划维护客户   </span>
-							  <em>2</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>7日内预期还款</span>
-							  <em>2</em>
+							  <em></em>
 						   </a>
 						</li>
 						<li>
 						   <a href="#">
 						      <span>新品发布</span>
-							  <em>3</em>
+							  <em></em>
 						   </a>
 						</li>
 					 </ul>
@@ -454,11 +454,12 @@
 										lis.eq(6).find("em").html(v.collection);
 									});
 								}else{
+									
 									$.each(json,function(i,v){
-										lis.eq(2).find("em").html(v.collection);
-										lis.eq(3).find("em").html(v.marketing);
-										lis.eq(4).find("em").html(v.maintenance);
-										lis.eq(5).find("em").html(v.promise);
+										lis.eq(0).find("em").html(v.collection);
+										lis.eq(1).find("em").html(v.marketing);
+										lis.eq(2).find("em").html(v.maintenance);
+										lis.eq(3).find("em").html(v.promise);
 									});
 								}
 							}
