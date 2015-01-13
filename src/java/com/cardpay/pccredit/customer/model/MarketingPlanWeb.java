@@ -16,6 +16,7 @@ public class MarketingPlanWeb extends BusinessModel{
 	private String endResult;
 	private String createWay;
 	private String userName;
+	private String displayName;
 	private BigDecimal countAction;
 	public String getId() {
 		return id;
@@ -76,6 +77,12 @@ public class MarketingPlanWeb extends BusinessModel{
 	}
 	public void setCountAction(BigDecimal countAction) {
 		this.countAction = countAction;
+	}
+	public String getDisplayName() {
+		return displayName;
+	}
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 	
 }
