@@ -47,7 +47,7 @@
 						   b.chinese_name,
 						   (select count(*) from maintenance_plans_action a where a.maintenance_plan_id=m.id) as countAction
 					  FROM MAINTENANCE_PLAN m
-					  inner join
+					  left join
 					  basic_customer_information b
 					  on m.customer_id=b.id
 					  WHERE 1=1
@@ -91,7 +91,7 @@
 		select m.*,b.chinese_name
 		from 
 		MAINTENANCE_PLAN m
-		inner join
+		left join
 		basic_customer_information b
 		on m.customer_id=b.id
 		where 1=1
@@ -124,10 +124,10 @@
 						   u.display_name,
 						   (select count(*) from maintenance_plans_action a where a.maintenance_plan_id=m.id) as countAction
 					  FROM MAINTENANCE_PLAN m
-					  inner join
+					  left join
 					  basic_customer_information b
 					  on m.customer_id=b.id
-					  inner join
+					  left join
 					  sys_user u
 					  on m.customer_manager_id = u.id
 					  WHERE 1=1 AND m.customer_manager_id in 

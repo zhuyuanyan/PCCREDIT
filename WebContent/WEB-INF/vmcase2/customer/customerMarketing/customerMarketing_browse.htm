@@ -16,8 +16,9 @@
               <col width="10%" />
               <col width="10%" />
               <col width="10%"/>
-              <col width="20%"/>
+              <col width="10%"/>
               <col width="15%"/>
+              <col width="10%"/>
               <col width="10%"/>
               <col width="10%"/>
             </colgroup>
@@ -31,6 +32,7 @@
               <th nowrap="nowrap">营销结束时间</th>
               <th nowrap="nowrap">创建方式</th>
               <th nowrap="nowrap">实施记录数目</th>
+              <th nowrap="nowrap">实施客户经理</th>
             </tr>
           </table>
         </div>
@@ -41,8 +43,9 @@
               <col width="10%" />
               <col width="10%" />
               <col width="10%"/>
-              <col width="20%"/>
+              <col width="10%"/>
               <col width="15%"/>
+              <col width="10%"/>
               <col width="10%"/>
               <col width="10%"/>
             </colgroup>
@@ -58,6 +61,7 @@
               <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss", $!customerMarketing.marketingEndtime)</td>
               <td nowrap="nowrap">#dictVal("MarketingCreateWay",$!customerMarketing.createWay)</td>
               <td nowrap="nowrap">$!customerMarketing.countAction</td>
+              <td nowrap="nowrap">$!customerMarketing.displayName</td>
             </tr>
             #end
           </table>
