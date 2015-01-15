@@ -1,11 +1,11 @@
 package com.cardpay.pbccrcReport;
+import org.apache.log4j.Logger;
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.log4j.Logger;
 
 import com.cardpay.pbccrcReport.util.PropertyUtil;
 import com.cardpay.pbccrcReport.util.ReporterUtil;
@@ -20,7 +20,7 @@ public class PbccrcReport {
 
 	//private static final String cLoginSuccess = "欢迎 汇丰银行";
 	//修改江南农村商业银行登录人民银行的欢迎语 updated by jinping.chen 20140423
-	private static final String cLoginSuccess = "欢迎 江苏江南农村商业银行股份有限公司";
+	private static final String cLoginSuccess = "欢迎";
 	private static final String cLogonPageInfo = "请输入用户ID和密码登录系统";
 	private static final String cDownloadedPageSuccessFlag1 = "个人信用报告";
 	private static final String cDownloadedPageSuccessFlag2 = "信用提示";
@@ -33,17 +33,18 @@ public class PbccrcReport {
 	private static final String hasQueryNo = "被查询者证件号码"; // "会话超时,请从新登陆"
 	
 	private static final Logger logger = Logger.getLogger(PbccrcReport.class);
+	private PropertyUtil propertyUtil;
 	
-	private static boolean pbocLogin(HttpClient httpClient) throws Exception {
+	private boolean pbocLogin(HttpClient httpClient) throws Exception {
 		NameValuePair ie = new NameValuePair("User-Agent",
 				"Mozilla/4.0 (compatible; MSIE 6.0; Windows 2000)");
 		boolean loginFlag = false;
-		PropertyUtil.reLoad();
-		NameValuePair username = new NameValuePair("userid", PropertyUtil.getPropertyByKey("userid"));
-		NameValuePair password = new NameValuePair("password", PropertyUtil.getPropertyByKey("passwd"));
-		String loginUrl = PropertyUtil.getPropertyByKey("pbocloginUrl");
-
-		PostMethod method = new PostMethod(loginUrl);
+		
+		propertyUtil = new PropertyUtil();
+		NameValuePair username = new NameValuePair("userid", propertyUtil.getPropertyByKey("userid"));
+		NameValuePair password = new NameValuePair("password", propertyUtil.getPropertyByKey("passwd"));
+		String pbocloginUrl = propertyUtil.getPropertyByKey("pbocloginUrl");
+		PostMethod method = new PostMethod(pbocloginUrl);
 		method.setRequestBody(new NameValuePair[] { ie, username, password });
 		Cookie[] cookies = httpClient.getState().getCookies();
 		httpClient.getState().addCookies(cookies);
@@ -80,8 +81,8 @@ public class PbccrcReport {
 	public String manuProcessPbocCreditInfo(String customerName,String creditType,String creditNo)
 			throws Exception {
 		// 查询待征信人行信息
+		String fileFullPath = null;
 		String rtnstr = "";
-
 		HttpClient httpClient = new HttpClient();
 		httpClient.getParams().setCookiePolicy(
 				CookiePolicy.BROWSER_COMPATIBILITY);
@@ -99,13 +100,14 @@ public class PbccrcReport {
 			// 待征信用户名
 			NameValuePair username = new NameValuePair("username",customerName);
 			// 证件类型
-			NameValuePair certype = new NameValuePair("certype","1");//身份证 写死1
+			NameValuePair certype = new NameValuePair("certype","0");//身份证0
 			// 证件号码
 			NameValuePair cercode = new NameValuePair("cercode", creditNo.toUpperCase());
 			NameValuePair queryreason = new NameValuePair("queryreason", "03");
 			NameValuePair vertype = new NameValuePair("vertype", "20");
 			NameValuePair idauthflag = new NameValuePair("policetype", "0");
-			String pbocReportURL = PropertyUtil.getPropertyByKey("pbocReportURL");
+			PropertyUtil propertyUtil = new PropertyUtil();
+			String pbocReportURL = propertyUtil.getPropertyByKey("pbocReportURL");
 			PostMethod postMethod = new PostMethod(pbocReportURL);
 			postMethod.addRequestHeader("Content-Type",
 					"application/x-www-form-urlencoded;charset=GBK");
@@ -131,18 +133,14 @@ public class PbccrcReport {
 				if (!rtnstr.equals(Constants.PBOC_REQUEST_RESULT_2)) {
 					if (rtnstr.equals(Constants.PBOC_REQUEST_RESULT_1)) {
 						logger.info("PBOC信息不存在");
-						ReporterUtil.createReporterFile(buffer.getBytes(), customerName+"_"+creditNo, "PBOC");
+						fileFullPath = ReporterUtil.createReporterFile(responseByte,propertyUtil.getPropertyByKey("reportlocation"), customerName+"_"+creditNo, "PBOC");
 					} else if (rtnstr.equals(Constants.PBOC_REQUEST_RESULT_7)) {
 						logger.info("PBOC信息不存在但给出征信报告");
-						PbocFileReader.ParserReporter(
-								ReporterUtil.createReporterFile(buffer.getBytes(), customerName+"_"+creditNo, "PBOC"));
+						fileFullPath = ReporterUtil.createReporterFile(responseByte,propertyUtil.getPropertyByKey("reportlocation"), customerName+"_"+creditNo, "PBOC");
 					} else if (rtnstr.equals(Constants.PBOC_REQUEST_RESULT_0)){//分开处理，页面信息有误的情况不生成报告。
 						//logger.info("PBOC信息存在或页面信息有误");
 						logger.info("PBOC信息真实存在给出报告");
-						PbocFileReader
-								.ParserReporter(
-										ReporterUtil.createReporterFile(buffer.getBytes(), customerName+"_"+creditNo,
-												"PBOC"));
+						fileFullPath = ReporterUtil.createReporterFile(responseByte,propertyUtil.getPropertyByKey("reportlocation"), customerName+"_"+creditNo, "PBOC");
 					} else {
 						logger.info("PBOC页面信息有误无报告");
 					}
@@ -152,10 +150,11 @@ public class PbccrcReport {
 			}
 			
 			//loginIndex = 0;  loginIndex不需要重新定义 
-			return rtnstr;
-		} else {
+			return fileFullPath;
+		} else {//登录失败
 			//loginIndex = 0;   loginIndex不需要重新定义
-			return Constants.PBOC_REQUEST_RESULT_4;
+			//return Constants.PBOC_REQUEST_RESULT_4;
+			return null;
 		}
 		/*
 		 * updated by jian.gong 不需要退出登录 finally{ PostMethod postMethod = new
@@ -238,5 +237,9 @@ public class PbccrcReport {
 
 		return rtnFlag;
 	}
-
+	
+	public static void main(String[] args) throws Exception {
+		PbccrcReport pbccrcReport = new PbccrcReport();
+		pbccrcReport.manuProcessPbocCreditInfo("许福宾", "1", "350583198110215438");
+	}
 }

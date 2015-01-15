@@ -21,14 +21,16 @@ public class ReporterUtil {
 	 *            --"PBOC"：人行征信
 	 * @return 文件uri
 	 */
-	public static String createReporterFile(byte[] buffer, String fileName,
+	public static String createReporterFile(byte[] buffer,String fliePath, String fileName,
 			String type) {
+		String fileFullPath = null;
 		FileOutputStream fop = null;
 		File file;
-		fileName = fileName + ".html";
+		fileFullPath = fliePath + fileName + ".htm";
 
 		try {
-			file = new File(fileName);
+			//保存文件到/var/ftp/rhzx
+			file = new File(fileFullPath);
 			if (!file.exists()) {
 				file.createNewFile();
 			}
@@ -45,10 +47,17 @@ public class ReporterUtil {
 			fop.write(contentInBytes);
 			fop.flush();
 			fop.close();
-
+			
+			//复制文件到项目 /customer/customerzx/rhzx/ 下
+			File dest = new File("/customer/customerzx/rhzx/"+fileName + ".htm");
+			if (!dest.exists()) {
+				dest.createNewFile();
+			}
+			FileChannleCopy.fileChannelCopy(file,dest);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
-			fileName = "";
+			fileFullPath = null;
 		} finally {
 			try {
 				if (fop != null) {
@@ -58,6 +67,6 @@ public class ReporterUtil {
 				e.printStackTrace();
 			}
 		}
-		return fileName;
+		return fileFullPath;
 	}
 }
