@@ -102,17 +102,21 @@ public class CustomerZXController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "checkRhzx.page", method = { RequestMethod.GET })
+	@RequestMapping(value = "checkRhzx.page", method = { RequestMethod.POST })
 	@JRadOperation(JRadOperation.RHZX)
 	public AbstractModelAndView checkRhzx(HttpServletRequest request) {
 		try {
-			String customerId = request.getParameter("id");
+			String customerId = request.getParameter("customerId");
+			String QueryReason = request.getParameter("QueryReason");
+			String QueryType = request.getParameter("QueryType");
+			String Vertype = request.getParameter("Vertype");
 			request.setCharacterEncoding("utf8");
 			CustomerInfor customer = customerInforService.findCustomerInforById(customerId);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			logger.info("人行征信查询---查询用户:"+user.getId()+",客户:"+customer.getChineseName());
 			PbccrcReport pbccrcReport = new PbccrcReport();
-			String fileFullPath = pbccrcReport.manuProcessPbocCreditInfo(customer.getChineseName(), customer.getCardType(), customer.getCardId());
+			String fileFullPath = pbccrcReport.manuProcessPbocCreditInfo(customer.getChineseName(), customer.getCardType(), customer.getCardId(),
+					QueryReason,QueryType,Vertype);
 			if(fileFullPath != null){
 				JRadModelAndView mv = new JRadModelAndView("/customer/customerzx/rhzx/"+customer+"_"+customer.getCardId(), request);
 				mv.addObject("customer", customer);
