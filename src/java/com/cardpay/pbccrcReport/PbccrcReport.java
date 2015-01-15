@@ -78,7 +78,7 @@ public class PbccrcReport {
 		return loginFlag;
 	}
 	
-	public String manuProcessPbocCreditInfo(String customerName,String creditType,String creditNo)
+	public String manuProcessPbocCreditInfo(String customerName,String creditType,String creditNo,String QueryReason,String QueryType,String Vertype)
 			throws Exception {
 		// 查询待征信人行信息
 		String fileFullPath = null;
@@ -103,8 +103,8 @@ public class PbccrcReport {
 			NameValuePair certype = new NameValuePair("certype","0");//身份证0
 			// 证件号码
 			NameValuePair cercode = new NameValuePair("cercode", creditNo.toUpperCase());
-			NameValuePair queryreason = new NameValuePair("queryreason", "03");
-			NameValuePair vertype = new NameValuePair("vertype", "20");
+			NameValuePair queryreason = new NameValuePair("queryreason", QueryReason);
+			NameValuePair vertype = new NameValuePair("vertype", Vertype);
 			NameValuePair idauthflag = new NameValuePair("policetype", "0");
 			PropertyUtil propertyUtil = new PropertyUtil();
 			String pbocReportURL = propertyUtil.getPropertyByKey("pbocReportURL");
@@ -240,6 +240,6 @@ public class PbccrcReport {
 	
 	public static void main(String[] args) throws Exception {
 		PbccrcReport pbccrcReport = new PbccrcReport();
-		pbccrcReport.manuProcessPbocCreditInfo("许福宾", "1", "350583198110215438");
+		pbccrcReport.manuProcessPbocCreditInfo("许福宾", "1", "350583198110215438","03","0","20");
 	}
 }

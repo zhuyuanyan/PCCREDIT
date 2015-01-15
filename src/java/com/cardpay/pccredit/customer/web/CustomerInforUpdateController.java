@@ -1639,47 +1639,6 @@ public class CustomerInforUpdateController extends BaseController {
 	}
 	 
 	/**
-	 * 查看人行征信
-	 * 
-	 * @param request
-	 * @return
-	 * @throws IOException 
-	
-	 */
-	@ResponseBody
-	@RequestMapping(value = "checkRhzx.page",method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.RHZX)
-	public AbstractModelAndView checkRhzx(HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
-		try {
-			File file = null;
-			Map<String, String> map = customerInforservice
-					.createThumbnail(request.getParameter(ID));
-			if (Boolean.parseBoolean(request.getParameter("flag"))) {
-				// 输出原始图片 
-				file = new File(map.get("old"));
-			} else {
-				// 输出缩略图 
-				file = new File(map.get("new"));
-			}
-			if (file.exists()) {
-				response.setContentType("image/*");
-				InputStream is = new FileInputStream(file);
-				OutputStream os = response.getOutputStream();
-				IOUtils.copy(is, os);
-				is.close();
-				os.flush();
-				os.close();
-			} else {
-				response.setStatus(304);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/**
 	 * 下载影像资料
 	 * 
 	 * @param request
@@ -1718,38 +1677,6 @@ public class CustomerInforUpdateController extends BaseController {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	
-	/**
-	 * 查看人行征信
-	 * 
-	 * @param request
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "checkRhzx.json",method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.RHZX)
-	public Map<String,Object> checkRhzx(HttpServletRequest request) {
-		Map<String,Object> returnMap = new HashMap<String,Object>();
-		try {
-			String customerId = RequestHelper.getStringValue(request, ID);
-			CustomerInfor customerInfo = customerInforservice.findCustomerInforById(customerId);
-			PbccrcReport pbccrcReport = new PbccrcReport();
-			String fileName = pbccrcReport.manuProcessPbocCreditInfo(customerInfo.getChineseName(), customerInfo.getCardType(), customerInfo.getCardId());
-			if(fileName != null){
-				returnMap.put(JRadConstants.SUCCESS,true);
-				returnMap.put(JRadConstants.MESSAGE,CustomerInforConstant.TRANSFERSUCCESS);
-				returnMap.put("fileName", fileName);
-			}else{
-				returnMap.put(JRadConstants.SUCCESS,false);
-				returnMap.put(JRadConstants.MESSAGE,CustomerInforConstant.TRANSFERERROR);
-			}
-		}catch (Exception e) {
-			returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG + e.getMessage());
-			returnMap.put(JRadConstants.SUCCESS, false);
-			return returnMap;
-		}
-		return returnMap;
 	}
 }
 
