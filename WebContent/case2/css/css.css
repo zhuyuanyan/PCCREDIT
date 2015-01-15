@@ -123,6 +123,7 @@ div { display: block; font-weight: normal;}
 
 .search ul{ width:100%;}
 .search ul li{float:left; height:35px; width:240px; text-align:left;}
+.search ul li.rhzx_li{float:left; height:35px; width:330px; text-align:left;}
 .search ul li.time_li{float:left; height:35px; width:280px; text-align:left;}
 .search ul li.search_button{float: right; width: auto;}
 .search ul li span{white-space:nowrap;}

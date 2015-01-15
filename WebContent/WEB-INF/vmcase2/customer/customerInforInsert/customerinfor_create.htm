@@ -31,7 +31,7 @@
                   </select></td>
                 <td class="titlefc3">性别:</td>
                 <td>
-                <input class="rinpsty"  style="width: 25px;height: 14px;" type="radio" id="sex" name="sex" value="Male" />男
+                <input class="rinpsty"  style="width: 25px;height: 14px;" type="radio" id="sex" name="sex" value="Male" checked/>男
                 <input  class="rinpsty" style="width: 25px;height: 14px;" type="radio" id="sex" name="sex" value="Female" />女
 				</td>
             </tr>
@@ -101,8 +101,9 @@
 	
 	$(document).ready(function() {		
 		$("#id_save_button").click(function() {
+			//清空上一次验证
+			 $("#cardIde").remove();
 			
-			 $("#cardIde").remove();	
 				var cardType = $("select[name=cardType]").val();
 				if( cardType == "CST0000000000A"){
 			   
@@ -120,7 +121,7 @@
 				
 				}
 			var leng = 0;
-	    	 leng = $(".error").length;
+	    	 leng = $("#cardIde").length;
 	    	if(leng > 0){
 	    		return;
 	    	}else{
