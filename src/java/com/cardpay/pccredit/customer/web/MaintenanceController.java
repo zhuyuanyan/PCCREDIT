@@ -160,6 +160,10 @@ public class MaintenanceController extends BaseController{
 			if (returnMap.isSuccess()) {
 				try {
 					Maintenance maintenance = form.createModel(Maintenance.class);
+					if(maintenance.getCustomerId().equals("")){
+						returnMap.addGlobalMessage("请先选择客户!");
+						return returnMap;
+					}
 					IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 					String createdBy = user.getId();
 					maintenance.setCreatedBy(createdBy);
