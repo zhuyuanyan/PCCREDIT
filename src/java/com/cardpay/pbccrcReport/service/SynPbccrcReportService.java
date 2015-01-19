@@ -37,7 +37,7 @@ public class SynPbccrcReportService {
 			while(qs.getItems().size() != 0){
 				for(CustomerInfor customerInfor : qs.getItems()){
 					// 查询人行征信信息
-					pbccrcReport.manuProcessPbocCreditInfo(customerInfor.getChineseName(), customerInfor.getCardType(), customerInfor.getCardId());
+					pbccrcReport.manuProcessPbocCreditInfo(customerInfor.getChineseName(), customerInfor.getCardType(), customerInfor.getCardId(),"","","");
 				}
 				// 设置查询的页码
 				filter.setPage(filter.getPage() + 1);

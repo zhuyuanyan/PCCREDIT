@@ -1,0 +1,84 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户征信信息</div>
+      </div>
+ <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm" action="${modulePath}/checkRhzx.page" method="POST">
+          <input type="hidden" name="customerId" value="$!customerInfor.id">
+          <div style="clear:both">
+           	<ul>
+              <li class="rhzx_li">
+                <span>客户名称：
+                <input type="text" name="chineseName" value="$!customerInfor.chineseName" disabled/></span>
+              </li>
+              <li class="rhzx_li">
+                <span>证件类型：
+                	<select id="type" name="cardType" disabled>
+	                   <option value="">请选择...</option>
+	                   #dict("CARDTYPE", $!customerInfor.cardType)
+                  	</select>
+                  </span>
+              </li>
+              <li class="rhzx_li">
+                <span>证件号码：
+                <input type="text" name="cardId" value="$!customerInfor.cardId" disabled/></span>
+              </li>
+            </ul>
+            <ul>
+              <li class="rhzx_li">
+                <span>查询原因：
+                	<select id="QueryReason" name="QueryReason">
+	                   #dict("QueryReason","")
+                  	</select>
+                  </span>
+              </li>
+              <li class="rhzx_li">
+                <span>查询类型：
+                	<select id="QueryType" name="QueryType">
+	                   #dict("QueryType","")
+                  	</select>
+                  </span>
+              </li>
+              <li class="rhzx_li">
+                <span>查询类型：
+                	<select id="Vertype" name="Vertype">
+	                   #dict("Vertype","")
+                  	</select>
+                  </span>
+              </li>
+            </ul>
+            </div>
+            <div style="clear:both;">
+            	<input id="id_browse_button" type="submit" value="查询" class="search_button_inquiry"
+                  		title="查询" style="height: 26px; line-height: 24px;margin-right: 220px;float: right;"/>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="pagebar">
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		//opsObj.browseUrl = "${modulePath}/checkRhzx.page";
+		
+		prepareOperations(opsObj);
+	});
+</script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")
