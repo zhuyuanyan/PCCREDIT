@@ -21,10 +21,12 @@ public interface CustomerApplicationIntopieceWaitDao {
 
 	// 查询所有客户进件信息
 	public List<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceWaitForm(CustomerApplicationProcessFilter filter);
-
 	// 查询所有客户进件数量
 	public int findCustomerApplicationIntopieceWaitCountForm(CustomerApplicationProcessFilter filter);
-
+	// 如果当前用户是接收节点，获取此用户的所有接收进件
+	public List<CustomerApplicationIntopieceWaitForm> receiveIntopieceWaitForm(CustomerApplicationProcessFilter filter);
+	// 查询接收进件数量
+	public int receiveCountIntopieceWaitForm(CustomerApplicationProcessFilter filter);
 	// 根据serialNumber更新中间表customer_application_process
 	public int updateCustomerApplicationProcessBySerialNumber(CustomerApplicationProcess customerApplicationProcess);
 

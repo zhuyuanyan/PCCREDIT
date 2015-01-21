@@ -71,6 +71,14 @@ public class CustomerApplicationIntopieceWaitService {
 		return qs;
 
 	}
+	// 查询需要接收的进件信息
+		public QueryResult<CustomerApplicationIntopieceWaitForm> recieveIntopieceWaitForm(CustomerApplicationProcessFilter filter) {
+			List<CustomerApplicationIntopieceWaitForm> listCAI = customerApplicationIntopieceWaitDao.receiveIntopieceWaitForm(filter);
+			int size = customerApplicationIntopieceWaitDao.receiveCountIntopieceWaitForm(filter);
+			QueryResult<CustomerApplicationIntopieceWaitForm> qs = new QueryResult<CustomerApplicationIntopieceWaitForm>(size, listCAI);
+			return qs;
+
+		}
 
 	// 根据serialNumber查询CUSTOMER_APPLICATION_PROCESS表
 	public CustomerApplicationIntopieceWaitForm findCustomerApplicationProcessBySerialNumber(String serialNumber) {
@@ -90,7 +98,8 @@ public class CustomerApplicationIntopieceWaitService {
 			List<NodeAudit> listNode = nodeAuditService.findByNodeAuditByUserId(NodeAuditTypeEnum.Product.toString(), userId, customerApplicationProcess.getProductId());
 			boolean falg = false;
 			for (NodeAudit nodeAudit : listNode) {
-				if (customerApplicationProcess.getProductId().equals(nodeAudit.getProductId()) && customerApplicationProcess.getNextNodeId().equals(nodeAudit.getId())) {
+				//不处于接收节点
+				if (customerApplicationProcess.getProductId().equals(nodeAudit.getProductId()) && customerApplicationProcess.getNextNodeId().equals(nodeAudit.getId())&&nodeAudit.getIsRecieve().equals("NO")) {
 					customerApplicationProcess.setDelayAuditUser(userId);
 					customerApplicationProcess.setAuditTime(new Date());
 					i = customerApplicationIntopieceWaitDao.updateCustomerApplicationProcess(customerApplicationProcess);
@@ -183,5 +192,80 @@ public class CustomerApplicationIntopieceWaitService {
 		customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(customerApplicationProcess);
 
 	}
+	
+	public void updateCustomerApplicationProcessBySerialNumberApplicationInfo1(HttpServletRequest request) throws Exception {
+		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+		CustomerApplicationProcess customerApplicationProcess = new CustomerApplicationProcess();
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getId();
+		String serialNumber = request.getAttribute("serialNumber").toString();
+		String examineAmount = request.getAttribute("examineAmount").toString();
+		String applicationStatus = request.getAttribute("applicationStatus").toString();
+		String applicationId = request.getAttribute("applicationId").toString();
+		String objection = request.getAttribute("objection").toString();
+		if(objection.equals("true")){
+			applicationStatus = ApproveOperationTypeEnum.OBJECTION.toString();
+		}
+		if(StringUtils.isNotEmpty(examineAmount)){
+			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
+		}
+		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
+		String examineResutl = processService.examine(serialNumber, loginId, applicationStatus, examineAmount);
+		//更新单据状态
+	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
+	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
+	    		examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())) {
+			if(examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
+				customerApplicationInfo.setStatus(Constant.REFUSE_INTOPICES);
+			}
+			if(examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString())){
+				customerApplicationInfo.setStatus(Constant.NOPASS_INTOPICES);
+				//退回时 删除提交申请备份的信息
+				CustomerApplicationInfo returnApp = commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+				customerInforService.deleteCloneSubmitAppByReturn(returnApp.getCustomerId(), applicationId);
+			}
+			if(examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())){
+				customerApplicationInfo.setFinalApproval(examineAmount);
+				customerApplicationInfo.setStatus(Constant.APPROVED_INTOPICES);
+			}
+			customerApplicationInfo.setId(applicationId);
+			customerApplicationInfo.setModifiedBy(user.getId());
+			customerApplicationInfo.setModifiedTime(new Date());
+			commonDao.updateObject(customerApplicationInfo);
+			
+			customerApplicationProcess.setNextNodeId(null);
+		} else {
+			customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
+			customerApplicationInfo.setId(applicationId);
+			customerApplicationInfo.setModifiedBy(user.getId());
+			customerApplicationInfo.setModifiedTime(new Date());
+			commonDao.updateObject(customerApplicationInfo);
+			
+			customerApplicationProcess.setNextNodeId(examineResutl);
+		}
+		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.RETURNAPPROVE)) {
+			String fallbackReason = request.getParameter("reason");
+			customerApplicationProcess.setFallbackReason(fallbackReason);
+		} else if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.REJECTAPPROVE)) {
+			String refusalReason = request.getParameter("reason");
+			customerApplicationProcess.setRefusalReason(refusalReason);
+		}
+		customerApplicationProcess.setProcessOpStatus(applicationStatus);
+		customerApplicationProcess.setSerialNumber(serialNumber);
+		customerApplicationProcess.setExamineAmount(examineAmount);
+		customerApplicationProcess.setAuditUser(loginId);
+		customerApplicationProcess.setCreatedTime(new Date());
+		customerApplicationProcess.setExamineAmount(examineAmount);
+//		customerApplicationProcess.setDelayAuditUser(user.getId());//清空字段值 
+		customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(customerApplicationProcess);
 
+	}
+	/**
+	 * 通过id获取审批流程表
+	 * @param id
+	 * @return
+	 */
+	public CustomerApplicationProcess getProcessById(String id){
+		return commonDao.findObjectById(CustomerApplicationProcess.class, id);
+	}
 }

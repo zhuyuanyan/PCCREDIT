@@ -80,9 +80,10 @@
       <div class="pagebar">
         <div class="controlbtn">
         #btnpriv("approve")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="审批">审核</a>#end
-        #btnpriv("applyapprove")<a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="申请审核">申请审核</a>#end
+        <!-- #btnpriv("applyapprove")<a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="申请审核">申请审核</a>#end -->
         #btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>#end
-        </div>
+        #btnpriv("applyapprove")<a class="btn_g" href="javascript:void(0);" title="新建" onclick="self.location.href='/PCCredit/intopieces/applyintopiecewait/recieve.page'">接收</a>
+        </div>#end
         #parse ("common/pagination.htm")
         <div class="clear"></div>
         	

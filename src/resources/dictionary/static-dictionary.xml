@@ -172,6 +172,10 @@
 		<item name="NO" title="否" />
 	</dictionary>
 	
+	<dictionary name="ISNO" title="是否">
+		<item name="NO" title="否" />
+	</dictionary>
+	
 	<dictionary name="NODETYPE" title="节点类型">
 		<item name="Product" title="产品进件" />
 		<item name="ProductAmountAdjust" title="产品调额" />
@@ -223,8 +227,9 @@
 		<item name="OBJECTION" title="异议" />
 	</dictionary>
 	<dictionary name="BillingMethod" title="账单寄送方式">
-		<item name="0" title="纸质账单" />
-		<item name="1" title="电子账单" />
+		<item name="LT" title="信件寄送" />
+		<item name="EM" title="电子邮件寄送" />
+		<item name="NO" title="不寄送账单" />
 	</dictionary>
 	
 	<dictionary name="CollarCardMode" title="领卡方式">

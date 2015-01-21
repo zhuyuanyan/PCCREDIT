@@ -60,6 +60,7 @@ public class CustomerApplicationIntopieceWaitForm extends BaseForm {
 	private String nextNodeId;
 	private String delayAuditUser;
 	private Date auditTime;
+	private String processId;
 	
 	private String nodeName; //下一个节点的名称
 
@@ -424,6 +425,14 @@ public class CustomerApplicationIntopieceWaitForm extends BaseForm {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public String getProcessId() {
+		return processId;
+	}
+
+	public void setProcessId(String processId) {
+		this.processId = processId;
 	}
 
 }
