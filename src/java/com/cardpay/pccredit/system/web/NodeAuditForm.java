@@ -20,6 +20,8 @@ public class NodeAuditForm extends BaseForm{
 	
 	private String type;
 	
+	private String isRecieve;
+	
 	//用户显示 审批人员名称
 	private String auditUserIds;
 	private String auditUserNames;
@@ -136,6 +138,14 @@ public class NodeAuditForm extends BaseForm{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getIsRecieve() {
+		return isRecieve;
+	}
+
+	public void setIsRecieve(String isRecieve) {
+		this.isRecieve = isRecieve;
 	}
 
 }

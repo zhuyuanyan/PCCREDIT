@@ -69,15 +69,16 @@
 		CUSTOMER_APPLICATION_INFO b,
 		BASIC_CUSTOMER_INFORMATION U,
 		CUSTOMER_APPLICATION_PROCESS A,
-   		NODE_AUDIT N
+   		NODE_AUDIT N,NODE_AUDIT_USER p
 		WHERE
 		1=1
 		and U.ID = b.CUSTOMER_ID
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
-		AND A.DELAY_AUDIT_USER = #{loginId}
-		and b.status='audit'
+		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		and b.status='audit' and N.IS_RECIEVE='NO'
 	</select>
+	
 	<select id="findCustomerApplicationIntopieceWaitCountForm"
 		resultType="int">
 		SELECT
@@ -89,18 +90,83 @@
 		U.RESIDENTIAL_ADDRESS AS residentialAddress,
 		U.CARD_TYPE AS cardType,
 		U.CARD_ID AS cardId,
-			b.APPLY_QUOTA AS applyQuota
+		b.APPLY_QUOTA AS applyQuota,
+		A.SERIAL_NUMBER as SERIALNUMBER,
+   		N.NODE_NAME as nodeName,
+		A.AUDIT_TIME as auditTime
 		FROM
 		CUSTOMER_APPLICATION_INFO b,
 		BASIC_CUSTOMER_INFORMATION U,
-		CUSTOMER_APPLICATION_PROCESS A
+		CUSTOMER_APPLICATION_PROCESS A,
+   		NODE_AUDIT N,NODE_AUDIT_USER p
 		WHERE
 		1=1
 		and U.ID = b.CUSTOMER_ID
 		and a.APPLICATION_ID=b.ID
-		AND A.DELAY_AUDIT_USER = #{loginId}
-		and b.status='audit'
+		AND N.ID=A.NEXT_NODE_ID
+		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		and b.status='audit' and N.IS_RECIEVE='NO'
 		)
+	</select>
+	
+	<select id="receiveIntopieceWaitForm" resultMap="BaseResultMap">
+		SELECT
+		b.*, U.CHINESE_NAME as chineseName,
+		U.RESIDENTIAL_ADDRESS AS residentialAddress,
+		U.CARD_TYPE AS cardType,
+		U.CARD_ID AS cardId,
+		b.APPLY_QUOTA AS applyQuota,
+		A.SERIAL_NUMBER as SERIALNUMBER,
+   		N.NODE_NAME as nodeName,
+		A.AUDIT_TIME as auditTime,A.id as processId
+		FROM
+		CUSTOMER_APPLICATION_INFO b,
+		BASIC_CUSTOMER_INFORMATION U,
+		CUSTOMER_APPLICATION_PROCESS A,
+   		NODE_AUDIT N,NODE_AUDIT_USER p
+		WHERE
+		1=1
+		and U.ID = b.CUSTOMER_ID
+		and a.APPLICATION_ID=b.ID
+		AND N.ID=A.NEXT_NODE_ID
+		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		and b.status='audit' and N.IS_RECIEVE='YES'
+		<if test="cardId!=null">
+			and U.card_id=#{cardId}
+		</if>
+		<if test="cardId==null">
+			and U.card_id is null
+		</if>
+	</select>
+	<select id="receiveCountIntopieceWaitForm" resultType="int">
+	    select count(*) from (
+		SELECT
+		b.*, U.CHINESE_NAME as chineseName,
+		U.RESIDENTIAL_ADDRESS AS residentialAddress,
+		U.CARD_TYPE AS cardType,
+		U.CARD_ID AS cardId,
+		b.APPLY_QUOTA AS applyQuota,
+		A.SERIAL_NUMBER as SERIALNUMBER,
+   		N.NODE_NAME as nodeName,
+		A.AUDIT_TIME as auditTime
+		FROM
+		CUSTOMER_APPLICATION_INFO b,
+		BASIC_CUSTOMER_INFORMATION U,
+		CUSTOMER_APPLICATION_PROCESS A,
+   		NODE_AUDIT N,NODE_AUDIT_USER p
+		WHERE
+		1=1
+		and U.ID = b.CUSTOMER_ID
+		and a.APPLICATION_ID=b.ID
+		AND N.ID=A.NEXT_NODE_ID
+		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		and b.status='audit' and N.IS_RECIEVE='YES' 
+		<if test="cardId!=null">
+			and U.card_id=#{cardId}
+		</if>
+		<if test="cardId==null">
+			and U.card_id is null
+		</if>)
 	</select>
 	<update id="updateCustomerApplicationProcessBySerialNumber"
 		parameterType="com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess">

@@ -25,7 +25,8 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 	private String nextNodeId;
 	private String delayAuditUser;
 	private Date auditTime;
-
+	private String cardId;
+	private String processId;
 	public String getLoginId() {
 		return loginId;
 	}
@@ -112,6 +113,22 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 
 	public void setAuditTime(Date auditTime) {
 		this.auditTime = auditTime;
+	}
+
+	public String getCardId() {
+		return cardId;
+	}
+
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
+	}
+
+	public String getProcessId() {
+		return processId;
+	}
+
+	public void setProcessId(String processId) {
+		this.processId = processId;
 	}
 
 }

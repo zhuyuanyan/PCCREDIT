@@ -766,12 +766,14 @@ public class CustomerInforService {
 			}else{
 				customerApplicationOther.setSmsOpeningTrading("0");
 			}
-			
-			if("纸质账单".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
-				customerApplicationOther.setBillingMethod("0");
-			}else if("电子账单".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
-				customerApplicationOther.setBillingMethod("1");
+			if("信件寄送".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
+				customerApplicationOther.setBillingMethod("LT");
+			}else if("电子邮件寄送".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
+				customerApplicationOther.setBillingMethod("EM");
+			}else if("不寄送账单".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
+				customerApplicationOther.setBillingMethod("NO");
 			}
+			
 			if("到网点领取".equalsIgnoreCase(customerApplicationOther.getCollarCardMode())){
 				customerApplicationOther.setCollarCardMode("0");
 			}else if("普通邮寄".equalsIgnoreCase(customerApplicationOther.getCollarCardMode())){
