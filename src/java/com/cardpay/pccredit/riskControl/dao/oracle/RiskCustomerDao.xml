@@ -35,10 +35,10 @@
 							customer.card_type as cardType,
 							customer.card_id as cardId,
 							sysuser.display_name as reportedManager
-					  FROM basic_customer_information customer
-					 INNER JOIN risk_list risk
+					  FROM risk_list risk
+					 left  JOIN basic_customer_information customer
 					    ON customer.id = risk.customer_id
-					 INNER JOIN sys_user sysuser
+					 left JOIN sys_user sysuser
 					    ON sysuser.id = risk.reported_id_manager
 					  WHERE 1=1 
 					 <if test="reportedIdManager != null and reportedIdManager != '' ">
@@ -75,8 +75,8 @@
 	<select id="findRiskCustomersCountByFilter" resultType="int"
 			parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter">
 		SELECT count(*)
-		  FROM basic_customer_information customer
-		 INNER JOIN risk_list risk
+		  FROM risk_list risk
+		 left JOIN basic_customer_information customer
 		    ON customer.id = risk.customer_id
 		  WHERE 1=1 
 		 <if test="reportedIdManager != null and reportedIdManager != '' ">

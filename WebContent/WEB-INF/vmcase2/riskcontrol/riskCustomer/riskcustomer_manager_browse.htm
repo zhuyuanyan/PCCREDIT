@@ -82,7 +82,8 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-        #btnpriv("reported") <a id="id_report_button" class="btn_g" href="javascript:void(0);" title="上报">#i18n("operation.reported")</a>#end
+        <!-- #btnpriv("reported") <a id="id_report_button" class="btn_g" href="javascript:void(0);" title="上报">#i18n("operation.reported")</a>#end -->
+        #btnpriv("delete")<a id="id_return_button" class="btn_g" href="javascript:void(0);" title="还原">还原</a>#end
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -109,6 +110,11 @@
 		 $("#id_report_button").click(function() {
 			 if($(this).attr("class") == "btn_g"){
 				 report();
+			 }
+	      });
+		 $("#id_return_button").click(function() {
+			 if($(this).attr("class") == "btn_g"){
+				 rowDelete();
 			 }
 	      });
 	});
@@ -140,6 +146,25 @@
 			data:'id='+rowId,
 			success:function(msg){
 				Dialog.closeLoad();
+				if(msg.success == true){
+					Dialog.message("还原成功!");
+				}else{
+					Dialog.message("还原失败!");
+				}
+				window.location.href="${modulePath}/managerbrowse.page";
+			}
+		});
+	}
+	/*
+	*
+	*/
+	function rowDelete(){
+		var rowId = getCurrentRowId();
+		$.ajax({
+			type:'GET',
+			url:"${contextPath}/riskcontrol/riskcustomer/delete.json",
+			data:'id='+rowId,
+			success:function(msg){
 				if(msg.success == true){
 					Dialog.message(msg.message);
 				}else{

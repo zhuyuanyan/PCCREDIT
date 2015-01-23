@@ -19,6 +19,9 @@ import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
+import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
+import com.cardpay.pccredit.riskControl.model.AgrCrdXykCuneg;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.model.NodeAudit;
 import com.cardpay.pccredit.system.service.NodeAuditService;
@@ -132,6 +135,9 @@ public class CustomerApplicationIntopieceWaitService {
 		String applicationId = request.getParameter("applicationId");
 		String customerId = request.getParameter("customerId");
 		String objection = request.getParameter("objection");
+		String reason = request.getParameter("reason");
+		String cardId = request.getParameter("cardId");
+		String cardType = request.getParameter("cardType");
 		if(objection.equals("true")){
 			applicationStatus = ApproveOperationTypeEnum.OBJECTION.toString();
 		}
@@ -181,6 +187,28 @@ public class CustomerApplicationIntopieceWaitService {
 		} else if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.REJECTAPPROVE)) {
 			String refusalReason = request.getParameter("reason");
 			customerApplicationProcess.setRefusalReason(refusalReason);
+			//添加风险名单或者黑名单
+			String blacklist = request.getParameter("blacklist");
+			String risklist = request.getParameter("risklist");
+			if(!risklist.equals("-1")){
+				RiskCustomer risk = new RiskCustomer();
+				risk.setCustomerId(customerId);
+				risk.setRefuseReason(reason);
+				risk.setCardId(cardId);
+				risk.setCardType(cardType);
+				risk.setCreatedBy(loginId);
+				risk.setCreatedTime(new Date());
+				risk.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
+				commonDao.insertObject(risk);
+			}
+			if(!blacklist.equals("-1")){
+				String chineseName = request.getParameter("chineseName");
+				AgrCrdXykCuneg agr = new AgrCrdXykCuneg();
+				agr.setCustrNbr(cardId);
+				agr.setNameExtnd(chineseName);
+				agr.setInpSource(blacklist);
+				commonDao.insertObject(agr);
+			}
 		}
 		customerApplicationProcess.setProcessOpStatus(applicationStatus);
 		customerApplicationProcess.setSerialNumber(serialNumber);

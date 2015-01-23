@@ -92,16 +92,67 @@ public class IntoPiecesComdao {
 		}
 		
 		sql.append(" order by t.id asc");
-		System.out.println(sql);
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql.toString(), params,
 				filter.getStart(), filter.getLimit());
 	}
-	
-	/* 查询进价信息 */
+	/* 查询进件信息 */
+	public int findintoPiecesByFilterCount(
+			IntoPiecesFilter filter) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		String id = filter.getId();
+		String chineseName  = filter.getChineseName();
+		String productName = filter.getProductName();
+		String userId = filter.getUserId();
+		String cardId = filter.getCardId();
+		String status = filter.getStatus();
+		StringBuffer sql = null;
+		//卡中心可以查看所有进件
+		if(userId.equals("-1")){
+			sql = new StringBuffer("select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		}else{
+			//获取自己及下属id
+			String userSql = "select * from account_manager_parameter where id in ( select t.child_id from manager_belong_map t left join account_manager_parameter amp on amp.id = t.parent_id where amp.user_id = '"+userId+"')";
+			List<AccountManagerParameter> userList = commonDao.queryBySql(AccountManagerParameter.class, userSql,null );
+			String users= "('"+userId+"',";
+			for(int i=0;i<userList.size();i++){
+				users+="'"+userList.get(i).getUserId()+"',";
+			}
+			users=users.substring(0, users.length()-1)+")";
+			sql = new StringBuffer("select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and b.user_id in "+users+" and t.product_id=p.id  ");
+		}
+		if(StringUtils.trimToNull(productName)!=null){
+			params.put("productName", productName);
+			 sql.append(" and p.product_name like '%'||#{productName}||'%' ");
+			}
+		
+		if(StringUtils.trimToNull(id)!=null){
+			params.put("id", id);
+			sql.append(" and t.id like '%'||#{id}||'%' ");
+			}
+		if(StringUtils.trimToNull(status)!=null){
+			params.put("status", status);
+			sql.append("and t.status= #{status}");
+			}
+		if(StringUtils.trimToNull(cardId)!=null||StringUtils.trimToNull(chineseName)!=null){
+			if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)!=null){
+			    sql.append(" and (b.card_id like '%"+cardId+"%' or b.chinese_name like '%"+chineseName+"%' )");
+			}else if(StringUtils.trimToNull(cardId)!=null&&StringUtils.trimToNull(chineseName)==null){
+				params.put("cardId", cardId);
+				sql.append(" and b.card_id like '%'||#{cardId}||'%' ");
+			}else if(StringUtils.trimToNull(cardId)==null&&StringUtils.trimToNull(chineseName)!=null){
+				params.put("chineseName", chineseName);
+				sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' ");
+			}
+		}
+		
+		sql.append(" order by t.id asc");
+		return commonDao.queryBySql(IntoPieces.class, sql.toString(), params).size();
+	}
+	/* 查询进件信息 */
 	public QueryResult<IntoPieces> findintoApplayPiecesByFilter(
 			IntoPiecesFilter filter) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
-		String sql = "select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and t.product_id=p.id and t.status='succeed' order by t.id asc";
+		String sql = "select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and t.product_id=p.id and t.status='approved' order by t.id desc";
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql, params,
 				filter.getStart(), filter.getLimit());
 	}
@@ -195,9 +246,7 @@ public class IntoPiecesComdao {
 			String applicationId) {
 		CustomerApplicationInfo customerApplicationInfo = commonDao
 				.findObjectById(
-						CustomerApplicationInfo.class,
-						"select * from customer_application_info f where f.id='"
-								+ applicationId + "'");
+						CustomerApplicationInfo.class,applicationId);
 		return customerApplicationInfo;
 	}
 	
