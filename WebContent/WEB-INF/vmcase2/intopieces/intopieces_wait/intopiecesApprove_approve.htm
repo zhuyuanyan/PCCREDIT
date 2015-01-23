@@ -82,6 +82,21 @@
             <td><label>原因</label></td>
             <td><textarea class="w200" rows="3"  id="reason"  name="reason">$!customerApplicationProcess.fallbackReason$!customerApplicationProcess.refusalReason</textarea></td>
             </tr>
+            
+            <tr>
+            <td><label>进入黑名单</label></td> 
+            <td>
+            <select id="blacklist" name="blacklist" disabled="disabled">
+				<option value='-1'>请选择..</option>
+				#dict("blacklist", '')
+			</select>
+            </td>
+            <td><label>进入风险名单</label></td>
+            <td><select id="risklist" name="risklist" disabled="disabled">
+				<option value='-1'>请选择..</option>
+				<option value='1'>进入风险名单</option>
+			</select></td>
+            </tr>
           </table>
 		</div>
         </form>
@@ -118,6 +133,16 @@ window.top.currentWindow.setLayout(layout);
 $(document).ready(function() {	
 	
 	$("#id_save_button").click(function() {
+		if($("#applicationStatus").val()=='REJECTAPPROVE'){
+			var blacklist = $("#blacklist").val();
+			var risklist = $("#risklist").val();
+			if((blacklist=='-1'&&risklist=='-1')||(blacklist!='-1'&&risklist!='-1')){
+				Dialog.message("请选择进入黑名单或者风险名单!");
+				return ;
+			}
+	}
+		
+		
 		if("$objection" == "true"){
 			var oldExamineAmount = $("#oldExamineAmount").val();
 			var examineAmount = $("#examineAmount").val();
@@ -155,7 +180,9 @@ function maintains(){
 * 改变筛选表
 */
  function checkStatus() {
-	
+ 	  $("#blacklist").replaceWith("<select id='blacklist' name='blacklist' disabled><option value='-1'>请选择..</option>   #dict('blacklist','')   </select>"); 
+  	  $("#risklist").replaceWith("<select id='risklist' name='risklist' disabled><option value='-1'>请选择..</option><option value='1'>进入风险名单</option> </select>"); 
+
 		var applicationStatus = $("#formsId select[name='applicationStatus'] option:selected").val();
 		  switch (applicationStatus) {
           case ("APPROVE"):
@@ -166,6 +193,9 @@ function maintains(){
               break;
           case ("REJECTAPPROVE"):
         	  $('#reason').replaceWith("<textarea class='w200' rows='3'  id='reason'  name='reason'></textarea>"); 
+          	  $("#blacklist").replaceWith("<select id='blacklist' name='blacklist'><option value='-1'>请选择..</option>   #dict('blacklist','')   </select>"); 
+          	  $("#risklist").replaceWith("<select id='risklist' name='risklist'><option value='-1'>请选择..</option><option value='1'>进入风险名单</option> </select>"); 
+          
               break;
           default:
             

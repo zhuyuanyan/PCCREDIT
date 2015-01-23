@@ -74,6 +74,6 @@ public class Constant {
 	
 	public static String FTPPASSWORD = "abc,123";
 	
-	public static String FTPPATH = "qiankang";
+	public static String FTPPATH = "/var/ftp/tmp";
 	
 }

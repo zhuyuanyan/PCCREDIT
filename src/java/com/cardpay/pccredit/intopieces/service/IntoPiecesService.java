@@ -45,6 +45,10 @@ import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
+import com.cardpay.pccredit.riskControl.filter.AgrCrdXykCunegFilter;
+import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
+import com.cardpay.pccredit.riskControl.model.AgrCrdXykCuneg;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.filter.DictFilter;
 import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -726,8 +730,8 @@ public class IntoPiecesService {
 		}
 		String fileName = customerInfor.getChineseName()+"("+customerInfor.getCardId()+").txt";
 		/*生成的接口数据上传到ftp文件上*/
-//		UploadFileTool.uploadFileToFtp(Constant.FTPIP, Integer.valueOf(Constant.FTPPORT), Constant.FTPUSERNAME, Constant.FTPPASSWORD, Constant.FTPPATH, fileName, content.toString());
-		UploadFileTool.create(fileName,content.toString());
+		UploadFileTool.uploadFileToFtp(Constant.FTPIP, Integer.valueOf(Constant.FTPPORT), Constant.FTPUSERNAME, Constant.FTPPASSWORD, Constant.FTPPATH, fileName, content.toString());
+//		UploadFileTool.create(fileName,content.toString());
 		/*如果要下载接口数据,将下面的exportTextFile方法打开*/
 		/*if(response!=null){
 			UploadFileTool.exportTextFile(response, content.toString(), fileName);
@@ -884,5 +888,34 @@ public class IntoPiecesService {
     	filter.setTypeCode(dictType);
     	QueryResult<Dict> dict= commonDao.findObjectsByFilter(Dict.class, filter);
     	return dict;
+	}
+	
+	/**
+	 * 判断是否风险用户
+	 * @param cardId
+	 * @return
+	 */
+	public Boolean checkRisk(String cardId){
+		RiskCustomerFilter filter = new RiskCustomerFilter();
+		filter.setCardId(cardId);
+		QueryResult<RiskCustomer> risk = commonDao.findObjectsByFilter(RiskCustomer.class, filter);
+		if(risk.getItems().size()>0){
+			return false;
+		}
+		return true;
+	}
+	/**
+	 * 判断是否黑名单用户
+	 * @param cardId
+	 * @return
+	 */
+	public Boolean checkblack(String cardId){
+		AgrCrdXykCunegFilter filter = new AgrCrdXykCunegFilter();
+		filter.setCustrNbr(cardId);
+		QueryResult<AgrCrdXykCuneg> black = commonDao.findObjectsByFilter(AgrCrdXykCuneg.class, filter);
+		if(black.getItems().size()>0){
+			return false;
+		}
+		return true;
 	}
 }

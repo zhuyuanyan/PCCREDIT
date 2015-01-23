@@ -63,7 +63,7 @@
 		<menu id="081000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="081001" name="agrcrdxykcuneg" title="银行黑名单客户" url="/riskcontrol/agrcrdxykcuneg/browse.page" img="" operations="change|display|browse"/>
 			<menu id="081002" name="highriskcustomer" title="高风险客户名单" url="/riskcontrol/highriskcustomer/browse.page" img="" operations="display|browse"/>
-			<menu id="081003" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
+			<menu id="081003" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse|delete"/>
 			<menu id="081004" name="riskcustomercardcenter" title="风险客户管理(卡中心)" url="/riskcontrol/riskcustomercardcenter/cardcenterbrowse.page" img="" operations="confirm|refuse|browse"/>
 			<menu id="081005" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
 			<menu id="081006" name="riskviewsubcollection" title="所属客户经理催收计划列表" url="/riskcontrol/riskviewsubcollection/browse.page" img="" operations="change|display|browse"/>

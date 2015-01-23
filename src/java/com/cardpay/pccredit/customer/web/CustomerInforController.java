@@ -44,6 +44,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
@@ -52,6 +53,8 @@ import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.AppendixDict;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
+import com.cardpay.pccredit.riskControl.model.RiskAttribute;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -147,8 +150,65 @@ public class CustomerInforController extends BaseController{
 		return mv;
 	}
 	
+	/**
+	 * 配偶进件浏览页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "intopiecesspouse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView intopiecesspouse(@ModelAttribute IntoPiecesFilter filter,
+			HttpServletRequest request) {
+		String cardId = request.getParameter("cardId");
+		filter.setCardId(cardId);
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = user.getId();
+		filter.setUserId(userId);
+		QueryResult<IntoPieces> result = intoPiecesService.findintoPiecesByFilter(filter);
+		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
+				filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor/intopieces_spouse_browse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+
+		return mv;
+	}
 	
-	
+	/**
+	 * 判断是否属于风险或黑名单用户
+	 * 
+	 * @param customerApplicationProcess
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "riskCheck.json")
+	@JRadOperation(JRadOperation.BROWSE)
+	public JRadReturnMap riskCheck(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+			try {
+				String cardId = request.getParameter("cardId");
+				if(!intoPiecesService.checkRisk(cardId)){
+					returnMap.setSuccess(false);
+					returnMap.addGlobalMessage("此客户为风险用户!");
+					return returnMap;
+				}else if(!intoPiecesService.checkblack(cardId)){
+					returnMap.setSuccess(false);
+					returnMap.addGlobalMessage("此客户为黑名单用户!");
+					return returnMap;
+				}else{
+					returnMap.setSuccess(true);
+					returnMap.addGlobalMessage("此客户为正常用户!");
+				}
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		return returnMap;
+	}
 	
 	/**
 	 * 增加页面
