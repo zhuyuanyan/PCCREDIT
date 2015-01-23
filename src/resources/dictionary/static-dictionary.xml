@@ -265,5 +265,12 @@
 		<item name="20" title="2011银行版" />
 		<item name="22" title="2011银行异议版" />
 	</dictionary>
-	
+	<dictionary name="blacklist" title="黑名单">
+		<item name="0" title="我行贷款/贷记卡核销、剥离" />
+		<item name="1" title="被执行失信人员名单" />
+		<item name="2" title="银联黑名单客户" />
+		<item name="3" title="欺诈冒用身份" />
+		<item name="4" title="黑中介、代办公司等" />
+		<item name="5" title="其他特殊类客户" />
+	</dictionary>
 </dictionaries>

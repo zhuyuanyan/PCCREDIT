@@ -85,6 +85,30 @@ public class RiskCustomerController extends BaseController {
 	}
 	
 	/**
+	 * 上报风险客户
+	 * 
+	 * 
+	 * @param riskCustomerForm
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "delete.json")
+	@JRadOperation(JRadOperation.DELETE)
+	public JRadReturnMap delete(@ModelAttribute RiskCustomerForm riskCustomerForm, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			RiskCustomer riskCustomer = riskCustomerForm.createModel(RiskCustomer.class);
+			// 还原风险名单
+			riskCustomerService.deleteRiskCustomer(riskCustomer.getId());
+			returnMap.put(JRadConstants.SUCCESS, true);
+		}
+		catch (Exception e) {
+			return WebRequestHelper.processException(e);
+		}
+		return returnMap;
+	}
+	/**
 	 * 确认风险客户(卡中心或主管)
 	 * 
 	 * @param riskCustomerForm

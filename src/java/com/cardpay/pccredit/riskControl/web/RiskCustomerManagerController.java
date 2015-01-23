@@ -54,11 +54,11 @@ public class RiskCustomerManagerController extends BaseController {
         user.getRoles();
         
         // 客户经理Id
-        filter.setReportedIdManager(user.getId());
+//        filter.setReportedIdManager(user.getId());
         // 风险类型
         filter.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
         // 客户经理
-        filter.setRole(RiskControlRole.manager.toString());
+//        filter.setRole(RiskControlRole.manager.toString());
 		QueryResult<RiskCustomer> result = riskCustomerService.findRiskCustomersByFilter(filter);
 		JRadPagedQueryResult<RiskCustomer> pagedResult = new JRadPagedQueryResult<RiskCustomer>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/riskcontrol/riskCustomer/riskcustomer_manager_browse",request);
