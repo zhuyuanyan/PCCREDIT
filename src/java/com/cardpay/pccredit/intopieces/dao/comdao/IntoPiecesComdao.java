@@ -29,6 +29,7 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
+import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.ManagerProductsConfiguration;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -52,13 +53,18 @@ public class IntoPiecesComdao {
 		String status = filter.getStatus();
 		StringBuffer sql = null;
 		//卡中心可以查看所有进件
-		System.out.println("userId:"+userId);
 		if(userId.equals("-1")){
-			System.out.println("----------");
 			sql = new StringBuffer("select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
 		}else{
-			params.put("userId", userId);
-			sql = new StringBuffer("select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and b.user_id =#{userId} and t.product_id=p.id  ");
+			//获取自己及下属id
+			String userSql = "select * from account_manager_parameter where id in ( select t.child_id from manager_belong_map t left join account_manager_parameter amp on amp.id = t.parent_id where amp.user_id = '"+userId+"')";
+			List<AccountManagerParameter> userList = commonDao.queryBySql(AccountManagerParameter.class, userSql,null );
+			String users= "('"+userId+"',";
+			for(int i=0;i<userList.size();i++){
+				users+="'"+userList.get(i).getUserId()+"',";
+			}
+			users=users.substring(0, users.length()-1)+")";
+			sql = new StringBuffer("select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and b.user_id in "+users+" and t.product_id=p.id  ");
 		}
 		if(StringUtils.trimToNull(productName)!=null){
 			params.put("productName", productName);

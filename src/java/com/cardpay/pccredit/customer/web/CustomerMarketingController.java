@@ -204,6 +204,10 @@ public class CustomerMarketingController extends BaseController{
 		if (returnMap.isSuccess()) {
 			try {
 				CustomerMarketing customerMarketing = form.createModel(CustomerMarketing.class);
+				if(customerMarketing.getCustomerId()==null){
+					returnMap.addGlobalMessage("请选择客户!");
+					return returnMap;
+				}
 				User user=(User)Beans.get(LoginManager.class).getLoggedInUser(request);
 				String userId = user.getId();
 				String customerManagerId = customerMarketing.getCustomerManagerId();

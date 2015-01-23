@@ -48,6 +48,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.ipad.model.ProductAttribute;
+import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
 import com.cardpay.pccredit.system.model.Dict;
@@ -131,9 +132,38 @@ public class CustomerInforService {
 	 * @return
 	 */
 	public QueryResult<CustomerInfor> findCustomerInforByFilter(CustomerInforFilter filter) {
-		/*filter.setSqlString(dataAccessSqlService.getSqlByResTbl(filter.getRequest(), ResourceTableEnum.KEHU));*/
+		try {
+			//查询自己以及下属的营销计划页面
+			String userSql = "select * from account_manager_parameter where id in ( select t.child_id from manager_belong_map t left join account_manager_parameter amp on amp.id = t.parent_id where amp.user_id = '"+filter.getUserId()+"')";
+			List<AccountManagerParameter> userList = commonDao.queryBySql(AccountManagerParameter.class, userSql,null );
+			String users = "('"+filter.getUserId()+"',";
+			for(int i=0;i<userList.size();i++){
+				users+="'"+userList.get(i).getUserId()+"',";
+			}
+			users=users.substring(0, users.length()-1)+")";
+			HashMap<String,Object> params = new HashMap<String,Object>();
+			StringBuffer sql = new StringBuffer();
+			sql.append("select * from  basic_customer_information where user_id in "+users);
+			if(filter.getCardType()!=null){
+				sql.append(" and card_type  ='"+filter.getCardType()+"'");
+			}
+			if(filter.getChineseName()!=null){
+				sql.append(" and chinese_name like '%"+filter.getChineseName()+"%'");
+			}
+			if(filter.getCardId()!=null){
+				sql.append(" and card_id like '%"+filter.getCardId()+"%'");
+			}
+
+			QueryResult<CustomerInfor> result = commonDao.queryBySqlInPagination(CustomerInfor.class, sql.toString(), params,
+					filter.getStart(), filter.getLimit());
+
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
-		return commonDao.findObjectsByFilter(CustomerInfor.class, filter);
+//		return commonDao.findObjectsByFilter(CustomerInfor.class, filter);
 	}
 	
 	/**
@@ -736,12 +766,14 @@ public class CustomerInforService {
 			}else{
 				customerApplicationOther.setSmsOpeningTrading("0");
 			}
-			
-			if("纸质账单".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
-				customerApplicationOther.setBillingMethod("0");
-			}else if("电子账单".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
-				customerApplicationOther.setBillingMethod("1");
+			if("信件寄送".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
+				customerApplicationOther.setBillingMethod("LT");
+			}else if("电子邮件寄送".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
+				customerApplicationOther.setBillingMethod("EM");
+			}else if("不寄送账单".equalsIgnoreCase(customerApplicationOther.getBillingMethod())){
+				customerApplicationOther.setBillingMethod("NO");
 			}
+			
 			if("到网点领取".equalsIgnoreCase(customerApplicationOther.getCollarCardMode())){
 				customerApplicationOther.setCollarCardMode("0");
 			}else if("普通邮寄".equalsIgnoreCase(customerApplicationOther.getCollarCardMode())){

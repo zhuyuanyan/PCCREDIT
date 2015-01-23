@@ -1,6 +1,9 @@
 package com.cardpay.pccredit.intopieces.service;
 
 
+import java.io.DataOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +43,10 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
+import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
+import com.cardpay.pccredit.system.filter.DictFilter;
+import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -73,7 +79,9 @@ public class IntoPiecesService {
 	public QueryResult<IntoPieces> findintoPiecesByFilter(
 			IntoPiecesFilter filter) {
 		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilter(filter);
-		List<IntoPieces> intoPieces = queryResult.getItems();
+		int sum = intoPiecesComdao.findintoPiecesByFilterCount(filter);
+		QueryResult<IntoPieces> qs = new QueryResult<IntoPieces>(sum, queryResult.getItems());
+		List<IntoPieces> intoPieces = qs.getItems();
 		for(IntoPieces pieces : intoPieces){
 			if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
 				pieces.setNodeName("未提交申请");
@@ -88,7 +96,7 @@ public class IntoPiecesService {
 				pieces.setNodeName("审批结束");
 			}
 		}
-		return queryResult;
+		return qs;
 	}
 	
 	/*
@@ -348,16 +356,34 @@ public class IntoPiecesService {
 			    case 7:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 8:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 9:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 10:content = UploadFileTool.getContent(content,customerInfor.getCardType(),length);break;
+			    case 10:
+			    	content = UploadFileTool.getContent(content,getDict(customerInfor.getNationality()).getItems().get(0).getTypeName(),length);
+			    	break;
 			    case 11:content = UploadFileTool.getContent(content,customerInfor.getCardId(),length);break;
 			    case 12:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 13:content = UploadFileTool.getContent(content,customerInfor.getChineseName(),length);break;
 			    case 14:content = UploadFileTool.getContent(content,customerInfor.getPinyinenglishName(),length);break;
-			    case 15:content = UploadFileTool.getContent(content,customerInfor.getSex(),length);break;
-			    case 16:content = UploadFileTool.getContent(content,customerInfor.getBirthday(),length);break;
-			    case 17:content = UploadFileTool.getContent(content,customerInfor.getNationality(),length);break;
-			    case 18:content = UploadFileTool.getContent(content,customerInfor.getMaritalStatus(),length);break;
-			    case 19:content = UploadFileTool.getContent(content,customerInfor.getDegreeEducation(),length);break;
+			    case 15:
+			    	if(customerInfor.getSex()!=null){
+				    	if(customerInfor.getSex().equals("Male")){
+				    		content = UploadFileTool.getContent(content,"男",length);
+				    	}else{
+				    		content = UploadFileTool.getContent(content,"女",length);
+				    	}
+			    	}
+			    	break;
+			    case 16:
+			    	DateFormat format = new SimpleDateFormat("yyyyMMdd");
+			    	Date birthday = format.parse(customerInfor.getBirthday());
+			    	content = UploadFileTool.getContent(content,birthday.toString(),length);
+			    	break;
+			    case 17:
+			    	content = UploadFileTool.getContent(content,getDict(customerInfor.getNationality()).getItems().get(0).getTypeName(),length);
+			    	break;
+			    case 18:
+			    	content = UploadFileTool.getContent(content,getDict(customerInfor.getMaritalStatus()).getItems().get(0).getTypeName(),length);
+			    	break;
+			    case 19:content = UploadFileTool.getContent(content,getDict(customerInfor.getDegreeEducation()).getItems().get(0).getTypeName(),length);break;
 			    case 20:content = UploadFileTool.getContent(content,customerCareersInformation.getTitle(),length);break;
 			    case 21:content = UploadFileTool.getContent(content,customerInfor.getHomePhone(),length);break;
 			    case 22:content = UploadFileTool.getContent(content,customerInfor.getTelephone(),length);break;
@@ -368,7 +394,8 @@ public class IntoPiecesService {
 			    case 27:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 28:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 29:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 30:content = UploadFileTool.getContent(content,customerInfor.getResidentialPropertie(),length);break;
+			    case 30:
+			    	content = UploadFileTool.getContent(content,getDict(customerInfor.getResidentialPropertie()).getItems().get(0).getTypeName(),length);break;
 			    case 31:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 32:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 33:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -464,7 +491,15 @@ public class IntoPiecesService {
 			    case 123:content = UploadFileTool.getContent(content,customerApplicationGuarantorList.get(0).getDocumentNumber(),length);break;
 			    case 124:content = UploadFileTool.getContent(content,customerApplicationGuarantorList.get(0).getGuarantorMortgagorPledge(),length);break;
 			    case 125:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 126:content = UploadFileTool.getContent(content,customerApplicationGuarantorList.get(0).getSex(),length);break;
+			    case 126:
+			    	if(customerApplicationGuarantorList.get(0).getSex()!=null){
+			    		if(customerApplicationGuarantorList.get(0).getSex().equals("Male")){
+			    			content = UploadFileTool.getContent(content,"男",length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,"女",length);
+			    		}
+			    	}
+			    	break;
 			    case 127:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 128:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 129:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -520,7 +555,8 @@ public class IntoPiecesService {
 			    case 179:content = UploadFileTool.getContent(content,customerApplicationOther.getSmsOpeningTrading(),length);break;
 			    case 180:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 181:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 182:content = UploadFileTool.getContent(content,customerApplicationOther.getBillingMethod(),length);break;
+			    case 182:
+			    	content = UploadFileTool.getContent(content,customerApplicationOther.getBillingMethod(),length);break;
 			    case 183:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 184:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 185:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -690,7 +726,8 @@ public class IntoPiecesService {
 		}
 		String fileName = customerInfor.getChineseName()+"("+customerInfor.getCardId()+").txt";
 		/*生成的接口数据上传到ftp文件上*/
-		UploadFileTool.uploadFileToFtp(Constant.FTPIP, Integer.valueOf(Constant.FTPPORT), Constant.FTPUSERNAME, Constant.FTPPASSWORD, Constant.FTPPATH, fileName, content.toString());
+//		UploadFileTool.uploadFileToFtp(Constant.FTPIP, Integer.valueOf(Constant.FTPPORT), Constant.FTPUSERNAME, Constant.FTPPASSWORD, Constant.FTPPATH, fileName, content.toString());
+		UploadFileTool.create(fileName,content.toString());
 		/*如果要下载接口数据,将下面的exportTextFile方法打开*/
 		/*if(response!=null){
 			UploadFileTool.exportTextFile(response, content.toString(), fileName);
@@ -839,5 +876,13 @@ public class IntoPiecesService {
 			}
 		}
 		return flag;
+	}
+	
+	
+	public QueryResult<Dict> getDict(String dictType){
+		DictFilter filter = new DictFilter();
+    	filter.setTypeCode(dictType);
+    	QueryResult<Dict> dict= commonDao.findObjectsByFilter(Dict.class, filter);
+    	return dict;
 	}
 }

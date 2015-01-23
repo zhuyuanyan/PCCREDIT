@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
@@ -33,6 +34,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantorVo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
@@ -242,6 +244,34 @@ public class CustomerApplicationIntopieceWaitController extends BaseController {
 	}
 
 	/**
+	 * 执行接收
+	 * 
+	 * @param customerApplicationProcess
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "recieveOver.json")
+	@JRadOperation(JRadOperation.APPROVE)
+	public JRadReturnMap recieveOver(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+			try {
+				String id = request.getParameter("id");
+				CustomerApplicationProcess process =  customerApplicationIntopieceWaitService.getProcessById(id);
+				request.setAttribute("serialNumber", process.getSerialNumber());
+				request.setAttribute("applicationId", process.getApplicationId());
+				request.setAttribute("applicationStatus", "APPROVE");
+				request.setAttribute("objection", "false");
+				request.setAttribute("examineAmount", "");
+				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		return returnMap;
+	}
+	
+	/**
 	 * 申请审核进件
 	 */
 	@ResponseBody
@@ -265,7 +295,34 @@ public class CustomerApplicationIntopieceWaitController extends BaseController {
 
 		return returnMap;
 	}
+	/**
+	 * 接收进件页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "recieve.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.APPLYAPPROVE)
+	public AbstractModelAndView recieve(@ModelAttribute CustomerApplicationProcessFilter filter, HttpServletRequest request) throws SQLException {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getId();
+		filter.setLoginId(loginId);
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 
+		JRadModelAndView mv = new JRadModelAndView(
+				"/intopieces/intopieces_wait/intopiecesApprove_recieve", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("filter", filter);
+		return mv;
+	}
+	
+	
+	
+	
 	/**
 	 * 根据客户信息新增进件信息，将客户相关的信息带到后面进件新增页面 维护进件
 	 * 
