@@ -1,0 +1,569 @@
+#parse ("common/iframe_page_header2.htm")
+	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
+</head>
+<body>
+<div class="fixed">
+	<h1>客户信息新增</h1>
+	<div class="buttons"><!--按钮组放置区域-->
+		<input id="id_save_button" type="button" value="保存" class="button"/>
+	</div>
+</div>
+<form id="id_module_form" action="${contextPath}/customer/basiccustomerinforCreate/insert.json">
+<!--*************************************************************基本资料*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>基本资料</td>
+				<td><img src="${contextPath}/images/xm_appln/min.gif"/></td>
+			</tr>
+		</table>
+		<div name="content">
+			<table class="message">
+				<tr>
+					<td class="label">姓名<font color="#ff0000">*</font></td>
+					<td>
+						<input type="text" class="text mast" name="surname" maxlength=30 onchange="changeBg(this)"/>
+					</td>
+					<td class="label">证件类型<font color="#ff0000">*</font></td>
+					<td>
+						<select name="race_code">
+							#dict("RACE_CODE","")
+						</select>
+					</td>
+					<td class="label">语言</td>
+					<td>
+						<label><input type="radio" name="lang_code" value="2" checked/>普通话</label>
+						<label><input type="radio" name="lang_code" value="1"/>英语</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">出生日期</td>
+					<td>
+						<input type="text" class="text" placeholder="YYYYMMDD" name="dob_input" maxlength="8" onmouseover="_calendarFormat()"/>
+					</td>
+					<td class="label">家庭电话</td>
+					<td>
+						<input type="text" class="text" name="home_phone" maxlength="17"/>
+					</td>
+					<td class="label">性别<font color="#ff0000">*</font></td>
+					<td>
+						<label><input type="radio" name="gender" value="M" checked/>男</label>
+						<label><input type="radio" name="gender" value="F"/>女</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">婚姻状况<font color="#ff0000">*</font></td>
+					<td>
+						<select name="mar_status" class="mast">
+							<option></option>
+							#dict("MAR_STATUS","")
+						</select>
+					</td>
+					<td class="label">手机<font color="#ff0000">*</font></td>
+					<td>
+						<input type="text" class="text" name="mo_phone" maxlength="12"/>
+					</td>
+					<td class="label">称谓</td>
+					<td>
+						<label><input type="radio" name="title_inp" value="1" checked/>先生</label>
+						<label><input type="radio" name="title_inp" value="2"/>女士</label>
+					</td>
+				</tr>				
+				<tr>
+					<td class="label">英文姓名</td>
+					<td>
+						<input type="text" class="text" name="mthr_mname" maxlength="30"/>
+					</td>
+					<td class="label">参考资料编号(护照)</td>
+					<td>
+						<input type="text" class="text" name="custr_ref" maxlength="19"/>
+					</td>
+					<td class="label">员工编号</td>
+					<td>
+						<input type="text" class="text middle" name="emply_nbr" maxlength="6"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">国籍</td>
+					<td>
+						<select name="nation">
+							#dict("NATION","")
+						</select>
+					</td>
+					<td class="label">国籍细分代码</td>
+					<td colspan="3">
+						<select name="nation_cd">
+							<option></option>
+							#dict("NATION_CD","")
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">教育程度</td>
+					<td>
+						<select name="educa">
+							<option></option>
+							#dict("EDUCA","")
+						</select>
+					</td>
+					<td class="label">住房情况</td>
+					<td colspan="3">
+						<select name="home_code">
+							<option></option>
+							#dict("HOME_CODE","")
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">收入来源</td>
+					<td>
+						<select name="income_src">
+							<option></option>
+							#dict("INCOME_SRC","")
+						</select>
+					</td>
+					<td class="label">抚养人数</td>
+					<td>
+						<input type="text" class="text" name="dependents" maxlength="2"/>
+					</td>
+					<td class="label">居住年限</td>
+					<td>
+						<input type="text" class="text middle" name="yr_there" maxlength="2"/>
+					</td>
+				</tr>				
+				<tr>					
+					<td class="label">月还款/租金额</td>
+					<td>
+						<input type="text" class="text" name="home_loan" maxlength="12"/>
+					</td>
+					<td class="label">EMAIL地址</td>
+					<td colspan="3">
+						<input type="text long" class="text" name="email_addr" maxlength="40"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">公司名称</td>
+					<td>
+						<input type="text" class="text" name="comp_name" maxlength="30"/>
+					</td>
+					<td class="label">部门</td>
+					<td>
+						<input type="text" class="text" name="emply_dept" maxlength="20"/>
+					</td>
+					<td class="label">传真号码</td>
+					<td>
+						<input type="text" class="text middle" name="ird_number" maxlength="17"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">单位属性</td>
+					<td>
+						<select name="occ_catgry">
+							<option></option>
+							#dict("OCC_CATGRY","")
+						</select>
+					</td>
+					<td class="label">职务/岗位</td>
+					<td>
+						<select name="int_taxcod">
+							<option></option>
+							#dict("INT_TAXCOD","")
+						</select>
+					</td>
+					<td class="label">税前年收入(万)</td>
+					<td>
+						<input type="text" class="text middle" name="income_ann" maxlength="3"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">行业类别</td>
+					<td>
+						<input type="text" class="text" name="occ_code" maxlength="4"/>
+					</td>
+					<td class="label">职务</td>
+					<td>
+						<input type="text" class="text" name="posn_emply" maxlength="20"/>
+					</td>
+					<td class="label">工龄(年)</td>
+					<td>
+						<input type="text" class="text middle" name="yr_in_comp" maxlength="3"/>
+					</td>
+				</tr>					
+				<tr>
+					<td class="label">公司电话</td>
+					<td colspan="3">
+						<input type="text" class="text" name="busi_phone" maxlength="17" style="width:140px"/> -
+						<input type="text" class="text small" name="extension" maxlength="6"/>
+					</td>
+					<td class="label">黑名单客户</td>
+					<td>
+						<span name="cune_cr"></span>
+					</td>
+				</tr>						
+				<tr>
+					<td class="label">社保卡卡号</td>
+					<td colspan="5">
+						<input type="text" class="text" name="secur_nbr" maxlength="18"/>
+					</td>
+				</tr>	
+			</table>
+		</div><!--/content-->
+	</div>	
+<!--*************************************************************客户服务*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>客户服务</td>
+				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">可接受广告类别</td>
+					<td>
+						<select name="mail_code" class="long">
+							<option></option>
+							#dict("MAIL_CODE","")
+						</select>
+					</td>
+					<td class="label">工作时间联系</td>
+					<td>
+						<input type="checkbox" name="work_calls" value="1"/>
+					</td>
+					<td class="label">忠实客户</td>
+					<td>
+						<input type="checkbox" name="elig_loyal" value="1"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">身份核查标志</td>
+					<td>
+						<select name="id_verify" class="long">
+							<option></option>
+						</select>
+					</td>
+					<td class="label">留存身份证复印件</td>
+					<td>
+						<input type="checkbox" name="idcp_yn" value="1"/>
+					</td>
+					<td class="label">质押办卡客户?</td>
+					<td>
+						<input type="checkbox" name="imp_cuflag" value="1"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+<!--*************************************************************客户类别*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>客户类别</td>
+				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">客户类别</td>
+					<td>
+						<select name="class_code">
+							<option></option>
+							#dict("CLASS_CODE","")
+						</select>
+					</td>
+					<td class="label">客户风险级别</td>
+					<td>
+						<select name="risk_levl">
+							<option></option>
+							#dict("RISK_LEVL","")
+						</select>
+					</td>
+					<td class="label">客户价值级别</td>
+					<td>
+						<select name="value_levl">
+							<option></option>
+							#dict("VALUE_LEVL","")
+						</select>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+<!--*************************************************************客户额度*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>客户额度</td>
+				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">信用额度</td>
+					<td>
+						<span name="cred_limit"></span>
+					</td>
+					<td class="label">美元额度</td>
+					<td>
+						<span name="credlim_x"></span>
+					</td>
+					<td class="label">分期付款额度</td>
+					<td>
+						<span name="mp_limit"></span>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+<!--*************************************************************配偶资料*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>配偶资料</td>
+				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">单位名称</td>
+					<td>
+						<input type="text" class="text" name="spu_compnm" maxlength="30"/>
+					</td>
+					<td class="label">证件号码</td>
+					<td>
+						<input type="text" class="text" name="spu_custr_nbr" maxlength="18"/>
+					</td>
+					<td class="label">收入来源</td>
+					<td>
+						<select name="income_sr2">
+							<option></option>
+							#dict("INCOME_SRC","")
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">手机</td>
+					<td>
+						<input type="text" class="text" name="spu_mobile" maxlength="12"/>
+					</td>
+					<td class="label">工龄(年)</td>
+					<td>
+						<input type="text" class="text" name="spu_yr_in_com" maxlength="3"/>
+					</td>
+					<td class="label">税前年收入(万)</td>
+					<td>
+						<input type="text" class="text" name="spu_income_ann" maxlength="3"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">姓名</td>
+					<td>
+						<input type="text" class="text" name="spu_name" maxlength="30"/>
+					</td>
+					<td class="label">电话号码</td>
+					<td colspan="3">
+						<input type="text" class="text" name="spu_telno" maxlength="17"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+<!--*************************************************************联系人资料*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>联系人资料</td>
+				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label" style="padding-left:0;"><b>联系人1</b></td>
+					<td></td>
+					<td class="label" style="padding-left:0;"><b>联系人2</b></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="label">姓名</td>
+					<td>
+						<input type="text" class="text long" name="con_name1" maxlength="30"/>
+					</td>
+					<td class="label">姓名</td>
+					<td>
+						<input type="text" class="text long" name="con_name2" maxlength="30"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">单位名称</td>
+					<td>
+						<input type="text" class="text long" name="con_compnm1" maxlength="30"/>
+					</td>
+					<td class="label">单位名称</td>
+					<td>
+						<input type="text" class="text long" name="con_compnm2" maxlength="30"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">电话号码</td>
+					<td>
+						<input type="text" class="text long" name="con_telno1" maxlength="17"/>
+					</td>
+					<td class="label">电话号码</td>
+					<td>
+						<input type="text" class="text long" name="con_telno2" maxlength="17"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">关系</td>
+					<td>
+						<input type="text" class="text long" name="con_rel1" maxlength="4"/>
+					</td>
+					<td class="label">关系</td>
+					<td>
+						<input type="text" class="text long" name="con_rel2" maxlength="4"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">手机</td>
+					<td>
+						<input type="text" class="text long" name="con_mobile1" maxlength="12"/>
+					</td>
+					<td class="label">手机</td>
+					<td>
+						<input type="text" class="text long" name="con_mobile2" maxlength="12"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+<!--*************************************************************直系亲属资料*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>直系亲属资料</td>
+				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">				
+				<tr>
+					<td class="label">姓名</td>
+					<td>
+						<input type="text" class="text long" name="rel_name" maxlength="30"/>
+					</td>
+					<td class="label">电话号码</td>
+					<td>
+						<input type="text" class="text long" name="rel_telno" maxlength="17"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">关系</td>
+					<td>
+						<input type="text" class="text long" name="rel_rel" maxlength="4"/>
+					</td>
+					<td class="label">手机</td>
+					<td>
+						<input type="text" class="text long" name="rel_mobile" maxlength="12"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+</form>
+	<script src="${contextPath}/js/xm_appln/xm_appln.js" type="text/javascript"></script>
+	<script type="text/javascript">
+  
+  #set ($formName = "'#id_module_form'")
+	#parse ("xm_appln/xm_appln_page1_validation.js")
+	
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+			//清空上一次验证
+			 $("#cardIde").remove();
+			
+				var cardType = $("select[name=cardType]").val();
+				if( cardType == "CST0000000000A"){
+			   
+				var cardId = $("#cardId").val();
+				if(cardId !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
+			
+			     if(idReg.test(cardId)){
+			    	 $("#cardIde").remove();	
+			       
+			        }else{
+				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+			     }	
+				 }
+				
+				}
+			var leng = 0;
+	    	 leng = $("#cardIde").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+	    	  if ($($formName).valid()) {
+	   	          var formjson = $($formName).serialize();
+	   	          $.post($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	Dialog.message("保存成功!");
+	   	            	window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	   	            }
+	   	          });
+	   	        }
+	    	}
+	       
+	      });
+		$("#cardId").change(function (){
+			 
+			 $("#cardIde").remove();	
+			var cardType = $("select[name=cardType]").val();
+			if( cardType == "CST0000000000A"){
+		   
+			var cardId = $("#cardId").val();
+			if(cardId !=""){
+			var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
+		
+		     if(idReg.test(cardId)){
+		    	 $("#cardIde").remove();	
+		       
+		        }else{
+			       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+		     }	
+			 }
+			
+			}
+			});
+		
+		$("#cardType").change(function(){
+			 $("#cardIde").remove();
+			var cardType = $("select[name=cardType]").val();
+			if( cardType == "CST0000000000A"){
+				var cardId = $("#cardId").val();
+				if(cardId !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
+			
+			     if(idReg.test(cardId)){
+			    	 $("#cardIde").remove();	
+			       
+			        }else{
+				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+			     }	
+				 }	
+				
+			}
+			
+		});
+		
+	});
+	
+	
+  </script>
+</body>
+#parse ("common/iframe_page_footer.htm")
+

@@ -1,0 +1,66 @@
+#parse ("common/iframe_page_header2.htm")
+	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
+	<style type="text/css">
+		.Tabs{margin-left:10px;position:fixed;margin-top:70px;height:30px;}
+		.Tabs li{list-style:none;border:1px solid #b9c4cf;border-radius:5px 5px 0 0;background:#ebf3fa;width:90px;text-align:center;line-height:30px;color:#333333;display:inline-block;float:left;}
+		.Tabs .active{background:#135aa4;border:1px solid #135aa4;color:#ffffff;}
+		.TabContent{width:98%;position:absolute;margin:1px 10px;margin-top:-1px\9;margin-top:102px;margin-bottom:10px;}
+		.tabContent{display:none;}
+		.selectTab{display:block}
+		.buttons{margin-top:15px;}
+	</style>
+</head>
+<body>
+	<div class="fixed">
+		<h1>客户维护信息</h1>
+		<div class="buttons"><!--按钮组放置区域-->
+			<input id="tabContent2_save" type="button" value="保存2" class="button"/>
+			<input id="tabContent0_save" type="button" value="保存0" class="button"/>
+			<input id="tabContent1_save" type="button" value="保存1" class="button"/>
+		</div>
+	</div>
+
+	<ul class="Tabs">
+		<li class="active" onclick="selectTab('tabContent2',this);" style="margin-left:0;">客户基本信息</li>
+		<li onclick="selectTab('tabContent0',this);" style="margin-left:0;">申请录入画面</li>
+		<li onclick="selectTab('tabContent1',this);">地址录入画面</li>
+	</ul>
+	<div class="TabContent" id="Content1">
+		<!--*************************************主卡*****************************************-->
+		<div class="tabContent selectTab" id="tabContent2">			
+			<iframe id="tabContent2_frame" frameborder="0" width="100%;" src="${contextPath}/customer/basiccustomerinforUpdate/xm_appln_page1_update.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		<div class="tabContent" id="tabContent0">			
+			<iframe id="tabContent0_frame" frameborder="0" width="100%;" src="${contextPath}/customer/basiccustomerinforUpdate/xm_appln_page2.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		<div class="tabContent" id="tabContent1">
+			<iframe id="tabContent1_frame" frameborder="0" width="100%;" src="${contextPath}/customer/basiccustomerinforUpdate/xm_appln_page3.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+	</div>
+	<script src="${contextPath}/js/xm_appln/xm_appln.js" type="text/javascript"></script>
+	<script type="text/javascript">			
+		function selectTab(id,obj,btnId){//tab页
+			$(".Tabs li").attr("class","");
+			$(obj).attr("class","active");
+			$(".TabContent div").hide();
+			$("#"+id).show();
+		}
+		
+		$(document).ready(function(){
+			$("#tabContent2_save").click(function() {
+				document.getElementById('tabContent2_frame').contentWindow.onSave(); 
+			});
+			
+			$("#tabContent0_save").click(function() {
+				document.getElementById('tabContent0_frame').contentWindow.onSave(); 
+			});
+			
+			$("#tabContent1_save").click(function() {
+				document.getElementById('tabContent1_frame').contentWindow.onSave(); 
+			});
+		});
+		
+	</script>	
+</body>
+#parse ("common/iframe_page_footer.htm")
+

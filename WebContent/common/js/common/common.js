@@ -458,3 +458,16 @@ function _calendar(){
 	$(thisObj).calendar(_args);
 	$(thisObj).removeAttr("on"+thisEvent.type);
 }
+
+function _calendarFormat(format){
+	_args=arguments[0]||{ format:'yyyyMMdd',btnBar:false };
+	 var thisEvent = window.event;
+     if (thisEvent == undefined) {
+         var caller = arguments.callee.caller;
+         while (caller.caller != null) { caller = caller.caller; }
+         thisEvent = caller.arguments[0];
+     }
+    var thisObj=thisEvent.target||thisEvent.srcElement;
+	$(thisObj).calendar(_args);
+	$(thisObj).removeAttr("on"+thisEvent.type);
+}

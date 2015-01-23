@@ -31,6 +31,7 @@ public class ProductAttribute extends BusinessModel {
 	private String pictureUrl;
 	private String pictureName;
 	private String seqno;
+	private String default_type;
 
 	public String getPictureName() {
 		return pictureName;
@@ -158,6 +159,14 @@ public class ProductAttribute extends BusinessModel {
 
 	public void setProductRiskTolerance(String productRiskTolerance) {
 		this.productRiskTolerance = productRiskTolerance;
+	}
+
+	public String getDefault_type() {
+		return default_type;
+	}
+
+	public void setDefault_type(String default_type) {
+		this.default_type = default_type;
 	}
 
 }

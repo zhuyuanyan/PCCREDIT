@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.xm_appln.dao.XM_APPLN_JCZL_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.xm_appln.model.XM_APPLN_JCZL">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="surname" column="SURNAME" />
+		<result property="race_code" column="RACE_CODE" />
+		<result property="lang_code" column="LANG_CODE" />
+		<result property="dob_input" column="DOB_INPUT" />
+		<result property="home_phone" column="HOME_PHONE" />
+		<result property="gender" column="GENDER" />
+		<result property="mar_status" column="MAR_STATUS" />
+		<result property="mo_phone" column="MO_PHONE" />
+		<result property="title_inp" column="TITLE_INP" />
+		<result property="mthr_mname" column="MTHR_MNAME" />
+		<result property="custr_ref" column="CUSTR_REF" />
+		<result property="emply_nbr" column="EMPLY_NBR" />
+		<result property="nation" column="NATION" />
+		<result property="nation_cd" column="NATION_CD" />
+		<result property="educa" column="EDUCA" />
+		<result property="home_code" column="HOME_CODE" />
+		<result property="income_src" column="INCOME_SRC" />
+		<result property="dependents" column="DEPENDENTS" />
+		<result property="yr_there" column="YR_THERE" />
+		<result property="home_loan" column="HOME_LOAN" />
+		<result property="email_addr" column="EMAIL_ADDR" />
+		<result property="comp_name" column="COMP_NAME" />
+		<result property="emply_dept" column="EMPLY_DEPT" />
+		<result property="ird_number" column="IRD_NUMBER" />
+		<result property="occ_catgry" column="OCC_CATGRY" />
+		<result property="int_taxcod" column="INT_TAXCOD" />
+		<result property="income_ann" column="INCOME_ANN" />
+		<result property="occ_code" column="OCC_CODE" />
+		<result property="posn_emply" column="POSN_EMPLY" />
+		<result property="yr_in_comp" column="YR_IN_COMP" />
+		<result property="busi_phone" column="BUSI_PHONE" />
+		<result property="cune_cr" column="CUNE_CR" />
+		<result property="secur_nbr" column="SECUR_NBR" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from XM_APPLN_JCZL T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>

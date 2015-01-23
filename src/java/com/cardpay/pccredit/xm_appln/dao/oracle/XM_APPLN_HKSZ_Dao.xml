@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.xm_appln.dao.XM_APPLN_HKSZ_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.xm_appln.model.XM_APPLN_HKSZ">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="repay_code" column="REPAY_CODE" />
+		<result property="bankacct1" column="BANKACCT1" />
+		<result property="repay_amt" column="REPAY_AMT" />
+		<result property="repay_pct" column="REPAY_PCT" />
+		<result property="repay_day" column="REPAY_DAY" />
+		<result property="repay_codx" column="REPAY_CODX" />
+		<result property="bankacct2" column="BANKACCT2" />
+		<result property="repay_amtx" column="REPAY_AMTX" />
+		<result property="repay_pctx" column="REPAY_PCTX" />
+		<result property="exch_flag" column="EXCH_FLAG" />
+		<result property="bankacct3" column="BANKACCT3" />
+		<result property="exch_code" column="EXCH_CODE" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from XM_APPLN_HKSZ T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>
