@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.xm_appln.dao.XM_APPLN_KPMX_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.xm_appln.model.XM_APPLN_KPMX">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="lsh" column="INDEX" />
+		<result property="custr_nbr" column="CUSTR_NBR" />
+		<result property="embname_d" column="EMBNAME_D" />
+		<result property="emboss_cd" column="EMBOSS_CD" />
+		<result property="pin_reqd" column="PIN_REQD" />
+		<result property="sms_yn" column="SMS_YN" />
+		<result property="pin_chk" column="PIN_CHK" />
+		<result property="cdesploc" column="CDESPLOC" />
+		<result property="cdespmtd" column="CDESPMTD" />
+		<result property="courierf" column="COURIERF" />
+		<result property="cdfrm" column="CDFRM" />
+		<result property="ppno" column="PPNO" />
+		<result property="cred_lmt" column="CRED_LMT" />
+		<result property="spec_inst" column="SPEC_INST" />
+		<result property="atm" column="ATM" />
+		<result property="tele" column="TELE" />
+		<result property="net" column="NET" />
+		<result property="phone" column="PHONE" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from XM_APPLN_KPMX T
+		WHERE T.customer_id = #{customer_id} 
+		order by lsh
+	</select>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.xm_appln.dao.XM_APPLN_SQED_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQED">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="crdlmt_req" column="CRDLMT_REQ" />
+		<result property="crlm_x_req" column="CRLM_X_REQ" />
+		<result property="mplmt_req" column="MPLMT_REQ" />
+		<result property="climit" column="CLIMIT" />
+		<result property="cred_lmt" column="CRED_LMT" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from XM_APPLN_SQED T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>

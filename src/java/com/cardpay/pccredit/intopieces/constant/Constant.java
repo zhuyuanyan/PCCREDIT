@@ -76,4 +76,6 @@ public class Constant {
 	
 	public static String FTPPATH = "/var/ftp/tmp";
 	
+	//系统默认产品
+	public static String DEFAULT_TYPE = "1";
 }

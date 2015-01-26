@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.xm_appln.dao.XM_APPLN_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.xm_appln.model.XM_APPLN">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="product" column="PRODUCT" />
+		<result property="addl_card" column="ADDL_CARD" />
+		<result property="rush_card" column="RUSH_CARD" />
+		<result property="app_source" column="APP_SOURCE" />
+		<result property="int_code" column="INT_CODE" />
+		<result property="rush_fee" column="RUSH_FEE" />
+		<result property="business" column="BUSINESS" />
+		<result property="emboss_cpy" column="EMBOSS_CPY" />
+		<result property="busn_name" column="BUSN_NAME" />
+		<result property="base_card" column="BASE_CARD" />
+		<result property="branch" column="BRANCH" />
+		<result property="brch_name" column="BRCH_NAME" />
+		<result property="stm_code" column="STM_CODE" />
+		<result property="app_batch" column="APP_BATCH" />
+		<result property="ab_branch" column="AB_BRANCH" />
+		<result property="acc_type" column="ACC_TYPE" />
+		<result property="gtoc" column="GTOC" />
+		<result property="downprod" column="DOWNPROD" />
+		<result property="cp_no" column="CP_NO" />
+		<result property="cp_nbrmth" column="CP_NBRMTH" />
+		<result property="debit_brn" column="DEBIT_BRN" />
+		<result property="app_deccd" column="APP_DECCD" />
+		<result property="app_decreas" column="APP_DECREAS" />
+		<result property="app_decday" column="APP_DECDAY" />
+		<result property="cycle_nbr" column="CYCLE_NBR" />
+		<result property="fee_group" column="FEE_GROUP" />
+		<result property="hdwr_sn" column="HDWR_SN" />
+		<result property="mail_to" column="MAIL_TO" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from XM_APPLN T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>
