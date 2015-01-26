@@ -17,6 +17,7 @@ public class XM_APPLN_JBZL_FORM extends BaseForm {
 
 	//xm_appln_jczl
 	public String customer_id;
+	public String card_id;
 	public String surname;
 	public String race_code;
 	public String lang_code;
@@ -507,9 +508,16 @@ public class XM_APPLN_JBZL_FORM extends BaseForm {
 		this.rel_mobile = rel_mobile;
 	}
 	
+	public String getCard_id() {
+		return card_id;
+	}
+	public void setCard_id(String card_id) {
+		this.card_id = card_id;
+	}
 	//XM_APPLN_JCZL
 	public XM_APPLN_JCZL createXM_APPLN_JCZL(String customerId,String userId){
 		XM_APPLN_JCZL obj = new XM_APPLN_JCZL();
+		obj.setCard_id(card_id);
 		obj.setBusi_phone(busi_phone);
 		obj.setComp_name(comp_name);
 		obj.setCune_cr(cune_cr);
@@ -614,14 +622,14 @@ public class XM_APPLN_JBZL_FORM extends BaseForm {
 		obj.setCreatedBy(userId);
 		ls.add(obj);
 		XM_APPLN_LXRZL obj2 = new XM_APPLN_LXRZL();
-		obj.setLsh(1);
+		obj2.setLsh(1);
 		obj2.setCompnm(con_compnm2);
 		obj2.setCustomer_id(customerId);
 		obj2.setMobile(con_mobile2);
 		obj2.setName(con_name2);
 		obj2.setRel(con_rel2);
 		obj2.setTelno(con_telno2);
-		obj.setCreatedBy(userId);
+		obj2.setCreatedBy(userId);
 		ls.add(obj2);
 		return ls;
 	}

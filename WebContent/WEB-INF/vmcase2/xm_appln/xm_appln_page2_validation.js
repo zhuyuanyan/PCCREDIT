@@ -10,10 +10,6 @@ var validator = $($formName).validate({
 		custr_nbr1 : {required : true},
 		embname_d1 : {required : true},
 		cdesploc1 : {required : true},
-		bankacct1 : {required : true},
-		repay_amt : {required : true},
-		repay_pct : {required : true},
-		guarn_id : {required : true},
 		aval_nbr : {required : true},
 		achk_nbr : {required : true},
 		adec_nbr : {required : true}
@@ -29,10 +25,6 @@ var validator = $($formName).validate({
 		custr_nbr1 : {required : "证件号码不能为空"},
 		embname_d1 : {required : "凸字姓名不能为空"},
 		cdesploc1 : {required : "递送分行不能为空"},
-		bankacct1 : {required : "账户不能为空"},
-		repay_amt : {required : "金额不能为空"},
-		repay_pct : {required : "百分比不能为空"},
-		guarn_id : {required : "证件号码不能为空"},
 		aval_nbr : {required : "调查人工号不能为空"},
 		achk_nbr : {required : "审核人工号不能为空"},
 		adec_nbr : {required : "审批人工号不能为空"}

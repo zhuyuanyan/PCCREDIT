@@ -7,6 +7,25 @@
 <body>
 <form id="id_module_form" action="${contextPath}/customer/basiccustomerinforCreate/insert.json">
 <input type="hidden" id="id" name="customer_id" value="$!{customerId}" />
+	<!--*************************************************************证件号码*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>证件号码</td>
+				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="">
+			<table class="message">
+				<tr>
+					<td class="label" style="width:12%">证件号码<font color="#ff0000">*</font></td>
+					<td>
+						<input type="text" class="text mast" name="card_id" value="$!xM_APPLN_JCZL.card_id" maxlength=32 onchange="changeBg(this)"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>
 <!--*************************************************************基本资料*************************************************************-->
 	<div class="box">
 		<table class="title" onclick="Open(this)">
@@ -53,7 +72,6 @@
 					<td class="label">婚姻状况<font color="#ff0000">*</font></td>
 					<td>
 						<select name="mar_status" class="mast">
-							<option></option>
 							#dict("MAR_STATUS","$!xM_APPLN_JCZL.mar_status")
 						</select>
 					</td>
@@ -91,7 +109,6 @@
 					<td class="label">国籍细分代码</td>
 					<td colspan="3">
 						<select name="nation_cd">
-							<option></option>
 							#dict("NATION_CD","$!xM_APPLN_JCZL.nation_cd")
 						</select>
 					</td>
@@ -100,14 +117,12 @@
 					<td class="label">教育程度</td>
 					<td>
 						<select name="educa">
-							<option></option>
 							#dict("EDUCA","$!xM_APPLN_JCZL.educa")
 						</select>
 					</td>
 					<td class="label">住房情况</td>
 					<td colspan="3">
 						<select name="home_code">
-							<option></option>
 							#dict("HOME_CODE","$!xM_APPLN_JCZL.home_code")
 						</select>
 					</td>
@@ -116,7 +131,6 @@
 					<td class="label">收入来源</td>
 					<td>
 						<select name="income_src">
-							<option></option>
 							#dict("INCOME_SRC","$!xM_APPLN_JCZL.income_src")
 						</select>
 					</td>
@@ -157,14 +171,12 @@
 					<td class="label">单位属性</td>
 					<td>
 						<select name="occ_catgry">
-							<option></option>
 							#dict("OCC_CATGRY","$!xM_APPLN_JCZL.occ_catgry")
 						</select>
 					</td>
 					<td class="label">职务/岗位</td>
 					<td>
 						<select name="int_taxcod">
-							<option></option>
 							#dict("INT_TAXCOD","$!xM_APPLN_JCZL.int_taxcod")
 						</select>
 					</td>
@@ -221,7 +233,6 @@
 					<td class="label">可接受广告类别</td>
 					<td>
 						<select name="mail_code" class="long">
-							<option></option>
 							#dict("MAIL_CODE","$!xM_APPLN_KHFW.mail_code")
 						</select>
 					</td>
@@ -267,21 +278,18 @@
 					<td class="label">客户类别</td>
 					<td>
 						<select name="class_code">
-							<option></option>
 							#dict("CLASS_CODE","$!xM_APPLN_KHLB.class_code")
 						</select>
 					</td>
 					<td class="label">客户风险级别</td>
 					<td>
 						<select name="risk_levl">
-							<option></option>
 							#dict("RISK_LEVL","$!xM_APPLN_KHLB.risk_levl")
 						</select>
 					</td>
 					<td class="label">客户价值级别</td>
 					<td>
 						<select name="value_levl">
-							<option></option>
 							#dict("VALUE_LEVL","$!xM_APPLN_KHLB.value_levl")
 						</select>
 					</td>
@@ -329,42 +337,41 @@
 				<tr>
 					<td class="label">单位名称</td>
 					<td>
-						<input type="text" class="text" name="spu_compnm" value="$!xM_APPLN_POZL.spu_compnm" maxlength="30"/>
+						<input type="text" class="text" name="spu_compnm" value="$!xM_APPLN_POZL.compnm" maxlength="30"/>
 					</td>
 					<td class="label">证件号码</td>
 					<td>
-						<input type="text" class="text" name="spu_custr_nbr" value="$!xM_APPLN_POZL.spu_custr_nbr" maxlength="18"/>
+						<input type="text" class="text" name="spu_custr_nbr" value="$!xM_APPLN_POZL.custr_nbr" maxlength="18"/>
 					</td>
 					<td class="label">收入来源</td>
 					<td>
-						<select name="income_sr2">
-							<option></option>
-							#dict("INCOME_SRC","$!xM_APPLN_POZL.income_sr2")
+						<select name="spu_income_src">
+							#dict("INCOME_SRC","$!xM_APPLN_POZL.income_src")
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">手机</td>
 					<td>
-						<input type="text" class="text" name="spu_mobile" value="$!xM_APPLN_POZL.spu_mobile" maxlength="12"/>
+						<input type="text" class="text" name="spu_mobile" value="$!xM_APPLN_POZL.mobile" maxlength="12"/>
 					</td>
 					<td class="label">工龄(年)</td>
 					<td>
-						<input type="text" class="text" name="spu_yr_in_com" value="$!xM_APPLN_POZL.spu_yr_in_com" maxlength="3"/>
+						<input type="text" class="text" name="spu_yr_in_comp" value="$!xM_APPLN_POZL.yr_in_comp" maxlength="3"/>
 					</td>
 					<td class="label">税前年收入(万)</td>
 					<td>
-						<input type="text" class="text" name="spu_income_ann" value="$!xM_APPLN_POZL.spu_income_ann" maxlength="3"/>
+						<input type="text" class="text" name="spu_income_ann" value="$!xM_APPLN_POZL.income_ann" maxlength="3"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text" name="spu_name" value="$!xM_APPLN_POZL.spu_name" maxlength="30"/>
+						<input type="text" class="text" name="spu_name" value="$!xM_APPLN_POZL.name" maxlength="30"/>
 					</td>
 					<td class="label">电话号码</td>
 					<td colspan="3">
-						<input type="text" class="text" name="spu_telno" value="$!xM_APPLN_POZL.spu_telno" maxlength="17"/>
+						<input type="text" class="text" name="spu_telno" value="$!xM_APPLN_POZL.telno" maxlength="17"/>
 					</td>
 				</tr>
 			</table>
@@ -389,51 +396,51 @@
 				<tr>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text long" name="con_name1" value="$!xM_APPLN_LXRZL_ls.get(0).con_name" maxlength="30"/>
+						<input type="text" class="text long" name="con_name1" value="$!xM_APPLN_LXRZL_ls.get(0).name" maxlength="30"/>
 					</td>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text long" name="con_name2" value="$!xM_APPLN_LXRZL_ls.get(1).con_name" maxlength="30"/>
+						<input type="text" class="text long" name="con_name2" value="$!xM_APPLN_LXRZL_ls.get(1).name" maxlength="30"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">单位名称</td>
 					<td>
-						<input type="text" class="text long" name="con_compnm1" value="$!xM_APPLN_LXRZL_ls.get(0).con_compnm" maxlength="30"/>
+						<input type="text" class="text long" name="con_compnm1" value="$!xM_APPLN_LXRZL_ls.get(0).compnm" maxlength="30"/>
 					</td>
 					<td class="label">单位名称</td>
 					<td>
-						<input type="text" class="text long" name="con_compnm2" value="$!xM_APPLN_LXRZL_ls.get(1).con_compnm" maxlength="30"/>
+						<input type="text" class="text long" name="con_compnm2" value="$!xM_APPLN_LXRZL_ls.get(1).compnm" maxlength="30"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">电话号码</td>
 					<td>
-						<input type="text" class="text long" name="con_telno1" value="$!xM_APPLN_LXRZL_ls.get(0).con_telno" maxlength="17"/>
+						<input type="text" class="text long" name="con_telno1" value="$!xM_APPLN_LXRZL_ls.get(0).telno" maxlength="17"/>
 					</td>
 					<td class="label">电话号码</td>
 					<td>
-						<input type="text" class="text long" name="con_telno2" value="$!xM_APPLN_LXRZL_ls.get(1).con_telno" maxlength="17"/>
+						<input type="text" class="text long" name="con_telno2" value="$!xM_APPLN_LXRZL_ls.get(1).telno" maxlength="17"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">关系</td>
 					<td>
-						<input type="text" class="text long" name="con_rel1" value="$!xM_APPLN_LXRZL_ls.get(0).con_rel" maxlength="4"/>
+						<input type="text" class="text long" name="con_rel1" value="$!xM_APPLN_LXRZL_ls.get(0).rel" maxlength="4"/>
 					</td>
 					<td class="label">关系</td>
 					<td>
-						<input type="text" class="text long" name="con_rel2" value="$!xM_APPLN_LXRZL_ls.get(1).con_rel" maxlength="4"/>
+						<input type="text" class="text long" name="con_rel2" value="$!xM_APPLN_LXRZL_ls.get(1).rel" maxlength="4"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">手机</td>
 					<td>
-						<input type="text" class="text long" name="con_mobile1" value="$!xM_APPLN_LXRZL_ls.get(0).con_mobile" maxlength="12"/>
+						<input type="text" class="text long" name="con_mobile1" value="$!xM_APPLN_LXRZL_ls.get(0).mobile" maxlength="12"/>
 					</td>
 					<td class="label">手机</td>
 					<td>
-						<input type="text" class="text long" name="con_mobile2" value="$!xM_APPLN_LXRZL_ls.get(1).con_mobile" maxlength="12"/>
+						<input type="text" class="text long" name="con_mobile2" value="$!xM_APPLN_LXRZL_ls.get(1).mobile" maxlength="12"/>
 					</td>
 				</tr>
 			</table>
@@ -452,21 +459,21 @@
 				<tr>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text long" name="rel_name" value="$!xM_APPLN_ZXQSZL.rel_name" maxlength="30"/>
+						<input type="text" class="text long" name="rel_name" value="$!xM_APPLN_ZXQSZL.name" maxlength="30"/>
 					</td>
 					<td class="label">电话号码</td>
 					<td>
-						<input type="text" class="text long" name="rel_telno" value="$!xM_APPLN_ZXQSZL.rel_telno" maxlength="17"/>
+						<input type="text" class="text long" name="rel_telno" value="$!xM_APPLN_ZXQSZL.telno" maxlength="17"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">关系</td>
 					<td>
-						<input type="text" class="text long" name="rel_rel" value="$!xM_APPLN_ZXQSZL.rel_rel" maxlength="4"/>
+						<input type="text" class="text long" name="rel_rel" value="$!xM_APPLN_ZXQSZL.rel" maxlength="4"/>
 					</td>
 					<td class="label">手机</td>
 					<td>
-						<input type="text" class="text long" name="rel_mobile" value="$!xM_APPLN_ZXQSZL.rel_mobile" maxlength="12"/>
+						<input type="text" class="text long" name="rel_mobile" value="$!xM_APPLN_ZXQSZL.mobile" maxlength="12"/>
 					</td>
 				</tr>
 			</table>
