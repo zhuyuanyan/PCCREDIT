@@ -27,10 +27,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
+import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
+import com.cardpay.pccredit.customer.dao.CustomerInforDao;
+import com.cardpay.pccredit.customer.dao.comdao.CustomerInforCommDao;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
+import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.CardStatus;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
@@ -44,19 +48,41 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantorVo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.AppendixDict;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
+import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
+import com.cardpay.pccredit.system.constants.YesNoEnum;
+import com.cardpay.pccredit.system.model.NodeAudit;
+import com.cardpay.pccredit.system.model.NodeControl;
+import com.cardpay.pccredit.system.service.NodeAuditService;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DBXX;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DCSC;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_HKSZ;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KPMX;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_QTXYKXX;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQED;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_TJINFO;
+import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
+import com.cardpay.workflow.models.WfProcessInfo;
+import com.cardpay.workflow.models.WfStatusInfo;
+import com.cardpay.workflow.models.WfStatusResult;
+import com.cardpay.workflow.service.ProcessService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -86,7 +112,27 @@ public class IntoPiecesControl extends BaseController {
 	@Autowired
 	private CustomerInforService customerInforservice;
 	
+	@Autowired
+	private XM_APPLN_Service xM_APPLN_Service;
+	
+	@Autowired
+	private DataAccessSqlService dataAccessSqlService;
 
+	@Autowired
+	private CommonDao commonDao;
+
+	@Autowired
+	private CustomerInforDao customerInforDao;
+	
+	@Autowired
+	private CustomerInforCommDao customerinforcommDao;
+	
+	@Autowired
+	private NodeAuditService nodeAuditService;
+	
+	@Autowired
+	private ProcessService processService;
+	
 	/**
 	 * 浏览页面
 	 * 
@@ -384,40 +430,40 @@ public class IntoPiecesControl extends BaseController {
 
 	/**
 	 * 根据客户信息新增进件信息，将客户相关的信息带到后面进件新增页面
-	 * 
+	 * 此方法修改为xm_appln版本
 	 * @param filter
 	 * @param request
 	 * @return
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "input.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView input(HttpServletRequest request) {
-		/* 客户信息 */
+		 客户信息 
 		CustomerInfor customerInfor = null;
-		/* 职业信息 */
+		 职业信息 
 		CustomerCareersInformation customerCareersInformation = null;
-		/* 客户联系人 */
+		 客户联系人 
 		List<CustomerApplicationContact> customerApplicationContactList = null;
-		/* 客户担保人 */
+		 客户担保人 
 		List<CustomerApplicationGuarantor> customerApplicationGuarantorList = null;
-		/* 客户推荐人 */
+		 客户推荐人 
 		List<CustomerApplicationRecom> customerApplicationRecomList = null;
-		/* 客户申请主表信息 */
+		 客户申请主表信息 
 		CustomerApplicationInfo customerApplicationInfo = null;
-		/* 其他资料 */
+		 其他资料 
 		CustomerApplicationOther customerApplicationOther = null;
-		/* 行社专栏 */
+		 行社专栏 
 		CustomerApplicationCom customerApplicationCom = null;
-		/* 行社专栏 */
+		 行社专栏 
 		CustomerAccountData customerAccountData = null;
-		/* 产品要上传的附件资料 */
+		 产品要上传的附件资料 
 		List<AppendixDict> appendixDictList = null;
-		/* 实际上传的附件资料 */
+		 实际上传的附件资料 
 		List<AddressAccessories> addressAccessoriesList = new ArrayList<AddressAccessories>();
 		String tempParam = request.getParameter("intoPicesidAndCustorId");
 		String viewFlag = request.getParameter("viewFlag");
-		/*修改进件首先查询出进件信息*/
+		修改进件首先查询出进件信息
 		if (StringUtils.trimToNull(tempParam) != null) {
 			String[] tempArray = tempParam.split("_");
 			customerInfor = customerInforService
@@ -526,8 +572,40 @@ public class IntoPiecesControl extends BaseController {
 		mv.addObject("productAttributeMap", productAttributeMap);
 		mv.addObject("customerAccountData", customerAccountData);
 		return mv;
+	}*/
+	@ResponseBody
+	@RequestMapping(value = "input_xm_appln_page4.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView input_xm_appln_page4(HttpServletRequest request) {
+		String customerId = request.getParameter("customerId");
+		CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerId);
+		//查找相关xm_xppln信息
+		XM_APPLN xM_APPLN = xM_APPLN_Service.findXM_APPLNByCustomerId(customerId);
+		XM_APPLN_SQED xM_APPLN_SQED = xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customerId);
+		List<XM_APPLN_KPMX> xM_APPLN_KPMX_ls = xM_APPLN_Service.findXM_APPLN_KPMXByCustomerId(customerId);
+		XM_APPLN_HKSZ xM_APPLN_HKSZ = xM_APPLN_Service.findXM_APPLN_HKSZByCustomerId(customerId);
+		XM_APPLN_DBXX xM_APPLN_DBXX = xM_APPLN_Service.findXM_APPLN_DBXXByCustomerId(customerId);
+		XM_APPLN_QTXYKXX xM_APPLN_QTXYKXX = xM_APPLN_Service.findXM_APPLN_QTXYKXXByCustomerId(customerId);
+		XM_APPLN_DCSC xM_APPLN_DCSC = xM_APPLN_Service.findXM_APPLN_DCSCByCustomerId(customerId);
+		XM_APPLN_TJINFO xM_APPLN_TJINFO = xM_APPLN_Service.findXM_APPLN_TJINFOByCustomerId(customerId);
+		XM_APPLN_ADDR xM_APPLN_ADDR = xM_APPLN_Service.findXM_APPLN_ADDRByCustomerId(customerId);
+		
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page4", request);
+		
+		mv.addObject("customerId", customerId);
+		mv.addObject("customer", customerInfor);
+		mv.addObject("xM_APPLN", xM_APPLN);
+		mv.addObject("xM_APPLN_SQED", xM_APPLN_SQED);
+		mv.addObject("xM_APPLN_KPMX_ls", xM_APPLN_KPMX_ls);
+		mv.addObject("xM_APPLN_HKSZ", xM_APPLN_HKSZ);
+		mv.addObject("xM_APPLN_DBXX", xM_APPLN_DBXX);
+		mv.addObject("xM_APPLN_QTXYKXX", xM_APPLN_QTXYKXX);
+		mv.addObject("xM_APPLN_DCSC", xM_APPLN_DCSC);
+		mv.addObject("xM_APPLN_TJINFO", xM_APPLN_TJINFO);
+		mv.addObject("xM_APPLN_ADDR", xM_APPLN_ADDR);
+		
+		return mv;
 	}
-
 	/**
 	 * 根据客户信息新增进件信息，将客户相关的信息带到后面进件新增页面
 	 * 
@@ -704,12 +782,12 @@ public class IntoPiecesControl extends BaseController {
 	
 	/**
 	 * 添加进件信息(修改)
-	 * 
+	 * 此方法修改为xm_appln版本
 	 * @param filter
 	 * @param request
 	 * @return
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "update.json", method = { RequestMethod.POST })
 	@JRadOperation(JRadOperation.CHANGE)
 	public void update(
@@ -730,8 +808,85 @@ public class IntoPiecesControl extends BaseController {
 				customerApplicationOther, customerApplicationRecomVo,
 				customerCareersInformation, customerInfor, addressAccessories,
 				customerAccountData, request, response);
+	}*/
+	@ResponseBody
+	@RequestMapping(value = "update.json", method = {RequestMethod.GET })
+	@JRadOperation(JRadOperation.CHANGE)
+	public void update_xm_appln_page4(HttpServletRequest request, HttpServletResponse response)throws Exception {
+		String customer_id = request.getParameter("customer_id");
+		this.saveOrUpdatexm_appln_page4(customer_id, request, response);
 	}
 	
+	public void saveOrUpdatexm_appln_page4(String customer_id,HttpServletRequest request, HttpServletResponse response){
+		//设置申请
+		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+		//customerApplicationInfo.setStatus(status);
+		customerApplicationInfo.setId(IDGenerator.generateID());
+		XM_APPLN_SQED xM_APPLN_SQED = xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customer_id);
+		customerApplicationInfo.setApplyQuota(xM_APPLN_SQED.getCrdlmt_req());//设置额度
+		customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
+		commonDao.insertObject(customerApplicationInfo);
+		
+		//查找默认产品
+		ProductFilter filter = new ProductFilter();
+		filter.setDefault_type(Constant.DEFAULT_TYPE);
+		ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
+		
+		//添加申请件流程
+		WfProcessInfo wf=new WfProcessInfo();
+		wf.setProcessType(WfProcessInfoType.process_type);
+		wf.setVersion("1");
+		commonDao.insertObject(wf);
+		List<NodeAudit> list=nodeAuditService.findByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(),productAttribute.getId());
+		boolean startBool=false;
+		boolean endBool=false;
+		//节点id和WfStatusInfo id的映射
+		Map<String, String> nodeWfStatusMap = new HashMap<String, String>();
+		for(NodeAudit nodeAudit:list){
+			if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
+				startBool=true;
+			}
+			
+			if(startBool&&!endBool){
+				WfStatusInfo wfStatusInfo=new WfStatusInfo();
+				wfStatusInfo.setIsStart(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())?"1":"0");
+				wfStatusInfo.setIsClosed(nodeAudit.getIsend().equals(YesNoEnum.YES.name())?"1":"0");
+				wfStatusInfo.setRelationedProcess(wf.getId());
+				wfStatusInfo.setStatusName(nodeAudit.getNodeName());
+				wfStatusInfo.setStatusCode(nodeAudit.getId());
+				commonDao.insertObject(wfStatusInfo);
+				
+				nodeWfStatusMap.put(nodeAudit.getId(), wfStatusInfo.getId());
+				
+				if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
+					//添加初始审核
+					CustomerApplicationProcess customerApplicationProcess=new CustomerApplicationProcess();
+					String serialNumber = processService.start(wf.getId());
+					customerApplicationProcess.setSerialNumber(serialNumber);
+					customerApplicationProcess.setNextNodeId(nodeAudit.getId()); 
+					customerApplicationProcess.setApplicationId(customerApplicationInfo.getId());
+					commonDao.insertObject(customerApplicationProcess);
+					
+					CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, customerApplicationInfo.getId());
+					applicationInfo.setSerialNumber(serialNumber);
+					commonDao.updateObject(applicationInfo);
+				}
+			}
+			
+			if(nodeAudit.getIsend().equals(YesNoEnum.YES.name())){
+				endBool=true;
+			}
+		}
+		//节点关系
+		List<NodeControl> nodeControls = nodeAuditService.findNodeControlByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(), productAttribute.getId());
+		for(NodeControl control : nodeControls){
+			WfStatusResult wfStatusResult = new WfStatusResult();
+			wfStatusResult.setCurrentStatus(nodeWfStatusMap.get(control.getCurrentNode()));
+			wfStatusResult.setNextStatus(nodeWfStatusMap.get(control.getNextNode()));
+			wfStatusResult.setExamineResult(control.getCurrentStatus());
+			commonDao.insertObject(wfStatusResult);
+		}
+	}
 	
 	/*进件保存或者更新公共方法*/
 	public void saveOrUpdate(

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.xm_appln.dao.XM_APPLN_KHFW_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHFW">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="mail_code" column="MAIL_CODE" />
+		<result property="work_calls" column="WORK_CALLS" />
+		<result property="elig_loyal" column="ELIG_LOYAL" />
+		<result property="id_verify" column="ID_VERIFY" />
+		<result property="idcp_yn" column="IDCP_YN" />
+		<result property="imp_cuflag" column="IMP_CUFLAG" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from XM_APPLN_KHFW T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>

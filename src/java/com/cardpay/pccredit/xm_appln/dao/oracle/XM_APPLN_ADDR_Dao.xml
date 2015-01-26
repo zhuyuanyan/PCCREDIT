@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.xm_appln.dao.XM_APPLN_ADDR_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="addr1_l1" column="ADDR1_L1" />
+		<result property="addr1_l2" column="ADDR1_L2" />
+		<result property="addr1_l3" column="ADDR1_L3" />
+		<result property="addr1_l4" column="ADDR1_L4" />
+		<result property="addr1_l5" column="ADDR1_L5" />
+		<result property="addr1_type" column="ADDR1_TYPE" />
+		<result property="osea_f1" column="OSEA_F1" />
+		<result property="state_c1" column="STATE_C1" />
+		<result property="postcode1" column="POSTCODE1" />
+		<result property="addr2_l1" column="ADDR2_L1" />
+		<result property="addr2_l2" column="ADDR2_L2" />
+		<result property="addr2_l3" column="ADDR2_L3" />
+		<result property="addr2_l4" column="ADDR2_L4" />
+		<result property="addr2_l5" column="ADDR2_L5" />
+		<result property="addr2_type" column="ADDR2_TYPE" />
+		<result property="osea_f2" column="OSEA_F2" />
+		<result property="state_c2" column="STATE_C2" />
+		<result property="postcode2" column="POSTCODE2" />
+		<result property="addr3_l1" column="ADDR3_L1" />
+		<result property="addr3_l2" column="ADDR3_L2" />
+		<result property="addr3_l3" column="ADDR3_L3" />
+		<result property="addr3_l4" column="ADDR3_L4" />
+		<result property="addr3_l5" column="ADDR3_L5" />
+		<result property="addr3_type" column="ADDR3_TYPE" />
+		<result property="osea_f3" column="OSEA_F3" />
+		<result property="state_c3" column="STATE_C3" />
+		<result property="postcode3" column="POSTCODE3" />
+		<result property="addr4_l1" column="ADDR4_L1" />
+		<result property="addr4_l2" column="ADDR4_L2" />
+		<result property="addr4_l3" column="ADDR4_L3" />
+		<result property="addr4_l4" column="ADDR4_L4" />
+		<result property="addr4_l5" column="ADDR4_L5" />
+		<result property="addr4_type" column="ADDR4_TYPE" />
+		<result property="osea_f4" column="OSEA_F4" />
+		<result property="state_c4" column="STATE_C4" />
+		<result property="postcode4" column="POSTCODE4" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from XM_APPLN_ADDR T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>

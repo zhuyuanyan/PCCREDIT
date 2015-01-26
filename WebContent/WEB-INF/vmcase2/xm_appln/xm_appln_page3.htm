@@ -1,0 +1,385 @@
+#parse ("common/iframe_page_header2.htm")
+	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
+	<style type="text/css"/>
+		form{padding:5px;margin:0px 5px 0 0;border:1px solid #547586;}
+	</style>
+</head>
+<body>
+<form id="id_module_form" action="${contextPath}/customer/basiccustomerinforUpdate/update_xm_appln_page3.json">
+<input type="hidden" id="id" name="customer_id" value="$!{customerId}" />
+	<div class="information">
+	<!--*************************************************************申请人信息*************************************************************-->
+		<table cellspacing="0">
+			<tr>
+				<td colspan="6"><b>申请人信息</b></td>
+			</tr>
+			<tr>					
+				<td class="label">主卡申请人姓名</td>
+				<td>
+					<span name="acc_name1">$!xM_APPLN_JCZL.surname</span>
+				</td>
+				<td class="label">附卡申请人1姓名</td>
+				<td colspan="3">
+					<span name="acc_name2">$!xM_APPLN_JCZL.surname</span>
+				</td>
+			</tr>
+			<tr>					
+				<td class="label">证件号码</td>
+				<td>
+					<span name="custr_nbr1">$!xM_APPLN_KPMX_ls.get(0).custr_nbr</span>
+				</td>
+				<td class="label">证件号码</td>
+				<td colspan="3">
+					<span name="custr_nbr2">$!xM_APPLN_KPMX_ls.get(1).custr_nbr</span>
+				</td>
+			</tr>			
+			<tr>					
+				<td class="label">参考资料编号</td>
+				<td>
+					<span name="custr_ref1">$!xM_APPLN_JCZL.custr_ref</span>
+				</td>
+				<td class="label">参考资料编号</td>
+				<td colspan="3">
+					<span name="custr_ref2">$!xM_APPLN_JCZL.custr_ref</span>
+				</td>
+			</tr>
+			<tr><td colspan="6"><div class="border"></div></td></tr><!--分割线-->
+	<!--*************************************************************申请状态*************************************************************-->
+			<tr>
+				<td colspan="6"><b>申请状态</b></td>
+			</tr>
+			<tr>					
+				<td class="label">员工</td>
+				<td>
+					<span name="app_decemp"></span>
+				</td>
+				<td class="label">员工姓名</td>
+				<td colspan="3">
+					<span name="appdec_nme"></span>
+				</td>
+			</tr>
+			<tr>					
+				<td class="label">申请审核状态</td>
+				<td>
+					<span name="app_deccan"></span>
+				</td>
+				<td class="label">原因代码</td>
+				<td>
+					<span name="app_supcd"></span>
+				</td>
+				<td class="label">日期</td>
+				<td>
+					<span name="app_decdat" style="width:100px"></span>
+				</td>
+			</tr>
+			<tr><td colspan="6"><div class="border"></div></td></tr><!--分割线-->
+		<!--*************************************************************推荐信息*************************************************************-->
+			<tr>
+				<td colspan="6"><b>推荐信息</b></td>
+			</tr>
+			<tr>					
+				<td class="label">推荐人工号<font color="#ff0000">*</font></td>
+				<td>
+					<input type="text" class="text" name="intr_nbr" value="$!xM_APPLN_TJINFO.intr_nbr" maxlength="12" class="text">
+				</td>
+				<td class="label">推荐人姓名<font color="#ff0000">*</font></td>
+				<td colspan="3">
+					<input type="text" class="text" name="intr_name" value="$!xM_APPLN_TJINFO.intr_name" maxlength="30">
+				</td>
+			</tr>
+			<tr>					
+				<td class="label">推荐人卡号</td>
+				<td>
+					<input type="text" class="text" name="intr_cnbr" value="$!xM_APPLN_TJINFO.intr_cnbr" maxlength="19">
+				</td>
+				<td class="label">推荐方式</td>
+				<td colspan="3">
+					<select name="intr_recom" style="width:270px">
+						<option></option>
+					</select>
+				</td>
+			</tr>
+			<tr>					
+				<td class="label">分行建议额度(万)<font color="#ff0000">*</font></td>
+				<td>
+					<input type="text" class="text" name="brnchcrlmt" value="$!xM_APPLN_TJINFO.brnchcrlmt" maxlength="3">
+				</td>
+				<td class="label">有无分行推荐函</td>
+				<td colspan="3">
+					<select name="brnch_intr">
+						#dict("BRNCH_INTR","$!xM_APPLN_TJINFO.brnch_intr")
+					</select>
+				</td>
+			</tr>
+			<tr>					
+				<td class="label">核实内容</td>
+				<td>
+					<input type="text" class="text" name="vrf_cntnt" value="$!xM_APPLN_TJINFO.vrf_cntnt" maxlength="6">
+				</td>
+				<td class="label">推荐人资格认定</td>
+				<td colspan="3">
+					<select name="intr_qc">
+						#dict("INTR_QC","$!xM_APPLN_TJINFO.intr_qc")
+					</select>
+				</td>
+			</tr>
+			<tr>					
+				<td class="label">推荐人代号</td>
+				<td>
+					<input type="text" class="text" name="intro_code" value="$!xM_APPLN_TJINFO.intro_code" maxlength="16">
+				</td>
+				<td class="label">推荐人与申请人关系</td>
+				<td colspan="3">
+					<select name="intr_rl">
+						#dict("INTR_RL","$!xM_APPLN_TJINFO.intr_rl")
+					</select>
+				</td>
+			</tr>			
+			<tr>					
+				<td class="label">推荐注记</td>
+				<td colspan="5">
+					<input type="text" class="text" name="intro_text" value="$!xM_APPLN_TJINFO.intro_text" maxlength="40" style="width:250px;">
+				</td>
+			</tr>
+			<tr><td colspan="6"><div class="border"></div></td></tr><!--分割线-->
+		<!--*************************************************************寄送地址*************************************************************-->
+			<tr>
+				<td colspan="6"><b>寄送地址</b></td>
+			</tr>
+			<tr>					
+				<td class="label">寄送地址<font color="#ff0000">*</font></td>
+				<td colspan="5">
+					<select name="mail_to">
+						#dict("MAIL_TO","$!xM_APPLN_ADDR.mail_to")
+					</select>
+				</td>
+			</tr>
+			<tr>					
+				<td class="label">家庭电话</td>
+				<td>
+					<input type="text" class="text" name="home_phone" value="$!xM_APPLN_JCZL.home_phone" maxlength="17">
+				</td>
+				<td class="label">单位电话</td>
+				<td colspan="3">
+					<input type="text" class="text" name="busi_phone" value="$!xM_APPLN_JCZL.busi_phone" maxlength="17"> -
+					<input type="text" class="text mini" name="extension" value="$!xM_APPLN_JCZL.extension" maxlength="6">
+				</td>
+			</tr>
+			<tr><td colspan="6"><div class="border"></div></td></tr><!--分割线-->
+		<!--*************************************************************地址-1*************************************************************-->
+			<tr>
+				<td rowspan="5" style="vertical-align:top"><b>地址-1</b><font color="#ff0000">*</font></td>
+				<td>
+					<input type="text" class="text" name="addr1_l1" value="$!xM_APPLN_ADDR.addr1_l1" maxlength="30" >
+				</td>
+				<td class="label">地址类型<font color="#ff0000">*</font></td>
+				<td colspan="3">
+					<select name="addr1_type">
+						#dict("ADDR_TYPE","$!xM_APPLN_ADDR.addr1_type")
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="text" class="text" name="addr1_l2" value="$!xM_APPLN_ADDR.addr1_l2" maxlength="30">
+				</td>
+				<td class="label">境外?</td>
+				<td colspan="3">
+					<input type="checkbox" name="osea_f1" value="1" #if($!xM_APPLN_ADDR.osea_f1 == '1') checked #end>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="text" class="text" name="addr1_l3" value="$!xM_APPLN_ADDR.addr1_l3" maxlength="30">
+				</td>
+				<td class="label">省/市</td>
+				<td colspan="3">
+					<input type="text" class="text" name="state_c1" value="$!xM_APPLN_ADDR.state_c1" maxlength="2">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="text" class="text" name="addr1_l4" value="$!xM_APPLN_ADDR.addr1_l4" maxlength="30">
+				</td>
+				<td class="label">邮政编码<font color="#ff0000">*</font></td>
+				<td colspan="3">
+					<input type="text" class="text" name="postcode1" value="$!xM_APPLN_ADDR.postcode1" maxlength="6">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5">
+					<input type="text" class="text" name="addr1_l5" value="$!xM_APPLN_ADDR.addr1_l5" maxlength="30">
+				</td>
+			</tr>
+		</table>
+	</div>			
+<!--*************************************************************其他地址信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open2(this)">
+			<tr>
+				<td>其他地址信息</td>
+				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display information">
+			<table cellspacing="0" style="margin:5px;padding-right:10px;">
+				<!--*************************************************************地址-2*************************************************************-->
+				<tr>
+					<td rowspan="5" style="vertical-align:top;width:150px;"><b>地址-2</b></td>
+					<td>
+						<input type="text" class="text" name="addr2_l1" value="$!xM_APPLN_ADDR.addr2_l1" maxlength="30">
+					</td>
+					<td class="label">地址类型<font color="#ff0000">*</font></td>
+					<td colspan="3">
+						<select name="addr2_type">
+							#dict("ADDR_TYPE","$!xM_APPLN_ADDR.addr2_type")
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="text" name="addr2_l2" maxlength="30">
+					</td>
+					<td class="label">境外?</td>
+					<td colspan="3">
+						<input type="checkbox" name="osea_f2" value="1" #if($!xM_APPLN_ADDR.osea_f2 == '1') checked #end>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="text" name="addr2_l3" value="$!xM_APPLN_ADDR.addr2_l3" maxlength="30">
+					</td>
+					<td class="label">省/市</td>
+					<td colspan="3">
+						<input type="text" class="text" name="state_c2" value="$!xM_APPLN_ADDR.state_c2" maxlength="2">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="text" name="addr2_l4" value="$!xM_APPLN_ADDR.addr2_l4" maxlength="30">
+					</td>
+					<td class="label">邮政编码</td>
+					<td colspan="3">
+						<input type="text" class="text" name="postcode2" value="$!xM_APPLN_ADDR.postcode2" maxlength="6">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<input type="text" class="text" name="addr2_l5" value="$!xM_APPLN_ADDR.addr2_l5" maxlength="30">
+					</td>
+				</tr>
+				<tr><td colspan="6"><div class="border"></div></td></tr><!--分割线-->
+				<!--*************************************************************地址-3*************************************************************-->
+				<tr>
+					<td rowspan="5" style="vertical-align:top;"><b>地址-3</b></td>
+					<td>
+						<input type="text" class="text" name="addr3_l1" value="$!xM_APPLN_ADDR.addr3_l1" maxlength="30">
+					</td>
+					<td class="label">地址类型<font color="#ff0000">*</font></td>
+					<td colspan="3">
+						<select name="addr3_type">
+							#dict("ADDR_TYPE","$!xM_APPLN_ADDR.addr3_type")
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="text" name="addr3_l2" value="$!xM_APPLN_ADDR.addr3_l2" maxlength="30">
+					</td>
+					<td class="label">境外?</td>
+					<td colspan="3">
+						<input type="checkbox" name="osea_f3" value="1" #if($!xM_APPLN_ADDR.osea_f3 == '1') checked #end>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="text" name="addr3_l3" value="$!xM_APPLN_ADDR.addr3_l3" maxlength="30">
+					</td>
+					<td class="label">省/市</td>
+					<td colspan="3">
+						<input type="text" class="text" name="state_c3" value="$!xM_APPLN_ADDR.state_c3" maxlength="2">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="text" name="addr3_l4" value="$!xM_APPLN_ADDR.addr3_l4" maxlength="30">
+					</td>
+					<td class="label">邮政编码</td>
+					<td colspan="3">
+						<input type="text" class="text" name="postcode3" value="$!xM_APPLN_ADDR.postcode3" maxlength="6">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<input type="text" class="text" name="addr3_l5" value="$!xM_APPLN_ADDR.addr3_l5" maxlength="30">
+					</td>
+				</tr>
+				<tr><td colspan="6"><div class="border"></div></td></tr><!--分割线-->
+				<!--*************************************************************地址-4*************************************************************-->
+				<tr>
+					<td rowspan="5" style="vertical-align:top;"><b>地址-4</b></td>
+					<td>
+						<input type="text" class="text" name="addr4_l1" value="$!xM_APPLN_ADDR.addr4_l1" maxlength="30">
+					</td>
+					<td class="label">地址类型<font color="#ff0000">*</font></td>
+					<td colspan="3">
+						<select name="addr4_type">
+							#dict("ADDR_TYPE","$!xM_APPLN_ADDR.addr4_type")
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="text" name="addr4_l2" value="$!xM_APPLN_ADDR.addr4_l2" maxlength="30">
+					</td>
+					<td class="label">境外?</td>
+					<td colspan="3">
+						<input type="checkbox" name="osea_f4" value="1" #if($!xM_APPLN_ADDR.osea_f4 == '1') checked #end>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="text" name="addr4_l3" value="$!xM_APPLN_ADDR.addr4_l3" maxlength="30">
+					</td>
+					<td class="label">省/市</td>
+					<td colspan="3">
+						<input type="text" class="text" name="state_c4" value="$!xM_APPLN_ADDR.state_c4" maxlength="2">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="text" class="text" name="addr4_l4" value="$!xM_APPLN_ADDR.addr4_l4" maxlength="30">
+					</td>
+					<td class="label">邮政编码</td>
+					<td colspan="3">
+						<input type="text" class="text" name="postcode4" value="$!xM_APPLN_ADDR.postcode4" maxlength="6">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<input type="text" class="text" name="addr4_l5" value="$!xM_APPLN_ADDR.addr4_l5" maxlength="30">
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>			
+</form>	
+	<script src="${contextPath}/js/xm_appln/xm_appln.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	#set ($formName = "'#id_module_form'")
+	#parse ("xm_appln/xm_appln_page3_validation.js")
+	function onSave(){
+		if ($($formName).valid()) {
+	          var formjson = $($formName).serialize();
+	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	Dialog.message("保存成功!");
+	            	window.location.reload();
+	            }
+	          });
+	        }
+	}
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")
+

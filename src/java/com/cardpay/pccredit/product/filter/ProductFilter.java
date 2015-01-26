@@ -16,7 +16,7 @@ public class ProductFilter extends BaseQueryFilter {
 	
 	private String type;
 	
-	
+	private String default_type;
 
 	public String getType() {
 		return type;
@@ -34,5 +34,11 @@ public class ProductFilter extends BaseQueryFilter {
 		this.productName = productName;
 	}
 
+	public String getDefault_type() {
+		return default_type;
+	}
 
+	public void setDefault_type(String default_type) {
+		this.default_type = default_type;
+	}
 }

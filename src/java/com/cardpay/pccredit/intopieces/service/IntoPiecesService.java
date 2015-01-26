@@ -730,6 +730,7 @@ public class IntoPiecesService {
 		}
 		String fileName = customerInfor.getChineseName()+"("+customerInfor.getCardId()+").txt";
 		/*生成的接口数据上传到ftp文件上*/
+
 		UploadFileTool.uploadFileToFtp(Constant.FTPIP, Integer.valueOf(Constant.FTPPORT), Constant.FTPUSERNAME, Constant.FTPPASSWORD, Constant.FTPPATH, fileName, content.toString());
 //		UploadFileTool.create(fileName,content.toString());
 		/*如果要下载接口数据,将下面的exportTextFile方法打开*/
