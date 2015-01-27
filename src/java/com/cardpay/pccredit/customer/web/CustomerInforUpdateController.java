@@ -90,6 +90,8 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXQSZL;
 import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_ADDR_FORM;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_FORM;
+import com.cardpay.pccredit.xm_appln.web.XM_APPLN_JBZL_FORM;
+import com.cardpay.pccredit.xm_appln.web.XM_APPLN_NEW_CUSTOMER_FORM;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -103,6 +105,9 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.dictionary.DictionaryManager;
+import com.wicresoft.jrad.modules.dictionary.model.Dictionary;
+import com.wicresoft.jrad.modules.dictionary.model.DictionaryItem;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.jrad.modules.privilege.service.UserService;
 import com.wicresoft.util.date.DateHelper;
@@ -161,8 +166,6 @@ public class CustomerInforUpdateController extends BaseController {
 	@Autowired
 	private CustomerCreditEvaluationService customerCreditEvaluationService; //授信评估模型
 
-	@Autowired
-	private XM_APPLN_Service xM_APPLN_Service;
 	/**
 	 * 浏览页面
 	 * 
@@ -652,7 +655,7 @@ public class CustomerInforUpdateController extends BaseController {
 	 * @param request
 	 * @return
 	*/
-	/*@ResponseBody
+	@ResponseBody
 	@RequestMapping(value = "changewh.page")
 	@JRadOperation(JRadOperation.MAINTENANCE)
 	public AbstractModelAndView changewh(HttpServletRequest request) {
@@ -664,153 +667,16 @@ public class CustomerInforUpdateController extends BaseController {
 			mv.addObject("customerId", customerInfor.getId());
 		}
 		return mv;
-	}*/
-	@ResponseBody
-	@RequestMapping(value = "changewh.page")
-	@JRadOperation(JRadOperation.MAINTENANCE)
-	public AbstractModelAndView changewh_xm_appln(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/xm_appln/iframe", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
-		}
-		return mv;
 	}
 	
-	//iframe跳转到第page1
-	@ResponseBody
-	@RequestMapping(value = "xm_appln_page1_update.page")
-	@JRadOperation(JRadOperation.MAINTENANCE)
-	public AbstractModelAndView changewh_xm_appln_page1_update(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page1_update", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			//查找xm_appln相关信息
-			XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_Service.findXM_APPLN_JCZLByCustomerId(customerInforId);
-			XM_APPLN_KHFW xM_APPLN_KHFW = xM_APPLN_Service.findXM_APPLN_KHFWByCustomerId(customerInforId);
-			XM_APPLN_KHED xM_APPLN_KHED = xM_APPLN_Service.findXM_APPLN_KHEDByCustomerId(customerInforId);
-			XM_APPLN_KHLB xM_APPLN_KHLB = xM_APPLN_Service.findXM_APPLN_KHLBByCustomerId(customerInforId);
-			XM_APPLN_POZL xM_APPLN_POZL = xM_APPLN_Service.findXM_APPLN_POZLByCustomerId(customerInforId);
-			List<XM_APPLN_LXRZL> xM_APPLN_LXRZL_ls = xM_APPLN_Service.findXM_APPLN_LXRZLByCustomerId(customerInforId);
-			if(xM_APPLN_LXRZL_ls == null || xM_APPLN_LXRZL_ls.size() == 0){
-				xM_APPLN_LXRZL_ls = new ArrayList<XM_APPLN_LXRZL>();
-				XM_APPLN_LXRZL obj = new XM_APPLN_LXRZL();
-				obj.setLsh(0);
-				obj.setCustomer_id(customerInforId);
-				xM_APPLN_LXRZL_ls.add(obj);
-				XM_APPLN_LXRZL obj2 = new XM_APPLN_LXRZL();
-				obj2.setLsh(1);
-				obj2.setCustomer_id(customerInforId);
-				xM_APPLN_LXRZL_ls.add(obj2);
-			}
-			XM_APPLN_ZXQSZL xM_APPLN_ZXQSZL = xM_APPLN_Service.findXM_APPLN_ZXQSZLByCustomerId(customerInforId);
-			mv.addObject("xM_APPLN_JCZL", xM_APPLN_JCZL);
-			mv.addObject("xM_APPLN_KHFW", xM_APPLN_KHFW);
-			mv.addObject("xM_APPLN_KHED", xM_APPLN_KHED);
-			mv.addObject("xM_APPLN_KHLB", xM_APPLN_KHLB);
-			mv.addObject("xM_APPLN_POZL", xM_APPLN_POZL);
-			mv.addObject("xM_APPLN_LXRZL_ls", xM_APPLN_LXRZL_ls);
-			mv.addObject("xM_APPLN_ZXQSZL", xM_APPLN_ZXQSZL);
-			
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
-		}
-		return mv;
-	}
-		
-	//iframe跳转到第page2
-	@ResponseBody
-	@RequestMapping(value = "xm_appln_page2.page")
-	@JRadOperation(JRadOperation.MAINTENANCE)
-	public AbstractModelAndView changewh_xm_appln_page2(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page2", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			//查找xm_appln相关信息
-			XM_APPLN xM_APPLN = this.xM_APPLN_Service.findXM_APPLNByCustomerId(customerInforId);
-			XM_APPLN_SQED xM_APPLN_SQED = this.xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customerInforId);
-			List<XM_APPLN_KPMX> xM_APPLN_KPMX_ls = this.xM_APPLN_Service.findXM_APPLN_KPMXByCustomerId(customerInforId);
-			if(xM_APPLN_KPMX_ls == null || xM_APPLN_KPMX_ls.size() == 0){
-				xM_APPLN_KPMX_ls = new ArrayList<XM_APPLN_KPMX>();
-				XM_APPLN_KPMX obj = new XM_APPLN_KPMX();
-				obj.setLsh(0);
-				obj.setCustomer_id(customerInforId);
-				xM_APPLN_KPMX_ls.add(obj);
-				XM_APPLN_KPMX obj2 = new XM_APPLN_KPMX();
-				obj2.setLsh(1);
-				obj2.setCustomer_id(customerInforId);
-				xM_APPLN_KPMX_ls.add(obj2);
-			}
-			XM_APPLN_HKSZ xM_APPLN_HKSZ = this.xM_APPLN_Service.findXM_APPLN_HKSZByCustomerId(customerInforId);
-			XM_APPLN_DBXX xM_APPLN_DBXX = this.xM_APPLN_Service.findXM_APPLN_DBXXByCustomerId(customerInforId);
-			XM_APPLN_QTXYKXX xM_APPLN_QTXYKXX = this.xM_APPLN_Service.findXM_APPLN_QTXYKXXByCustomerId(customerInforId);
-			XM_APPLN_YWXX xM_APPLN_YWXX = this.xM_APPLN_Service.findXM_APPLN_YWXXByCustomerId(customerInforId);
-			XM_APPLN_DCSC xM_APPLN_DCSC = this.xM_APPLN_Service.findXM_APPLN_DCSCByCustomerId(customerInforId);
-			mv.addObject("xM_APPLN", xM_APPLN);
-			mv.addObject("xM_APPLN_SQED", xM_APPLN_SQED);
-			mv.addObject("xM_APPLN_KPMX_ls", xM_APPLN_KPMX_ls);
-			mv.addObject("xM_APPLN_HKSZ", xM_APPLN_HKSZ);
-			mv.addObject("xM_APPLN_DBXX", xM_APPLN_DBXX);
-			mv.addObject("xM_APPLN_QTXYKXX", xM_APPLN_QTXYKXX);
-			mv.addObject("xM_APPLN_YWXX", xM_APPLN_YWXX);
-			mv.addObject("xM_APPLN_DCSC", xM_APPLN_DCSC);
-			
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
-		}
-		return mv;
-	}
 	
-	//iframe跳转到第page3
-	@ResponseBody
-	@RequestMapping(value = "xm_appln_page3.page")
-	@JRadOperation(JRadOperation.MAINTENANCE)
-	public AbstractModelAndView changewh_xm_appln_page3(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page3", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
-		if (StringUtils.isNotEmpty(customerInforId)) {
-			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
-			//查找xm_appln信息
-			XM_APPLN_TJINFO xM_APPLN_TJINFO = this.xM_APPLN_Service.findXM_APPLN_TJINFOByCustomerId(customerInforId);
-			XM_APPLN_ADDR xM_APPLN_ADDR = this.xM_APPLN_Service.findXM_APPLN_ADDRByCustomerId(customerInforId);
-			XM_APPLN xM_APPLN = this.xM_APPLN_Service.findXM_APPLNByCustomerId(customerInforId);
-			XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_Service.findXM_APPLN_JCZLByCustomerId(customerInforId);
-			List<XM_APPLN_KPMX> xM_APPLN_KPMX_ls = this.xM_APPLN_Service.findXM_APPLN_KPMXByCustomerId(customerInforId);
-			if(xM_APPLN_KPMX_ls == null || xM_APPLN_KPMX_ls.size() == 0){
-				xM_APPLN_KPMX_ls = new ArrayList<XM_APPLN_KPMX>();
-				XM_APPLN_KPMX obj = new XM_APPLN_KPMX();
-				obj.setLsh(0);
-				obj.setCustomer_id(customerInforId);
-				xM_APPLN_KPMX_ls.add(obj);
-				XM_APPLN_KPMX obj2 = new XM_APPLN_KPMX();
-				obj2.setLsh(1);
-				obj2.setCustomer_id(customerInforId);
-				xM_APPLN_KPMX_ls.add(obj2);
-			}
-			mv.addObject("xM_APPLN_TJINFO", xM_APPLN_TJINFO);
-			mv.addObject("xM_APPLN_ADDR", xM_APPLN_ADDR);
-			mv.addObject("xM_APPLN", xM_APPLN);
-			mv.addObject("xM_APPLN_JCZL", xM_APPLN_JCZL);
-			mv.addObject("xM_APPLNKPMX_ls", xM_APPLN_KPMX_ls);
-			
-			mv.addObject("customerInfor", customerInfor);
-			mv.addObject("customerId", customerInfor.getId());
-		}
-		return mv;
-	}
-		
 	/**
 	 * 执行修改客户基本资料
-	 * 此方法修改为xm_appln版本
 	 * @param sample2
 	 * @param request
 	 * @return
 	*/
-	/*@ResponseBody
+	@ResponseBody
 	@RequestMapping(value = "update.json")
 	@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap update(@ModelAttribute CustomerInforForm form, HttpServletRequest request) {
@@ -822,45 +688,6 @@ public class CustomerInforUpdateController extends BaseController {
 				customerInforservice.updateCustomerInfor(customerInfor);
 				returnMap.put(RECORD_ID, customerInfor.getId());
 				returnMap.put("customerId",customerInfor.getId());
-				returnMap.addGlobalMessage(CHANGE_SUCCESS);
-			}catch (Exception e) {
-				return WebRequestHelper.processException(e);
-			}
-		}
-
-		return returnMap;
-	}*/
-	@ResponseBody
-	@RequestMapping(value = "update_xm_appln_page2.json")
-	@JRadOperation(JRadOperation.CHANGE)
-	public JRadReturnMap update_xm_appln_page2(@ModelAttribute XM_APPLN_FORM xM_APPLN_FORM, HttpServletRequest request) {
-
-		JRadReturnMap returnMap = new JRadReturnMap();
-		if (returnMap.isSuccess()) {
-			try {
-				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
-				xM_APPLN_Service.insertXM_APPLN(xM_APPLN_FORM,user);
-				returnMap.put("customerId",xM_APPLN_FORM.getCustomer_id());
-				returnMap.addGlobalMessage(CHANGE_SUCCESS);
-			}catch (Exception e) {
-				return WebRequestHelper.processException(e);
-			}
-		}
-
-		return returnMap;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "update_xm_appln_page3.json")
-	@JRadOperation(JRadOperation.CHANGE)
-	public JRadReturnMap update_xm_appln_page3(@ModelAttribute XM_APPLN_ADDR_FORM xM_APPLN_ADDR_FORM, HttpServletRequest request) {
-
-		JRadReturnMap returnMap = new JRadReturnMap();
-		if (returnMap.isSuccess()) {
-			try {
-				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
-				xM_APPLN_Service.insertXM_APPLN_ADDR(xM_APPLN_ADDR_FORM, user);
-				returnMap.put("customerId",xM_APPLN_ADDR_FORM.getCustomer_id());
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			}catch (Exception e) {
 				return WebRequestHelper.processException(e);
@@ -1877,6 +1704,7 @@ public class CustomerInforUpdateController extends BaseController {
 		}
 		return null;
 	}
+	
 }
 
 	

@@ -13,6 +13,7 @@ import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_JBZL_FORM;
+import com.cardpay.pccredit.xm_appln.web.XM_APPLN_NEW_CUSTOMER_FORM;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
@@ -54,7 +55,8 @@ public class CustomerInforInsertController extends BaseController{
 	@RequestMapping(value = "insert.page")
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView create_xm_appln_jbzl(HttpServletRequest request) {        
-		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page1", request);
+		//JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page1", request);
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page0", request);
 		return mv;
 	}
 	
@@ -95,13 +97,13 @@ public class CustomerInforInsertController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "insert.json")
 	@JRadOperation(JRadOperation.CREATE)
-	public JRadReturnMap insert_xm_appln_jbzl(@ModelAttribute XM_APPLN_JBZL_FORM xM_APPLN_JBZL_FORM, HttpServletRequest request) {
+	public JRadReturnMap insert_xm_appln_jbzl(@ModelAttribute XM_APPLN_NEW_CUSTOMER_FORM xM_APPLN_NEW_CUSTOMER_FORM, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				String customerId = request.getParameter("customer_id");
-				customerId = xM_APPLN_Service.insertXM_APPLN_JBZL(customerId,xM_APPLN_JBZL_FORM,user);
+				customerId = xM_APPLN_Service.insertXM_APPLN_NEW_CUSTOMER(customerId,xM_APPLN_NEW_CUSTOMER_FORM,user);
 				returnMap.put(RECORD_ID, customerId);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {

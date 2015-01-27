@@ -206,9 +206,10 @@ function chooseCustomer(flag){
 			id = $(this).val();
 		});
 		if(id!=null){
+			self.location.href = contextPath+"/intopieces/intopiecesquery/input.page?customerId="+id;
 			//此出跳转修改为xm_appln版本
-			//self.location.href = contextPath+"/intopieces/intopiecesquery/input.page?customerId="+id;
-			self.location.href = contextPath+"/intopieces/intopiecesquery/input_xm_appln_page4.page?customerId="+id;
+			//改回
+			//self.location.href = contextPath+"/intopieces/intopiecesquery/xm_appln_page4.page?customerId="+id;
 			return;
 		}else{
 			Dialog.message("请选择一个客户!");

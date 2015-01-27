@@ -1,12 +1,14 @@
 #parse ("common/iframe_page_header2.htm")
 	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
-	<style type="text/css"/>
-		form{padding-top:0px;padding-bottom:15px;margin:0px 5px 0 0;}
-	</style>
 </head>
 <body>
-<form id="id_module_form" action="${contextPath}/xm_appln/update_xm_appln_page1.json">
-<input type="hidden" id="id" name="customer_id" value="$!{customerId}" />
+<div class="fixed">
+	<h1>客户信息新增</h1>
+	<div class="buttons"><!--按钮组放置区域-->
+		<input id="id_save_button" type="button" value="保存" class="button"/>
+	</div>
+</div>
+<form id="id_module_form" action="${contextPath}/customer/basiccustomerinforCreate/insert.json">
 	<!--*************************************************************证件号码*************************************************************-->
 	<div class="box">
 		<table class="title" onclick="Open(this)">
@@ -20,12 +22,12 @@
 				<tr>
 					<td class="label" style="width:12%">证件号码<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text mast" id="card_id" name="card_id" value="$!xM_APPLN_JCZL.card_id" maxlength=32 onchange="changeBg(this)"/>
+						<input type="text" class="text mast" name="card_id" maxlength=32 onchange="changeBg(this)"/>
 					</td>
 				</tr>
 			</table>
 		</div><!--/content-->
-	</div>
+	</div>	
 <!--*************************************************************基本资料*************************************************************-->
 	<div class="box">
 		<table class="title" onclick="Open(this)">
@@ -39,77 +41,77 @@
 				<tr>
 					<td class="label">姓名<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text mast" name="surname" value="$!xM_APPLN_JCZL.surname" maxlength=30 onchange="changeBg(this)"/>
+						<input type="text" class="text mast" name="surname" maxlength=30 onchange="changeBg(this)"/>
 					</td>
 					<td class="label">证件类型<font color="#ff0000">*</font></td>
 					<td>
-						<select id="race_code" name="race_code">
-							#dict("RACE_CODE","$!xM_APPLN_JCZL.race_code")
+						<select name="race_code">
+							#dict("RACE_CODE",$null)
 						</select>
 					</td>
 					<td class="label">语言</td>
 					<td>
-						<label><input type="radio" name="lang_code" value="2" #if(!$xM_APPLN_JCZL||!$xM_APPLN_JCZL.lang_code||$xM_APPLN_JCZL.lang_code==''||$!xM_APPLN_JCZL.lang_code == '2') checked #end/>普通话</label>
-						<label><input type="radio" name="lang_code" value="1" #if($!xM_APPLN_JCZL.lang_code == '1') checked #end/>英语</label>
+						<label><input type="radio" name="lang_code" value="2" checked/>普通话</label>
+						<label><input type="radio" name="lang_code" value="1"/>英语</label>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">出生日期</td>
 					<td>
-						<input type="text" class="text" placeholder="YYYYMMDD" name="dob_input" value="$!xM_APPLN_JCZL.dob_input" maxlength="8" onmouseover="_calendarFormat()"/>
+						<input type="text" class="text" placeholder="YYYYMMDD" name="dob_input" maxlength="8" onmouseover="_calendarFormat()"/>
 					</td>
 					<td class="label">家庭电话</td>
 					<td>
-						<input type="text" class="text" name="home_phone" value="$!xM_APPLN_JCZL.home_phone" maxlength="17"/>
+						<input type="text" class="text" name="home_phone" maxlength="17"/>
 					</td>
 					<td class="label">性别<font color="#ff0000">*</font></td>
 					<td>
-						<label><input type="radio" name="gender" value="M" #if(!$xM_APPLN_JCZL||!$xM_APPLN_JCZL.gender||$xM_APPLN_JCZL.gender==''||$!xM_APPLN_JCZL.gender == 'M') checked #end/>男</label>
-						<label><input type="radio" name="gender" value="F" #if($!xM_APPLN_JCZL.gender == 'F') checked #end/>女</label>
+						<label><input type="radio" name="gender" value="M" checked/>男</label>
+						<label><input type="radio" name="gender" value="F"/>女</label>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">婚姻状况<font color="#ff0000">*</font></td>
 					<td>
 						<select name="mar_status" class="mast">
-							#dict("MAR_STATUS","$!xM_APPLN_JCZL.mar_status")
+							#dict("MAR_STATUS",$null)
 						</select>
 					</td>
 					<td class="label">手机<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text" name="mo_phone" value="$!xM_APPLN_JCZL.mo_phone" maxlength="12"/>
+						<input type="text" class="text" name="mo_phone" maxlength="12"/>
 					</td>
 					<td class="label">称谓</td>
 					<td>
-						<label><input type="radio" name="title_inp" value="1" #if(!$xM_APPLN_JCZL||!$xM_APPLN_JCZL.title_inp||$xM_APPLN_JCZL.title_inp==''||$!xM_APPLN_JCZL.title_inp == '1') checked #end/>先生</label>
-						<label><input type="radio" name="title_inp" value="2" #if($!xM_APPLN_JCZL.title_inp == '2') checked #end/>女士</label>
+						<label><input type="radio" name="title_inp" value="1" checked/>先生</label>
+						<label><input type="radio" name="title_inp" value="2"/>女士</label>
 					</td>
 				</tr>				
 				<tr>
 					<td class="label">英文姓名</td>
 					<td>
-						<input type="text" class="text" name="mthr_mname" value="$!xM_APPLN_JCZL.mthr_mname" maxlength="30"/>
+						<input type="text" class="text" name="mthr_mname" maxlength="30"/>
 					</td>
 					<td class="label">参考资料编号(护照)</td>
 					<td>
-						<input type="text" class="text" name="custr_ref" value="$!xM_APPLN_JCZL.custr_ref" maxlength="19"/>
+						<input type="text" class="text" name="custr_ref" maxlength="19"/>
 					</td>
 					<td class="label">员工编号</td>
 					<td>
-						<input type="text" class="text middle" name="emply_nbr" value="$!xM_APPLN_JCZL.emply_nbr" maxlength="6"/>
+						<input type="text" class="text middle" name="emply_nbr" maxlength="6"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">国籍</td>
 					<td>
 						<select name="nation">
-							#dict("NATION","$!xM_APPLN_JCZL.nation")
+							#dict("NATION",$null)
 						</select>
 					</td>
 					<td class="label">国籍细分代码</td>
 					<td colspan="3">
 						<select name="nation_cd">
-							#dict("NATION_CD","$!xM_APPLN_JCZL.nation_cd")
+							#dict("NATION_CD",$null)
 						</select>
 					</td>
 				</tr>
@@ -117,13 +119,13 @@
 					<td class="label">教育程度</td>
 					<td>
 						<select name="educa">
-							#dict("EDUCA","$!xM_APPLN_JCZL.educa")
+							#dict("EDUCA",$null)
 						</select>
 					</td>
 					<td class="label">住房情况</td>
 					<td colspan="3">
 						<select name="home_code">
-							#dict("HOME_CODE","$!xM_APPLN_JCZL.home_code")
+							#dict("HOME_CODE",$null)
 						</select>
 					</td>
 				</tr>
@@ -131,89 +133,89 @@
 					<td class="label">收入来源</td>
 					<td>
 						<select name="income_src">
-							#dict("INCOME_SRC","$!xM_APPLN_JCZL.income_src")
+							#dict("INCOME_SRC",$null)
 						</select>
 					</td>
 					<td class="label">抚养人数</td>
 					<td>
-						<input type="text" class="text" name="dependents" value="$!xM_APPLN_JCZL.dependents" maxlength="2"/>
+						<input type="text" class="text" name="dependents" maxlength="2"/>
 					</td>
 					<td class="label">居住年限</td>
 					<td>
-						<input type="text" class="text middle" name="yr_there" value="$!xM_APPLN_JCZL.yr_there" maxlength="2"/>
+						<input type="text" class="text middle" name="yr_there" maxlength="2"/>
 					</td>
 				</tr>				
 				<tr>					
 					<td class="label">月还款/租金额</td>
 					<td>
-						<input type="text" class="text" name="home_loan" value="$!xM_APPLN_JCZL.home_loan" maxlength="12"/>
+						<input type="text" class="text" name="home_loan" maxlength="12"/>
 					</td>
 					<td class="label">EMAIL地址</td>
 					<td colspan="3">
-						<input type="text long" class="text" name="email_addr" value="$!xM_APPLN_JCZL.email_addr" maxlength="40"/>
+						<input type="text long" class="text" name="email_addr" maxlength="40"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">公司名称</td>
 					<td>
-						<input type="text" class="text" name="comp_name" value="$!xM_APPLN_JCZL.comp_name" maxlength="30"/>
+						<input type="text" class="text" name="comp_name" maxlength="30"/>
 					</td>
 					<td class="label">部门</td>
 					<td>
-						<input type="text" class="text" name="emply_dept" value="$!xM_APPLN_JCZL.emply_dept" maxlength="20"/>
+						<input type="text" class="text" name="emply_dept" maxlength="20"/>
 					</td>
 					<td class="label">传真号码</td>
 					<td>
-						<input type="text" class="text middle" name="ird_number" value="$!xM_APPLN_JCZL.ird_number" maxlength="17"/>
+						<input type="text" class="text middle" name="ird_number" maxlength="17"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">单位属性</td>
 					<td>
 						<select name="occ_catgry">
-							#dict("OCC_CATGRY","$!xM_APPLN_JCZL.occ_catgry")
+							#dict("OCC_CATGRY",$null)
 						</select>
 					</td>
 					<td class="label">职务/岗位</td>
 					<td>
 						<select name="int_taxcod">
-							#dict("INT_TAXCOD","$!xM_APPLN_JCZL.int_taxcod")
+							#dict("INT_TAXCOD",$null)
 						</select>
 					</td>
 					<td class="label">税前年收入(万)</td>
 					<td>
-						<input type="text" class="text middle" name="income_ann" value="$!xM_APPLN_JCZL.income_ann" maxlength="3"/>
+						<input type="text" class="text middle" name="income_ann" maxlength="3"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">行业类别</td>
 					<td>
-						<input type="text" class="text" name="occ_code" value="$!xM_APPLN_JCZL.occ_code" maxlength="4"/>
+						<input type="text" class="text" name="occ_code" maxlength="4"/>
 					</td>
 					<td class="label">职务</td>
 					<td>
-						<input type="text" class="text" name="posn_emply" value="$!xM_APPLN_JCZL.posn_emply" maxlength="20"/>
+						<input type="text" class="text" name="posn_emply" maxlength="20"/>
 					</td>
 					<td class="label">工龄(年)</td>
 					<td>
-						<input type="text" class="text middle" name="yr_in_comp" value="$!xM_APPLN_JCZL.yr_in_comp" maxlength="3"/>
+						<input type="text" class="text middle" name="yr_in_comp" maxlength="3"/>
 					</td>
 				</tr>					
 				<tr>
 					<td class="label">公司电话</td>
 					<td colspan="3">
-						<input type="text" class="text" name="busi_phone" value="$!xM_APPLN_JCZL.busi_phone" maxlength="17" style="width:140px"/> -
-						<input type="text" class="text small" name="extension" value="$!xM_APPLN_JCZL.extension" maxlength="6"/>
+						<input type="text" class="text" name="busi_phone" maxlength="17" style="width:140px"/> -
+						<input type="text" class="text small" name="extension" maxlength="6"/>
 					</td>
 					<td class="label">黑名单客户</td>
 					<td>
-						<span name="cune_cr">$!xM_APPLN_JCZL.cune_cr</span>
+						<span name="cune_cr"></span>
 					</td>
 				</tr>						
 				<tr>
 					<td class="label">社保卡卡号</td>
 					<td colspan="5">
-						<input type="text" class="text" name="secur_nbr" value="$!xM_APPLN_JCZL.secur_nbr" maxlength="18"/>
+						<input type="text" class="text" name="secur_nbr" maxlength="18"/>
 					</td>
 				</tr>	
 			</table>
@@ -233,32 +235,32 @@
 					<td class="label">可接受广告类别</td>
 					<td>
 						<select name="mail_code" class="long">
-							#dict("MAIL_CODE","$!xM_APPLN_KHFW.mail_code")
+							#dict("MAIL_CODE",$null)
 						</select>
 					</td>
 					<td class="label">工作时间联系</td>
 					<td>
-						<input type="checkbox" name="work_calls" value="1" #if($!xM_APPLN_KHFW.work_calls == "1") checked #end/>
+						<input type="checkbox" name="work_calls" value="1"/>
 					</td>
 					<td class="label">忠实客户</td>
 					<td>
-						<input type="checkbox" name="elig_loyal" value="1" #if($!xM_APPLN_KHFW.elig_loyal == '1') checked #end/>
+						<input type="checkbox" name="elig_loyal" value="1"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">身份核查标志</td>
 					<td>
 						<select name="id_verify" class="long">
-							#dict("ID_VERIFY","$!xM_APPLN_KHFW.id_verify")
+							#dict("ID_VERIFY",$null)
 						</select>
 					</td>
 					<td class="label">留存身份证复印件</td>
 					<td>
-						<input type="checkbox" name="idcp_yn" value="1" #if($!xM_APPLN_KHFW.idcp_yn == '1') checked #end/>
+						<input type="checkbox" name="idcp_yn" value="1"/>
 					</td>
 					<td class="label">质押办卡客户?</td>
 					<td>
-						<input type="checkbox" name="imp_cuflag" value="1" #if($!xM_APPLN_KHFW.imp_cuflag == '1') checked #end/>
+						<input type="checkbox" name="imp_cuflag" value="1"/>
 					</td>
 				</tr>
 			</table>
@@ -278,19 +280,19 @@
 					<td class="label">客户类别</td>
 					<td>
 						<select name="class_code">
-							#dict("CLASS_CODE","$!xM_APPLN_KHLB.class_code")
+							#dict("CLASS_CODE",$null)
 						</select>
 					</td>
 					<td class="label">客户风险级别</td>
 					<td>
 						<select name="risk_levl">
-							#dict("RISK_LEVL","$!xM_APPLN_KHLB.risk_levl")
+							#dict("RISK_LEVL",$null)
 						</select>
 					</td>
 					<td class="label">客户价值级别</td>
 					<td>
 						<select name="value_levl">
-							#dict("VALUE_LEVL","$!xM_APPLN_KHLB.value_levl")
+							#dict("VALUE_LEVL",$null)
 						</select>
 					</td>
 				</tr>
@@ -310,15 +312,15 @@
 				<tr>
 					<td class="label">信用额度</td>
 					<td>
-						<span name="cred_limit">$!xM_APPLN_KHED.cred_limit</span>
+						<span name="cred_limit"></span>
 					</td>
 					<td class="label">美元额度</td>
 					<td>
-						<span name="credlim_x">$!xM_APPLN_KHED.credlim_x</span>
+						<span name="credlim_x"></span>
 					</td>
 					<td class="label">分期付款额度</td>
 					<td>
-						<span name="mp_limit">$!xM_APPLN_KHED.mp_limit</span>
+						<span name="mp_limit"></span>
 					</td>
 				</tr>
 			</table>
@@ -337,41 +339,41 @@
 				<tr>
 					<td class="label">单位名称</td>
 					<td>
-						<input type="text" class="text" name="spu_compnm" value="$!xM_APPLN_POZL.compnm" maxlength="30"/>
+						<input type="text" class="text" name="spu_compnm" maxlength="30"/>
 					</td>
 					<td class="label">证件号码</td>
 					<td>
-						<input type="text" class="text" name="spu_custr_nbr" value="$!xM_APPLN_POZL.custr_nbr" maxlength="18"/>
+						<input type="text" class="text" name="spu_custr_nbr" maxlength="18"/>
 					</td>
 					<td class="label">收入来源</td>
 					<td>
 						<select name="spu_income_src">
-							#dict("INCOME_SRC","$!xM_APPLN_POZL.income_src")
+							#dict("INCOME_SRC",$null)
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">手机</td>
 					<td>
-						<input type="text" class="text" name="spu_mobile" value="$!xM_APPLN_POZL.mobile" maxlength="12"/>
+						<input type="text" class="text" name="spu_mobile" maxlength="12"/>
 					</td>
 					<td class="label">工龄(年)</td>
 					<td>
-						<input type="text" class="text" name="spu_yr_in_comp" value="$!xM_APPLN_POZL.yr_in_comp" maxlength="3"/>
+						<input type="text" class="text" name="spu_yr_in_comp" maxlength="3"/>
 					</td>
 					<td class="label">税前年收入(万)</td>
 					<td>
-						<input type="text" class="text" name="spu_income_ann" value="$!xM_APPLN_POZL.income_ann" maxlength="3"/>
+						<input type="text" class="text" name="spu_income_ann" maxlength="3"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text" name="spu_name" value="$!xM_APPLN_POZL.name" maxlength="30"/>
+						<input type="text" class="text" name="spu_name" maxlength="30"/>
 					</td>
 					<td class="label">电话号码</td>
 					<td colspan="3">
-						<input type="text" class="text" name="spu_telno" value="$!xM_APPLN_POZL.telno" maxlength="17"/>
+						<input type="text" class="text" name="spu_telno" maxlength="17"/>
 					</td>
 				</tr>
 			</table>
@@ -396,51 +398,51 @@
 				<tr>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text long" name="con_name1" value="$!xM_APPLN_LXRZL_ls.get(0).name" maxlength="30"/>
+						<input type="text" class="text long" name="con_name1" maxlength="30"/>
 					</td>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text long" name="con_name2" value="$!xM_APPLN_LXRZL_ls.get(1).name" maxlength="30"/>
+						<input type="text" class="text long" name="con_name2" maxlength="30"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">单位名称</td>
 					<td>
-						<input type="text" class="text long" name="con_compnm1" value="$!xM_APPLN_LXRZL_ls.get(0).compnm" maxlength="30"/>
+						<input type="text" class="text long" name="con_compnm1" maxlength="30"/>
 					</td>
 					<td class="label">单位名称</td>
 					<td>
-						<input type="text" class="text long" name="con_compnm2" value="$!xM_APPLN_LXRZL_ls.get(1).compnm" maxlength="30"/>
+						<input type="text" class="text long" name="con_compnm2" maxlength="30"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">电话号码</td>
 					<td>
-						<input type="text" class="text long" name="con_telno1" value="$!xM_APPLN_LXRZL_ls.get(0).telno" maxlength="17"/>
+						<input type="text" class="text long" name="con_telno1" maxlength="17"/>
 					</td>
 					<td class="label">电话号码</td>
 					<td>
-						<input type="text" class="text long" name="con_telno2" value="$!xM_APPLN_LXRZL_ls.get(1).telno" maxlength="17"/>
+						<input type="text" class="text long" name="con_telno2" maxlength="17"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">关系</td>
 					<td>
-						<input type="text" class="text long" name="con_rel1" value="$!xM_APPLN_LXRZL_ls.get(0).rel" maxlength="4"/>
+						<input type="text" class="text long" name="con_rel1" maxlength="4"/>
 					</td>
 					<td class="label">关系</td>
 					<td>
-						<input type="text" class="text long" name="con_rel2" value="$!xM_APPLN_LXRZL_ls.get(1).rel" maxlength="4"/>
+						<input type="text" class="text long" name="con_rel2" maxlength="4"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">手机</td>
 					<td>
-						<input type="text" class="text long" name="con_mobile1" value="$!xM_APPLN_LXRZL_ls.get(0).mobile" maxlength="12"/>
+						<input type="text" class="text long" name="con_mobile1" maxlength="12"/>
 					</td>
 					<td class="label">手机</td>
 					<td>
-						<input type="text" class="text long" name="con_mobile2" value="$!xM_APPLN_LXRZL_ls.get(1).mobile" maxlength="12"/>
+						<input type="text" class="text long" name="con_mobile2" maxlength="12"/>
 					</td>
 				</tr>
 			</table>
@@ -459,21 +461,21 @@
 				<tr>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text long" name="rel_name" value="$!xM_APPLN_ZXQSZL.name" maxlength="30"/>
+						<input type="text" class="text long" name="rel_name" maxlength="30"/>
 					</td>
 					<td class="label">电话号码</td>
 					<td>
-						<input type="text" class="text long" name="rel_telno" value="$!xM_APPLN_ZXQSZL.telno" maxlength="17"/>
+						<input type="text" class="text long" name="rel_telno" maxlength="17"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">关系</td>
 					<td>
-						<input type="text" class="text long" name="rel_rel" value="$!xM_APPLN_ZXQSZL.rel" maxlength="4"/>
+						<input type="text" class="text long" name="rel_rel" maxlength="4"/>
 					</td>
 					<td class="label">手机</td>
 					<td>
-						<input type="text" class="text long" name="rel_mobile" value="$!xM_APPLN_ZXQSZL.mobile" maxlength="12"/>
+						<input type="text" class="text long" name="rel_mobile" maxlength="12"/>
 					</td>
 				</tr>
 			</table>
@@ -486,61 +488,23 @@
   #set ($formName = "'#id_module_form'")
 	#parse ("xm_appln/xm_appln_page1_validation.js")
 	
-	$(document).ready(function() {	
-		$("#card_id").change(function (){
-			 
-			$("#cardIde").remove();	
-			var race_code = $("select[name=race_code]").val();
-			if( race_code == "01"){
-				var card_id = $("#card_id").val();
-				if(card_id !=""){
-					var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
-				
-				     if(idReg.test(card_id)){
-				    	 $("#cardIde").remove();
-				        }else{
-					       $("input[name='card_id']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
-				     }	
-			 	}
-			}
-		});
-		
-		$("#race_code").change(function(){
-			 $("#cardIde").remove();
-			var race_code = $("select[name=race_code]").val();
-			if( race_code == "CST0000000000A"){
-				var card_id = $("#card_id").val();
-				if(card_id !=""){
-				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
-			
-			     if(idReg.test(card_id)){
-			    	 $("#cardIde").remove();	
-			       
-			        }else{
-				       $("input[name='card_id']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
-			     }	
-				 }	
-				
-			}
-			
-		});
-	});
-		function onSave() {
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
 			//清空上一次验证
 			 $("#cardIde").remove();
 			
-				var race_code = $("select[name=race_code]").val();
-				if( race_code == "01"){
+				var cardType = $("select[name=cardType]").val();
+				if( cardType == "CST0000000000A"){
 			   
-				var card_id = $("#card_id").val();
-				if(card_id !=""){
+				var cardId = $("#cardId").val();
+				if(cardId !=""){
 				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
 			
-			     if(idReg.test(card_id)){
+			     if(idReg.test(cardId)){
 			    	 $("#cardIde").remove();	
 			       
 			        }else{
-				       $("input[name='card_id']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
 			     }	
 				 }
 				
@@ -550,18 +514,61 @@
 	    	if(leng > 0){
 	    		return;
 	    	}else{
-	    		if ($($formName).valid()) {
-			          var formjson = $($formName).serialize();
-			          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-			            if (data.success) {
-			            	Dialog.message("保存成功!");
-			            	window.location.reload();
-			            }
-			          });
-			        }
+	    	  if ($($formName).valid()) {
+	   	          var formjson = $($formName).serialize();
+	   	          $.post($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	Dialog.message("保存成功!");
+	   	            	window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	   	            }
+	   	          });
+	   	        }
 	    	}
 	       
-	      }
+	      });
+		$("#cardId").change(function (){
+			 
+			 $("#cardIde").remove();	
+			var cardType = $("select[name=cardType]").val();
+			if( cardType == "CST0000000000A"){
+		   
+			var cardId = $("#cardId").val();
+			if(cardId !=""){
+			var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
+		
+		     if(idReg.test(cardId)){
+		    	 $("#cardIde").remove();	
+		       
+		        }else{
+			       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+		     }	
+			 }
+			
+			}
+			});
+		
+		$("#cardType").change(function(){
+			 $("#cardIde").remove();
+			var cardType = $("select[name=cardType]").val();
+			if( cardType == "CST0000000000A"){
+				var cardId = $("#cardId").val();
+				if(cardId !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
+			
+			     if(idReg.test(cardId)){
+			    	 $("#cardIde").remove();	
+			       
+			        }else{
+				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+			     }	
+				 }	
+				
+			}
+			
+		});
+		
+	});
+	
 	
   </script>
 </body>
