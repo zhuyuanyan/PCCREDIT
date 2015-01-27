@@ -298,41 +298,44 @@
 	</dictionary>
 	
 	<dictionary name="NATION" title="国籍">
-		<item name="" title="境内" />
-		<item name="" title="境外" />
-		<item name="" title="港澳" />
-		<item name="" title="台胞" />
+		<item name="境内" title="境内" />
+		<item name="境外" title="境外" />
+		<item name="港澳" title="港澳" />
+		<item name="台胞" title="台胞" />
 	</dictionary>
 	
 	<dictionary name="NATION_CD" title="国籍细分代码">
-		<item name="" title="" />
+		<item name="未设置" title="" />
 	</dictionary>
 	
 	<dictionary name="EDUCA" title="教育程度">
-		<item name="" title="初中及以下" />
-		<item name="" title="高中及中专" />
-		<item name="" title="大专" />
-		<item name="" title="本科" />
-		<item name="" title="硕士" />
-		<item name="" title="博士" />
+		<item name="初中及以下" title="初中及以下" />
+		<item name="高中及中专" title="高中及中专" />
+		<item name="大专" title="大专" />
+		<item name="本科" title="本科" />
+		<item name="硕士" title="硕士" />
+		<item name="博士" title="博士" />
 	</dictionary>
 	
 	<dictionary name="HOME_CODE" title="住房情况">
-		<item name="" title="寄宿" />
-		<item name="" title="自购有贷款" />
-		<item name="" title="与双亲同住" />
-		<item name="" title="住在自有住房" />
-		<item name="" title="租房住" />
+	    <item name="未设置" title="" />
+		<item name="寄宿" title="寄宿" />
+		<item name="自购有贷款" title="自购有贷款" />
+		<item name="与双亲同住" title="与双亲同住" />
+		<item name="住在自有住房" title="住在自有住房" />
+		<item name="租房住" title="租房住" />
 	</dictionary>
 	
 	<dictionary name="INCOME_SRC" title="收入来源">
-		<item name="" title="薪水" />
-		<item name="" title="委托" />
-		<item name="" title="自由职业" />
-		<item name="" title="投资" />
+	    <item name="未设置" title="" />
+		<item name="薪水" title="薪水" />
+		<item name="委托" title="委托" />
+		<item name="自由职业" title="自由职业" />
+		<item name="投资" title="投资" />
 	</dictionary>
 	
 	<dictionary name="OCC_CATGRY" title="单位属性">
+	    <item name="未设置" title="" />
 		<item name="01" title="国有" />
 		<item name="02" title="独资" />
 		<item name="03" title="合资" />
@@ -346,6 +349,7 @@
 	</dictionary>
 	
 	<dictionary name="INT_TAXCOD" title="职务/岗位">
+	    <item name="未设置" title="" />
 		<item name="01" title="负责人" />
 		<item name="02" title="高级主管" />
 		<item name="03" title="中级主管" />
@@ -354,117 +358,121 @@
 	</dictionary>
 	
 	<dictionary name="MAIL_CODE" title="可接受广告类别">
-		<item name="" title="所有-就像客户信息定义的" />
-		<item name="" title="限制-客户信息所定义的" />
-		<item name="" title="没有保险产品推销资料" />
-		<item name="" title="没有商品推销资料" />
-		<item name="" title="被选择-由客户信息定义" />
-		<item name="" title="临时邮件代码" />
-		<item name="" title="不详-由客户信息定义" />
-		<item name="" title="没有产品推销资料" />
-		<item name="" title="测试中" />
+	    <item name="未设置" title="" />
+		<item name="所有-就像客户信息定义的" title="所有-就像客户信息定义的" />
+		<item name="限制-客户信息所定义的" title="限制-客户信息所定义的" />
+		<item name="没有保险产品推销资料" title="没有保险产品推销资料" />
+		<item name="没有商品推销资料" title="没有商品推销资料" />
+		<item name="被选择-由客户信息定义" title="被选择-由客户信息定义" />
+		<item name="临时邮件代码" title="临时邮件代码" />
+		<item name="不详-由客户信息定义" title="不详-由客户信息定义" />
+		<item name="没有产品推销资料" title="没有产品推销资料" />
+		<item name="测试中" title="测试中" />
 	</dictionary>
 	
 	<dictionary name="CLASS_CODE" title="客户类别">
-		<item name="" title="VIP" />
-		<item name="" title="全体职员账户" />
-		<item name="" title="商业往来账户本金" />
-		<item name="" title="垃圾客户" />
-		<item name="" title="白金客户" />
+	    <item name="未设置" title="" />
+		<item name="VIP" title="VIP" />
+		<item name="全体职员账户" title="全体职员账户" />
+		<item name="商业往来账户本金" title="商业往来账户本金" />
+		<item name="垃圾客户" title="垃圾客户" />
+		<item name="白金客户" title="白金客户" />
 	</dictionary>
 	
 	<dictionary name="RISK_LEVL" title="客户风险级别">
-		<item name="" title="不良客户" />
-		<item name="" title="降额客户" />
-		<item name="" title="信用不良追踪客户" />
-		<item name="" title="风险国建或地区用户" />
-		<item name="" title="风险商户用卡客户" />
-		<item name="" title="异常交易用卡客户" />
-		<item name="" title="外币网上交易频繁" />
-		<item name="" title="长期境外交易" />
-		<item name="" title="大额交易频繁用卡" />
-		<item name="" title="每日频繁交易用卡" />
-		<item name="" title="空值" />
+	    <item name="未设置" title="" />
+		<item name="不良客户" title="不良客户" />
+		<item name="降额客户" title="降额客户" />
+		<item name="信用不良追踪客户" title="信用不良追踪客户" />
+		<item name="风险国建或地区用户" title="风险国建或地区用户" />
+		<item name="风险商户用卡客户" title="风险商户用卡客户" />
+		<item name="异常交易用卡客户" title="异常交易用卡客户" />
+		<item name="外币网上交易频繁" title="外币网上交易频繁" />
+		<item name="长期境外交易" title="长期境外交易" />
+		<item name="大额交易频繁用卡" title="大额交易频繁用卡" />
+		<item name="每日频繁交易用卡" title="每日频繁交易用卡" />
+		<item name="空值" title="空值" />
 	</dictionary>
 	
 	<dictionary name="VALUE_LEVL" title="客户价值级别">
-		<item name="" title="高价值客户" />
-		<item name="" title="中等价值客户" />
-		<item name="" title="下等价值客户" />
+	    <item name="未设置" title="" />
+		<item name="高价值客户" title="高价值客户" />
+		<item name="中等价值客户" title="中等价值客户" />
+		<item name="下等价值客户" title="下等价值客户" />
 	</dictionary>
 	
 	<dictionary name="PRODUCT" title="申请产品">
-	    <item name="" title="１福万通白金卡" />
-	    <item name="" title="２福万通普卡" />
-	    <item name="" title="３福万通金卡" />
-	    <item name="" title="４福万通渔保卡" />
-	    <item name="" title="５公务" />
-	    <item name="" title="６员工卡" />
-	    <item name="" title="７福万通海峡旅游普卡" />
-	    <item name="" title="８福万通海峡旅游金卡" />
-	    <item name="" title="９普惠金融卡３年" />
-	    <item name="" title="１０福万通移搜联名金卡" />
-	    <item name="" title="１１普惠金融卡１年" />
-	    <item name="" title="１２福万通移搜联名白金卡" />
-	    <item name="" title="１３福万通单位卡" />
-	    <item name="" title="１４晋江小鱼卡" />
-	    <item name="" title="１５罗源富农卡" />
+	    <item name="0001" title="1福万通白金卡" />
+	    <item name="0002" title="2福万通普卡" />
+	    <item name="0003" title="3福万通金卡" />
+	    <item name="0004" title="4福万通渔保卡" />
+	    <item name="0005" title="5公务" />
+	    <item name="0006" title="6员工卡" />
+	    <item name="0007" title="7福万通海峡旅游普卡" />
+	    <item name="0008" title="8福万通海峡旅游金卡" />
+	    <item name="0009" title="9普惠金融卡３年" />
+	    <item name="0010" title="10福万通移搜联名金卡" />
+	    <item name="0011" title="11普惠金融卡１年" />
+	    <item name="0012" title="12福万通移搜联名白金卡" />
+	    <item name="0013" title="13福万通单位卡" />
+	    <item name="0014" title="14晋江小鱼卡" />
+	    <item name="0015" title="15罗源富农卡" />
 	</dictionary>
 	
 	<dictionary name="INT_CODE" title="利率代码">
-	    <item name="" title="标准利率代码01" />
-		<item name="" title="专项卡年利率16.2" />
-		<item name="" title="专项卡年利率14.4" />
-		<item name="" title="专项卡年利率12.6" />
-		<item name="" title="专项卡年利率10.8" />
-		<item name="" title="专项卡年利率9%" />
-		<item name="" title="专项卡标准利率18" />
-		<item name="" title="专项卡利率9.9%" />
-		<item name="" title="专项卡利率11.7%" />
-		<item name="" title="渔保卡专用利率" />
-		<item name="" title="专项卡利率13.5%" />
+	    <item name="01" title="标准利率代码01" />
+		<item name="02" title="专项卡年利率16.2" />
+		<item name="03" title="专项卡年利率14.4" />
+		<item name="04" title="专项卡年利率12.6" />
+		<item name="05" title="专项卡年利率10.8" />
+		<item name="06" title="专项卡年利率9%" />
+		<item name="07" title="专项卡标准利率18" />
+		<item name="08" title="专项卡利率9.9%" />
+		<item name="09" title="专项卡利率11.7%" />
+		<item name="10" title="渔保卡专用利率" />
+		<item name="11" title="专项卡利率13.5%" />
 	</dictionary>
 	
 	<dictionary name="STM_CODE" title="账单方式">
-	    <item name="" title="电子邮件寄送账单" />
-		<item name="" title="信件电子邮箱寄送账单" />
-		<item name="" title="信件寄送账单" />
-		<item name="" title="不寄送账单" />
+	    <item name="电子邮件寄送账单" title="电子邮件寄送账单" />
+		<item name="信件电子邮箱寄送账单" title="信件电子邮箱寄送账单" />
+		<item name="信件寄送账单" title="信件寄送账单" />
+		<item name="不寄送账单" title="不寄送账单" />
 	</dictionary>
 	
 	<dictionary name="ACC_TYPE" title="年费代码">
-	    <item name="" title="3131重要客户终身免年费" />
-		<item name="" title="3232员工卡终身免年费" />
-		<item name="" title="3333刷卡3赐或满3000" />
-		<item name="" title="3636年费全收" />
-		<item name="" title="3737年费全收(500元/年)" />
-		<item name="" title="3838年费全收(1000元/年)" />
-		<item name="" title="3939年费全收(2000元/年)" />
+	    <item name="31" title="3131重要客户终身免年费" />
+		<item name="32" title="3232员工卡终身免年费" />
+		<item name="33" title="3333刷卡3赐或满3000" />
+		<item name="36" title="3636年费全收" />
+		<item name="37" title="3737年费全收(500元/年)" />
+		<item name="38" title="3838年费全收(1000元/年)" />
+		<item name="39" title="3939年费全收(2000元/年)" />
 	</dictionary>
 	
 	<dictionary name="FEE_GROUP" title="费用组代码">
-	    <item name="" title="0002费用组代码" />
-		<item name="" title="0003费用组代码" />
-		<item name="" title="0004费用组代码" />
-		<item name="" title="0005费用组代码" />
-		<item name="" title="0006费用组代码" />
-		<item name="" title="0007费用组代码" />
-		<item name="" title="0008费用组代码" />
+	    <item name="0002费用组代码" title="0002费用组代码" />
+		<item name="0003费用组代码" title="0003费用组代码" />
+		<item name="0004费用组代码" title="0004费用组代码" />
+		<item name="0005费用组代码" title="0005费用组代码" />
+		<item name="0006费用组代码" title="0006费用组代码" />
+		<item name="0007费用组代码" title="0007费用组代码" />
+		<item name="0008费用组代码" title="0008费用组代码" />
 	</dictionary>
 	
 	<dictionary name="CDESPMTD" title="递送方式">
-	    <item name="" title="到收件网点领取" />
-		<item name="" title="快递给持卡人" />
-		<item name="" title="重发卡暂不递送-信用原因" />
-		<item name="" title="暂不递送-持卡人再境外" />
-		<item name="" title="寄往指定地址" />
+	    <item name="到收件网点领取" title="到收件网点领取" />
+		<item name="快递给持卡人" title="快递给持卡人" />
+		<item name="重发卡暂不递送-信用原因" title="重发卡暂不递送-信用原因" />
+		<item name="暂不递送-持卡人再境外" title="暂不递送-持卡人再境外" />
+		<item name="寄往指定地址" title="寄往指定地址" />
 	</dictionary>
 	
 	<dictionary name="COURIERF" title="递送费用">
-	    <item name="" title="无" />
-		<item name="" title="同城" />
-		<item name="" title="外地" />
-		<item name="" title="境外" />
+	    <item name="无" title="无" />
+		<item name="同城" title="同城" />
+		<item name="外地" title="外地" />
+		<item name="境外" title="境外" />
 	</dictionary>
 	
 	<dictionary name="CDFRM" title="卡片版面">
@@ -478,59 +486,67 @@
 	</dictionary>
 	
 	<dictionary name="REPAY_CODE" title="本币自扣还款方式">
-	    <item name="" title="固定金额" />
-		<item name="" title="最小还款额" />
-		<item name="" title="全额" />
+	    <item name="未设置" title="" />
+	    <item name="固定金额" title="固定金额" />
+		<item name="最小还款额" title="最小还款额" />
+		<item name="全额" title="全额" />
 	</dictionary>
 	
 	<dictionary name="REPAY_CODX" title="外币自扣还款方式">
-	    <item name="" title="固定金额" />
-		<item name="" title="最小还款额" />
-		<item name="" title="全额" />
+	    <item name="未设置" title="" />
+	    <item name="固定金额" title="固定金额" />
+		<item name="最小还款额" title="最小还款额" />
+		<item name="全额" title="全额" />
 	</dictionary>
 	
 	<dictionary name="EXCH_FLAG" title="购汇功能选项">
-	    <item name="" title="无购汇功能" />
-		<item name="" title="系统内溢缴款购汇" />
-		<item name="" title="使用额度或溢缴款购汇" />
-		<item name="" title="自动还款账户购汇" />
-		<item name="" title="系统内溢缴款购汇及系统内购汇" />
-		<item name="" title="系统内额度和系统外都购汇" />
+	    <item name="未设置" title="" />
+	    <item name="无购汇功能" title="无购汇功能" />
+		<item name="系统内溢缴款购汇" title="系统内溢缴款购汇" />
+		<item name="使用额度或溢缴款购汇" title="使用额度或溢缴款购汇" />
+		<item name="自动还款账户购汇" title="自动还款账户购汇" />
+		<item name="系统内溢缴款购汇及系统内购汇" title="系统内溢缴款购汇及系统内购汇" />
+		<item name="系统内额度和系统外都购汇" title="系统内额度和系统外都购汇" />
 	</dictionary>
 	
 	<dictionary name="EXCH_CODE" title="购汇金额">
-	    <item name="" title="M最低还款额" />
-		<item name="" title="T总余额" />
+	    <item name="未设置" title="" />
+	    <item name="M最低还款额" title="M最低还款额" />
+		<item name="T总余额" title="T总余额" />
 	</dictionary>
 	
 	<dictionary name="GUARN_CODE" title="担保人类型">
-	    <item name="" title="质押担保" />
-		<item name="" title="第三方担保" />
+	    <item name="未设置" title="" />
+	    <item name="质押担保" title="质押担保" />
+		<item name="第三方担保" title="第三方担保" />
 	</dictionary>
 	
 	<dictionary name="BRNCH_INTR" title="有无分行推荐函">
-	    <item name="" title="未收到" />
-		<item name="" title="收到但尚未接受" />
-		<item name="" title="收到且接受" />
-		<item name="" title="收到但不接受" />
-		<item name="" title="伪冒" />
-		<item name="" title="第三方确认" />
+	    <item name="未设置" title="" />
+	    <item name="未收到" title="未收到" />
+		<item name="收到但尚未接受" title="收到但尚未接受" />
+		<item name="收到且接受" title="收到且接受" />
+		<item name="收到但不接受" title="收到但不接受" />
+		<item name="伪冒" title="伪冒" />
+		<item name="第三方确认" title="第三方确认" />
 	</dictionary>
 	
 	<dictionary name="INTR_QC" title="推荐人资格认定">
-	    <item name="" title="正常" />
-		<item name="" title="优秀推广员" />
-		<item name="" title="非在册推广员" />
-		<item name="" title="问题推广员" />
-		<item name="" title="已辞退推广员" />
+	    <item name="未设置" title="" />
+	    <item name="正常" title="正常" />
+		<item name="优秀推广员" title="优秀推广员" />
+		<item name="非在册推广员" title="非在册推广员" />
+		<item name="问题推广员" title="问题推广员" />
+		<item name="已辞退推广员" title="已辞退推广员" />
 	</dictionary>
 	
 	<dictionary name="INTR_RL" title="推荐人与申请人关系">
-	    <item name="" title="亲戚" />
-		<item name="" title="朋友" />
-		<item name="" title="同事" />
-		<item name="" title="客户" />
-		<item name="" title="其他" />
+	    <item name="未设置" title="" />
+	    <item name="亲戚" title="亲戚" />
+		<item name="朋友" title="朋友" />
+		<item name="同事" title="同事" />
+		<item name="客户" title="客户" />
+		<item name="其他" title="其他" />
 	</dictionary>
 	
 	<dictionary name="MAIL_TO" title="寄送地址">
@@ -541,10 +557,22 @@
 	</dictionary>
 	
 	<dictionary name="ADDR_TYPE" title="地址类型">
-	    <item name="" title="公司地址" />
-		<item name="" title="户籍地址" />
-		<item name="" title="家庭地址" />
-		<item name="" title="房产地址" />
+	    <item name="公司地址" title="公司地址" />
+		<item name="户籍地址" title="户籍地址" />
+		<item name="家庭地址" title="家庭地址" />
+		<item name="房产地址" title="房产地址" />
+	</dictionary>
+	
+	<dictionary name="APP_SOURCE" title="申请来源">
+	    <item name="0001 福州" title="0001 福州" />
+		<item name="0002 厦门" title="0002 厦门" />
+		<item name="0003 三明" title="0003 三明" />
+		<item name="0004 莆田" title="0004 莆田" />
+		<item name="0005 南平" title="0005 南平" />
+		<item name="0006 宁德" title="0006 宁德" />
+		<item name="0007 泉州" title="0007 泉州" />
+		<item name="0008 漳州" title="0008 漳州" />
+		<item name="0009 龙岩" title="0009 龙岩" />
 	</dictionary>
 	
 	<!-- xm_appln 数据字典结束 -->

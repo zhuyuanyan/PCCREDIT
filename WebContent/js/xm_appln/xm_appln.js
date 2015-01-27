@@ -94,11 +94,11 @@ function addCard(){
 								"<td class='label'>递送方式</td>"+
 								"<td>"+
 									"<select name='cdespmtd"+(i+1)+"'>"+
-										"<option>到收件网点领取</option>"+
-										"<option>快递给持卡人</option>"+
-										"<option>重发卡暂不递送-信用原因</option>"+
-										"<option>暂不递送-持卡人再境外</option>"+
-										"<option>寄往指定地址</option>"+
+										"<option value='到收件网点领取'>到收件网点领取</option>"+
+										"<option value='快递给持卡人'>快递给持卡人</option>"+
+										"<option value='重发卡暂不递送-信用原因'>重发卡暂不递送-信用原因</option>"+
+										"<option value='暂不递送-持卡人再境外'>暂不递送-持卡人再境外</option>"+
+										"<option value='寄往指定地址'>寄往指定地址</option>"+
 									"</select>"+
 								"</td>"+
 							"</tr>"+
@@ -106,22 +106,22 @@ function addCard(){
 								"<td class='label'>递送费用</td>"+
 								"<td>"+
 									"<select name='courierf"+(i+1)+"' class='small'>"+
-										"<option>无</option>"+
-										"<option>同城</option>"+
-										"<option>外地</option>"+
-										"<option>境外</option>"+
+										"<option value='无'>无</option>"+
+										"<option value='同城'>同城</option>"+
+										"<option value='外地'>外地</option>"+
+										"<option value='境外'>境外</option>"+
 									"</select>"+
 								"</td>"+
 								"<td class='label'>卡片版面</td>"+
 								"<td>"+
 									"<select name='cdfrm"+(i+1)+"'>"+
-										"<option>标准卡版面</option>"+
-										"<option>60周年卡表面</option>"+
-										"<option>晋江金翼主题卡版面</option>"+
-										"<option>福州藏天园卡</option>"+
-										"<option>泉州渔贷卡</option>"+
-										"<option>泉州农贷卡</option>"+
-										"<option>泉州商贷卡</option>"+
+										"<option value='A'>标准卡版面</option>"+
+										"<option value='B'>60周年卡表面</option>"+
+										"<option value='C'>晋江金翼主题卡版面</option>"+
+										"<option value='D'>福州藏天园卡</option>"+
+										"<option value='E'>泉州渔贷卡</option>"+
+										"<option value='F'>泉州农贷卡</option>"+
+										"<option value='G'>泉州商贷卡</option>"+
 									"</select>"+
 								"</td>"+
 							"</tr>"+

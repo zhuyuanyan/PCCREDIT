@@ -9,6 +9,25 @@
 	</div>
 </div>
 <form id="id_module_form" action="${contextPath}/customer/basiccustomerinforCreate/insert.json">
+	<!--*************************************************************证件号码*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>证件号码</td>
+				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="">
+			<table class="message">
+				<tr>
+					<td class="label" style="width:12%">证件号码<font color="#ff0000">*</font></td>
+					<td>
+						<input type="text" class="text mast" name="card_id" maxlength=32 onchange="changeBg(this)"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
 <!--*************************************************************基本资料*************************************************************-->
 	<div class="box">
 		<table class="title" onclick="Open(this)">
@@ -27,7 +46,7 @@
 					<td class="label">证件类型<font color="#ff0000">*</font></td>
 					<td>
 						<select name="race_code">
-							#dict("RACE_CODE","")
+							#dict("RACE_CODE",$null)
 						</select>
 					</td>
 					<td class="label">语言</td>
@@ -55,8 +74,7 @@
 					<td class="label">婚姻状况<font color="#ff0000">*</font></td>
 					<td>
 						<select name="mar_status" class="mast">
-							<option></option>
-							#dict("MAR_STATUS","")
+							#dict("MAR_STATUS",$null)
 						</select>
 					</td>
 					<td class="label">手机<font color="#ff0000">*</font></td>
@@ -87,14 +105,13 @@
 					<td class="label">国籍</td>
 					<td>
 						<select name="nation">
-							#dict("NATION","")
+							#dict("NATION",$null)
 						</select>
 					</td>
 					<td class="label">国籍细分代码</td>
 					<td colspan="3">
 						<select name="nation_cd">
-							<option></option>
-							#dict("NATION_CD","")
+							#dict("NATION_CD",$null)
 						</select>
 					</td>
 				</tr>
@@ -102,15 +119,13 @@
 					<td class="label">教育程度</td>
 					<td>
 						<select name="educa">
-							<option></option>
-							#dict("EDUCA","")
+							#dict("EDUCA",$null)
 						</select>
 					</td>
 					<td class="label">住房情况</td>
 					<td colspan="3">
 						<select name="home_code">
-							<option></option>
-							#dict("HOME_CODE","")
+							#dict("HOME_CODE",$null)
 						</select>
 					</td>
 				</tr>
@@ -118,8 +133,7 @@
 					<td class="label">收入来源</td>
 					<td>
 						<select name="income_src">
-							<option></option>
-							#dict("INCOME_SRC","")
+							#dict("INCOME_SRC",$null)
 						</select>
 					</td>
 					<td class="label">抚养人数</td>
@@ -159,15 +173,13 @@
 					<td class="label">单位属性</td>
 					<td>
 						<select name="occ_catgry">
-							<option></option>
-							#dict("OCC_CATGRY","")
+							#dict("OCC_CATGRY",$null)
 						</select>
 					</td>
 					<td class="label">职务/岗位</td>
 					<td>
 						<select name="int_taxcod">
-							<option></option>
-							#dict("INT_TAXCOD","")
+							#dict("INT_TAXCOD",$null)
 						</select>
 					</td>
 					<td class="label">税前年收入(万)</td>
@@ -223,8 +235,7 @@
 					<td class="label">可接受广告类别</td>
 					<td>
 						<select name="mail_code" class="long">
-							<option></option>
-							#dict("MAIL_CODE","")
+							#dict("MAIL_CODE",$null)
 						</select>
 					</td>
 					<td class="label">工作时间联系</td>
@@ -269,22 +280,19 @@
 					<td class="label">客户类别</td>
 					<td>
 						<select name="class_code">
-							<option></option>
-							#dict("CLASS_CODE","")
+							#dict("CLASS_CODE",$null)
 						</select>
 					</td>
 					<td class="label">客户风险级别</td>
 					<td>
 						<select name="risk_levl">
-							<option></option>
-							#dict("RISK_LEVL","")
+							#dict("RISK_LEVL",$null)
 						</select>
 					</td>
 					<td class="label">客户价值级别</td>
 					<td>
 						<select name="value_levl">
-							<option></option>
-							#dict("VALUE_LEVL","")
+							#dict("VALUE_LEVL",$null)
 						</select>
 					</td>
 				</tr>
@@ -339,9 +347,8 @@
 					</td>
 					<td class="label">收入来源</td>
 					<td>
-						<select name="income_sr2">
-							<option></option>
-							#dict("INCOME_SRC","")
+						<select name="spu_income_src">
+							#dict("INCOME_SRC",$null)
 						</select>
 					</td>
 				</tr>
@@ -352,7 +359,7 @@
 					</td>
 					<td class="label">工龄(年)</td>
 					<td>
-						<input type="text" class="text" name="spu_yr_in_com" maxlength="3"/>
+						<input type="text" class="text" name="spu_yr_in_comp" maxlength="3"/>
 					</td>
 					<td class="label">税前年收入(万)</td>
 					<td>
