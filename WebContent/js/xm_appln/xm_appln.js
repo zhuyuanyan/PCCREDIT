@@ -68,28 +68,28 @@ function addCard(){
 							"<tr>"+
 								"<td class='label'>是否凸字?</td>"+
 								"<td>"+
-									"<input type='checkbox' name='emboss_cd"+(i+1)+"'/>"+
+									"<input type='checkbox' value='1' name='emboss_cd"+(i+1)+"'/>"+
 								"</td>"+
 								"<td class='label'>需要PIN密信?</td>"+
 								"<td>"+
-									"<input type='checkbox' name='pin_reqd"+(i+1)+"'/>"+
+									"<input type='checkbox' value='1' name='pin_reqd"+(i+1)+"'/>"+
 								"</td>"+
 							"</tr>"+
 							
 							"<tr>"+
 								"<td class='label'>开通短信通知?</td>"+
 								"<td>"+
-									"<input type='checkbox' name='sms_yn"+(i+1)+"'/>"+
+									"<input type='checkbox' value='1' name='sms_yn"+(i+1)+"'/>"+
 								"</td>"+
 								"<td class='label'>消费需要密码?</td>"+
 								"<td>"+
-									"<input type='checkbox' name='pin_chk"+(i+1)+"'/>"+
+									"<input type='checkbox' value='1' name='pin_chk"+(i+1)+"'/>"+
 								"</td>"+
 							"</tr>"+
 							"<tr>"+
 								"<td class='label'>递送分行</td>"+
 								"<td>"+
-									"<input type='text' class='text small' name='cdesploc"+(i+1)+"' maxlength='4'/>"+
+									"<input type='text' class='text small' name='cdesploc"+(i+1)+"' value='0' maxlength='4'/>"+
 								"</td>"+
 								"<td class='label'>递送方式</td>"+
 								"<td>"+
@@ -138,29 +138,29 @@ function addCard(){
 							"<tr>"+
 								"<td class='label'>开通ATM转账</td>"+
 								"<td>"+
-									"<label><input type='radio' name='atm"+(i+1)+"' checked/>取产品新卡参数</label>"+
-									"<label><input type='radio' name='atm"+(i+1)+"' />不开通</label>"+
-									"<label><input type='radio' name='atm"+(i+1)+"' />开通</label>"+
+									"<label><input type='radio' value='MR' name='atm"+(i+1)+"' checked/>取产品新卡参数</label>"+
+									"<label><input type='radio' value='BKT' name='atm"+(i+1)+"' />不开通</label>"+
+									"<label><input type='radio' value='KT' name='atm"+(i+1)+"' />开通</label>"+
 								"</td>"+
 								"<td class='label'>开通电话转账</td>"+
 								"<td>"+
-									"<label><input type='radio' name='tele"+(i+1)+"' checked/>取产品新卡参数</label>"+
-									"<label><input type='radio' name='tele"+(i+1)+"' />不开通</label>"+
-									"<label><input type='radio' name='tele"+(i+1)+"' />开通</label>"+
+									"<label><input type='radio' value='MR' name='tele"+(i+1)+"' checked/>取产品新卡参数</label>"+
+									"<label><input type='radio' value='BKT' name='tele"+(i+1)+"' />不开通</label>"+
+									"<label><input type='radio' value='KT' name='tele"+(i+1)+"' />开通</label>"+
 								"</td>"+
 							"</tr>"+
 							"<tr>"+
 								"<td class='label'>开通网银转账</td>"+
 								"<td>"+
-									"<label><input type='radio' name='net"+(i+1)+"' checked/>取产品新卡参数</label>"+
-									"<label><input type='radio' name='net"+(i+1)+"' />不开通</label>"+
-									"<label><input type='radio' name='net"+(i+1)+"' />开通</label>"+
+									"<label><input type='radio' value='MR' name='net"+(i+1)+"' checked/>取产品新卡参数</label>"+
+									"<label><input type='radio' value='BKT' name='net"+(i+1)+"' />不开通</label>"+
+									"<label><input type='radio' value='KT' name='net"+(i+1)+"' />开通</label>"+
 								"</td>"+
 								"<td class='label'>开通手机转账</td>"+
 								"<td>"+
-									"<label><input type='radio' name='phone"+(i+1)+"' checked/>取产品新卡参数</label>"+
-									"<label><input type='radio' name='phone"+(i+1)+"' />不开通</label>"+
-									"<label><input type='radio' name='phone"+(i+1)+"' />开通</label>"+
+									"<label><input type='radio' value='MR' name='phone"+(i+1)+"' checked/>取产品新卡参数</label>"+
+									"<label><input type='radio' value='BKT' name='phone"+(i+1)+"' />不开通</label>"+
+									"<label><input type='radio' value='KT' name='phone"+(i+1)+"' />开通</label>"+
 								"</td>"+
 							"</tr>"+
 						"</table>"+

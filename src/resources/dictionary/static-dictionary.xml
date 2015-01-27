@@ -243,6 +243,23 @@
 		<item name="0" title="否" />
 	</dictionary>
 	
+	<dictionary name="CARDTYPE" title="证件类型">
+		<item name="0" title="身份证" />
+		<item name="1" title="户口簿" />
+		<item name="2" title="护照" />
+		<item name="3" title="军官证" />
+		<item name="4" title="士兵证" />
+		<item name="5" title="港澳居民来往内地通行证" />
+		<item name="6" title="台湾同胞来往内地通行证" />
+		<item name="7" title="临时身份证" />
+		<item name="8" title="外国人居留证" />
+		<item name="9" title="警官证" />
+		<item name="X" title="其它证件" />
+		<item name="A" title="香港身份证" />
+		<item name="B" title="澳门身份证" />
+		<item name="C" title="台湾身份证" />
+	</dictionary>
+	
 	<dictionary name="QueryReason" title="查询原因">
 		<item name="01" title="贷后管理" />
 		<item name="02" title="贷款审批" />
@@ -550,10 +567,10 @@
 	</dictionary>
 	
 	<dictionary name="MAIL_TO" title="寄送地址">
-	    <item name="1" title="地址1" />
-		<item name="2" title="地址2" />
-		<item name="3" title="地址3" />
-		<item name="4" title="地址4" />
+	    <item name="地址1" title="地址1" />
+		<item name="地址2" title="地址2" />
+		<item name="地址3" title="地址3" />
+		<item name="地址4" title="地址4" />
 	</dictionary>
 	
 	<dictionary name="ADDR_TYPE" title="地址类型">
@@ -573,6 +590,14 @@
 		<item name="0007 泉州" title="0007 泉州" />
 		<item name="0008 漳州" title="0008 漳州" />
 		<item name="0009 龙岩" title="0009 龙岩" />
+	</dictionary>
+	
+	<dictionary name="ID_VERIFY" title="身份核查标志">
+	    <item name="未设置" title="" />
+	</dictionary>
+	
+	<dictionary name="INTR_RECOM" title="推荐方式">
+	    <item name="未设置" title="" />
 	</dictionary>
 	
 	<!-- xm_appln 数据字典结束 -->
