@@ -5,7 +5,7 @@
 	</style>
 </head>
 <body>
-<form id="id_module_form" action="${contextPath}/customer/basiccustomerinforCreate/insert.json">
+<form id="id_module_form" action="${contextPath}/xm_appln/update_xm_appln_page1.json">
 <input type="hidden" id="id" name="customer_id" value="$!{customerId}" />
 	<!--*************************************************************证件号码*************************************************************-->
 	<div class="box">
@@ -20,7 +20,7 @@
 				<tr>
 					<td class="label" style="width:12%">证件号码<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text mast" name="card_id" value="$!xM_APPLN_JCZL.card_id" maxlength=32 onchange="changeBg(this)"/>
+						<input type="text" class="text mast" id="card_id" name="card_id" value="$!xM_APPLN_JCZL.card_id" maxlength=32 onchange="changeBg(this)"/>
 					</td>
 				</tr>
 			</table>
@@ -43,13 +43,13 @@
 					</td>
 					<td class="label">证件类型<font color="#ff0000">*</font></td>
 					<td>
-						<select name="race_code">
+						<select id="race_code" name="race_code">
 							#dict("RACE_CODE","$!xM_APPLN_JCZL.race_code")
 						</select>
 					</td>
 					<td class="label">语言</td>
 					<td>
-						<label><input type="radio" name="lang_code" value="2" #if($!xM_APPLN_JCZL.lang_code == '2') checked #end/>普通话</label>
+						<label><input type="radio" name="lang_code" value="2" #if(!$xM_APPLN_JCZL||!$xM_APPLN_JCZL.lang_code||$xM_APPLN_JCZL.lang_code==''||$!xM_APPLN_JCZL.lang_code == '2') checked #end/>普通话</label>
 						<label><input type="radio" name="lang_code" value="1" #if($!xM_APPLN_JCZL.lang_code == '1') checked #end/>英语</label>
 					</td>
 				</tr>
@@ -64,7 +64,7 @@
 					</td>
 					<td class="label">性别<font color="#ff0000">*</font></td>
 					<td>
-						<label><input type="radio" name="gender" value="M" #if($!xM_APPLN_JCZL.gender == 'M') checked #end/>男</label>
+						<label><input type="radio" name="gender" value="M" #if(!$xM_APPLN_JCZL||!$xM_APPLN_JCZL.gender||$xM_APPLN_JCZL.gender==''||$!xM_APPLN_JCZL.gender == 'M') checked #end/>男</label>
 						<label><input type="radio" name="gender" value="F" #if($!xM_APPLN_JCZL.gender == 'F') checked #end/>女</label>
 					</td>
 				</tr>
@@ -81,7 +81,7 @@
 					</td>
 					<td class="label">称谓</td>
 					<td>
-						<label><input type="radio" name="title_inp" value="1" #if($!xM_APPLN_JCZL.title_inp == '1') checked #end/>先生</label>
+						<label><input type="radio" name="title_inp" value="1" #if(!$xM_APPLN_JCZL||!$xM_APPLN_JCZL.title_inp||$xM_APPLN_JCZL.title_inp==''||$!xM_APPLN_JCZL.title_inp == '1') checked #end/>先生</label>
 						<label><input type="radio" name="title_inp" value="2" #if($!xM_APPLN_JCZL.title_inp == '2') checked #end/>女士</label>
 					</td>
 				</tr>				
@@ -249,7 +249,7 @@
 					<td class="label">身份核查标志</td>
 					<td>
 						<select name="id_verify" class="long">
-							<option></option>
+							#dict("ID_VERIFY","$!xM_APPLN_KHFW.id_verify")
 						</select>
 					</td>
 					<td class="label">留存身份证复印件</td>
@@ -486,23 +486,61 @@
   #set ($formName = "'#id_module_form'")
 	#parse ("xm_appln/xm_appln_page1_validation.js")
 	
-	$(document).ready(function() {		
-		$("#id_save_button").click(function() {
-			//清空上一次验证
+	$(document).ready(function() {	
+		$("#card_id").change(function (){
+			 
+			$("#cardIde").remove();	
+			var race_code = $("select[name=race_code]").val();
+			if( race_code == "01"){
+				var card_id = $("#card_id").val();
+				if(card_id !=""){
+					var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
+				
+				     if(idReg.test(card_id)){
+				    	 $("#cardIde").remove();
+				        }else{
+					       $("input[name='card_id']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+				     }	
+			 	}
+			}
+		});
+		
+		$("#race_code").change(function(){
 			 $("#cardIde").remove();
-			
-				var cardType = $("select[name=cardType]").val();
-				if( cardType == "CST0000000000A"){
-			   
-				var cardId = $("#cardId").val();
-				if(cardId !=""){
+			var race_code = $("select[name=race_code]").val();
+			if( race_code == "CST0000000000A"){
+				var card_id = $("#card_id").val();
+				if(card_id !=""){
 				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
 			
-			     if(idReg.test(cardId)){
+			     if(idReg.test(card_id)){
 			    	 $("#cardIde").remove();	
 			       
 			        }else{
-				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+				       $("input[name='card_id']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+			     }	
+				 }	
+				
+			}
+			
+		});
+	});
+		function onSave() {
+			//清空上一次验证
+			 $("#cardIde").remove();
+			
+				var race_code = $("select[name=race_code]").val();
+				if( race_code == "01"){
+			   
+				var card_id = $("#card_id").val();
+				if(card_id !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
+			
+			     if(idReg.test(card_id)){
+			    	 $("#cardIde").remove();	
+			       
+			        }else{
+				       $("input[name='card_id']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
 			     }	
 				 }
 				
@@ -512,72 +550,18 @@
 	    	if(leng > 0){
 	    		return;
 	    	}else{
-	    	  if ($($formName).valid()) {
-	   	          var formjson = $($formName).serialize();
-	   	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-	   	            if (data.success) {
-	   	            	Dialog.message("保存成功!");
-	   	            	window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
-	   	            }
-	   	          });
-	   	        }
+	    		if ($($formName).valid()) {
+			          var formjson = $($formName).serialize();
+			          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+			            if (data.success) {
+			            	Dialog.message("保存成功!");
+			            	window.location.reload();
+			            }
+			          });
+			        }
 	    	}
 	       
-	      });
-		$("#cardId").change(function (){
-			 
-			 $("#cardIde").remove();	
-			var cardType = $("select[name=cardType]").val();
-			if( cardType == "CST0000000000A"){
-		   
-			var cardId = $("#cardId").val();
-			if(cardId !=""){
-			var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
-		
-		     if(idReg.test(cardId)){
-		    	 $("#cardIde").remove();	
-		       
-		        }else{
-			       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
-		     }	
-			 }
-			
-			}
-			});
-		
-		$("#cardType").change(function(){
-			 $("#cardIde").remove();
-			var cardType = $("select[name=cardType]").val();
-			if( cardType == "CST0000000000A"){
-				var cardId = $("#cardId").val();
-				if(cardId !=""){
-				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
-			
-			     if(idReg.test(cardId)){
-			    	 $("#cardIde").remove();	
-			       
-			        }else{
-				       $("input[name='cardId']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
-			     }	
-				 }	
-				
-			}
-			
-		});
-		
-	});
-  
-	  function onSave(){
-			if ($($formName).valid()) {
-		          var formjson = $($formName).serialize();
-		          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-		            if (data.success) {
-		            	Dialog.message("保存成功!");
-		            	window.location.reload();
-		            }
-		          });
-		        }
-		}
+	      }
 	
   </script>
 </body>

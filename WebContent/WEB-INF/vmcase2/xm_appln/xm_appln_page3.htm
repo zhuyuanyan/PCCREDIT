@@ -5,7 +5,7 @@
 	</style>
 </head>
 <body>
-<form id="id_module_form" action="${contextPath}/customer/basiccustomerinforUpdate/update_xm_appln_page3.json">
+<form id="id_module_form" action="${contextPath}/xm_appln/update_xm_appln_page3.json">
 <input type="hidden" id="id" name="customer_id" value="$!{customerId}" />
 	<div class="information">
 	<!--*************************************************************申请人信息*************************************************************-->
@@ -95,7 +95,7 @@
 				<td class="label">推荐方式</td>
 				<td colspan="3">
 					<select name="intr_recom" style="width:270px">
-						<option></option>
+						#dict("INTR_RECOM","$!xM_APPLN_TJINFO.intr_recom")
 					</select>
 				</td>
 			</tr>
@@ -154,7 +154,7 @@
 				<td class="label">寄送地址<font color="#ff0000">*</font></td>
 				<td colspan="5">
 					<select name="mail_to">
-						#dict("MAIL_TO","$!xM_APPLN_ADDR.mail_to")
+						#dict("MAIL_TO","$!xM_APPLN.mail_to")
 					</select>
 				</td>
 			</tr>

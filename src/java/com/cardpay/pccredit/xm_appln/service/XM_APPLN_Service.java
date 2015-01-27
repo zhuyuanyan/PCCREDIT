@@ -46,6 +46,7 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXQSZL;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_ADDR_FORM;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_FORM;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_JBZL_FORM;
+import com.cardpay.pccredit.xm_appln.web.XM_APPLN_NEW_CUSTOMER_FORM;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.modules.privilege.model.User;
@@ -101,11 +102,39 @@ public class XM_APPLN_Service {
 	
 	/**
 	 * 插入数据
-	 * @param 基本资料
+	 * @param 基本资料page0
+	 * @return
+	 */
+	public String insertXM_APPLN_NEW_CUSTOMER(String customerId,XM_APPLN_NEW_CUSTOMER_FORM xM_APPLN_NEW_CUSTOMER_FORM,User user){
+		if(customerId == null){
+			CustomerInfor customerinfor = new CustomerInfor();
+			customerinfor.setCreatedBy(user.getId());
+			customerinfor.setUserId(user.getId());
+			customerinfor.setChineseName(xM_APPLN_NEW_CUSTOMER_FORM.getSurname());
+			customerinfor.setPinyinenglishName(Cn2Spell.converterToSpell(xM_APPLN_NEW_CUSTOMER_FORM.getSurname()));
+			customerinfor.setNationality("NTC00000000156");//中国
+			customerinfor.setCardType("CST0000000000A");//身份证
+			customerinfor.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());//身份证
+			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("1")?"Male":"Female");
+			customerId = customerInforService.insertCustomerInfor(customerinfor);
+		}
+		
+		XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_NEW_CUSTOMER_FORM.createXM_APPLN_JCZL(customerId,user.getId());
+		XM_APPLN_POZL xM_APPLN_POZL = xM_APPLN_NEW_CUSTOMER_FORM.createXM_APPLN_POZL(customerId,user.getId());
+		
+		insertOrUpdateXM_APPLN_JCZL(xM_APPLN_JCZL);
+		insertOrUpdateXM_APPLN_POZL(xM_APPLN_POZL);
+		
+		return customerId;
+	}
+	
+	/**
+	 * 插入数据
+	 * @param 基本资料page1
 	 * @return
 	 */
 	public String insertXM_APPLN_JBZL(String customerId,XM_APPLN_JBZL_FORM xM_APPLN_JBZL_FORM,User user){
-		if(customerId == null){
+		/*if(customerId == null){
 			CustomerInfor customerinfor = new CustomerInfor();
 			customerinfor.setCreatedBy(user.getId());
 			customerinfor.setUserId(user.getId());
@@ -116,7 +145,7 @@ public class XM_APPLN_Service {
 			customerinfor.setCardId(xM_APPLN_JBZL_FORM.getCard_id());//身份证
 			customerinfor.setSex(xM_APPLN_JBZL_FORM.getGender().equals("1")?"Male":"Female");
 			customerId = customerInforService.insertCustomerInfor(customerinfor);
-		}
+		}*/
 		
 		//CustomerInfor customerinfor = xM_APPLN_JBZL_FORM.createModel(XM_APPLN_JBZL_FORM.class);
 		XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_JBZL_FORM.createXM_APPLN_JCZL(customerId,user.getId());

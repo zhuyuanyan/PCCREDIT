@@ -19,9 +19,8 @@
               </li>
               <li class="rhzx_li">
                 <span>证件类型：
-                	<select id="type" name="cardType" disabled>
-	                   <option value="">请选择...</option>
-	                   #dict("CARDTYPE", $!customerInfor.cardType)
+                	<select id="type" name="cardpay" disabled>
+	                   #dict("CARDTYPE", $null)
                   	</select>
                   </span>
               </li>
@@ -34,21 +33,21 @@
               <li class="rhzx_li">
                 <span>查询原因：
                 	<select id="QueryReason" name="QueryReason">
-	                   #dict("QueryReason","")
+	                   #dict("QueryReason",$null)
                   	</select>
                   </span>
               </li>
               <li class="rhzx_li">
                 <span>查询类型：
                 	<select id="QueryType" name="QueryType">
-	                   #dict("QueryType","")
+	                   #dict("QueryType",$null)
                   	</select>
                   </span>
               </li>
               <li class="rhzx_li">
                 <span>查询类型：
                 	<select id="Vertype" name="Vertype">
-	                   #dict("Vertype","")
+	                   #dict("Vertype",$null)
                   	</select>
                   </span>
               </li>

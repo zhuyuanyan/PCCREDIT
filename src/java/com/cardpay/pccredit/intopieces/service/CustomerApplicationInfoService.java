@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationInfoDao;
+import com.cardpay.pccredit.intopieces.filter.CustomerApplicationInfoFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
@@ -29,6 +30,7 @@ public class CustomerApplicationInfoService {
 	public void delete(String id) {
 		commonDao.deleteObject(CustomerApplicationInfo.class, id);
 	}
+	
 	/**
 	 * 统计拒绝进件条数
 	 * @return

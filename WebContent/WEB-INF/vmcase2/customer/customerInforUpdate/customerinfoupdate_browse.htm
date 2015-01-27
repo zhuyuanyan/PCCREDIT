@@ -96,7 +96,9 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		opsObj.createUrl1 = "${contextPath}/customer/basiccustomerinforUpdate/changewh.page";
+		//改为xm_appln版本
+		//opsObj.createUrl1 = "${contextPath}/customer/basiccustomerinforUpdate/changewh.page";
+		opsObj.createUrl1 = "${contextPath}/xm_appln/changewh_xm_appln.page";
 		opsObj.createUrl = "${contextPath}/customer/basiccustomerinforUpdate/create.page";
 		opsObj.displayUrl = "${contextPath}/customer/basiccustomerinfor/displayclone.page?applicationId = '1000'";
 		opsObj.changeUrl = "${modulePath}/change.page";

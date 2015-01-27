@@ -5,7 +5,7 @@
 	</style>
 </head>
 <body>
-<form id="id_module_form" action="${contextPath}/customer/basiccustomerinforUpdate/update_xm_appln_page2.json">
+<form id="id_module_form" action="${contextPath}/xm_appln/update_xm_appln_page2.json">
 <input type="hidden" id="id" name="customer_id" value="$!{customerId}" />
 <!--*************************************************************基本资料*************************************************************-->
 	<div class="box">
@@ -48,7 +48,7 @@
 					</td>
 					<td class="label">收取快速发卡费?</td>
 					<td>
-						<input type="checkbox" name="rush_fee" value="$!xM_APPLN.rush_fee"/>
+						<input type="checkbox" name="rush_fee" value="1" #if($!xM_APPLN.rush_fee == '1') checked #end/>
 					</td>
 				</tr>
 				<tr>
@@ -281,7 +281,11 @@
 						<tr>
 							<td class="label">递送分行<font color="#ff0000">*</font></td>
 							<td>
+								#if(!$xM_APPLN_KPMX_ls.get(0) || !$xM_APPLN_KPMX_ls.get(0).cdesploc || $xM_APPLN_KPMX_ls.get(0).cdesploc=='')
+								<input type="text" class="text small" name="cdesploc1" value="0" maxlenght="4"/>
+								#else
 								<input type="text" class="text small" name="cdesploc1" value="$!xM_APPLN_KPMX_ls.get(0).cdesploc" maxlenght="4"/>
+								#end
 							</td>
 							<td class="label">递送方式<font color="#ff0000">*</font></td>
 							<td>
@@ -380,7 +384,11 @@
 						<tr>
 							<td class="label">递送分行</td>
 							<td>
+								#if(!$xM_APPLN_KPMX_ls.get(1) || !$xM_APPLN_KPMX_ls.get(1).cdesploc || $xM_APPLN_KPMX_ls.get(1).cdesploc=='')
+								<input type="text" class="text small" name="cdesploc2" value="0" maxlenght="4"/>
+								#else
 								<input type="text" class="text small" name="cdesploc2" value="$!xM_APPLN_KPMX_ls.get(1).cdesploc" maxlenght="4"/>
+								#end
 							</td>
 							<td class="label">递送方式</td>
 							<td>
@@ -482,7 +490,11 @@
 						<tr>
 							<td class="label">递送分行</td>
 							<td>
+								#if(!$obj || !$obj.cdesploc || $obj.cdesploc=='')
+								<input type="text" class="text small" name="cdesploc$!{velocityCount}" value="0" maxlenght="4"/>
+								#else
 								<input type="text" class="text small" name="cdesploc$!{velocityCount}" value="$!obj.cdesploc" maxlenght="4"/>
+								#end
 							</td>
 							<td class="label">递送方式</td>
 							<td>
@@ -506,9 +518,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="label">PP卡号</td>
+							<td class="label">额度百分比</td>
 							<td>
-								<input type="text" class="text" name="ppno$!{velocityCount}" value="$!obj.ppno" maxlength="20"/>
+								<input type="text" class="text" name="cred_lmt$!{velocityCount}" value="$!obj.cred_lmt" maxlength="20"/>
 							</td>
 							<td class="label">预留暗语</td>
 							<td>
