@@ -6,9 +6,10 @@
 	<h1>客户信息新增</h1>
 	<div class="buttons"><!--按钮组放置区域-->
 		<input id="id_save_button" type="button" value="保存" class="button"/>
+		<input id="id_apply_button" type="button" value="申请" class="button"/>
 	</div>
 </div>
-<form id="id_module_form" action="${contextPath}/customer/basiccustomerinforCreate/insert.json">
+<form id="id_module_form" action="${contextPath}/xm_appln/xm_appln_page0_update.json">
 <!--*************************************************************基本资料*************************************************************-->
 	<div class="box">
 		<table class="title" onclick="Open(this)">
@@ -88,6 +89,7 @@
 	#parse ("xm_appln/xm_appln_page1_validation.js")
 	
 	$(document).ready(function() {		
+		//保存
 		$("#id_save_button").click(function() {
 			 //清空上一次验证
 			 $("#cardIde").remove();
@@ -115,6 +117,7 @@
 	    	}else{
 	    	  if ($($formName).valid()) {
 	   	          var formjson = $($formName).serialize();
+	   	         $($formName).attr("action",contextPath+"/xm_appln/xm_appln_page0_update.json")
 	   	          $.post($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	Dialog.message("保存成功!");
@@ -125,6 +128,47 @@
 	    	}
 	       
 	      });
+		
+		//申请
+		$("#id_apply_button").click(function() {
+			 //清空上一次验证
+			 $("#cardIde").remove();
+			
+				var race_code = $("select[name=race_code]").val();
+				if( race_code == "01"){
+			   
+				var card_id = $("#card_id").val();
+				if(card_id !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
+			
+			     if(idReg.test(card_id)){
+			    	 $("#cardIde").remove();	
+			       
+			        }else{
+				       $("input[name='card_id']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
+			     }	
+				 }
+				
+				}
+			var leng = 0;
+	    	 leng = $("#cardIde").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+	    	  if ($($formName).valid()) {
+	   	          var formjson = $($formName).serialize();
+	   	       	  $($formName).attr("action",contextPath+"/xm_appln/xm_appln_page0_apply.json")
+	   	          $.post($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	Dialog.message("保存成功!");
+	   	            	window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	   	            }
+	   	          });
+	   	        }
+	    	}
+	       
+	      });
+		
 		$("#card_id").change(function (){
 			 
 			 $("#cardIde").remove();	

@@ -28,6 +28,7 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -97,11 +98,79 @@ public class XM_APPLN_Controller extends BaseController {
 	private CustomerInforService customerInforservice;
 	
 	@Autowired
+	private CustomerApplicationInfoService customerApplicationInfoService;
+	
+	@Autowired
 	private ProcessService processService;
 	
 	@Autowired
 	private XM_APPLN_Service xM_APPLN_Service;
 	
+	//跳转到page0
+	@ResponseBody
+	@RequestMapping(value = "xm_appln_page0.page")
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView xm_appln_page0(HttpServletRequest request) {        
+		//JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page1", request);
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page0", request);
+		return mv;
+	}
+	
+	//page0保存
+	@ResponseBody
+	@RequestMapping(value = "xm_appln_page0_update.json")
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap xm_appln_page0_update(@ModelAttribute XM_APPLN_NEW_CUSTOMER_FORM xM_APPLN_NEW_CUSTOMER_FORM, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				String customerId = request.getParameter("customer_id");
+				customerId = xM_APPLN_Service.insertXM_APPLN_NEW_CUSTOMER(customerId,xM_APPLN_NEW_CUSTOMER_FORM,user);
+				returnMap.put(RECORD_ID, customerId);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
+	//page0申请
+	@ResponseBody
+	@RequestMapping(value = "xm_appln_page0_apply.json")
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap xm_appln_page0_apply(@ModelAttribute XM_APPLN_NEW_CUSTOMER_FORM xM_APPLN_NEW_CUSTOMER_FORM, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				String customerId = request.getParameter("customer_id");
+				customerId = xM_APPLN_Service.insertXM_APPLN_NEW_CUSTOMER(customerId,xM_APPLN_NEW_CUSTOMER_FORM,user);
+				
+				//设置流程开始
+				saveOrUpdatexm_appln_page4(customerId);
+				
+				returnMap.put(RECORD_ID, customerId);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
+	//跳转到iframe
 	@ResponseBody
 	@RequestMapping(value = "changewh_xm_appln.page")
 	@JRadOperation(JRadOperation.MAINTENANCE)
@@ -435,7 +504,8 @@ public class XM_APPLN_Controller extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				String customer_id = request.getParameter("customer_id");
-				this.saveOrUpdatexm_appln_page4(customer_id);
+				//设置审批金额
+				//CustomerApplicationInfo customerApplicationInfo = customerApplicationInfoService.
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			}catch (Exception e) {
 				return WebRequestHelper.processException(e);
@@ -450,6 +520,10 @@ public class XM_APPLN_Controller extends BaseController {
 		//customerApplicationInfo.setStatus(status);
 		customerApplicationInfo.setId(IDGenerator.generateID());
 		XM_APPLN_SQED xM_APPLN_SQED = xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customer_id);
+		if(xM_APPLN_SQED==null||xM_APPLN_SQED.getCrdlmt_req()==null||xM_APPLN_SQED.getCrdlmt_req().equals("")){
+			xM_APPLN_SQED.setCrdlmt_req("0");
+		}
+		customerApplicationInfo.setCustomerId(customer_id);
 		customerApplicationInfo.setApplyQuota(xM_APPLN_SQED.getCrdlmt_req());//设置额度
 		customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
 		commonDao.insertObject(customerApplicationInfo);
