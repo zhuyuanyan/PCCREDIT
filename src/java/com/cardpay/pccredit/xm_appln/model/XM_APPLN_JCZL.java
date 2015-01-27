@@ -23,6 +23,7 @@ public class XM_APPLN_JCZL extends BusinessModel {
 
 	private String customer_id;
 	private String surname;
+	private String card_id;
 	private String race_code;
 	private String lang_code;
 	private String dob_input;
@@ -259,5 +260,10 @@ public class XM_APPLN_JCZL extends BusinessModel {
 	public void setSecur_nbr(String secur_nbr) {
 		this.secur_nbr = secur_nbr;
 	}
-
+	public String getCard_id() {
+		return card_id;
+	}
+	public void setCard_id(String card_id) {
+		this.card_id = card_id;
+	}
 }

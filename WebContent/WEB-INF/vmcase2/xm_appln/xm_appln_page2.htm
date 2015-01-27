@@ -36,7 +36,9 @@
 				<tr>
 					<td class="label">申请来源<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text" name="app_source" value="$!xM_APPLN.app_source"/>
+						<select name="app_source">
+							#dict("APP_SOURCE","$!xM_APPLN.app_source")
+						</select>
 					</td>
 					<td class="label">利率代码<font color="#ff0000">*</font></td>
 					<td>
@@ -70,7 +72,11 @@
 					</td>
 					<td class="label">分行<font color="#ff0000">*</font></td>
 					<td>
+						#if(!$xM_APPLN || !$xM_APPLN.branch || $xM_APPLN.branch=='')
+						<input type="text" class="text" name="branch" value="2404" maxlength="4"/>
+						#else
 						<input type="text" class="text" name="branch" value="$!xM_APPLN.branch" maxlength="4"/>
+						#end
 					</td>
 					<td class="label">分行名称</td>
 					<td>
@@ -90,7 +96,11 @@
 					</td>
 					<td class="label">收件分行<font color="#ff0000">*</font></td>
 					<td>
+						#if(!$xM_APPLN || !$xM_APPLN.ab_branch || $xM_APPLN.ab_branch=='')
+						<input type="text" class="text" name="ab_branch" value="0" maxlength="4"/>
+						#else
 						<input type="text" class="text small" name="ab_branch" value="$!xM_APPLN.ab_branch" maxlength="4"/>
+						#end
 					</td>
 				</tr>
 				<tr>
@@ -118,11 +128,19 @@
 					</td>
 					<td class="label">自动分期期数<font color="#ff0000">*</font></td>
 					<td>
+						#if(!$xM_APPLN || !$xM_APPLN.cp_nbrmth || $xM_APPLN.cp_nbrmth=='')
+						<input type="text" class="text" name="cp_nbrmth" value="0" maxlength="2"/>
+						#else
 						<input type="text" class="text" name="cp_nbrmth" value="$!xM_APPLN.cp_nbrmth" maxlength="2"/>
+						#end
 					</td>
 					<td class="label">借记卡开户分行号<font color="#ff0000">*</font></td>
 					<td>
+						#if(!$xM_APPLN || !$xM_APPLN.debit_brn || $xM_APPLN.debit_brn=='')
+						<input type="text" class="text" name="debit_brn" value="0" maxlength="4"/>
+						#else
 						<input type="text" class="text small" name="debit_brn" value="$!xM_APPLN.debit_brn" maxlength="4"/>
+						#end
 					</td>
 				</tr>
 				<tr>
@@ -299,13 +317,13 @@
 						<tr>
 							<td class="label">开通ATM转账</td>
 							<td>
-								<label><input type="radio" name="atm1" value="MR" #if($!xM_APPLN_KPMX_ls.get(0).atm == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="atm1" value="MR" #if(!$xM_APPLN_KPMX_ls.get(0)||!$xM_APPLN_KPMX_ls.get(0).atm||$xM_APPLN_KPMX_ls.get(0).atm==''||$!xM_APPLN_KPMX_ls.get(0).atm == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="atm1" value="BKT" #if($!xM_APPLN_KPMX_ls.get(0).atm == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="atm1" value="KT" #if($!xM_APPLN_KPMX_ls.get(0).atm == 'KT') checked #end/>开通</label>
 							</td>
 							<td class="label">开通电话转账</td>
 							<td>
-								<label><input type="radio" name="tele1" value="MR" #if($!xM_APPLN_KPMX_ls.get(0).tele == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="tele1" value="MR" #if(!$xM_APPLN_KPMX_ls.get(0)||!$xM_APPLN_KPMX_ls.get(0).tele||$xM_APPLN_KPMX_ls.get(0).tele==''||$!xM_APPLN_KPMX_ls.get(0).tele == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="tele1" value="BKT" #if($!xM_APPLN_KPMX_ls.get(0).tele == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="tele1" value="KT" #if($!xM_APPLN_KPMX_ls.get(0).tele == 'KT') checked #end/>开通</label>
 							</td>
@@ -313,13 +331,13 @@
 						<tr>
 							<td class="label">开通网银转账</td>
 							<td>
-								<label><input type="radio" name="net1" value="MR" #if($!xM_APPLN_KPMX_ls.get(0).net == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="net1" value="MR" #if(!$xM_APPLN_KPMX_ls.get(0)||!$xM_APPLN_KPMX_ls.get(0).net||$xM_APPLN_KPMX_ls.get(0).net==''||$!xM_APPLN_KPMX_ls.get(0).net == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="net1" value="BKT" #if($!xM_APPLN_KPMX_ls.get(0).net == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="net1" value="KT" #if($!xM_APPLN_KPMX_ls.get(0).net == 'KT') checked #end/>开通</label>
 							</td>
 							<td class="label">开通手机转账</td>
 							<td>
-								<label><input type="radio" name="phone1" value="MR" #if($!xM_APPLN_KPMX_ls.get(0).phone == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="phone1" value="MR" #if(!$xM_APPLN_KPMX_ls.get(0)||!$xM_APPLN_KPMX_ls.get(0).phone||$xM_APPLN_KPMX_ls.get(0).phone==''||$!xM_APPLN_KPMX_ls.get(0).phone == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="phone1" value="BKT" #if($!xM_APPLN_KPMX_ls.get(0).phone == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="phone1" value="KT" #if($!xM_APPLN_KPMX_ls.get(0).phone == 'KT') checked #end/>开通</label>
 							</td>
@@ -398,13 +416,13 @@
 						<tr>
 							<td class="label">开通ATM转账</td>
 							<td>
-								<label><input type="radio" name="atm2" value="MR" #if($!xM_APPLN_KPMX_ls.get(1).atm == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="atm2" value="MR" #if(!$xM_APPLN_KPMX_ls.get(1)||!$xM_APPLN_KPMX_ls.get(1).atm||$xM_APPLN_KPMX_ls.get(1).atm==''||$!xM_APPLN_KPMX_ls.get(1).atm == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="atm2" value="BKT" #if($!xM_APPLN_KPMX_ls.get(1).atm == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="atm2" value="KT" #if($!xM_APPLN_KPMX_ls.get(1).atm == 'KT') checked #end/>开通</label>
 							</td>
 							<td class="label">开通电话转账</td>
 							<td>
-								<label><input type="radio" name="tele2" value="MR" #if($!xM_APPLN_KPMX_ls.get(1).tele == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="tele2" value="MR" #if(!$xM_APPLN_KPMX_ls.get(1)||!$xM_APPLN_KPMX_ls.get(1).tele||$xM_APPLN_KPMX_ls.get(1).tele==''||$!xM_APPLN_KPMX_ls.get(1).tele == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="tele2" value="BKT" #if($!xM_APPLN_KPMX_ls.get(1).tele == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="tele2" value="KT" #if($!xM_APPLN_KPMX_ls.get(1).tele == 'KT') checked #end/>开通</label>
 							</td>
@@ -412,13 +430,13 @@
 						<tr>
 							<td class="label">开通网银转账</td>
 							<td>
-								<label><input type="radio" name="net2" value="MR" #if($!xM_APPLN_KPMX_ls.get(1).net == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="net2" value="MR" #if(!$xM_APPLN_KPMX_ls.get(1)||!$xM_APPLN_KPMX_ls.get(1).net||$xM_APPLN_KPMX_ls.get(1).net==''||$!xM_APPLN_KPMX_ls.get(1).net == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="net2" value="BKT" #if($!xM_APPLN_KPMX_ls.get(1).net == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="net2" value="KT" #if($!xM_APPLN_KPMX_ls.get(1).net == 'KT') checked #end/>开通</label>
 							</td>
 							<td class="label">开通手机转账</td>
 							<td>
-								<label><input type="radio" name="phone2" value="MR" #if($!xM_APPLN_KPMX_ls.get(1).phone == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="phone2" value="MR" #if(!$xM_APPLN_KPMX_ls.get(1)||!$xM_APPLN_KPMX_ls.get(1).phone||$xM_APPLN_KPMX_ls.get(1).phone==''||$!xM_APPLN_KPMX_ls.get(1).phone == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="phone2" value="BKT" #if($!xM_APPLN_KPMX_ls.get(1).phone == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="phone2" value="KT" #if($!xM_APPLN_KPMX_ls.get(1).phone == 'KT') checked #end/>开通</label>
 							</td>
@@ -500,13 +518,13 @@
 						<tr>
 							<td class="label">开通ATM转账</td>
 							<td>
-								<label><input type="radio" name="atm$!{velocityCount}" value="MR" #if($!obj.atm == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="atm$!{velocityCount}" value="MR" #if(!$obj||!$obj.atm||$!obj.atm==''||$!obj.atm == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="atm$!{velocityCount}" value="BKT" #if($!obj.atm == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="atm$!{velocityCount}" value="KT" #if($!obj.atm == 'KT') checked #end/>开通</label>
 							</td>
 							<td class="label">开通电话转账</td>
 							<td>
-								<label><input type="radio" name="tele$!{velocityCount}" value="MR" #if($!obj.tele == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="tele$!{velocityCount}" value="MR" #if(!$obj||!$obj.tele||$!obj.tele==''||$!obj.tele == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="tele$!{velocityCount}" value="BKT" #if($!obj.tele == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="tele$!{velocityCount}" value="KT" #if($!obj.tele == 'KT') checked #end/>开通</label>
 							</td>
@@ -514,13 +532,13 @@
 						<tr>
 							<td class="label">开通网银转账</td>
 							<td>
-								<label><input type="radio" name="net$!{velocityCount}" value="MR" #if($!obj.net == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="net$!{velocityCount}" value="MR" #if(!$obj||!$obj.net||$!obj.net==''||$!obj.net == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="net$!{velocityCount}" value="BKT" #if($!obj.net == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="net$!{velocityCount}" value="KT" #if($!obj.net == 'KT') checked #end/>开通</label>
 							</td>
 							<td class="label">开通手机转账</td>
 							<td>
-								<label><input type="radio" name="phone$!{velocityCount}" value="MR" #if($!obj.phone == 'MR') checked #end/>取产品新卡参数</label>
+								<label><input type="radio" name="phone$!{velocityCount}" value="MR" #if(!$obj||!$obj.phone||$!obj.phone==''||$!obj.phone == 'MR') checked #end/>取产品新卡参数</label>
 								<label><input type="radio" name="phone$!{velocityCount}" value="BKT" #if($!obj.phone == 'BKT') checked #end/>不开通</label>
 								<label><input type="radio" name="phone$!{velocityCount}" value="KT" #if($!obj.phone == 'KT') checked #end/>开通</label>
 							</td>
@@ -544,22 +562,22 @@
 		<div name="content" class="">
 			<table class="message">
 				<tr>
-					<td class="label">本币自扣还款方式<font color="#ff0000">*</font></td>
+					<td class="label">本币自扣还款方式</td>
 					<td>
 						<select name="repay_code" class="middle">
 							#dict("REPAY_CODE","$!xM_APPLN_HKSZ.repay_code")
 						</select>
 					</td>
-					<td class="label">账户<font color="#ff0000">*</font></td>
+					<td class="label">账户</td>
 					<td>
 						<input type="text" class="text" name="bankacct1" value="$!xM_APPLN_HKSZ.bankacct1" maxlength="20"/>
 					</td>
-					<td class="label">金额<font color="#ff0000">*</font></td>
+					<td class="label">金额</td>
 					<td>
 						<input type="text" class="text small" name="repay_amt" value="$!xM_APPLN_HKSZ.repay_amt" maxlength="11"/>
 					</td>
 					
-					<td class="label">百分比<font color="#ff0000">*</font></td>
+					<td class="label">百分比</td>
 					<td>
 						<input type="text" class="text mini" name="repay_pct" value="$!xM_APPLN_HKSZ.repay_pct" maxlength="2"/>
 					</td>
@@ -622,7 +640,7 @@
 		<div name="content" class="">
 			<table class="message">
 				<tr>
-					<td class="label">证件号码<font color="#ff0000">*</font></td>
+					<td class="label">证件号码</td>
 					<td>
 						<input type="text" class="text" name="guarn_id" value="$!xM_APPLN_DBXX.guarn_id" maxlength="19"/>
 					</td>
@@ -669,7 +687,7 @@
 					</td>
 					<td class="label">类型</td>
 					<td>
-						<label><input type="radio" name="xrefcode1" value="WU" #if($!xM_APPLN_QTXYKXX.xrefcode1 == 'WU') checked #end/>无</label>
+						<label><input type="radio" name="xrefcode1" value="WU" #if(!$xM_APPLN_QTXYKXX || !$xM_APPLN_QTXYKXX.xrefcode1 || $!xM_APPLN_QTXYKXX.xrefcode1 == 'WU') checked #end/>无</label>
 						<label><input type="radio" name="xrefcode1" value="BH" #if($!xM_APPLN_QTXYKXX.xrefcode1 == 'BH') checked #end/>本行</label>
 						<label><input type="radio" name="xrefcode1" value="TH" #if($!xM_APPLN_QTXYKXX.xrefcode1 == 'TH') checked #end/>他行</label>
 					</td>
@@ -685,7 +703,7 @@
 					</td>
 					<td class="label">类型</td>
 					<td colspan="3">
-						<label><input type="radio" name="xrefcode2" value="WU" #if($!xM_APPLN_QTXYKXX.xrefcode2 == 'WU') checked #end/>无</label>
+						<label><input type="radio" name="xrefcode2" value="WU" #if(!$xM_APPLN_QTXYKXX || !$xM_APPLN_QTXYKXX.xrefcode2 || $!xM_APPLN_QTXYKXX.xrefcode2 == 'WU') checked #end/>无</label>
 						<label><input type="radio" name="xrefcode2" value="BH" #if($!xM_APPLN_QTXYKXX.xrefcode2 == 'BH') checked #end/>本行</label>
 						<label><input type="radio" name="xrefcode2" value="TH" #if($!xM_APPLN_QTXYKXX.xrefcode2 == 'TH') checked #end/>他行</label>
 					</td>
@@ -730,7 +748,11 @@
 				<tr>
 					<td class="label">调查人工号<font color="#ff0000">*</font></td>
 					<td>
+						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.aval_nbr || $xM_APPLN_DCSC.aval_nbr=='')
+						<input type="text" class="text" name="aval_nbr" value="0" maxlength="6"/>
+						#else
 						<input type="text" class="text" name="aval_nbr" value="$!xM_APPLN_DCSC.aval_nbr" maxlength="6"/>
+						#end
 					</td>
 					<td class="label">调查人姓名</td>
 					<td>
@@ -740,7 +762,11 @@
 				<tr>
 					<td class="label">审核人工号<font color="#ff0000">*</font></td>
 					<td>
+						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.achk_nbr || $xM_APPLN_DCSC.achk_nbr=='')
+						<input type="text" class="text" name="achk_nbr" value="0" maxlength="6"/>
+						#else
 						<input type="text" class="text" name="achk_nbr" value="$!xM_APPLN_DCSC.achk_nbr" maxlength="6"/>
+						#end
 					</td>
 					<td class="label">审核人姓名</td>
 					<td>
@@ -750,7 +776,11 @@
 				<tr>
 					<td class="label">审批人工号<font color="#ff0000">*</font></td>
 					<td>
+						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.adec_nbr || $xM_APPLN_DCSC.adec_nbr=='')
+						<input type="text" class="text" name="adec_nbr" value="0" maxlength="6"/>
+						#else
 						<input type="text" class="text" name="adec_nbr" value="$!xM_APPLN_DCSC.adec_nbr" maxlength="6"/>
+						#end
 					</td>
 					<td class="label">审批人姓名</td>
 					<td>
