@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.UploadFileTool;
+import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
@@ -350,18 +351,23 @@ public class IntoPiecesService {
 			int id = Integer.valueOf(applicationDataImport.getId());
 			int length = Integer.valueOf(applicationDataImport.getFieldLength());
 			switch(id-1){
-			    case 0:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+				 //银行编号
+			    case 0:content = UploadFileTool.getContent(content,CustomerInforConstant.BANK_ID,length);break;
 			    case 1:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 2:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 3:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 4:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //申请卡片产品
+			    case 2:content = UploadFileTool.getContent(content,CustomerInforConstant.PRODUCT_ID,length);break;
+			    //主卡/副卡标志
+			    case 3:content = UploadFileTool.getContent(content,CustomerInforConstant.PRODUCT_STATUS,length);break;
+			    //申请流程状态标志
+			    case 4:content = UploadFileTool.getContent(content,CustomerInforConstant.APPROVE_STATUS,length);break;
 			    case 5:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 6:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //申请卡片费用类型
+			    case 6:content = UploadFileTool.getContent(content,CustomerInforConstant.PRODUCT_TYPE,length);break;
 			    case 7:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 8:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 9:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 10:
-			    	content = UploadFileTool.getContent(content,getDict(customerInfor.getNationality()).getItems().get(0).getTypeName(),length);
+			    	content = UploadFileTool.getContent(content,customerInfor.getNationality(),length);
 			    	break;
 			    case 11:content = UploadFileTool.getContent(content,customerInfor.getCardId(),length);break;
 			    case 12:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -370,9 +376,9 @@ public class IntoPiecesService {
 			    case 15:
 			    	if(customerInfor.getSex()!=null){
 				    	if(customerInfor.getSex().equals("Male")){
-				    		content = UploadFileTool.getContent(content,"男",length);
+				    		content = UploadFileTool.getContent(content,"M",length);
 				    	}else{
-				    		content = UploadFileTool.getContent(content,"女",length);
+				    		content = UploadFileTool.getContent(content,"F",length);
 				    	}
 			    	}
 			    	break;
@@ -382,12 +388,12 @@ public class IntoPiecesService {
 			    	content = UploadFileTool.getContent(content,birthday.toString(),length);
 			    	break;
 			    case 17:
-			    	content = UploadFileTool.getContent(content,getDict(customerInfor.getNationality()).getItems().get(0).getTypeName(),length);
+			    	content = UploadFileTool.getContent(content,customerInfor.getNationality(),length);
 			    	break;
 			    case 18:
-			    	content = UploadFileTool.getContent(content,getDict(customerInfor.getMaritalStatus()).getItems().get(0).getTypeName(),length);
+			    	content = UploadFileTool.getContent(content,customerInfor.getMaritalStatus(),length);
 			    	break;
-			    case 19:content = UploadFileTool.getContent(content,getDict(customerInfor.getDegreeEducation()).getItems().get(0).getTypeName(),length);break;
+			    case 19:content = UploadFileTool.getContent(content,customerInfor.getDegreeEducation(),length);break;
 			    case 20:content = UploadFileTool.getContent(content,customerCareersInformation.getTitle(),length);break;
 			    case 21:content = UploadFileTool.getContent(content,customerInfor.getHomePhone(),length);break;
 			    case 22:content = UploadFileTool.getContent(content,customerInfor.getTelephone(),length);break;
@@ -498,9 +504,9 @@ public class IntoPiecesService {
 			    case 126:
 			    	if(customerApplicationGuarantorList.get(0).getSex()!=null){
 			    		if(customerApplicationGuarantorList.get(0).getSex().equals("Male")){
-			    			content = UploadFileTool.getContent(content,"男",length);
+			    			content = UploadFileTool.getContent(content,"M",length);
 			    		}else{
-			    			content = UploadFileTool.getContent(content,"女",length);
+			    			content = UploadFileTool.getContent(content,"F",length);
 			    		}
 			    	}
 			    	break;
