@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -310,7 +311,21 @@ public class UploadFileTool {
 			e.printStackTrace();
 		}
 }
-
+	/**
+	 * 测试
+	 * @param fileName
+	 * @param content
+	 */
+	public static void create(String fileName,String content){
+		File f=new File("f:\\"+fileName);  
+		try  {
+			FileWriter fw=new FileWriter(f);
+			fw.write(content);
+			fw.close();
+		}catch(IOException e)  {
+			e.printStackTrace();
+		}
+	}
 	
 
 }
