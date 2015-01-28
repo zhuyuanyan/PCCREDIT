@@ -41,6 +41,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.AppendixDict;
@@ -105,6 +106,9 @@ public class CustomerApplicationIntopieceWaitController extends BaseController {
 	
 	@Autowired
 	private SystemConfigurationService systemConfigurationService;
+	
+	@Autowired
+	private CustomerApplicationProcessService customerApplicationProcessService;
 
 	/**
 	 * 浏览页面
@@ -260,7 +264,7 @@ public class CustomerApplicationIntopieceWaitController extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 			try {
 				String id = request.getParameter("id");
-				CustomerApplicationProcess process =  customerApplicationIntopieceWaitService.getProcessById(id);
+				CustomerApplicationProcess process =  customerApplicationProcessService.findById(id);
 				request.setAttribute("serialNumber", process.getSerialNumber());
 				request.setAttribute("applicationId", process.getApplicationId());
 				request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);

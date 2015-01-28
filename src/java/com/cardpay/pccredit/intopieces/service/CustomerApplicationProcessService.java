@@ -21,11 +21,18 @@ public class CustomerApplicationProcessService {
 	private CustomerApplicationProcessDao customerApplicationProcessDao;
 
 	/**
-	 * 统计拒绝进件条数
+	 * 根据appid获取
+	 * @return
+	 */
+	public CustomerApplicationProcess findByAppId(String appId){
+		return customerApplicationProcessDao.findByAppId(appId);
+	}
+
+	/**
+	 * 根据id
 	 * @return
 	 */
 	public CustomerApplicationProcess findById(String id){
 		return customerApplicationProcessDao.findById(id);
 	}
-
 }

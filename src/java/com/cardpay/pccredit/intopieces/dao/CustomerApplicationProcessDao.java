@@ -21,8 +21,8 @@ public interface CustomerApplicationProcessDao {
 
     int updateByPrimaryKey(CustomerApplicationInfo record);
     
-    /*
-     * 查询符合条件的记录数
-     */
+  
+    public CustomerApplicationProcess findByAppId(String appId);
+    
     public CustomerApplicationProcess findById(String id);
 }

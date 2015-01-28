@@ -182,7 +182,7 @@ public class CustomerApplicationIntopieceWaitService {
 			customerApplicationProcess.setNextNodeId(examineResutl);
 		}
 	    if(Constant.APPROVED_INTOPICES.equalsIgnoreCase(customerApplicationInfo.getStatus())){
-	    	intoPiecesService.exportData(applicationId, customerId, null);
+//	    	intoPiecesService.exportData(applicationId, customerId, null);
 	    }
 		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.RETURNAPPROVE)) {
 			String fallbackReason = request.getParameter("reason");
@@ -297,6 +297,6 @@ public class CustomerApplicationIntopieceWaitService {
 	 * @return
 	 */
 	public CustomerApplicationProcess getProcessById(String id){
-		return customerApplicationProcessService.findById(id);
+		return customerApplicationProcessService.findByAppId(id);
 	}
 }
