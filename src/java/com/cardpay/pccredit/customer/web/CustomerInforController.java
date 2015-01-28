@@ -165,14 +165,13 @@ public class CustomerInforController extends BaseController{
 		String cardId = request.getParameter("cardId");
 		filter.setCardId(cardId);
 		filter.setRequest(request);
-		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String userId = user.getId();
+		String userId ="-1";
 		filter.setUserId(userId);
 		QueryResult<IntoPieces> result = intoPiecesService.findintoPiecesByFilter(filter);
 		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
 				filter, result);
 
-		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor/intopieces_spouse_browse", request);
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_spouse_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 
 		return mv;

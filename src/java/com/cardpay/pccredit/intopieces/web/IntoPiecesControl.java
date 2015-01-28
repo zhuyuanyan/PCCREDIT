@@ -38,6 +38,7 @@ import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.CardStatus;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
+import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerAccountData;
@@ -53,6 +54,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.AddressAccessories;
@@ -136,6 +138,9 @@ public class IntoPiecesControl extends BaseController {
 	@Autowired
 	private ProcessService processService;
 	
+	@Autowired
+	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
+	
 	/**
 	 * 浏览页面
 	 * 
@@ -151,20 +156,20 @@ public class IntoPiecesControl extends BaseController {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		QueryResult<IntoPieces> result=null;
-		if(user.getUserType().toString().equals("2")){
-			filter.setUserId("-1");
-			result = intoPiecesService.findintoPiecesByFilter(filter);
-		}else{
+//		if(user.getUserType().toString().equals("2")){
+//			filter.setUserId("-1");
+//			result = intoPiecesService.findintoPiecesByFilter(filter);
+//		}else{
 		String userId = user.getId();
 		filter.setUserId(userId);
 		result = intoPiecesService.findintoPiecesByFilter(filter);
-		}
+//		}
 		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
 				filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView(
 				"/intopieces/intopieces_browse", request);
-		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject(PAGED_RESULT, null);
 
 		return mv;
 	}
@@ -179,15 +184,15 @@ public class IntoPiecesControl extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "queryResult.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView queryResult(@ModelAttribute IntoPiecesFilter filter,
+	public AbstractModelAndView queryResult(@ModelAttribute CustomerApplicationProcessFilter filter,
 			HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
-		filter.setUserId(userId);
-		QueryResult<IntoPieces> result = intoPiecesService.findintoPiecesByFilter(filter);
-		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
-				filter, result);
+		filter.setLoginId(userId);
+		filter.setIsReceive("NO");
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView(
 				"/intopieces/intopieces_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);

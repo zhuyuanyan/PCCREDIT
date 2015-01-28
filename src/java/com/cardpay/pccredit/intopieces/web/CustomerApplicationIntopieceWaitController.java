@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
+import org.osgi.service.application.ApplicationAdminPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +24,7 @@ import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
+import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.BasicCustomerInformationS;
@@ -120,6 +122,7 @@ public class CustomerApplicationIntopieceWaitController extends BaseController {
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String loginId = user.getId();
 		filter.setLoginId(loginId);
+		filter.setIsReceive("NO");
 		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceWaitForm(filter);
 		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_browse", request);
@@ -260,7 +263,7 @@ public class CustomerApplicationIntopieceWaitController extends BaseController {
 				CustomerApplicationProcess process =  customerApplicationIntopieceWaitService.getProcessById(id);
 				request.setAttribute("serialNumber", process.getSerialNumber());
 				request.setAttribute("applicationId", process.getApplicationId());
-				request.setAttribute("applicationStatus", "APPROVE");
+				request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 				request.setAttribute("objection", "false");
 				request.setAttribute("examineAmount", "");
 				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
@@ -310,6 +313,7 @@ public class CustomerApplicationIntopieceWaitController extends BaseController {
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String loginId = user.getId();
 		filter.setLoginId(loginId);
+		filter.setIsReceive("YES");
 		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
 		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 

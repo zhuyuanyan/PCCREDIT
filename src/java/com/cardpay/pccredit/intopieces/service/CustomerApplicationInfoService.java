@@ -3,6 +3,7 @@ package com.cardpay.pccredit.intopieces.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationInfoDao;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationInfoFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
@@ -37,5 +38,14 @@ public class CustomerApplicationInfoService {
 	 */
 	public int findCustomerApplicationInfoCount(String userId,String status1,String status2){
 		return customerApplicationInfoDao.findCustomerApplicationInfoCount(userId,status1,status2);
+	}
+	
+	/**
+	 * 按id查找相应的进件信息
+	 * @param id
+	 * @return
+	 */
+	public CustomerApplicationInfo findCustomerInforById(String id){
+		return commonDao.findObjectById(CustomerApplicationInfo.class, id);
 	}
 }
