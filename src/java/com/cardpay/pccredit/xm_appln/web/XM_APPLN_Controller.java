@@ -31,6 +31,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -110,6 +111,9 @@ public class XM_APPLN_Controller extends BaseController {
 	
 	@Autowired
 	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
+	
+	@Autowired
+	private CustomerApplicationProcessService customerApplicationProcessService;
 	
 	//跳转到page0
 	@ResponseBody
@@ -515,12 +519,14 @@ public class XM_APPLN_Controller extends BaseController {
 			try {
 				String appId = request.getParameter("appId");
 				
-				
-//				String customer_id = request.getParameter("customer_id");
 				//设置审批金额
-				//CustomerApplicationInfo customerApplicationInfo = customerApplicationInfoService.
+				CustomerApplicationInfo customerApplicationInfo = customerApplicationInfoService.findCustomerApplicationrById(appId);
+				String customer_id = customerApplicationInfo.getCustomerId();
+				String sqed = this.xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customer_id).getCrdlmt_req();
+				customerApplicationInfo.setApplyQuota(Integer.valueOf(sqed)*100+"");
+				customerApplicationInfoService.update(customerApplicationInfo);
 				
-				CustomerApplicationProcess process =  customerApplicationIntopieceWaitService.getProcessById(appId);
+				CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(appId);
 				request.setAttribute("serialNumber", process.getSerialNumber());
 				request.setAttribute("applicationId", process.getApplicationId());
 				request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);

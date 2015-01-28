@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.cardpay.pbccrcReport.pojo.DWDB_Info;
-import com.cardpay.pbccrcReport.pojo.JZ_Info;
-import com.cardpay.pbccrcReport.pojo.PO_Info;
-import com.cardpay.pbccrcReport.pojo.Query_Info;
-import com.cardpay.pbccrcReport.pojo.WJQDK_Info;
-import com.cardpay.pbccrcReport.pojo.WXHDJK_Info;
-import com.cardpay.pbccrcReport.pojo.XYTS_Info;
-import com.cardpay.pbccrcReport.pojo.YH_Info;
-import com.cardpay.pbccrcReport.pojo.YQ_Info;
-import com.cardpay.pbccrcReport.pojo.ZY_Info;
+import com.cardpay.pbccrcReport.model.DWDB_Info;
+import com.cardpay.pbccrcReport.model.JZ_Info;
+import com.cardpay.pbccrcReport.model.PO_Info;
+import com.cardpay.pbccrcReport.model.Query_Info;
+import com.cardpay.pbccrcReport.model.WJQDK_Info;
+import com.cardpay.pbccrcReport.model.WXHDJK_Info;
+import com.cardpay.pbccrcReport.model.XYTS_Info;
+import com.cardpay.pbccrcReport.model.YH_Info;
+import com.cardpay.pbccrcReport.model.YQ_Info;
+import com.cardpay.pbccrcReport.model.ZY_Info;
 
 /**
  * @author chenzhifang

@@ -24,6 +24,13 @@ public class CustomerApplicationInfoService {
 	public void save(CustomerApplicationInfo customerApplicationInfo) {
 		commonDao.insertObject(customerApplicationInfo);
 	}
+	
+	/*
+	 * 更新申请客户信息
+	 */
+	public void update(CustomerApplicationInfo customerApplicationInfo) {
+		commonDao.updateObject(customerApplicationInfo);
+	}
 
 	/*
 	 * 删除客户信息
@@ -45,7 +52,7 @@ public class CustomerApplicationInfoService {
 	 * @param id
 	 * @return
 	 */
-	public CustomerApplicationInfo findCustomerInforById(String id){
+	public CustomerApplicationInfo findCustomerApplicationrById(String id){
 		return commonDao.findObjectById(CustomerApplicationInfo.class, id);
 	}
 }
