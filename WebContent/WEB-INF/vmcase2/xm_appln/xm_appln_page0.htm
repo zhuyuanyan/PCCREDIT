@@ -76,6 +76,7 @@
 					<td class="label">证件号码</td>
 					<td>
 						<input type="text" class="text" name="spu_custr_nbr" maxlength="18"/>
+						<input type="button" value="检测" onclick="checkCard()"/>
 					</td>
 				</tr>
 			</table>
@@ -88,7 +89,7 @@
   #set ($formName = "'#id_module_form'")
 	#parse ("xm_appln/xm_appln_page1_validation.js")
 	
-	$(document).ready(function() {		
+	$(document).ready(function() {
 		//保存
 		$("#id_save_button").click(function() {
 			 //清空上一次验证
@@ -211,7 +212,13 @@
 		});
 		
 	});
-	
+	//配偶身份信息检测
+	function checkCard(){
+		var card = $("#spu_custr_nbr").val();
+		var url = contextPath+"/customer/basiccustomerinfor/intopiecesspouse.page?cardId="+card;
+		Dialog.table(url, "查询", "get", null, 800, 340);
+		
+	}
 	
   </script>
 </body>

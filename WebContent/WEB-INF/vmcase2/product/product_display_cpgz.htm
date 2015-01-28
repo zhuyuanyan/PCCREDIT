@@ -154,7 +154,7 @@
 		    #set($total = $!{dictItems.size()}) 
               <tr>
               <td ><input type="hidden" name="id$!{velocityCount}" value="$!managerProductsConfiguration.id"><input type="hidden" name="customerManagerLevel$!{velocityCount}" value="$!managerProductsConfiguration.customerManagerLevel">#dictVal("CUSTOMERMANAGERLEVEL", "$!managerProductsConfiguration.customerManagerLevel")</td>
-              <td><input  type="text" id="creditLine" name="creditLine$!{velocityCount}" value="$format.formatNumber($!managerProductsConfiguration.creditLine,2,100)" /></td>
+              <td><input  type="text" id="creditLine" name="creditLine$!{velocityCount}" value="$!managerProductsConfiguration.creditLine" /></td>
               <td><input  type="text" id="marginExtractInfo" name="marginExtractInfo$!{velocityCount}" value="$!managerProductsConfiguration.marginExtractInfo" /></td>
               <td><input  type="text" id="riskToleranceInformation" name="riskToleranceInformation$!{velocityCount}" value="$!managerProductsConfiguration.riskToleranceInformation" /></td>
             </tr>

@@ -65,6 +65,9 @@ public class CustomerApplicationIntopieceWaitService {
 	@Autowired
 	private IntoPiecesService intoPiecesService;
 	
+	@Autowired
+	private CustomerApplicationProcessService customerApplicationProcessService;
+	
 
 	// 查询所有的进件包括审核的及未审核的
 	public QueryResult<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceWaitForm(CustomerApplicationProcessFilter filter) {
@@ -294,6 +297,6 @@ public class CustomerApplicationIntopieceWaitService {
 	 * @return
 	 */
 	public CustomerApplicationProcess getProcessById(String id){
-		return commonDao.findObjectById(CustomerApplicationProcess.class, id);
+		return customerApplicationProcessService.findById(id);
 	}
 }

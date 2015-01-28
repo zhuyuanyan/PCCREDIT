@@ -27,6 +27,7 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 	private Date auditTime;
 	private String cardId;
 	private String processId;
+	private String isReceive;
 	public String getLoginId() {
 		return loginId;
 	}
@@ -129,6 +130,14 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 
 	public void setProcessId(String processId) {
 		this.processId = processId;
+	}
+
+	public String getIsReceive() {
+		return isReceive;
+	}
+
+	public void setIsReceive(String isReceive) {
+		this.isReceive = isReceive;
 	}
 
 }

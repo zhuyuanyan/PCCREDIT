@@ -24,11 +24,13 @@ import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
+import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -106,6 +108,9 @@ public class XM_APPLN_Controller extends BaseController {
 	@Autowired
 	private XM_APPLN_Service xM_APPLN_Service;
 	
+	@Autowired
+	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
+	
 	//跳转到page0
 	@ResponseBody
 	@RequestMapping(value = "xm_appln_page0.page")
@@ -176,11 +181,14 @@ public class XM_APPLN_Controller extends BaseController {
 	@JRadOperation(JRadOperation.MAINTENANCE)
 	public AbstractModelAndView changewh_xm_appln(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/xm_appln/iframe", request);
+		
 		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "aid");
 		if (StringUtils.isNotEmpty(customerInforId)) {
 			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
 			mv.addObject("customerInfor", customerInfor);
 			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
 		}
 		return mv;
 	}
@@ -315,6 +323,7 @@ public class XM_APPLN_Controller extends BaseController {
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView xm_appln_page4(HttpServletRequest request) {
 		String customerId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "appId");
 		CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerId);
 		
 		//查找相关xm_xppln信息
@@ -415,6 +424,7 @@ public class XM_APPLN_Controller extends BaseController {
 		
 		mv.addObject("customerId", customerId);
 		mv.addObject("customer", customerInfor);
+		mv.addObject("appId", appId);
 		mv.addObject("xM_APPLN", xM_APPLN);
 		mv.addObject("xM_APPLN_SQED", xM_APPLN_SQED);
 		mv.addObject("xM_APPLN_KPMX_ls", xM_APPLN_KPMX_ls);
@@ -479,7 +489,7 @@ public class XM_APPLN_Controller extends BaseController {
 	@RequestMapping(value = "update_xm_appln_page3.json")
 	@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap update_xm_appln_page3(@ModelAttribute XM_APPLN_ADDR_FORM xM_APPLN_ADDR_FORM, HttpServletRequest request) {
-
+		
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
@@ -503,9 +513,24 @@ public class XM_APPLN_Controller extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
-				String customer_id = request.getParameter("customer_id");
+				String appId = request.getParameter("appId");
+				
+				
+//				String customer_id = request.getParameter("customer_id");
 				//设置审批金额
 				//CustomerApplicationInfo customerApplicationInfo = customerApplicationInfoService.
+				
+				CustomerApplicationProcess process =  customerApplicationIntopieceWaitService.getProcessById(appId);
+				request.setAttribute("serialNumber", process.getSerialNumber());
+				request.setAttribute("applicationId", process.getApplicationId());
+				request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
+				request.setAttribute("objection", "false");
+				request.setAttribute("examineAmount", "");
+				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
+				
+				
+				
+				
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			}catch (Exception e) {
 				return WebRequestHelper.processException(e);
@@ -521,17 +546,19 @@ public class XM_APPLN_Controller extends BaseController {
 		customerApplicationInfo.setId(IDGenerator.generateID());
 		XM_APPLN_SQED xM_APPLN_SQED = xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customer_id);
 		if(xM_APPLN_SQED==null||xM_APPLN_SQED.getCrdlmt_req()==null||xM_APPLN_SQED.getCrdlmt_req().equals("")){
-			xM_APPLN_SQED.setCrdlmt_req("0");
+			customerApplicationInfo.setApplyQuota("0");//设置额度
 		}
 		customerApplicationInfo.setCustomerId(customer_id);
-		customerApplicationInfo.setApplyQuota(xM_APPLN_SQED.getCrdlmt_req());//设置额度
 		customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
-		commonDao.insertObject(customerApplicationInfo);
-		
+		customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
 		//查找默认产品
 		ProductFilter filter = new ProductFilter();
 		filter.setDefault_type(Constant.DEFAULT_TYPE);
 		ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
+		customerApplicationInfo.setProductId(productAttribute.getId());
+				
+		commonDao.insertObject(customerApplicationInfo);
+		
 		
 		//添加申请件流程
 		WfProcessInfo wf=new WfProcessInfo();

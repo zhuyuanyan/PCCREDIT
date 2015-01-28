@@ -37,7 +37,7 @@
             <colgroup>
               <col width="5%" />
               <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
               <col width="15%" />
               <col width="10%" />
             </colgroup>
@@ -57,7 +57,7 @@
             <colgroup>
               <col width="5%" />
               <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
               <col width="15%" />
               <col width="10%" />
             </colgroup>
@@ -67,6 +67,7 @@
                   #if ($!request.getParameter("recordId") == $!riskCustomer.id) checked="checked" #end /></td>
               <td nowrap="nowrap">$!riskCustomer.customerName</td>
               <td nowrap="nowrap">#dictVal("CARDTYPE", $!riskCustomer.cardType)</td>
+              
               <td nowrap="nowrap">$!riskCustomer.cardId</td>
               <td nowrap="nowrap">#dictVal("RiskCustomerStatus", $!riskCustomer.status)</td>
               <td nowrap="nowrap">$!riskCustomer.refuseReason</td>
@@ -107,6 +108,7 @@
 				 report();
 			 }
 	      });
+
 	});
 	
 	$('input[name=checkbox]').bind("click", function(event, a){
@@ -143,5 +145,6 @@
 			}
 		});
 	}
+
 </script>
 #parse ("common/iframe_page_footer.htm")

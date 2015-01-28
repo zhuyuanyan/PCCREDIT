@@ -141,7 +141,7 @@ public class XM_APPLN_Service {
 			customerinfor.setChineseName(xM_APPLN_JBZL_FORM.getSurname());
 			customerinfor.setPinyinenglishName(Cn2Spell.converterToSpell(xM_APPLN_JBZL_FORM.getSurname()));
 			customerinfor.setNationality("NTC00000000156");//中国
-			customerinfor.setCardType("CST0000000000A");//身份证
+			customerinfor.setCardType(xM_APPLN_JBZL_FORM.getRace_code());//身份证
 			customerinfor.setCardId(xM_APPLN_JBZL_FORM.getCard_id());//身份证
 			customerinfor.setSex(xM_APPLN_JBZL_FORM.getGender().equals("1")?"Male":"Female");
 			customerId = customerInforService.insertCustomerInfor(customerinfor);
