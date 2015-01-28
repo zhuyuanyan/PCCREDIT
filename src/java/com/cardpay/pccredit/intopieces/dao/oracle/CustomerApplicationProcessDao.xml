@@ -24,4 +24,8 @@
 		WHERE T.id = #{id}
 	</select>
 	
+	<select id="findByAppId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT * from customer_application_process T
+		WHERE T.APPLICATION_ID = #{appId}
+	</select>
 </mapper>

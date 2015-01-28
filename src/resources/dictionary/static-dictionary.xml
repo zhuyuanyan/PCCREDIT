@@ -243,7 +243,7 @@
 		<item name="0" title="否" />
 	</dictionary>
 	
-	<dictionary name="CARDTYPE" title="证件类型">
+	<dictionary name="CERTYPE" title="证件类型">
 		<item name="0" title="身份证" />
 		<item name="1" title="户口簿" />
 		<item name="2" title="护照" />

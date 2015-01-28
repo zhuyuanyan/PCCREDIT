@@ -5,16 +5,16 @@ import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cardpay.pbccrcReport.pojo.DWDB_Info;
-import com.cardpay.pbccrcReport.pojo.JZ_Info;
-import com.cardpay.pbccrcReport.pojo.PO_Info;
-import com.cardpay.pbccrcReport.pojo.Query_Info;
-import com.cardpay.pbccrcReport.pojo.WJQDK_Info;
-import com.cardpay.pbccrcReport.pojo.WXHDJK_Info;
-import com.cardpay.pbccrcReport.pojo.XYTS_Info;
-import com.cardpay.pbccrcReport.pojo.YH_Info;
-import com.cardpay.pbccrcReport.pojo.YQ_Info;
-import com.cardpay.pbccrcReport.pojo.ZY_Info;
+import com.cardpay.pbccrcReport.model.RH_DWDB_INFO;
+import com.cardpay.pbccrcReport.model.RH_JZ_INFO;
+import com.cardpay.pbccrcReport.model.RH_PO_INFO;
+import com.cardpay.pbccrcReport.model.RH_QUERY_INFO;
+import com.cardpay.pbccrcReport.model.RH_WJQDK_INFO;
+import com.cardpay.pbccrcReport.model.RH_WXHDJK_INFO;
+import com.cardpay.pbccrcReport.model.RH_XYTS_INFO;
+import com.cardpay.pbccrcReport.model.RH_YH_INFO;
+import com.cardpay.pbccrcReport.model.RH_YQ_INFO;
+import com.cardpay.pbccrcReport.model.RH_ZY_INFO;
 import com.cardpay.pccredit.sample2.filter.Sample2Filter;
 import com.cardpay.pccredit.sample2.model.Sample2;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -37,7 +37,7 @@ public class RhzxService {
 	 * @param dwdbInfo
 	 * @return
 	 */
-	public String insertDWDB_Info(DWDB_Info dwdbInfo) {
+	public String insertDWDB_Info(RH_DWDB_INFO dwdbInfo) {
 		// 创建时间
 		dwdbInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
@@ -52,7 +52,7 @@ public class RhzxService {
 	 * @param jzInfo
 	 * @return
 	 */
-	public String insertJZ_Info(JZ_Info jzInfo) {
+	public String insertJZ_Info(RH_JZ_INFO jzInfo) {
 		// 创建时间
 		jzInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
@@ -67,7 +67,7 @@ public class RhzxService {
 	 * @param poInfo
 	 * @return
 	 */
-	public String insertPO_Info(PO_Info poInfo) {
+	public String insertPO_Info(RH_PO_INFO poInfo) {
 		// 创建时间
 		poInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
@@ -82,7 +82,7 @@ public class RhzxService {
 	 * @param queryInfo
 	 * @return
 	 */
-	public String insertQuery_Info(Query_Info queryInfo) {
+	public String insertQuery_Info(RH_QUERY_INFO queryInfo) {
 		// 创建时间
 		queryInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
@@ -97,7 +97,7 @@ public class RhzxService {
 	 * @param wjqdkInfo
 	 * @return
 	 */
-	public String insertWJQDK_Info(WJQDK_Info wjqdkInfo) {
+	public String insertWJQDK_Info(RH_WJQDK_INFO wjqdkInfo) {
 		// 创建时间
 		wjqdkInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
@@ -112,7 +112,7 @@ public class RhzxService {
 	 * @param wxhdjkInfo
 	 * @return
 	 */
-	public String insertWXHDJK_Info(WXHDJK_Info wxhdjkInfo) {
+	public String insertWXHDJK_Info(RH_WXHDJK_INFO wxhdjkInfo) {
 		// 创建时间
 		wxhdjkInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
@@ -127,7 +127,7 @@ public class RhzxService {
 	 * @param xytsInfo
 	 * @return
 	 */
-	public String insertXYTS_Info(XYTS_Info xytsInfo) {
+	public String insertXYTS_Info(RH_XYTS_INFO xytsInfo) {
 		// 创建时间
 		xytsInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
@@ -142,7 +142,7 @@ public class RhzxService {
 	 * @param yhInfo
 	 * @return
 	 */
-	public String insertYH_Info(YH_Info yhInfo) {
+	public String insertYH_Info(RH_YH_INFO yhInfo) {
 		// 创建时间
 		yhInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
@@ -157,7 +157,7 @@ public class RhzxService {
 	 * @param yqInfo
 	 * @return
 	 */
-	public String insertYQ_Info(YQ_Info yqInfo) {
+	public String insertYQ_Info(RH_YQ_INFO yqInfo) {
 		// 创建时间
 		yqInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
@@ -172,7 +172,7 @@ public class RhzxService {
 	 * @param zyInfo
 	 * @return
 	 */
-	public String insertZY_Info(ZY_Info zyInfo) {
+	public String insertZY_Info(RH_ZY_INFO zyInfo) {
 		// 创建时间
 		zyInfo.setCreatedTime(Calendar.getInstance().getTime());
 		// 修改时间
