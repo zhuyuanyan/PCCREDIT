@@ -8,7 +8,7 @@ public class IntoPiecesFilter extends BusinessFilter{
 	private String chineseName;//客户名称
     private String productName; //产品名称
     private String cardId; //证件号码
-    
+    private String cardType; //证件类型
     private String status;
     
     private String  userId;
@@ -48,6 +48,12 @@ public class IntoPiecesFilter extends BusinessFilter{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getCardType() {
+		return cardType;
+	}
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
 	}
 	
 }

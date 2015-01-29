@@ -250,33 +250,6 @@ public class CustomerApplicationIntopieceWaitController extends BaseController {
 		return returnMap;
 	}
 
-	/**
-	 * 执行接收
-	 * 
-	 * @param customerApplicationProcess
-	 * @param request
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "recieveOver.json")
-	@JRadOperation(JRadOperation.APPROVE)
-	public JRadReturnMap recieveOver(HttpServletRequest request) {
-		JRadReturnMap returnMap = new JRadReturnMap();
-			try {
-				String id = request.getParameter("id");
-				CustomerApplicationProcess process =  customerApplicationProcessService.findById(id);
-				request.setAttribute("serialNumber", process.getSerialNumber());
-				request.setAttribute("applicationId", process.getApplicationId());
-				request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
-				request.setAttribute("objection", "false");
-				request.setAttribute("examineAmount", "");
-				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
-				returnMap.addGlobalMessage(CHANGE_SUCCESS);
-			} catch (Exception e) {
-				return WebRequestHelper.processException(e);
-			}
-		return returnMap;
-	}
 	
 	/**
 	 * 申请审核进件
@@ -302,31 +275,7 @@ public class CustomerApplicationIntopieceWaitController extends BaseController {
 
 		return returnMap;
 	}
-	/**
-	 * 接收进件页面
-	 * 
-	 * @param filter
-	 * @param request
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "recieve.page", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.APPLYAPPROVE)
-	public AbstractModelAndView recieve(@ModelAttribute CustomerApplicationProcessFilter filter, HttpServletRequest request) throws SQLException {
-		filter.setRequest(request);
-		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String loginId = user.getId();
-		filter.setLoginId(loginId);
-		filter.setIsReceive("YES");
-		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
-		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 
-		JRadModelAndView mv = new JRadModelAndView(
-				"/intopieces/intopieces_wait/intopiecesApprove_recieve", request);
-		mv.addObject(PAGED_RESULT, pagedResult);
-		mv.addObject("filter", filter);
-		return mv;
-	}
 	
 	
 	
