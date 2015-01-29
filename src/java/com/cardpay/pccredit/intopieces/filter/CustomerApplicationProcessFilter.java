@@ -28,6 +28,7 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 	private String cardId;
 	private String processId;
 	private String isReceive;
+	private String chineseName;
 	public String getLoginId() {
 		return loginId;
 	}
@@ -138,6 +139,14 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 
 	public void setIsReceive(String isReceive) {
 		this.isReceive = isReceive;
+	}
+
+	public String getChineseName() {
+		return chineseName;
+	}
+
+	public void setChineseName(String chineseName) {
+		this.chineseName = chineseName;
 	}
 
 }

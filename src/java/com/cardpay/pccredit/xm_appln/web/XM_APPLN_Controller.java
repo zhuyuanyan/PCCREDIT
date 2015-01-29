@@ -545,7 +545,7 @@ public class XM_APPLN_Controller extends BaseController {
 		return returnMap;
 	}
 	
-	private void saveOrUpdatexm_appln_page4(String customer_id){
+	public void saveOrUpdatexm_appln_page4(String customer_id){
 		//设置申请
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
 		//customerApplicationInfo.setStatus(status);

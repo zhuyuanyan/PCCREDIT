@@ -11,8 +11,11 @@
       <div class="inquiry">
        <div class="search_tag">进件查询</div>
         <div class="search">
-          <form id="queryForm" action="${contextPath}/intopieces/intopiecesquery/queryResult.page">
+          <form id="queryForm" action="${contextPath}/intopieces/intopiecesluru/queryResult.page">
           <ul>
+       		  <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
                <li>
                 <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
               </li>
@@ -88,8 +91,7 @@
           <a class="btn_g" href="javascript:void(0);" title="导出" onclick="self.location.href='${contextPath}//intopieces/intopiecesquery/applyIntopiecesQuery.page'">导出</a> 
           #btnpriv("change")<a class="btn_g" href="javascript:void(0);" title="新增" onclick="updateIntoPices()">新增</a>#end-->
           
-          #btnpriv("create")<a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="新增">新增</a>#end 
-       	  #btnpriv("create")<a class="btn_g" href="javascript:void(0);" title="新建" onclick="self.location.href='/PCCredit/intopieces/applyintopiecewait/recieve.page'">接收</a>#end
+          <a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="录入">录入</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

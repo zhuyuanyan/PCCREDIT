@@ -141,13 +141,16 @@
 		and U.ID = b.CUSTOMER_ID
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
-		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		 and p.USER_ID=#{loginId}
 		and b.status='audit' 
 		and N.IS_RECIEVE=#{isReceive}
-		<if test="cardId!=null">
+		<if test="cardId!=null and cardId!=''">
 			and U.card_id=#{cardId}
 		</if>
-		<if test="cardId==null">
+		<if test="chineseName!=null ">
+			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<if test="cardId==null and chineseName==null">
 			and U.card_id is null
 		</if>
 	</select>
@@ -173,11 +176,14 @@
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
-		and b.status='audit' and N.IS_RECIEVE='YES' 
-		<if test="cardId!=null">
+		and b.status='audit' and N.IS_RECIEVE=#{isReceive}
+		<if test="cardId!=null and cardId!=''">
 			and U.card_id=#{cardId}
 		</if>
-		<if test="cardId==null">
+		<if test="chineseName!=null ">
+			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<if test="cardId==null and chineseName==null">
 			and U.card_id is null
 		</if>)
 	</select>

@@ -3,7 +3,10 @@
 	<menu id="000000" name="" title="所有资源" url="" img="" operations="" >
 		<menu id="010000" name="home" title="系统首页" url="/home.page" img="images/icon_4.png" operations=""/>
 		<menu id="030000" name="intopieces" title="进件管理" url="" img="images/icon_sys.gif" operations="">
-			<menu id="030010" name="intopiecesquery" title="新增进件" url="/intopieces/intopiecesquery/browse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse|exportupload|applyapprove"/>
+		    <menu id="030001" name="intopiecesapprove" title="申请进件" url="/intopieces/intopiecesapprove/approve.page" img="" operations="browse"></menu>
+		    <menu id="030002" name="intopiecesreceive" title="接收进件" url="/intopieces/intopiecesrecieve/recieve.page" img="" operations="browse|approve"></menu>
+			<menu id="030003" name="intopiecessearch" title="查询进件" url="/intopieces/intopiecessearch/search.page" img="" operations="browse"></menu>
+			<menu id="030004" name="intopiecesluru" title="录入进件" url="/intopieces/intopiecesluru/luru.page" img="" operations="browse"></menu>
 			<!-- <menu id="030020" name="applyintopieces" title="申请审批进件" url="/intopieces/applyintopieces/browse.page" img="" operations="create|change|delete|display|browse"></menu> -->
 			<menu id="030020" name="applyintopiecewait" title="申请件待审核" url="/intopieces/applyintopiecewait/browse.page" img="" operations="approve|applyapprove|approvelog|browse"></menu>
 			<!-- <menu id="030030" name="applyintopiecesquery" title="申请件上传银联" url="/intopieces/applyintopiecesquery/applyIntopiecesQuery.page" img="" operations="exportupload|display|browse"></menu> -->
@@ -15,7 +18,7 @@
 			<!-- <menu id="040011" name="basiccustomerinforCreate" title="客户信息新增" url="/customer/basiccustomerinforCreate/insert.page" img="" operations="create|browse"/> -->
 			<menu id="040011" name="basiccustomerinforCreate" title="客户信息新增" url="/xm_appln/xm_appln_page0.page" img="" operations="create|browse"/>
 			<menu id="040012" name="basiccustomerinforUpdate" title="客户维护信息" url="/customer/basiccustomerinforUpdate/browse.page" img="" operations="create|change|transfer|maintenance|addblacklist|browse|delete"/>
-			<menu id="040013" name="basiccustomerinforAssess" title="客户评估信息" url="/customer/basiccustomerinforAssess/browse.page" img="" operations="create|change|delete|display|browse"/>
+			<!-- <menu id="040013" name="basiccustomerinforAssess" title="客户评估信息" url="/customer/basiccustomerinforAssess/browse.page" img="" operations="create|change|delete|display|browse"/> -->
 			<menu id="040014" name="customerfilter" title="产品筛选客户" url="/customer/customerfilter/browse.page" img="" operations="browse"/>
 			<menu id="040015" name="customermarketingplan" title="客户营销计划列表" url="/customer/customermarketingplan/browse.page" img="" operations="create|change|display|browse"/>
 			<menu id="040016" name="customersubmarketingplan" title="所属客户经理营销计划列表" url="/customer/customersubmarketingplan/browse.page" img="" operations="change|display|browse"/>

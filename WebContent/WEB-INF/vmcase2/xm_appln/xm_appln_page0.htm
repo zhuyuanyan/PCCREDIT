@@ -6,7 +6,7 @@
 	<h1>客户信息新增</h1>
 	<div class="buttons"><!--按钮组放置区域-->
 		<input id="id_save_button" type="button" value="保存" class="button"/>
-		<input id="id_apply_button" type="button" value="申请" class="button"/>
+		<!-- <input id="id_apply_button" type="button" value="申请" class="button"/> -->
 	</div>
 </div>
 <form id="id_module_form" action="${contextPath}/xm_appln/xm_appln_page0_update.json">
@@ -75,7 +75,7 @@
 					</td>
 					<td class="label">证件号码</td>
 					<td>
-						<input type="text" class="text" name="spu_custr_nbr" maxlength="18"/>
+						<input type="text" class="text" name="spu_custr_nbr" id="spu_custr_nbr" maxlength="18"/>
 						<input type="button" value="检测" onclick="checkCard()"/>
 					</td>
 				</tr>
@@ -122,7 +122,7 @@
 	   	          $.post($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	Dialog.message("保存成功!");
-	   	            	window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	   	            	window.location.href= contextPath + "/xm_appln/xm_appln_page0.page" ;
 	   	            }
 	   	          });
 	   	        }
