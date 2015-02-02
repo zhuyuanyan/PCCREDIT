@@ -22,10 +22,14 @@ import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_KPMX_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_LXRZL_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_POZL_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_QTXYKXX_Dao;
+import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_SPED_Dao;
+import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_SQCL_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_SQED_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_TJINFO_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_YWXX_Dao;
+import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_ZHSX_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_ZXQSZL_Dao;
+import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_ZXXX_Dao;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DBXX;
@@ -99,6 +103,14 @@ public class XM_APPLN_Service {
 	private XM_APPLN_ZXQSZL_Dao xM_APPLN_ZXQSZL_Dao;
 	@Autowired
 	private XM_APPLN_SQED_Dao xM_APPLN_SQED_Dao;
+	@Autowired
+	private XM_APPLN_SPED_Dao xM_APPLN_SPED_Dao;
+	@Autowired
+	private XM_APPLN_SQCL_Dao xM_APPLN_SQCL_Dao;
+	@Autowired
+	private XM_APPLN_ZHSX_Dao xM_APPLN_ZHSX_Dao;
+	@Autowired
+	private XM_APPLN_ZXXX_Dao xM_APPLN_ZXXX_Dao;
 	
 	/**
 	 * 插入数据

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.pbccrcReport.dao.RH_INFO_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.pbccrcReport.model.RH_INFO">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="url" column="url" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from RH_INFO T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>
