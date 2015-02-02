@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.pbccrcReport.dao.RH_YH_INFO_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.pbccrcReport.model.RH_YH_INFO">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="userName" column="userName" />
+		<result property="creditType" column="creditType" />
+		<result property="creditNO" column="creditNO" />
+		<result property="queryOperator" column="queryOperator" />
+		<result property="queryReason" column="queryReason" />
+		<result property="sex" column="sex" />
+		<result property="birth" column="birth" />
+		<result property="marriage" column="marriage" />
+		<result property="cellPhone" column="cellPhone" />
+		<result property="workPhone" column="workPhone" />
+		<result property="homePhone" column="homePhone" />
+		<result property="education" column="education" />
+		<result property="degree" column="degree" />
+		<result property="mailingAddress" column="mailingAddress" />
+		<result property="residenceAddress" column="residenceAddress" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from RH_YH_INFO T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>

@@ -1,4 +1,4 @@
-package com.cardpay.pccredit.customer.web;
+package com.cardpay.pccredit.pbccrcReport.web;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.pbccrcReport.service.RhzxService;
+import com.cardpay.pccredit.pbccrcReport.util.PbccrcReport;
+import com.cardpay.pccredit.pbccrcReport.util.PbocFileReader;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.model.CustomerMainManager;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.CustomerMainManagerService;
-import com.cardpay.pccredit.pbccrcReport.util.PbccrcReport;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -23,7 +26,9 @@ import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.jrad.modules.privilege.service.UserService;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
@@ -55,6 +60,9 @@ public class CustomerZXController extends BaseController {
 	@Autowired
 	private CustomerMainManagerService customerMainManagerService;
 
+	@Autowired
+	private RhzxService rhzxService;
+	
 	/**
 	 * 浏览页面
 	 * 
@@ -103,11 +111,12 @@ public class CustomerZXController extends BaseController {
 	@JRadOperation(JRadOperation.RHZX)
 	public AbstractModelAndView checkRhzx(HttpServletRequest request) {
 		try {
+			request.setCharacterEncoding("utf8");
 			String customerId = request.getParameter("customerId");
 			String QueryReason = request.getParameter("QueryReason");
 			String QueryType = request.getParameter("QueryType");
 			String Vertype = request.getParameter("Vertype");
-			request.setCharacterEncoding("utf8");
+			
 			CustomerInfor customer = customerInforService.findCustomerInforById(customerId);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			logger.info("人行征信查询---查询用户:"+user.getId()+",客户:"+customer.getChineseName());
@@ -115,6 +124,9 @@ public class CustomerZXController extends BaseController {
 			String fileFullPath = pbccrcReport.manuProcessPbocCreditInfo(customer.getChineseName(), customer.getCardType(), customer.getCardId(),
 					QueryReason,QueryType,Vertype);
 			if(fileFullPath != null){
+				//解析htm文件抓取内容并存入数据库
+				this.rhzxService.insertOrUpdateZX(customerId, fileFullPath);
+				
 				JRadModelAndView mv = new JRadModelAndView("/customer/customerzx/rhzx/"+customer+"_"+customer.getCardId(), request);
 				mv.addObject("customer", customer);
 				return mv;

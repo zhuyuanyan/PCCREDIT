@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.pbccrcReport.dao.RH_YQ_INFO_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.pbccrcReport.model.RH_YQ_INFO">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="loanOverdueNum" column="loanOverdueNum" />
+		<result property="loanOverdueMonth" column="loanOverdueMonth" />
+		<result property="loanOverdueAmountTotal" column="loanOverdueAmountTotal" />
+		<result property="loanOverdueLongestMonth" column="loanOverdueLongestMonth" />
+		<result property="creditCardNum" column="creditCardNum" />
+		<result property="creditCardMonth" column="creditCardMonth" />
+		<result property="creditCardAmountTotal" column="creditCardAmountTotal" />
+		<result property="creditCardLongestMonth" column="creditCardLongestMonth" />
+		<result property="quasiCreditCardNum" column="quasiCreditCardNum" />
+		<result property="quasiCreditCardMonth" column="quasiCreditCardMonth" />
+		<result property="quasiCreditCardAmountTotal" column="quasiCreditCardAmountTotal" />
+		<result property="quasiCreditCardLongestMon" column="quasiCreditCardLongestMon" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from RH_YQ_INFO T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>
