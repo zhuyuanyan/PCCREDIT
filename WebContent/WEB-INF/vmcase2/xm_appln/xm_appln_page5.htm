@@ -1,0 +1,517 @@
+#parse ("common/iframe_page_header2.htm")
+	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
+</head>
+<body>
+<div class="fixed">
+	<h1>申请书信用审核</h1>
+	<div class="buttons"><!--按钮组放置区域-->
+		<input id="id_save_button" type="button" value="保存" class="button">
+	</div>
+</div>
+<form>
+<!--*************************************************************申请基本信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>申请基本信息</td>
+				<td><img src="min.gif"/></td>
+			</tr>
+		</table>
+		<div name="content">
+			<table class="message">
+				<tr>
+					<td class="label">申请产品</td>
+					<td>
+						<span name="PRODUCT"></span>
+					</td>
+					<td class="label">申请类型</td>
+					<td>
+						<span name="ADDL_CARD"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">主卡证件号</td>
+					<td>
+						<span name="CUSTR_NBR1"></span>
+					</td>
+					<td class="label">主卡姓名</td>
+					<td>
+						<span name="ACC_NAME1"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">附卡1证件号</td>
+					<td>
+						<span name="CUSTR_NBR2"></span>
+					</td>
+					<td class="label">附卡1姓名</td>
+					<td>
+						<span name="ACC_NAME2"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">客户总信用额度</td>
+					<td>
+						<span name="CUSTR_CRED"></span>
+					</td>
+					<td class="label">单位名称凸字</td>
+					<td>
+						<span name="EMBOSS_CPY"></span>
+					</td>
+				</tr>	
+			</table>
+		</div><!--/content-->
+	</div>
+<!--*************************************************************申请处理*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>申请处理</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>					
+					<td class="label" colspan="2">
+						<label><input type="radio" name="DECCAN_CDE" checked/>核准</label>
+						<label><input type="radio" name="DECCAN_CDE"/>拒绝</label>
+						<label><input type="radio" name="DECCAN_CDE"/>取消\补件</label>
+					</td>
+					<td class="label">产生信函?</td>
+					<td>
+						<input type="checkbox" name="DECCAN_LET"/>
+					</td>
+					<td class="label">补件原因代码</td>
+					<td>
+						<input type="text" name="DECCAN_SUP" maxlength="4"/>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">快速发卡?</td>
+					<td>
+						<input type="checkbox" name="RUSH_CARD"/>
+					</td>
+					<td class="label">快速发卡费?</td>
+					<td>
+						<input type="checkbox" name="RUSH_FEE"/>
+					</td>
+					<td class="label">核准/拒绝日期</td>
+					<td>
+						<span name="APPDEC_DTE"></span>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">审核原因代码</td>
+					<td colspan="3">
+						<select name="DECCAN_REA" style="width:260px;">
+							<option></option>
+						</select>
+					</td>
+					<td class="label">密信递送方式</td>
+					<td>
+						<select name="PIN_DSPCH" style="width:150px;">
+							<option></option>
+						</select>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">密信递送费用</td>
+					<td colspan="5">
+						<select name="PINCOURFEE" style="width:150px;">
+							<option></option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************审批额度*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>审批额度</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>					
+					<td class="label">信用额度</td>
+					<td>
+						<input type="text" name="CRED_LIMIT" maxlength="10"/>
+					</td>
+					<td class="label">分期付款额度</td>
+					<td>
+						<input type="text" name="MP_LIMIT" maxlength="10"/>
+					</td>
+					<td class="label">美元账户额度</td>
+					<td>
+						<input type="text" name="CREDLIM_X" maxlength="6"/>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">预借现金比例%</td>
+					<td>
+						<input type="text" name="CA_PCNT" maxlength="6"/>
+					</td>
+					<td class="label">现金分期额度固定值</td>
+					<td colspan="3">
+						<input type="text" name="CALLMT" maxlength="10"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************账户属性*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>账户属性</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>					
+					<td class="label">利率代码</td>
+					<td>
+						<select name="INT_CODE" style="width:150px;">
+							<option>标准利率代码01</option>
+							<option>专项卡年利率16.2</option>
+							<option>专项卡年利率14.4</option>
+							<option>专项卡年利率12.6</option>
+							<option>专项卡年利率10.8</option>
+							<option>专项卡年利率9%</option>
+							<option>专项卡标准利率18</option>
+							<option>专项卡利率9.9%</option>
+							<option>专项卡利率11.7%</option>
+							<option>渔保卡专用利率</option>
+							<option>专项卡利率13.5%</option>
+						</select>
+					</td>
+					<td class="label">年费代码</td>
+					<td colspan="3">
+						<select name="ACC_TYPE_N" style="width:170px;">
+							<option>3131重要客户终身免年费</option>
+							<option>3232员工卡终身免年费</option>
+							<option>3333刷卡3赐或满3000</option>
+							<option>3636年费全收</option>
+							<option>3737年费全收(500元/年)</option>
+							<option>3838年费全收(1000元/年)</option>
+							<option>3939年费全收(2000元/年)</option>
+						</select>
+					</td>
+				</tr>
+				<tr><td colspan="6"><div class="border"></div></td></tr><!--/分割线-->
+				<tr><td class="label" colspan="6"><b>降级/更换产品</b></tr>
+				<tr>					
+					<td class="label">降级/更换产品?</td>
+					<td>
+						<input type="checkbox" name="GTOC"/>
+					</td>
+					<td class="label">降级账单日</td>
+					<td>
+						<input type="text mini" name="CYCLE_NBR" maxlength="2"/>
+					</td>
+					<td class="label">降级申请来源</td>
+					<td>
+						<select name="APP_SOURCE" style="width:200px;">
+							<option></option>
+						</select>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">降级收件分行</td>
+					<td>
+						<input type="texy" name="AB_BRANCH" maxlength="4"/>
+					</td>
+					<td class="label">降级产品</td>
+					<td colspan="3">
+						<select name="DOWNPROD" style="width:200px;">
+							<option>1 福万通白金卡</option>
+							<option>2 福万通普卡</option>
+							<option>3 福万通金卡</option>
+							<option>4 福万通渔保卡</option>
+							<option>5 公务</option>
+							<option>6 员工卡</option>
+							<option>7 福万通海峡旅游普卡</option>
+							<option>8 福万通海峡旅游金卡</option>
+							<option>9 普惠金融卡3年</option>
+							<option>10 福万通移搜联名金卡</option>
+							<option>11 普惠金融卡1年</option>
+							<option>12 福万通移搜联名白金卡</option>
+							<option>13 福万通单位卡</option>
+							<option>14 晋江小鱼卡</option>
+							<option>15 罗源富农卡</option>
+						</select>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">降级年费代码</td>
+					<td colspan="3">
+						<select name="ACC_TYPE" style="width:200px;">
+							<option>3131重要客户终身免年费</option>
+							<option>3232员工卡终身免年费</option>
+							<option>3333刷卡3赐或满3000</option>
+							<option>3636年费全收</option>
+							<option>3737年费全收(500元/年)</option>
+							<option>3838年费全收(1000元/年)</option>
+							<option>3939年费全收(2000元/年)</option>
+						</select>
+					</td>
+					<td class="label">账单代码</td>
+					<td>
+						<span name="STM_CODE"></span>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+<!--*************************************************************卡片明细*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>卡片明细</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>			
+		<div name="content" class="display">
+			<table class="message">
+				<tr>					
+					<td class="label">申请人个数</td>
+					<td>
+						<span name="CUST_COUNT"></span>
+					</td>
+				</tr>
+			</table>
+			<ul class="tags" id="tab1">
+				<li class="active" onclick="selectTag('tagContent0',this);" style="margin-left:0;">主卡</li>
+			</ul>
+			<div class="Content" id="Content1">
+			<!--*************************************主卡*****************************************-->
+				<div class="tagContent selectTag" id="tagContent0">
+					<table class="message">
+						<tr>
+							<td class="label">主卡凸字姓名</td>
+							<td>
+								<input type="text" name="EMBOSNME_L" maxlength="28"/>
+							</td>
+							<td class="label" style="color:#b5b0b6;">自选卡号</td>
+							<td>
+								<span name=""></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">卡片版面</td>
+							<td>
+								<select name="CDFRM_L">
+									<option>标准卡版面</option>
+									<option>60周年卡表面</option>
+									<option>晋江金翼主题卡版面</option>
+									<option>福州藏天园卡</option>
+									<option>泉州渔贷卡</option>
+									<option>泉州农贷卡</option>
+									<option>泉州商贷卡</option>
+								</select>
+							</td>
+							<td class="label">有效日期</td>
+							<td>
+								<input type="text" name="EXPYDATE_L" maxlength="4" placeholder="MMYY"/>
+							</td>
+						</tr>						
+						<tr>
+							<td class="label">卡号</td>
+							<td>
+								<span name="CD_NBR_D_L"></span>
+							</td>
+							<td class="label">是否为自选卡号</td>
+							<td>
+								<span name="CARDSEL"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">会员编号</td>
+							<td>
+								<span name="MS_MEM_L"></span>
+							</td>
+							<td class="label">会员来源</td>
+							<td>
+								<span name="MSMEM_SOUR_L"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">会员启始年份</td>
+							<td>
+								<span name="MEMBER_L"></span>
+							</td>
+							<td class="label">是否为PLC</td>
+							<td>
+								<span name="PLC_YN_L"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">递送方式</td>
+							<td>
+								<span name="CDESPMTD_L"></span>
+							</td>
+							<td class="label">递送分行</td>
+							<td>
+								<span name="CDESPLOC_L"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">递送费用</td>
+							<td>
+								<span name="COURIERF_L"></span>
+							</td>
+							<td class="label">需要凸字</td>
+							<td>
+								<input type="checkbox" name="EMBOSS_CD_L" readonly></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">需要PIN(密信函)</td>
+							<td>
+								<input type="checkbox" name="PIN_REQD_L" readonly></span>
+							</td>
+							<td class="label">特别提示</td>
+							<td>
+								<span name="SPEC_INST_L"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">消费需要密码</td>
+							<td>
+								<input type="checkbox" name="PIN_CHK_L" readonly></span>
+							</td>
+							<td class="label">开通短信通知</td>
+							<td>
+								<input type="checkbox" name="SMS_YN_L" readonly></span>
+							</td>
+						</tr>
+					</table>
+				</div><!-- /tagContent1 -->		
+			</div><!-- /Content -->	
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************征信信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>征信信息</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">征信代码-行业</td>
+					<td>
+						<input type="text" name="CU_CRCOD1" maxlength="4"/>
+					</td>
+					<td class="label">征信代码-职务</td>
+					<td>
+						<input type="text" name="CU_CRCOD2" maxlength="4"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">征信代码-专案</td>
+					<td>
+						<input type="text" name="AC_CRCOD1" maxlength="4"/>
+					</td>
+					<td class="label">征信代码-项目</td>
+					<td>
+						<input type="text" name="AC_CRCOD2" maxlength="4"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************申请风险信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>申请风险信息</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">本次评分注记</td>
+					<td>
+						<span name="SCOR_NOTE"></span>
+					</td>
+					<td class="label">最近一次拒绝原因</td>
+					<td>
+						<span name="CUNEG_RSN"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">最近一次拒绝日期</td>
+					<td>
+						<span name="CUNEG_INPD"></span>
+					</td>
+					<td class="label">被拒绝的申请人</td>
+					<td>
+						<span name="CUNEG_CUS"></span>
+					</td>	
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************自扣还款*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>自扣还款</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">本币自扣还款方式</td>
+					<td>
+						<span name="REPAY_CODE"></span>
+					</td>
+					<td class="label">本币自扣还款金额</td>
+					<td>
+						<span name="REPAY_AMT"></span>
+					</td>
+					<td class="label">本币自扣还款百分比</td>
+					<td>
+						<span name="REPAY_PCT"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">外币自扣还款方式</td>
+					<td>
+						<span name="REPAY_CODX"></span>
+					</td>
+					<td class="label">外币自扣还款金额</td>
+					<td>
+						<span name="REPAY_AMTX"></span>
+					</td>
+					<td class="label">外币自扣还款百分比</td>
+					<td>
+						<span name="REPAY_PCTX"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">自扣还款日期</td>
+					<td colspan="5">
+						<span name="REPAY_DAY"></span>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+</form>	
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<script type="text/javascript" src="jquery.js"></script>
+	
+</body>
+#parse ("common/iframe_page_footer.htm")
+
