@@ -104,6 +104,33 @@ public class IntoPiecesService {
 		return qs;
 	}
 	
+	/* 经理岗查询进件信息 */
+	/*
+	 * TODO 1.添加注释 2.SQL写进DAO层
+	 */
+	public QueryResult<IntoPieces> customerfindintoPiecesByFilter(
+			IntoPiecesFilter filter) {
+		QueryResult<IntoPieces> queryResult = intoPiecesComdao.customerfindintoPiecesByFilter(filter);
+		int sum = intoPiecesComdao.customerfindintoPiecesByFilterCount(filter);
+		QueryResult<IntoPieces> qs = new QueryResult<IntoPieces>(sum, queryResult.getItems());
+		List<IntoPieces> intoPieces = qs.getItems();
+		for(IntoPieces pieces : intoPieces){
+			if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
+				pieces.setNodeName("未提交申请");
+			} else if(pieces.getStatus().equals(Constant.APPROVE_INTOPICES)){
+				String nodeName = intoPiecesComdao.findAprroveProgress(pieces.getId());
+				if(StringUtils.isNotEmpty(nodeName)){
+					pieces.setNodeName(nodeName);
+				} else {
+					pieces.setNodeName("不在审批中");
+				}
+			} else {
+				pieces.setNodeName("审批结束");
+			}
+		}
+		return qs;
+	}
+	
 	/*
 	 * 查询已经申请通过进件
 	 */
