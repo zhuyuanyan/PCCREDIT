@@ -67,7 +67,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
-              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!wait.cardType)</td>
+              <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>
               <td nowrap="nowrap">$!wait.cardId</td>
               <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
               <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.auditTime)</td>

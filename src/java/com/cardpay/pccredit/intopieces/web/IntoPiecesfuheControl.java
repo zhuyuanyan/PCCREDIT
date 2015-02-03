@@ -109,9 +109,9 @@ import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 @Controller
-@RequestMapping("/intopieces/intopiecesluru/*")
-@JRadModule("intopieces.intopiecesluru")
-public class IntoPiecesluruControl extends BaseController {
+@RequestMapping("/intopieces/intopiecesfuhe/*")
+@JRadModule("intopieces.intopiecesfuhe")
+public class IntoPiecesfuheControl extends BaseController {
 
 	@Autowired
 	private IntoPiecesService intoPiecesService;
@@ -153,14 +153,14 @@ public class IntoPiecesluruControl extends BaseController {
 	private CustomerApplicationProcessService customerApplicationProcessService;
 	
 	/**
-	 * 录入页面
+	 * 复核页面
 	 * 
 	 * @param filter
 	 * @param request
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "luru.page", method = { RequestMethod.GET })
+	@RequestMapping(value = "fuhe.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute IntoPiecesFilter filter,
 			HttpServletRequest request) {
@@ -174,14 +174,14 @@ public class IntoPiecesluruControl extends BaseController {
 //				filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView(
-				"/intopieces/intopieces_browse", request);
+				"/intopieces/intopieces_fuhe", request);
 		mv.addObject(PAGED_RESULT, null);
 
 		return mv;
 	}
 	
 	/**
-	 * 录入岗筛选进件
+	 * 复核岗筛选进件
 	 * 
 	 * @param filter
 	 * @param request
@@ -197,12 +197,35 @@ public class IntoPiecesluruControl extends BaseController {
 		filter.setLoginId(userId);
 		filter.setIsReceive("NO");
 		filter.setIfRecieved(Constant.recieve_type);
+		filter.setFuheUser(userId);
 		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
 		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView(
-				"/intopieces/intopieces_browse", request);
+				"/intopieces/intopieces_fuhe", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 
 		return mv;
+	}
+	
+	/**
+	 * 复核退回到录入
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "refuse.page")
+	public JRadReturnMap refuse(@ModelAttribute XmApplnSxjcForm filter, HttpServletRequest request)  {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		String appId = request.getParameter("appId");
+		try {
+			intoPiecesService.refuse(appId,request);
+			returnMap.addGlobalMessage("退回成功");
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("退回失败");
+			e.printStackTrace();
+		}
+		return returnMap;
 	}
 }

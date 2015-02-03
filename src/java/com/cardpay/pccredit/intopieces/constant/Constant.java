@@ -78,4 +78,6 @@ public class Constant {
 	
 	//系统默认产品
 	public static String DEFAULT_TYPE = "1";
+	//进件接收标志
+	public static String recieve_type = "1";
 }

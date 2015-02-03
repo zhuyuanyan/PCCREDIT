@@ -376,5 +376,13 @@ AND A.IS_DELETED = '0'
 		from Dict
 		where 1=1
 	</dictionary>
-	
+	<dictionary name="GETFUHEUSERS" title="复核人员" timeout="10000">
+		select A ."ID" AS NAME,
+		A .DISPLAY_NAME AS title
+		FROM
+		SYS_USER A where id in(
+		select user_id from NODE_AUDIT_USER where NODE_ID in(
+		select next_node  from NODE_CONTROL where current_node in(
+		select NEXT_NODE_ID from CUSTOMER_APPLICATION_PROCESS where APPLICATION_ID= '#P{0}')))
+	</dictionary>
 </dictionaries>

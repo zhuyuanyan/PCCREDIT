@@ -67,6 +67,8 @@ public class CustomerApplicationIntopieceWaitForm extends BaseForm {
 	private String userId;
 	private String productName;
 	
+	private String ifRecieved;
+	
 	public String getNodeName() {
 		return nodeName;
 	}
@@ -433,6 +435,14 @@ public class CustomerApplicationIntopieceWaitForm extends BaseForm {
 
 	public void setProcessId(String processId) {
 		this.processId = processId;
+	}
+
+	public String getIfRecieved() {
+		return ifRecieved;
+	}
+
+	public void setIfRecieved(String ifRecieved) {
+		this.ifRecieved = ifRecieved;
 	}
 
 }
