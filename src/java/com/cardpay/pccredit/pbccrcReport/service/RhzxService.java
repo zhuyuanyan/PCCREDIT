@@ -37,6 +37,7 @@ import com.cardpay.pccredit.pbccrcReport.model.RH_XYTS_INFO;
 import com.cardpay.pccredit.pbccrcReport.model.RH_YH_INFO;
 import com.cardpay.pccredit.pbccrcReport.model.RH_YQ_INFO;
 import com.cardpay.pccredit.pbccrcReport.model.RH_ZY_INFO;
+import com.cardpay.pccredit.pbccrcReport.util.RegEX;
 import com.cardpay.pccredit.sample2.filter.Sample2Filter;
 import com.cardpay.pccredit.sample2.model.Sample2;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -108,12 +109,18 @@ public class RhzxService {
 
 	/**   
 	* @Title: readRH    
-	* @Description: 读取征信信息 返回是否满足通过条件
+	* @Description: 读取征信信息
 	* @param url
 	* @return boolean
 	*/
 	public void readRH(RH_INFO rh_info){
 		float dqyqje = 0f;//当前逾期金额
+		int jlnyqqs = 0;//近两年逾期期数
+		int jbnyqcs = 0;//近半年逾期次数
+		int ynnlxyqcs = 0;//一年内连续逾期次数
+		int lnysyqqs = 0;//两年以上逾期期数
+		float lnysyqje = 0f;//两年以上逾期金额
+		
 		for(Element ele : content_Element_List){
 			//读取当前逾期金额
 			if(ele.getContent().toString().indexOf("当前逾期金额")>0){
@@ -128,7 +135,35 @@ public class RhzxService {
 			}
 			rh_info.setDQYQJE(String.valueOf(dqyqje));
 			//读取近两年逾期期数
-			
+			//todo
+			//读取近半年逾期次数
+			if(ele.getContent().toString().indexOf("还款记录")>0){
+				Element trEle = ele.getAllElements(HTMLElementName.TR).get(5);
+				int tdCount = trEle.getAllElements(HTMLElementName.TD).size();
+				for(int i=18;i<tdCount;i++){
+					if(!trEle.getAllElements(HTMLElementName.TD).get(i).getTextExtractor().toString().equals("N")){
+						jbnyqcs ++;
+					}
+				}
+			}
+			rh_info.setJBNYQCS(String.valueOf(jbnyqcs));
+			//读取一年内连续逾期次数
+			if(ele.getContent().toString().indexOf("还款记录")>0){
+				Element trEle = ele.getAllElements(HTMLElementName.TR).get(5);
+				int tdCount = trEle.getAllElements(HTMLElementName.TD).size();
+				StringBuilder tmp = new StringBuilder("");
+				for(int i=12;i<tdCount;i++){
+					tmp.append(trEle.getAllElements(HTMLElementName.TD).get(i).getTextExtractor().toString());
+				}
+				if(ynnlxyqcs<RegEX.continuousNumbers(tmp.toString())){
+					ynnlxyqcs = RegEX.continuousNumbers(tmp.toString());
+				}
+			}
+			rh_info.setYNNLXYQCS(String.valueOf(ynnlxyqcs));
+			//读取两年以上逾期期数
+			//todo
+			//读取两年以上逾期金额
+			//todo
 		}
 	}
 	
