@@ -16,6 +16,7 @@
 		<result property="delayAuditUser" column="DELAY_AUDIT_USER" />
 		<result property="auditTime" column="AUDIT_TIME" />
 		<result property="processOpStatus" column="PROCESS_OP_STATUS" />
+		<result property="fuheUser" column="fuhe_user" />
 
 	</resultMap>
 

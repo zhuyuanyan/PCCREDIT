@@ -86,38 +86,19 @@ public class IntoPiecesComdao {
 		String cardId = filter.getCardId();
 		String status = filter.getStatus();
 		StringBuffer sql = null;
-		// 卡中心可以查看所有进件
-		if (userId.equals("-1")) {
-			sql = new StringBuffer(
-					"select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
-		} else {
-			// 获取自己及下属id
-			String userSql = "select * from account_manager_parameter where id in ( select t.child_id from manager_belong_map t left join account_manager_parameter amp on amp.id = t.parent_id where amp.user_id = '"
-					+ userId + "')";
-			List<AccountManagerParameter> userList = commonDao.queryBySql(
-					AccountManagerParameter.class, userSql, null);
-			String users = "('" + userId + "',";
-			for (int i = 0; i < userList.size(); i++) {
-				users += "'" + userList.get(i).getUserId() + "',";
-			}
-			users = users.substring(0, users.length() - 1) + ")";
-			sql = new StringBuffer(
-					"select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and b.user_id in "
-							+ users + " and t.product_id=p.id  ");
-		}
-		if (StringUtils.trimToNull(productName) != null) {
-			params.put("productName", productName);
-			sql.append(" and p.product_name like '%'||#{productName}||'%' ");
-		}
 
-		if (StringUtils.trimToNull(id) != null) {
-			params.put("id", id);
-			sql.append(" and t.id like '%'||#{id}||'%' ");
-		}
-		if (StringUtils.trimToNull(status) != null) {
-			params.put("status", status);
-			sql.append("and t.status= #{status}");
-		}
+//			// 获取自己及下属id
+//			String userSql = "select * from account_manager_parameter where id in ( select t.child_id from manager_belong_map t left join account_manager_parameter amp on amp.id = t.parent_id where amp.user_id = '"
+//					+ userId + "')";
+//			List<AccountManagerParameter> userList = commonDao.queryBySql(
+//					AccountManagerParameter.class, userSql, null);
+//			String users = "('" + userId + "',";
+//			for (int i = 0; i < userList.size(); i++) {
+//				users += "'" + userList.get(i).getUserId() + "',";
+//			}
+//			users = users.substring(0, users.length() - 1) + ")";
+		sql = new StringBuffer(
+				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
 		if (StringUtils.trimToNull(cardId) != null
 				|| StringUtils.trimToNull(chineseName) != null) {
 			if (StringUtils.trimToNull(cardId) != null
@@ -473,12 +454,17 @@ public class IntoPiecesComdao {
 	 * @return
 	 */
 	public String findAprroveProgress(String id) {
-		String sql = " select status_name from (select s.status_name from wf_status_queue_record t "
-				+ " left join wf_status_info s on t.current_status = s.id "
-				+ " left join wf_process_record pr on t.current_process = pr.id "
-				+ " left join customer_application_process aa on pr.id = aa.serial_number "
-				+ " where aa.application_id=#{id} "
-				+ " order by t.start_examine_time desc) where rownum=1";
+//		String sql = " select status_name from (select s.status_name from wf_status_queue_record t "
+//				+ " left join wf_status_info s on t.current_status = s.id "
+//				+ " left join wf_process_record pr on t.current_process = pr.id "
+//				+ " left join customer_application_process aa on pr.id = aa.serial_number "
+//				+ " where aa.application_id=#{id} "
+//				+ " order by t.start_examine_time desc) where rownum=1";
+		
+		
+		String sql="select n.NODE_NAME as status_name from CUSTOMER_APPLICATION_PROCESS A,"
+				+"NODE_AUDIT N where A.NEXT_NODE_ID=N.id and A.application_id=#{id}";
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, params);

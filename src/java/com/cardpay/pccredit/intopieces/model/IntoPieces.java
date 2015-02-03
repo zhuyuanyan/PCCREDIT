@@ -12,6 +12,7 @@ public class IntoPieces  extends BusinessModel {
     private String productId;//产品Id
     private String productName; //产品名称
     private String cardId;//证件号码
+    private String cardType;//证件号码
     private String applyQuota;//申请额度
     private String status;//申请额度
     private String statusName;
@@ -77,6 +78,12 @@ public class IntoPieces  extends BusinessModel {
 	}
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
+	}
+	public String getCardType() {
+		return cardType;
+	}
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
 	}
 
 }

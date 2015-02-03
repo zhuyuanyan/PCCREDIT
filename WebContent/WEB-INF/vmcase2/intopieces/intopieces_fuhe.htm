@@ -11,9 +11,9 @@
       <div class="inquiry">
        <div class="search_tag">进件查询</div>
         <div class="search">
-          <form id="queryForm" action="${contextPath}/intopieces/intopiecessearch/search.page">
+          <form id="queryForm" action="${contextPath}/intopieces/intopiecesfuhe/queryResult.page">
           <ul>
-          	  <li>
+       		  <li>
                 <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
               </li>
                <li>
@@ -64,7 +64,7 @@
             </colgroup>
            #foreach ($wait in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.applicationId@$!wait.applyQuota"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
               <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>
@@ -81,8 +81,10 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-        
-		</div>
+          
+          <a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="复核">复核</a>
+          <a id="id_refuse_button_1" class="btn_g" href="javascript:void(0);" title="退回">退回</a>
+        </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
       </div>
@@ -103,10 +105,11 @@
 		opsObj.browseUrl = "${modulePath}/browse.page";
 		opsObj.exportUrl = "${modulePath}/export.page";
 		opsObj.createUrl1 = "${contextPath}/xm_appln/changewh_xm_appln.page";
+		opsObj.refuse = "${contextPath}/intopieces/intopiecesfuhe/refuse.page";
 		prepareOperations(opsObj);
 		
 		
-		
+		//复核
 		if (opsObj.createUrl1) {
 	        $("#id_create_button_1").click(function() {
 	            if ($(".checkbox :checked").length == 1) {
@@ -137,21 +140,28 @@
 	        });
 	    }
 		
+		//退回
+		if (opsObj.createUrl1) {
+	        $("#id_refuse_button_1").click(function() {
+	            if ($(".checkbox :checked").length == 1) {
+	            	$("input[name='checkbox']:checked").each(function() {
+	            		rowid = $(this).val().split("@")[2];
+	        		});
+	                $.post(opsObj.refuse, {appId:rowid},
+	       	            function(data, textStatus, jqXhr) {
+	       	                if (data.success) {
+	       	                    window.location.reload(true);
+	       	                } else {
+	       	                    //Dialog.message(data.message);
+	       	                }
+	       	            });
+	            } else {
+	                Dialog.message("请选择一行");
+	            }
+	        });
+	    }
+		
 	});
-	
-	function viewIntoPicesApproveHistory(ifHideUser){
-		var id = null;
-		$("input[name='checkbox']:checked").each(function() {
-			id = $(this).val().split("_")[0];
-		});
-		if(id!=null){
-			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id="+id+"&ifHideUser="+ifHideUser+"&dataType=application";
-			Dialog.table(url, "查看审批历史", "get", null, 800, 340);
-		}else{
-			Dialog.message("请选择要被查看的进件!");
-		}
-	}
-
-	
+		
 </script>
 #parse ("common/iframe_page_footer.htm")

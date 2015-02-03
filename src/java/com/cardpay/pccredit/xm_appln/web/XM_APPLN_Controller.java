@@ -62,6 +62,7 @@ import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
@@ -150,35 +151,7 @@ public class XM_APPLN_Controller extends BaseController {
 		return returnMap;
 	}
 	
-	//page0申请
-	@ResponseBody
-	@RequestMapping(value = "xm_appln_page0_apply.json")
-	@JRadOperation(JRadOperation.CREATE)
-	public JRadReturnMap xm_appln_page0_apply(@ModelAttribute XM_APPLN_NEW_CUSTOMER_FORM xM_APPLN_NEW_CUSTOMER_FORM, HttpServletRequest request) {
-		JRadReturnMap returnMap = new JRadReturnMap();
-		if (returnMap.isSuccess()) {
-			try {
-				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
-				String customerId = request.getParameter("customer_id");
-				customerId = xM_APPLN_Service.insertXM_APPLN_NEW_CUSTOMER(customerId,xM_APPLN_NEW_CUSTOMER_FORM,user);
-				
-				//设置流程开始
-				startProcess(customerId);
-				
-				returnMap.put(RECORD_ID, customerId);
-				returnMap.addGlobalMessage(CREATE_SUCCESS);
-			}catch (Exception e) {
-				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
-				returnMap.put(JRadConstants.SUCCESS, false);
-				return WebRequestHelper.processException(e);
-			}
-		}else{
-			returnMap.setSuccess(false);
-			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
-		}
-		return returnMap;
-	}
-	
+
 	//跳转到iframe
 	@ResponseBody
 	@RequestMapping(value = "changewh_xm_appln.page")
@@ -639,7 +612,7 @@ public class XM_APPLN_Controller extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				String appId = request.getParameter("appId");
-				
+				String fuheUser = request.getParameter("fuheUser");
 				//设置审批金额
 				CustomerApplicationInfo customerApplicationInfo = customerApplicationInfoService.findCustomerApplicationrById(appId);
 				String customer_id = customerApplicationInfo.getCustomerId();
@@ -656,126 +629,19 @@ public class XM_APPLN_Controller extends BaseController {
 				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
 				
 				
+				CustomerApplicationProcess process1 =  customerApplicationProcessService.findByAppId(appId);
 				
-				
+				//设置复核节点审批人
+				customerApplicationProcessService.addfuheProcess(fuheUser, process1.getId());
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			}catch (Exception e) {
+				e.printStackTrace();
 				return WebRequestHelper.processException(e);
 			}
 		}
 		return returnMap;
 	}
-	
-	//保存page5
-	@ResponseBody
-	@RequestMapping(value = "update_xm_appln_page5.json", method = {RequestMethod.GET })
-	@JRadOperation(JRadOperation.CHANGE)
-	public JRadReturnMap update_xm_appln_page5(HttpServletRequest request)throws Exception {
-		JRadReturnMap returnMap = new JRadReturnMap();
-		if (returnMap.isSuccess()) {
-			try {
-				String appId = request.getParameter("appId");
-				
-				//设置审批金额
-				CustomerApplicationInfo customerApplicationInfo = customerApplicationInfoService.findCustomerApplicationrById(appId);
-				String customer_id = customerApplicationInfo.getCustomerId();
-				String sqed = this.xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customer_id).getCrdlmt_req();
-				customerApplicationInfo.setApplyQuota(Integer.valueOf(sqed)*100+"");
-				customerApplicationInfoService.update(customerApplicationInfo);
-				
-				CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(appId);
-				request.setAttribute("serialNumber", process.getSerialNumber());
-				request.setAttribute("applicationId", process.getApplicationId());
-				request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
-				request.setAttribute("objection", "false");
-				request.setAttribute("examineAmount", "");
-				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
-				
-				returnMap.addGlobalMessage(CHANGE_SUCCESS);
-			}catch (Exception e) {
-				return WebRequestHelper.processException(e);
-			}
-		}
-		return returnMap;
-	}
-	
-	//发起审批流程
-	private void startProcess(String customer_id){
-		//设置申请
-		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
-		//customerApplicationInfo.setStatus(status);
-		customerApplicationInfo.setId(IDGenerator.generateID());
-		XM_APPLN_SQED xM_APPLN_SQED = xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customer_id);
-		if(xM_APPLN_SQED==null||xM_APPLN_SQED.getCrdlmt_req()==null||xM_APPLN_SQED.getCrdlmt_req().equals("")){
-			customerApplicationInfo.setApplyQuota("0");//设置额度
-		}
-		customerApplicationInfo.setCustomerId(customer_id);
-		customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
-		customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
-		//查找默认产品
-		ProductFilter filter = new ProductFilter();
-		filter.setDefault_type(Constant.DEFAULT_TYPE);
-		ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
-		customerApplicationInfo.setProductId(productAttribute.getId());
-				
-		commonDao.insertObject(customerApplicationInfo);
-		
-		
-		//添加申请件流程
-		WfProcessInfo wf=new WfProcessInfo();
-		wf.setProcessType(WfProcessInfoType.process_type);
-		wf.setVersion("1");
-		commonDao.insertObject(wf);
-		List<NodeAudit> list=nodeAuditService.findByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(),productAttribute.getId());
-		boolean startBool=false;
-		boolean endBool=false;
-		//节点id和WfStatusInfo id的映射
-		Map<String, String> nodeWfStatusMap = new HashMap<String, String>();
-		for(NodeAudit nodeAudit:list){
-			if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
-				startBool=true;
-			}
-			
-			if(startBool&&!endBool){
-				WfStatusInfo wfStatusInfo=new WfStatusInfo();
-				wfStatusInfo.setIsStart(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())?"1":"0");
-				wfStatusInfo.setIsClosed(nodeAudit.getIsend().equals(YesNoEnum.YES.name())?"1":"0");
-				wfStatusInfo.setRelationedProcess(wf.getId());
-				wfStatusInfo.setStatusName(nodeAudit.getNodeName());
-				wfStatusInfo.setStatusCode(nodeAudit.getId());
-				commonDao.insertObject(wfStatusInfo);
-				
-				nodeWfStatusMap.put(nodeAudit.getId(), wfStatusInfo.getId());
-				
-				if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
-					//添加初始审核
-					CustomerApplicationProcess customerApplicationProcess=new CustomerApplicationProcess();
-					String serialNumber = processService.start(wf.getId());
-					customerApplicationProcess.setSerialNumber(serialNumber);
-					customerApplicationProcess.setNextNodeId(nodeAudit.getId()); 
-					customerApplicationProcess.setApplicationId(customerApplicationInfo.getId());
-					commonDao.insertObject(customerApplicationProcess);
-					
-					CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, customerApplicationInfo.getId());
-					applicationInfo.setSerialNumber(serialNumber);
-					commonDao.updateObject(applicationInfo);
-				}
-			}
-			
-			if(nodeAudit.getIsend().equals(YesNoEnum.YES.name())){
-				endBool=true;
-			}
-		}
-		//节点关系
-		List<NodeControl> nodeControls = nodeAuditService.findNodeControlByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(), productAttribute.getId());
-		for(NodeControl control : nodeControls){
-			WfStatusResult wfStatusResult = new WfStatusResult();
-			wfStatusResult.setCurrentStatus(nodeWfStatusMap.get(control.getCurrentNode()));
-			wfStatusResult.setNextStatus(nodeWfStatusMap.get(control.getNextNode()));
-			wfStatusResult.setExamineResult(control.getCurrentStatus());
-			commonDao.insertObject(wfStatusResult);
-		}
-	}
+
 	
 	//转化数据字典的vlaue值为显示值
 	private String conventDic2Title(String dicName,String value){
@@ -789,4 +655,21 @@ public class XM_APPLN_Controller extends BaseController {
 		}
 		return "";
 	}
+	
+		//保存page4
+		@ResponseBody
+		@RequestMapping(value = "checkFuheOrLuru.page")
+	public JRadReturnMap checkFuheOrLuru(HttpServletRequest request)throws Exception {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		String appId = request.getParameter("appId");
+		CustomerApplicationProcess process = customerApplicationProcessService.findByAppId(appId);
+		if(process.getFuheUser()==null||process.getFuheUser().equals("")){
+			//录入节点
+			returnMap.put("result", true);
+		}else{
+			//复核节点
+			returnMap.put("result", false);
+			}
+		return returnMap;
+		}
 }
