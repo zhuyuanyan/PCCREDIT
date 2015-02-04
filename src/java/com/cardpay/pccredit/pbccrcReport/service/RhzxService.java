@@ -134,8 +134,17 @@ public class RhzxService {
 				}
 			}
 			rh_info.setDQYQJE(String.valueOf(dqyqje));
-			//读取近两年逾期期数
-			//todo
+			//读取近两年逾期期数(累计)
+			if(ele.getContent().toString().indexOf("还款记录")>0){
+				Element trEle = ele.getAllElements(HTMLElementName.TR).get(5);
+				int tdCount = trEle.getAllElements(HTMLElementName.TD).size();
+				for(int i=0;i<tdCount;i++){
+					if(!trEle.getAllElements(HTMLElementName.TD).get(i).getTextExtractor().toString().equals("N")){
+						jlnyqqs ++;
+					}
+				}
+			}
+			rh_info.setJLNYQQS(String.valueOf(jlnyqqs));
 			//读取近半年逾期次数
 			if(ele.getContent().toString().indexOf("还款记录")>0){
 				Element trEle = ele.getAllElements(HTMLElementName.TR).get(5);
@@ -160,10 +169,35 @@ public class RhzxService {
 				}
 			}
 			rh_info.setYNNLXYQCS(String.valueOf(ynnlxyqcs));
-			//读取两年以上逾期期数
-			//todo
-			//读取两年以上逾期金额
-			//todo
+			//读取两年以上逾期期数&读取两年以上逾期金额(最高)
+			if(ele.getContent().toString().indexOf("逾期记录")>0){
+				int trCount = ele.getAllElements(HTMLElementName.TR).size();
+				for(int i=8;i<trCount;i++){
+					Element trEle = ele.getAllElements(HTMLElementName.TR).get(i);
+					Element tdEle1 = trEle.getAllElements(HTMLElementName.TD).get(1);
+					Element tdEle2 = trEle.getAllElements(HTMLElementName.TD).get(2);
+					Element tdEle4 = trEle.getAllElements(HTMLElementName.TD).get(4);
+					Element tdEle5 = trEle.getAllElements(HTMLElementName.TD).get(5);
+					if(!tdEle1.getTextExtractor().toString().equals("--")){
+						if(Integer.parseInt(tdEle1.getTextExtractor().toString())>=5
+								&& Float.parseFloat(tdEle2.getTextExtractor().toString().replace(",", ""))>2000f){
+							lnysyqqs = Integer.parseInt(tdEle1.getTextExtractor().toString());
+							lnysyqje = Float.parseFloat(tdEle2.getTextExtractor().toString().replace(",", ""));
+							break;
+						}
+					}
+					if(!tdEle4.getTextExtractor().toString().equals("--")){
+						if(Integer.parseInt(tdEle5.getTextExtractor().toString())>=5
+								&& Float.parseFloat(tdEle2.getTextExtractor().toString().replace(",", ""))>2000f){
+							lnysyqqs = Integer.parseInt(tdEle1.getTextExtractor().toString());
+							lnysyqje = Float.parseFloat(tdEle2.getTextExtractor().toString().replace(",", ""));
+							break;
+						}
+					}
+				}
+			}
+			rh_info.setLNYSYQQS(String.valueOf(lnysyqqs));
+			rh_info.setLNYSYQJE(String.valueOf(lnysyqje));
 		}
 	}
 	
