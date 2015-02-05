@@ -42,6 +42,7 @@ import com.cardpay.pccredit.intopieces.constant.CardStatus;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesCardQueryFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerAccountData;
@@ -56,6 +57,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
@@ -109,9 +111,9 @@ import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 @Controller
-@RequestMapping("/intopieces/intopiecesapprove/*")
-@JRadModule("intopieces.intopiecesapprove")
-public class IntoPiecesApproveControl extends BaseController {
+@RequestMapping("/intopieces/applycardquery/*")
+@JRadModule("intopieces.applycardquery")
+public class IntoPiecesCardQueryControl extends BaseController {
 
 	@Autowired
 	private IntoPiecesService intoPiecesService;
@@ -153,55 +155,31 @@ public class IntoPiecesApproveControl extends BaseController {
 	private CustomerApplicationProcessService customerApplicationProcessService;
 	
 	/**
-	 * 申请页面
+	 * 制卡查询页面
 	 * 
 	 * @param filter
 	 * @param request
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "approve.page", method = { RequestMethod.GET })
-	public AbstractModelAndView browse(@ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
-        filter.setRequest(request);
-        IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		filter.setUserId(user.getId());
-		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilter(filter);
-		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
-		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_approve",
-                                                    request);
-		mv.addObject(PAGED_RESULT, pagedResult);
+	@RequestMapping(value = "cardQuery.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(@ModelAttribute IntoPiecesCardQueryFilter filter,
+			HttpServletRequest request) {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		QueryResult<IntoPiecesCardQuery> result=null;
+		String userId = user.getId();
+		filter.setApproveId(userId);
+		result = intoPiecesService.findintoPiecesCardQueryByFilter(filter);
+		JRadPagedQueryResult<IntoPiecesCardQuery> pagedResult = new JRadPagedQueryResult<IntoPiecesCardQuery>(
+				filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView(
+				"/intopieces/intopieces_cardQuery", request);
+		mv.addObject(PAGED_RESULT, null);
 
 		return mv;
 	}
-	/**
-	 * 执行申请
-	 * @param customerInforFilter
-	 * @param request
-	 * @return
-	 */
-		@ResponseBody
-		@RequestMapping(value = "xm_appln_page0_apply.page")
-		public JRadReturnMap xm_appln_page0_apply(@ModelAttribute CustomerInforFilter customerInforFilter, HttpServletRequest request) {
-			JRadReturnMap returnMap = new JRadReturnMap();
-			if (returnMap.isSuccess()) {
-				try {
-					String customerId = request.getParameter("id");
-					//设置流程开始
-					xM_APPLN_Service.saveApply(customerId);
-					
-					returnMap.put(RECORD_ID, customerId);
-					returnMap.addGlobalMessage(CREATE_SUCCESS);
-				}catch (Exception e) {
-					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
-					returnMap.put(JRadConstants.SUCCESS, false);
-					return WebRequestHelper.processException(e);
-				}
-			}else{
-				returnMap.setSuccess(false);
-				returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
-			}
-			return returnMap;
-		}
-		
-
+	
 }

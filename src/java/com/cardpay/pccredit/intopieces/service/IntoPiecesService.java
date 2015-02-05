@@ -30,6 +30,7 @@ import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesCardQueryFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
 import com.cardpay.pccredit.intopieces.model.ApplicationDataImport;
@@ -44,6 +45,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
@@ -1037,5 +1039,17 @@ public class IntoPiecesService {
 		
 		wfProcessRecord.setWfStatusQueueRecord(befoRecord.getId());
 		commonDao.updateObject(wfProcessRecord);
+	}
+	
+	/* 查询制卡结果信息 */
+	/*
+	 * TODO 1.添加注释 2.SQL写进DAO层
+	 */
+	public QueryResult<IntoPiecesCardQuery> findintoPiecesCardQueryByFilter(
+			IntoPiecesCardQueryFilter filter) {
+		QueryResult<IntoPiecesCardQuery> queryResult = commonDao.findObjectsByFilter(IntoPiecesCardQuery.class, filter);
+		int sum = queryResult.getItems().size();
+		QueryResult<IntoPiecesCardQuery> qs = new QueryResult<IntoPiecesCardQuery>(sum, queryResult.getItems());
+		return qs;
 	}
 }
