@@ -77,10 +77,13 @@
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
 		and b.status='audit' and N.IS_RECIEVE=#{isReceive}
-		<if test="cardId!=null">
+		<if test="cardId!=null and cardId!=''">
 			and U.card_id=#{cardId}
 		</if>
-		<if test="cardId==null">
+		<if test="chineseName!=null ">
+			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
 			and U.card_id is null
 		</if>
 	</select>
@@ -112,10 +115,13 @@
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
 		and b.status='audit' and N.IS_RECIEVE=#{isReceive}
-		<if test="cardId!=null">
+		<if test="cardId!=null and cardId!=''">
 			and U.card_id=#{cardId}
 		</if>
-		<if test="cardId==null">
+		<if test="chineseName!=null ">
+			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
+		</if>
+		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
 			and U.card_id is null
 		</if>
 		)
@@ -130,7 +136,9 @@
 		b.APPLY_QUOTA AS applyQuota,
 		A.SERIAL_NUMBER as SERIALNUMBER,
    		N.NODE_NAME as nodeName,
-		A.AUDIT_TIME as auditTime,A.id as processId
+		A.AUDIT_TIME as auditTime,
+		A.id as processId,
+		A.if_recieved as ifRecieved,b.id as applicationId
 		FROM
 		CUSTOMER_APPLICATION_INFO b,
 		BASIC_CUSTOMER_INFORMATION U,
@@ -141,17 +149,25 @@
 		and U.ID = b.CUSTOMER_ID
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
-		 and p.USER_ID=#{loginId}
-		and b.status='audit' 
-		and N.IS_RECIEVE=#{isReceive}
+		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
+		and b.status='audit' and N.IS_RECIEVE=#{isReceive}
+		<if test="ifRecieved!=null and ifRecieved!=''">
+			and A.if_recieved=#{ifRecieved}
+		</if>
+		<if test="ifRecieved==null or ifRecieved==''">
+			and A.if_recieved is null
+		</if>
 		<if test="cardId!=null and cardId!=''">
 			and U.card_id=#{cardId}
 		</if>
 		<if test="chineseName!=null ">
 			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
-		<if test="cardId==null and chineseName==null">
+		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
 			and U.card_id is null
+		</if>
+		<if test="fuheUser!=null and fuheUser!=''">
+			and A.fuhe_user=#{fuheUser}
 		</if>
 	</select>
 	<select id="receiveCountIntopieceWaitForm" resultType="int">
@@ -177,14 +193,23 @@
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{loginId}
 		and b.status='audit' and N.IS_RECIEVE=#{isReceive}
+		<if test="ifRecieved!=null and ifRecieved!=''">
+			and A.if_recieved=#{ifRecieved}
+		</if>
+		<if test="ifRecieved==null or ifRecieved==''">
+			and A.if_recieved is null
+		</if>
 		<if test="cardId!=null and cardId!=''">
 			and U.card_id=#{cardId}
 		</if>
 		<if test="chineseName!=null ">
 			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
-		<if test="cardId==null and chineseName==null">
+		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
 			and U.card_id is null
+		</if>
+		<if test="fuheUser!=null and fuheUser!=''">
+			and A.fuhe_user=#{fuheUser}
 		</if>)
 	</select>
 	<update id="updateCustomerApplicationProcessBySerialNumber"
@@ -211,6 +236,9 @@
 			</if>
 			<if test="processOpStatus!=null">
 				c.PROCESS_OP_STATUS=#{processOpStatus},
+			</if>
+			<if test="fuheUser==null">
+				c.fuhe_user=#{fuheUser},
 			</if>
 			c.Delay_Audit_User=''
 		</set>

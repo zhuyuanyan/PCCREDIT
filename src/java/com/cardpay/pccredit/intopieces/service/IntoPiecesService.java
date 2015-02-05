@@ -24,10 +24,13 @@ import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.divisional.constant.DivisionalProgressEnum;
 import com.cardpay.pccredit.divisional.constant.DivisionalTypeEnum;
 import com.cardpay.pccredit.divisional.service.DivisionalService;
+import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
+import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesCardQueryFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
 import com.cardpay.pccredit.intopieces.model.ApplicationDataImport;
@@ -38,13 +41,16 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
+import com.cardpay.pccredit.intopieces.web.XmApplnSxjcForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.riskControl.filter.AgrCrdXykCunegFilter;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
@@ -52,9 +58,17 @@ import com.cardpay.pccredit.riskControl.model.AgrCrdXykCuneg;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.filter.DictFilter;
 import com.cardpay.pccredit.system.model.Dict;
+import com.cardpay.pccredit.system.model.NodeControl;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SXJC;
+import com.cardpay.workflow.dao.WfStatusResultDao;
+import com.cardpay.workflow.models.WfProcessRecord;
+import com.cardpay.workflow.models.WfStatusQueueRecord;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.util.spring.Beans;
 
 @Service
 public class IntoPiecesService {
@@ -75,6 +89,17 @@ public class IntoPiecesService {
 	
 	@Autowired
 	private DivisionalService divisionalService;
+	
+	@Autowired
+	private CustomerApplicationProcessService customerApplicationProcessService;
+	
+	@Autowired
+	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
+	
+	@Autowired
+	private WfStatusResultDao wfStatusResultDao;
+	@Autowired
+	private CustomerApplicationIntopieceWaitDao customerApplicationIntopieceWaitDao;
 
 	
 	/* 查询进价信息 */
@@ -88,17 +113,22 @@ public class IntoPiecesService {
 		QueryResult<IntoPieces> qs = new QueryResult<IntoPieces>(sum, queryResult.getItems());
 		List<IntoPieces> intoPieces = qs.getItems();
 		for(IntoPieces pieces : intoPieces){
-			if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
+			if(pieces.getStatus()==null){
 				pieces.setNodeName("未提交申请");
-			} else if(pieces.getStatus().equals(Constant.APPROVE_INTOPICES)){
-				String nodeName = intoPiecesComdao.findAprroveProgress(pieces.getId());
-				if(StringUtils.isNotEmpty(nodeName)){
-					pieces.setNodeName(nodeName);
+			}
+			else{
+				if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
+					pieces.setNodeName("未提交申请");
+				} else if(pieces.getStatus().equals(Constant.APPROVE_INTOPICES)){
+					String nodeName = intoPiecesComdao.findAprroveProgress(pieces.getId());
+					if(StringUtils.isNotEmpty(nodeName)){
+						pieces.setNodeName(nodeName);
+					} else {
+						pieces.setNodeName("不在审批中");
+					}
 				} else {
-					pieces.setNodeName("不在审批中");
+					pieces.setNodeName("审批结束");
 				}
-			} else {
-				pieces.setNodeName("审批结束");
 			}
 		}
 		return qs;
@@ -951,5 +981,75 @@ public class IntoPiecesService {
 			return false;
 		}
 		return true;
+	}
+	
+	/*
+	 * 添加三性检测，并进入下一节点录入
+	 */
+	public void addSxjc(XmApplnSxjcForm filter,HttpServletRequest request) throws Exception{
+		XM_APPLN_SXJC sxjc = new XM_APPLN_SXJC();
+		sxjc.setApplication_id(filter.getApplicationId());
+		sxjc.setReality(filter.getReality());
+		sxjc.setComplete(filter.getComplete());
+		sxjc.setStandard(filter.getStandard());
+		commonDao.insertObject(sxjc);
+		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(filter.getApplicationId());
+		request.setAttribute("serialNumber", process.getSerialNumber());
+		request.setAttribute("applicationId", process.getApplicationId());
+		request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
+		request.setAttribute("objection", "false");
+		request.setAttribute("examineAmount", "");
+		customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
+	}
+	
+	/*
+	 * 复核退回到录入
+	 */
+	public void refuse(String applicationId,HttpServletRequest request) throws Exception{
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getId();
+		//更新申请表
+		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+		customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
+		customerApplicationInfo.setId(applicationId);
+		customerApplicationInfo.setModifiedBy(user.getId());
+		customerApplicationInfo.setModifiedTime(new Date());
+		commonDao.updateObject(customerApplicationInfo);
+		
+		//通过申请表ID获取流程表
+		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(applicationId);
+		//通过流程表的当前节点获取上一节点
+		NodeControl nodeControl = customerApplicationProcessService.getLastStatus(process.getNextNodeId());
+		//更新业务流程表
+		process.setNextNodeId(nodeControl.getCurrentNode());
+		process.setAuditUser(loginId);
+		process.setFuheUser(null);
+		process.setCreatedTime(new Date());
+	    customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(process);
+	    
+	    //更新流程备份表
+	    
+	   //查找当前所处流转状态
+  		WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, process.getSerialNumber());
+		WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
+		//查找上一节点
+		String beforeStatus = wfStatusQueueRecord.getBeforeStatus();
+		//通过上一节点获取上一流程
+		WfStatusQueueRecord befoRecord = wfStatusResultDao.getLastStatus(beforeStatus);
+		
+		wfProcessRecord.setWfStatusQueueRecord(befoRecord.getId());
+		commonDao.updateObject(wfProcessRecord);
+	}
+	
+	/* 查询制卡结果信息 */
+	/*
+	 * TODO 1.添加注释 2.SQL写进DAO层
+	 */
+	public QueryResult<IntoPiecesCardQuery> findintoPiecesCardQueryByFilter(
+			IntoPiecesCardQueryFilter filter) {
+		QueryResult<IntoPiecesCardQuery> queryResult = commonDao.findObjectsByFilter(IntoPiecesCardQuery.class, filter);
+		int sum = queryResult.getItems().size();
+		QueryResult<IntoPiecesCardQuery> qs = new QueryResult<IntoPiecesCardQuery>(sum, queryResult.getItems());
+		return qs;
 	}
 }

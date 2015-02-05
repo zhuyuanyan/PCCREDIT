@@ -29,6 +29,8 @@ public class CustomerApplicationProcess extends BusinessModel {
 	private String delayAuditUser;
 	private Date auditTime;
 	private String processOpStatus;
+	private String ifRecieved;
+	private String fuheUser;
 
 	public String getProductId() {
 		return productId;
@@ -124,6 +126,22 @@ public class CustomerApplicationProcess extends BusinessModel {
 
 	public void setProcessOpStatus(String processOpStatus) {
 		this.processOpStatus = processOpStatus;
+	}
+
+	public String getIfRecieved() {
+		return ifRecieved;
+	}
+
+	public void setIfRecieved(String ifRecieved) {
+		this.ifRecieved = ifRecieved;
+	}
+
+	public String getFuheUser() {
+		return fuheUser;
+	}
+
+	public void setFuheUser(String fuheUser) {
+		this.fuheUser = fuheUser;
 	}
 
 }

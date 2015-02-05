@@ -187,7 +187,7 @@ public class IntoPiecesApproveControl extends BaseController {
 				try {
 					String customerId = request.getParameter("id");
 					//设置流程开始
-					saveOrUpdatexm_appln_page4(customerId);
+					xM_APPLN_Service.saveApply(customerId);
 					
 					returnMap.put(RECORD_ID, customerId);
 					returnMap.addGlobalMessage(CREATE_SUCCESS);
@@ -203,80 +203,5 @@ public class IntoPiecesApproveControl extends BaseController {
 			return returnMap;
 		}
 		
-		public void saveOrUpdatexm_appln_page4(String customer_id){
-			//设置申请
-			CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
-			//customerApplicationInfo.setStatus(status);
-			customerApplicationInfo.setId(IDGenerator.generateID());
-			XM_APPLN_SQED xM_APPLN_SQED = xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customer_id);
-			if(xM_APPLN_SQED==null||xM_APPLN_SQED.getCrdlmt_req()==null||xM_APPLN_SQED.getCrdlmt_req().equals("")){
-				customerApplicationInfo.setApplyQuota("0");//设置额度
-			}
-			customerApplicationInfo.setCustomerId(customer_id);
-			customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
-			customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
-			//查找默认产品
-			ProductFilter filter = new ProductFilter();
-			filter.setDefault_type(Constant.DEFAULT_TYPE);
-			ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
-			customerApplicationInfo.setProductId(productAttribute.getId());
-					
-			commonDao.insertObject(customerApplicationInfo);
-			
-			
-			//添加申请件流程
-			WfProcessInfo wf=new WfProcessInfo();
-			wf.setProcessType(WfProcessInfoType.process_type);
-			wf.setVersion("1");
-			commonDao.insertObject(wf);
-			List<NodeAudit> list=nodeAuditService.findByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(),productAttribute.getId());
-			boolean startBool=false;
-			boolean endBool=false;
-			//节点id和WfStatusInfo id的映射
-			Map<String, String> nodeWfStatusMap = new HashMap<String, String>();
-			for(NodeAudit nodeAudit:list){
-				if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
-					startBool=true;
-				}
-				
-				if(startBool&&!endBool){
-					WfStatusInfo wfStatusInfo=new WfStatusInfo();
-					wfStatusInfo.setIsStart(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())?"1":"0");
-					wfStatusInfo.setIsClosed(nodeAudit.getIsend().equals(YesNoEnum.YES.name())?"1":"0");
-					wfStatusInfo.setRelationedProcess(wf.getId());
-					wfStatusInfo.setStatusName(nodeAudit.getNodeName());
-					wfStatusInfo.setStatusCode(nodeAudit.getId());
-					commonDao.insertObject(wfStatusInfo);
-					
-					nodeWfStatusMap.put(nodeAudit.getId(), wfStatusInfo.getId());
-					
-					if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
-						//添加初始审核
-						CustomerApplicationProcess customerApplicationProcess=new CustomerApplicationProcess();
-						String serialNumber = processService.start(wf.getId());
-						customerApplicationProcess.setSerialNumber(serialNumber);
-						customerApplicationProcess.setNextNodeId(nodeAudit.getId()); 
-						customerApplicationProcess.setApplicationId(customerApplicationInfo.getId());
-						commonDao.insertObject(customerApplicationProcess);
-						
-						CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, customerApplicationInfo.getId());
-						applicationInfo.setSerialNumber(serialNumber);
-						commonDao.updateObject(applicationInfo);
-					}
-				}
-				
-				if(nodeAudit.getIsend().equals(YesNoEnum.YES.name())){
-					endBool=true;
-				}
-			}
-			//节点关系
-			List<NodeControl> nodeControls = nodeAuditService.findNodeControlByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(), productAttribute.getId());
-			for(NodeControl control : nodeControls){
-				WfStatusResult wfStatusResult = new WfStatusResult();
-				wfStatusResult.setCurrentStatus(nodeWfStatusMap.get(control.getCurrentNode()));
-				wfStatusResult.setNextStatus(nodeWfStatusMap.get(control.getNextNode()));
-				wfStatusResult.setExamineResult(control.getCurrentStatus());
-				commonDao.insertObject(wfStatusResult);
-			}
-		}
+
 }

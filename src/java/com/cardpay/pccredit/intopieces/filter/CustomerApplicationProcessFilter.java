@@ -27,8 +27,10 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 	private Date auditTime;
 	private String cardId;
 	private String processId;
-	private String isReceive;
+	private String isReceive;//是否接收节点
 	private String chineseName;
+	private String ifRecieved;//是否已接收
+	private String fuheUser;
 	public String getLoginId() {
 		return loginId;
 	}
@@ -147,6 +149,22 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 
 	public void setChineseName(String chineseName) {
 		this.chineseName = chineseName;
+	}
+
+	public String getIfRecieved() {
+		return ifRecieved;
+	}
+
+	public void setIfRecieved(String ifRecieved) {
+		this.ifRecieved = ifRecieved;
+	}
+
+	public String getFuheUser() {
+		return fuheUser;
+	}
+
+	public void setFuheUser(String fuheUser) {
+		this.fuheUser = fuheUser;
 	}
 
 }

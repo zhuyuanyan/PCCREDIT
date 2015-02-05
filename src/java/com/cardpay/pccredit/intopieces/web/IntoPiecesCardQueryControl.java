@@ -42,6 +42,7 @@ import com.cardpay.pccredit.intopieces.constant.CardStatus;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesCardQueryFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerAccountData;
@@ -56,6 +57,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
@@ -109,9 +111,9 @@ import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 @Controller
-@RequestMapping("/intopieces/intopiecesluru/*")
-@JRadModule("intopieces.intopiecesluru")
-public class IntoPiecesluruControl extends BaseController {
+@RequestMapping("/intopieces/applycardquery/*")
+@JRadModule("intopieces.applycardquery")
+public class IntoPiecesCardQueryControl extends BaseController {
 
 	@Autowired
 	private IntoPiecesService intoPiecesService;
@@ -153,56 +155,31 @@ public class IntoPiecesluruControl extends BaseController {
 	private CustomerApplicationProcessService customerApplicationProcessService;
 	
 	/**
-	 * 录入页面
+	 * 制卡查询页面
 	 * 
 	 * @param filter
 	 * @param request
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "luru.page", method = { RequestMethod.GET })
+	@RequestMapping(value = "cardQuery.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView browse(@ModelAttribute IntoPiecesFilter filter,
+	public AbstractModelAndView browse(@ModelAttribute IntoPiecesCardQueryFilter filter,
 			HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		QueryResult<IntoPieces> result=null;
+		QueryResult<IntoPiecesCardQuery> result=null;
 		String userId = user.getId();
-		filter.setUserId(userId);
-//		result = intoPiecesService.findintoPiecesByFilter(filter);
-//		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
-//				filter, result);
+		filter.setApproveId(userId);
+		result = intoPiecesService.findintoPiecesCardQueryByFilter(filter);
+		JRadPagedQueryResult<IntoPiecesCardQuery> pagedResult = new JRadPagedQueryResult<IntoPiecesCardQuery>(
+				filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView(
-				"/intopieces/intopieces_browse", request);
+				"/intopieces/intopieces_cardQuery", request);
 		mv.addObject(PAGED_RESULT, null);
 
 		return mv;
 	}
 	
-	/**
-	 * 录入岗筛选进件
-	 * 
-	 * @param filter
-	 * @param request
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "queryResult.page", method = { RequestMethod.GET })
-	public AbstractModelAndView queryResult(@ModelAttribute CustomerApplicationProcessFilter filter,
-			HttpServletRequest request) {
-		filter.setRequest(request);
-		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String userId = user.getId();
-		filter.setLoginId(userId);
-		filter.setIsReceive("NO");
-		filter.setIfRecieved(Constant.recieve_type);
-		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
-		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
-		JRadModelAndView mv = new JRadModelAndView(
-				"/intopieces/intopieces_browse", request);
-		mv.addObject(PAGED_RESULT, pagedResult);
-
-		return mv;
-	}
 }

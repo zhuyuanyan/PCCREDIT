@@ -191,16 +191,62 @@ public class IntoPiecesRecieveControl extends BaseController {
 			try {
 				String id = request.getParameter("id");
 				CustomerApplicationProcess process =  customerApplicationProcessService.findById(id);
-				request.setAttribute("serialNumber", process.getSerialNumber());
-				request.setAttribute("applicationId", process.getApplicationId());
-				request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
-				request.setAttribute("objection", "false");
-				request.setAttribute("examineAmount", "");
-				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo1(request);
+				process.setIfRecieved(Constant.recieve_type);
+				//将流程表更新为接收状态
+				commonDao.updateObject(process);
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			} catch (Exception e) {
 				return WebRequestHelper.processException(e);
 			}
+		return returnMap;
+	}
+	
+	/**
+	 * 三性检测列表
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "check.page", method = { RequestMethod.GET })
+	public AbstractModelAndView check(@ModelAttribute CustomerApplicationProcessFilter filter, HttpServletRequest request) throws SQLException {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getId();
+		filter.setLoginId(loginId);
+		filter.setIsReceive("YES");
+		filter.setIfRecieved(Constant.recieve_type);
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView(
+				"/intopieces/intopieces_wait/intopiecesApprove_recieve_check", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("filter", filter);
+		return mv;
+	}
+	
+	
+	/**
+	 * 三性检测通过
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "checkDo.json")
+	public JRadReturnMap checkDo(@ModelAttribute XmApplnSxjcForm filter, HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+
+		try {
+			intoPiecesService.addSxjc(filter,request);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("保存失败");
+			e.printStackTrace();
+		}
 		return returnMap;
 	}
 }
