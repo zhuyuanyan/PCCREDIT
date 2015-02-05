@@ -1,4 +1,4 @@
-#parse ("common/iframe_page_header.htm")
+﻿#parse ("common/iframe_page_header.htm")
 <link rel="stylesheet" type="text/css" href="${contextPath}/css/customer/style.css" />
 <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
 <style>
@@ -8,29 +8,6 @@
 <body class="whitebg">
 	 <div class="content_main">
 		<div class="contentinner">
-			<div class="place">
-        <div class=" ">客户维护信息>授信评估</div>
-      		</div>
-			<div class="tabplace">
-          <ul class="com-tab" >
-          <!-- 
-            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/changewh.page?id=${customerId}">基本信息</a></li>
-            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zyxx.page?id=${customerId}">职业信息</a></li>
-            <li class="tab " ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_mbxx.page?id=${customerId}">陌拜信息</a></li>
-            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_zcfz.page?id=${customerId}">资产负债</a></li>
-            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_syb.page?id=${customerId}">损益</a></li>
-            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_xjl.page?id=${customerId}">现金流量</a></li>
-            <li class="tab "><a href="${contextPath}/customer/basiccustomerinforUpdate/create_jcjy.page?id=${customerId}">交叉检验</a></li>
-			<li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_swpg.page?id=${customerId}">四维评估</a></li>
-		  -->
-			<li class="tab activeTab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}">授信评估</a></li>
-		  <!--
-            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_wjdc.page?id=${customerId}">问卷调查</a></li>
-            <li class="tab" ><a href="${contextPath}/customer/basiccustomerinforUpdate/create_khtz.page?id=${customerId}">台账信息</a></li>
-            <li class="tab"><a href="${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page?id=${customerId}">影像资料</a></li>  
-          -->
-         </ul>
-         </div>
 			
 			<form id="id_module_form">
                 <input type="hidden" name="customerId" value="${customerId}">
@@ -70,7 +47,11 @@
 						</tr>
 						</table>
                 <!--有房客户-自有 Start-->
+                #if(!$customerCreidtEvaluation || $!customerCreidtEvaluation.modelType=='selfHouse')
+				<table class="table-bd"  bordercolor="#cccccc" border="1" id="ownHouse">
+				#else
 				<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="ownHouse">
+				#end
 						<caption>有房客户-自有</caption>
 						<tr>
 							<th width="25%" class="h3color" colspan="2"><h3>资产金额<!--<a href="#" class="addBtn"></a><a href="#" class="delBtn"></a>--></h3></th>
@@ -117,7 +98,12 @@
 						</table>
 				
                 <!--有房客户-家庭所有 Start-->
-                <table class="table-bd hide"  bordercolor="#cccccc" border="1" id="familyHouse">
+                #if($!customerCreidtEvaluation.modelType=='familyHouse')
+				<table class="table-bd"  bordercolor="#cccccc" border="1" id="familyHouse">
+				#else
+				<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="familyHouse">
+				#end
+                
 						<caption>有房客户-家庭所有</caption>
 						<tr>
 							<th width="25%" class="h3color" colspan="2"><h3>资产金额<!--<a href="#" class="addBtn"></a><a href="#" class="delBtn"></a>--></h3></th>
@@ -164,7 +150,12 @@
 						</table>
                         
                 <!--无房客户-散件 Start--> 
+                #if($!customerCreidtEvaluation.modelType=='sanjian')
+				<table class="table-bd"  bordercolor="#cccccc" border="1" id="noHouse_local_0">
+				#else
 				<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouse_local_0">
+				#end
+				
 						<caption>无房本地客户</caption>
 						<tr>
 							<th width="25%" class="h3color"><h3>额度附加条件</h3></th>
@@ -269,7 +260,11 @@
 						</table>
                 
                 <!--无房客户-我行有存款 Start-->
-                <table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouse_local_1">
+                #if($!customerCreidtEvaluation.modelType=='cunkuan')
+				<table class="table-bd"  bordercolor="#cccccc" border="1" id="noHouse_local_1">
+				#else
+				<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouse_local_1">
+				#end
                 <caption>无房客户-我行有存款</caption>
 						<tr>
 							<th width="33%" class="h3color"><h3>项目</h3></th>
@@ -286,7 +281,11 @@
 						</table>
                         
                 <!--无房客户-我行有股金 Start-->
-                <table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouse_local_2">
+                #if($!customerCreidtEvaluation.modelType=='gujin')
+				<table class="table-bd"  bordercolor="#cccccc" border="1" id="noHouse_local_2">
+				#else
+				<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouse_local_2">
+				#end
                 <caption>无房客户-我行有股金</caption>
 						<tr>
 							<th width="33%" class="h3color"><h3>项目</h3></th>
@@ -309,7 +308,11 @@
 						</table> 
             
             	<!--无房需担保本地客户 Start--> 
-            	<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouseLoc_assure">
+            	#if($!customerCreidtEvaluation.modelType=='needGuaraLocal')
+				<table class="table-bd"  bordercolor="#cccccc" border="1" id="noHouseLoc_assure">
+				#else
+				<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouseLoc_assure">
+				#end
 						<caption>无房需担保本地客户</caption>
 						<tr>
                         	<th width="25%" class="h3color" colspan="2"><h3>资产金额</h3></th>
@@ -379,8 +382,12 @@
                         </tr>                   
 						</table> 
     
-                <!--无房需担保外地客户 Start--> 
-                <table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouseNonloc_assure">
+                <!--无房需担保外地客户 Start-->
+                #if($!customerCreidtEvaluation.modelType=='needGuarnExarl')
+				<table class="table-bd"  bordercolor="#cccccc" border="1" id="noHouseNonloc_assure">
+				#else
+				<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouseNonloc_assure">
+				#end 
 						<caption>无房需担保外地客户</caption>
 						<tr>
                         	<th width="25%" class="h3color" colspan="2"><h3>资产金额</h3></th>
@@ -451,7 +458,11 @@
 						</table>
 				
                 <!--无房优质行业客户 Start--> 
-				<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouse_profession" >
+                #if($!customerCreidtEvaluation.modelType=='highQuailty')
+				<table class="table-bd"  bordercolor="#cccccc" border="1" id="noHouse_profession">
+				#else
+				<table class="table-bd hide"  bordercolor="#cccccc" border="1" id="noHouse_profession">
+				#end
 						<caption>无房优质行业客户</caption>
 						<tr>
 							<td><label>优质行业：</label></td>
@@ -468,10 +479,10 @@
 			</div>
 			
 			</form>
-			<div class="submit">
+			<!-- <div class="submit">
 				<input id="id_save_button" type="button" value='保存' class="current" /> 
 				<input type="button" onclick="javascript:history.go(-1);" value='取消' />
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_sxpg.js'></script>
@@ -615,12 +626,32 @@ document.write(os.options[select=selected].value);
 	     	    
 	       });
 
-
 	});
 	function returnClick(){
 		
 		 window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
 	}
+	function onSave(){
+   	 if( $("#customerCreidtEvaluationId").attr("value") == "")	{
+			  var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/basiccustomerinforUpdate/insertsxpg.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}") ;
+		              #end
+		            }
+		          });}	
+	     	    else{
+	     	    	var formjson = $($formName).serialize();
+	     	    $.get("${contextPath}/customer/basiccustomerinforUpdate/updatesxpg.json", formjson, function(data, textStatus, jqXhr) {
+		            if (data.success) {
+		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
+		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}") ;
+		              #end
+		            }
+		          });
+	     	    }
+    }
 	</script>
 
 
