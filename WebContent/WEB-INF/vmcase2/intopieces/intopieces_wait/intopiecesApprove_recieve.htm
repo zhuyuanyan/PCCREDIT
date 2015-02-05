@@ -9,7 +9,7 @@
       <div class="inquiry">
        <div class="search_tag">进件查询</div>
         <div class="search">
-          <form id="submitForm" action="${contextPath}/intopieces/intopiecesrecieve/recieve.page">
+          <form id="submitForm" action="${contextPath}/intopieces/intopiecesquery/recieve.page">
           <ul>
           	  <li>
                 <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
@@ -67,8 +67,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.processId@"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
-              <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>
-              
+              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!wait.cardType)</td>
               <td nowrap="nowrap">$!wait.cardId</td>
               <td nowrap="nowrap">$!wait.residentialAddress</td>
               <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
@@ -84,8 +83,6 @@
       <div class="pagebar">
         <div class="controlbtn">
          <a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="接收">接收</a>
-         <a id="id_check_button" class="btn_g" href="javascript:void(0);" title="三性检测">三性检测</a>
-         <a id="id_create_button_2" class="btn_g" href="javascript:void(0);" title="客户授信评估">客户授信评估</a>
 		<!-- <a class="btn_g" href="javascript:void(0);" onclick="javascript :history.back(-1)">返回</a> -->
         </div>
         #parse ("common/pagination.htm")
@@ -108,7 +105,7 @@
 				id = $(this).val().split("@")[0];
 			});
 			if(id!=null){
-				$.post("${contextPath}/intopieces/intopiecesrecieve/recieveOver.json", {id:id},
+				$.post("${modulePath}/recieveOver.json", {id:id},
 	            function(data, textStatus, jqXhr) {
 	                if (data.success) {
 	                    window.location.reload(true);
@@ -121,23 +118,20 @@
 			}
       });
 		
-		$("#id_check_button").click(function() {
-			var url="${contextPath}/intopieces/intopiecesrecieve/check.page";
-			window.location.href = url;
-      });
-		
-		
-		$("#id_create_button_2").click(function() {
-            if ($(".checkbox :checked").length == 1) {
-                var customerId= $($(".checkbox :checked")[0]).attr("value");
-                var url = "${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id="+customerId;
-                window.location.href = url;
-            } else {
-                Dialog.message("请选择一行");
-            }
-        });
-		
 	});
+	
+	function viewIntoPicesApproveHistory(ifHideUser){
+		var id = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("@")[2];
+		});
+		if(id!=null){
+			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id="+id+"&ifHideUser="+ifHideUser+"&dataType=application";
+			Dialog.table(url, "查看审批历史", "get", null, 800, 230);
+		}else{
+			Dialog.message("请选择要被查看的进件!");
+		}
+	}
 	
 </script>
 
