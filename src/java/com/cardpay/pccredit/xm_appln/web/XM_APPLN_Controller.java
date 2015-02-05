@@ -305,42 +305,14 @@ public class XM_APPLN_Controller extends BaseController {
 		
 		//查找相关xm_xppln信息
 		XM_APPLN xM_APPLN = xM_APPLN_Service.findXM_APPLNByCustomerId(customerId);
-		if(xM_APPLN == null){
-			xM_APPLN = new XM_APPLN();
-		}
 		XM_APPLN_SQED xM_APPLN_SQED = xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customerId);
-		if(xM_APPLN_SQED == null){
-			xM_APPLN_SQED = new XM_APPLN_SQED();
-		}
 		List<XM_APPLN_KPMX> xM_APPLN_KPMX_ls = xM_APPLN_Service.findXM_APPLN_KPMXByCustomerId(customerId);
-		if(xM_APPLN_KPMX_ls == null || xM_APPLN_KPMX_ls.size() == 0){
-			xM_APPLN_KPMX_ls.add(new XM_APPLN_KPMX());
-			xM_APPLN_KPMX_ls.add(new XM_APPLN_KPMX());
-		}
 		XM_APPLN_HKSZ xM_APPLN_HKSZ = xM_APPLN_Service.findXM_APPLN_HKSZByCustomerId(customerId);
-		if(xM_APPLN_HKSZ == null){
-			xM_APPLN_HKSZ = new XM_APPLN_HKSZ();
-		}
 		XM_APPLN_DBXX xM_APPLN_DBXX = xM_APPLN_Service.findXM_APPLN_DBXXByCustomerId(customerId);
-		if(xM_APPLN_DBXX == null){
-			xM_APPLN_DBXX = new XM_APPLN_DBXX();
-		}
 		XM_APPLN_QTXYKXX xM_APPLN_QTXYKXX = xM_APPLN_Service.findXM_APPLN_QTXYKXXByCustomerId(customerId);
-		if(xM_APPLN_QTXYKXX == null){
-			xM_APPLN_QTXYKXX = new XM_APPLN_QTXYKXX();
-		}
 		XM_APPLN_DCSC xM_APPLN_DCSC = xM_APPLN_Service.findXM_APPLN_DCSCByCustomerId(customerId);
-		if(xM_APPLN_DCSC == null){
-			xM_APPLN_DCSC = new XM_APPLN_DCSC();
-		}
 		XM_APPLN_TJINFO xM_APPLN_TJINFO = xM_APPLN_Service.findXM_APPLN_TJINFOByCustomerId(customerId);
-		if(xM_APPLN_TJINFO == null){
-			xM_APPLN_TJINFO = new XM_APPLN_TJINFO();
-		}
 		XM_APPLN_ADDR xM_APPLN_ADDR = xM_APPLN_Service.findXM_APPLN_ADDRByCustomerId(customerId);
-		if(xM_APPLN_ADDR == null){
-			xM_APPLN_ADDR = new XM_APPLN_ADDR();
-		}
 		
 		//转化数据字典value为显示值
 		xM_APPLN.setProduct(conventDic2Title("PRODUCT", xM_APPLN.getProduct()));
@@ -357,28 +329,24 @@ public class XM_APPLN_Controller extends BaseController {
 			obj.setSms_yn((obj.getSms_yn()!=null&&obj.getSms_yn().equals("1"))?"是":"否");
 			obj.setPin_chk((obj.getPin_chk()!=null&&obj.getPin_chk().equals("1"))?"是":"否");
 			obj.setCdfrm(conventDic2Title("CDFRM", obj.getCdfrm()));
-			if(obj.getAtm() == null){obj.setAtm("MR");}
 			if(obj.getAtm().equals("MR"))
 				obj.setAtm("取产品新卡参数");
 			if(obj.getAtm().equals("BKT"))
 				obj.setAtm("不开通");
 			if(obj.getAtm().equals("KT"))
 				obj.setAtm("开通");
-			if(obj.getTele() == null){obj.setTele("MR");}
 			if(obj.getTele().equals("MR"))
 				obj.setTele("取产品新卡参数");
 			if(obj.getTele().equals("BKT"))
 				obj.setTele("不开通");
 			if(obj.getTele().equals("KT"))
 				obj.setTele("开通");
-			if(obj.getNet() == null){obj.setNet("MR");}
 			if(obj.getNet().equals("MR"))
 				obj.setNet("取产品新卡参数");
 			if(obj.getNet().equals("BKT"))
 				obj.setNet("不开通");
 			if(obj.getNet().equals("KT"))
 				obj.setNet("开通");
-			if(obj.getPhone() == null){obj.setPhone("MR");}
 			if(obj.getPhone().equals("MR"))
 				obj.setPhone("取产品新卡参数");
 			if(obj.getPhone().equals("BKT"))
@@ -394,9 +362,6 @@ public class XM_APPLN_Controller extends BaseController {
 		
 		xM_APPLN_DBXX.setGuarn_code(conventDic2Title("GUARN_CODE", xM_APPLN_DBXX.getGuarn_code()));
 		
-		if(xM_APPLN_QTXYKXX.getXrefcode1() == null){
-			xM_APPLN_QTXYKXX.setXrefcode1("WU");
-		}
 		if(xM_APPLN_QTXYKXX.getXrefcode1().equals("WU")){
 			xM_APPLN_QTXYKXX.setXrefcode1("无");
 		}
@@ -405,9 +370,6 @@ public class XM_APPLN_Controller extends BaseController {
 		}
 		if(xM_APPLN_QTXYKXX.getXrefcode1().equals("TH")){
 			xM_APPLN_QTXYKXX.setXrefcode1("他行");
-		}
-		if(xM_APPLN_QTXYKXX.getXrefcode2() == null){
-			xM_APPLN_QTXYKXX.setXrefcode2("WU");
 		}
 		if(xM_APPLN_QTXYKXX.getXrefcode2().equals("WU")){
 			xM_APPLN_QTXYKXX.setXrefcode2("无");
@@ -683,9 +645,6 @@ public class XM_APPLN_Controller extends BaseController {
 	
 	//转化数据字典的vlaue值为显示值
 	private String conventDic2Title(String dicName,String value){
-		if(value == null){
-			return "";
-		}
 		DictionaryManager dictMgr = Beans.get(DictionaryManager.class);
 		Dictionary dictionary = dictMgr.getDictionaryByName(dicName);
 		List<DictionaryItem> ls = dictionary.getItems();
