@@ -2,6 +2,7 @@ package com.cardpay.pccredit.intopieces.service;
 
 
 import java.io.DataOutputStream;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -133,6 +134,7 @@ public class IntoPiecesService {
 		}
 		return qs;
 	}
+	
 	
 	/* 经理岗查询进件信息 */
 	/*
@@ -441,11 +443,14 @@ public class IntoPiecesService {
 			    	break;
 			    case 16:
 			    	DateFormat format = new SimpleDateFormat("yyyyMMdd");
-			    	Date birthday = format.parse(customerInfor.getBirthday());
-			    	content = UploadFileTool.getContent(content,birthday.toString(),length);
+			    	String birthday="";
+			    	if(customerInfor.getBirthday()!=null){
+			    		birthday = format.parse(customerInfor.getBirthday()).toString();
+			    	}
+			    	content = UploadFileTool.getContent(content,birthday,length);
 			    	break;
 			    case 17:
-			    	content = UploadFileTool.getContent(content,customerInfor.getNationality(),length);
+			    	content = UploadFileTool.getContent(content,"1",length);
 			    	break;
 			    case 18:
 			    	content = UploadFileTool.getContent(content,customerInfor.getMaritalStatus(),length);
@@ -462,7 +467,7 @@ public class IntoPiecesService {
 			    case 28:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 29:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 30:
-			    	content = UploadFileTool.getContent(content,getDict(customerInfor.getResidentialPropertie()).getItems().get(0).getTypeName(),length);break;
+			    	content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 31:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 32:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 33:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -559,6 +564,7 @@ public class IntoPiecesService {
 			    case 124:content = UploadFileTool.getContent(content,customerApplicationGuarantorList.get(0).getGuarantorMortgagorPledge(),length);break;
 			    case 125:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 126:
+			    	System.out.println(content.length());
 			    	if(customerApplicationGuarantorList.get(0).getSex()!=null){
 			    		if(customerApplicationGuarantorList.get(0).getSex().equals("Male")){
 			    			content = UploadFileTool.getContent(content,"M",length);
@@ -786,16 +792,18 @@ public class IntoPiecesService {
 			    case 342:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 343:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 344:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 345:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 346:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 345:content = UploadFileTool.getContent(content,sb.toString(),length);
+			    case 346:content = UploadFileTool.getContent(content,sb.toString(),length);
 			    default:break;
 			}
 		}
-		String fileName = customerInfor.getChineseName()+"("+customerInfor.getCardId()+").txt";
+		String fileName = customerInfor.getChineseName()+"("+customerInfor.getCardId()+")";
 		/*生成的接口数据上传到ftp文件上*/
 
-		UploadFileTool.uploadFileToFtp(Constant.FTPIP, Integer.valueOf(Constant.FTPPORT), Constant.FTPUSERNAME, Constant.FTPPASSWORD, Constant.FTPPATH, fileName, content.toString());
-//		UploadFileTool.create(fileName,content.toString());
+//		UploadFileTool.uploadFileToFtp(Constant.FTPIP, Integer.valueOf(Constant.FTPPORT), Constant.FTPUSERNAME, Constant.FTPPASSWORD, Constant.FTPPATH, fileName, content.toString());
+		
+		
+		UploadFileTool.create(fileName,content.toString());
 		/*如果要下载接口数据,将下面的exportTextFile方法打开*/
 		/*if(response!=null){
 			UploadFileTool.exportTextFile(response, content.toString(), fileName);
@@ -1045,11 +1053,27 @@ public class IntoPiecesService {
 	/*
 	 * TODO 1.添加注释 2.SQL写进DAO层
 	 */
-	public QueryResult<IntoPiecesCardQuery> findintoPiecesCardQueryByFilter(
+	public QueryResult<IntoPiecesCardQueryFilter> findintoPiecesCardQueryByFilter(
 			IntoPiecesCardQueryFilter filter) {
-		QueryResult<IntoPiecesCardQuery> queryResult = commonDao.findObjectsByFilter(IntoPiecesCardQuery.class, filter);
-		int sum = queryResult.getItems().size();
-		QueryResult<IntoPiecesCardQuery> qs = new QueryResult<IntoPiecesCardQuery>(sum, queryResult.getItems());
+		List<IntoPiecesCardQueryFilter> list = intoPiecesDao.cardQuery(filter);
+		int size = intoPiecesDao.cardQueryCount(filter);
+		QueryResult<IntoPiecesCardQueryFilter> qs = new QueryResult<IntoPiecesCardQueryFilter>(size, list);
 		return qs;
+	}
+	
+	/* 接收节点退回进件 */
+	/*
+	 * TODO 1.添加注释 2.SQL写进DAO层
+	 */
+	public void checkDoNot(XmApplnSxjcForm filter) throws Exception{
+		//获取进件信息
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, filter.getApplicationId());
+		//获取客户信息
+		CustomerInfor infor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
+		//删除进件信息
+		commonDao.deleteObject(CustomerApplicationInfo.class, filter.getApplicationId());
+		//更新客户信息--退回
+		infor.setProcessId("1");
+		commonDao.updateObject(infor);
 	}
 }

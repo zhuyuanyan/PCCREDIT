@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.common.Cn2Spell;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -121,8 +122,11 @@ public class XM_APPLN_Controller extends BaseController {
 	@RequestMapping(value = "xm_appln_page0.page")
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView xm_appln_page0(HttpServletRequest request) {        
-		//JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page1", request);
 		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page0", request);
+		String customerId = request.getParameter("id");
+		CustomerInfor customerInfor = commonDao.findObjectById(CustomerInfor.class, customerId);
+		
+		mv.addObject("customerInfor", customerInfor);
 		return mv;
 	}
 	
@@ -656,7 +660,7 @@ public class XM_APPLN_Controller extends BaseController {
 		return "";
 	}
 	
-		//保存page4
+		//提交时先判断是录入还是复核
 		@ResponseBody
 		@RequestMapping(value = "checkFuheOrLuru.page")
 	public JRadReturnMap checkFuheOrLuru(HttpServletRequest request)throws Exception {

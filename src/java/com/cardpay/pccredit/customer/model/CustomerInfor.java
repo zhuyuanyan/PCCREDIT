@@ -35,6 +35,7 @@ public class CustomerInfor extends BusinessModel{
 	private String divisionalStatus;
 	private String customerBusinessType;
 	private String customerBusinessAptitude;
+	private String processId;
 	
 	public String getChineseName() {
 		return chineseName;
@@ -175,6 +176,12 @@ public class CustomerInfor extends BusinessModel{
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+	public String getProcessId() {
+		return processId;
+	}
+	public void setProcessId(String processId) {
+		this.processId = processId;
 	}
 	
 }

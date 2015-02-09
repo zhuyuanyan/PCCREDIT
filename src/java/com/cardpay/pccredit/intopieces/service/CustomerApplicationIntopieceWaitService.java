@@ -148,30 +148,36 @@ public class CustomerApplicationIntopieceWaitService {
 			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
 		}
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
-		String examineResutl = processService.examine(serialNumber, loginId, applicationStatus, examineAmount);
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount);
 		//更新单据状态
 	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
 	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
 	    		examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())) {
 			if(examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
 				customerApplicationInfo.setStatus(Constant.REFUSE_INTOPICES);
+				customerApplicationInfo.setId(applicationId);
+				customerApplicationInfo.setModifiedBy(user.getId());
+				customerApplicationInfo.setModifiedTime(new Date());
+				commonDao.updateObject(customerApplicationInfo);
+				
+				customerApplicationProcess.setNextNodeId(null);
 			}
 			if(examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString())){
 				customerApplicationInfo.setStatus(Constant.NOPASS_INTOPICES);
 				//退回时 删除提交申请备份的信息
 				CustomerApplicationInfo returnApp = commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
-				customerInforService.deleteCloneSubmitAppByReturn(returnApp.getCustomerId(), applicationId);
+//				customerInforService.deleteCloneSubmitAppByReturn(returnApp.getCustomerId(), applicationId);
 			}
 			if(examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())){
 				customerApplicationInfo.setFinalApproval(examineAmount);
 				customerApplicationInfo.setStatus(Constant.APPROVED_INTOPICES);
+				customerApplicationInfo.setId(applicationId);
+				customerApplicationInfo.setModifiedBy(user.getId());
+				customerApplicationInfo.setModifiedTime(new Date());
+				commonDao.updateObject(customerApplicationInfo);
+				
+				customerApplicationProcess.setNextNodeId(null);
 			}
-			customerApplicationInfo.setId(applicationId);
-			customerApplicationInfo.setModifiedBy(user.getId());
-			customerApplicationInfo.setModifiedTime(new Date());
-			commonDao.updateObject(customerApplicationInfo);
-			
-			customerApplicationProcess.setNextNodeId(null);
 		} else {
 			customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
 			customerApplicationInfo.setId(applicationId);
@@ -182,7 +188,7 @@ public class CustomerApplicationIntopieceWaitService {
 			customerApplicationProcess.setNextNodeId(examineResutl);
 		}
 	    if(Constant.APPROVED_INTOPICES.equalsIgnoreCase(customerApplicationInfo.getStatus())){
-//	    	intoPiecesService.exportData(applicationId, customerId, null);
+	    	intoPiecesService.exportData(applicationId, customerId, null);
 	    }
 		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.RETURNAPPROVE)) {
 			String fallbackReason = request.getParameter("reason");
@@ -241,7 +247,7 @@ public class CustomerApplicationIntopieceWaitService {
 			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
 		}
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
-		String examineResutl = processService.examine(serialNumber, loginId, applicationStatus, examineAmount);
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount);
 		//更新单据状态
 	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
 	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
@@ -298,5 +304,11 @@ public class CustomerApplicationIntopieceWaitService {
 	 */
 	public CustomerApplicationProcess getProcessById(String id){
 		return customerApplicationProcessService.findByAppId(id);
+	}
+	/**
+	 * 接收进件后，修改进件状态
+	 */
+	public void updateRecieveState(){
+		
 	}
 }

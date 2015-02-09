@@ -5,9 +5,17 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
+import com.cardpay.pccredit.system.model.NodeControl;
 import com.cardpay.workflow.constant.ApproveOperationTypeEnum;
 import com.cardpay.workflow.dao.WfStatusInfoDao;
 import com.cardpay.workflow.dao.WfStatusQueueRecordDao;
@@ -16,7 +24,10 @@ import com.cardpay.workflow.models.WfProcessRecord;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusQueueRecord;
 import com.cardpay.workflow.models.WfStatusResult;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.util.spring.Beans;
 
 /**   
  * @Title: ProcessService.java 
@@ -41,6 +52,12 @@ public class ProcessService {
 	//实例化WfStatusResultDao
 	@Autowired
 	private WfStatusQueueRecordDao wfStatusQueueRecordDao;
+	
+	@Autowired
+	private CustomerApplicationProcessService customerApplicationProcessService;
+	
+	@Autowired
+	private CustomerApplicationIntopieceWaitDao customerApplicationIntopieceWaitDao;
 	
 	/**
 	 * 流程开始,根据状态流转表取得该下一状态信息，同时流程记录表中新增一条记录
@@ -101,7 +118,7 @@ public class ProcessService {
 	 * 
 	 * @throws SQLException
 	 */
-	public String examine(String wfProcessRecordID,String exUserID,String exResult,String exAmount){
+	public String examine(String applicationId,String wfProcessRecordID,String exUserID,String exResult,String exAmount){
 		//查找当前所处流转状态
 		WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, wfProcessRecordID);
 		WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
@@ -115,8 +132,10 @@ public class ProcessService {
 		
 		//退回
 		if(exResult.equalsIgnoreCase(ApproveOperationTypeEnum.RETURNAPPROVE.toString())){
-			wfProcessRecord.setIsClosed("1");
-			commonDao.updateObject(wfProcessRecord);
+//			wfProcessRecord.setIsClosed("1");
+//			commonDao.updateObject(wfProcessRecord);
+			//审批退回进件到录入
+			refuse(applicationId);
 			return ApproveOperationTypeEnum.RETURNAPPROVE.toString();
 		} //拒绝 
 		else if(exResult.equalsIgnoreCase(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
@@ -164,5 +183,51 @@ public class ProcessService {
 	 */
 	public List<WfStatusQueueRecord> getExamineHistory(String exUserID) {
 		return wfStatusQueueRecordDao.getExamineHistory(exUserID);
+	}
+	
+	/*
+	 * 审批退回到录入
+	 */
+	public void refuse(String applicationId) {
+		try {
+			//更新申请表
+			CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+			customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
+			customerApplicationInfo.setId(applicationId);
+			customerApplicationInfo.setModifiedTime(new Date());
+			commonDao.updateObject(customerApplicationInfo);
+			
+			//通过申请表ID获取流程表
+			CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(applicationId);
+			//通过流程表的当前节点获取上一节点--复核
+			NodeControl nodeControl = customerApplicationProcessService.getLastStatus(process.getNextNodeId());
+			//通过流程表的当前节点获取上一节点--录入
+			NodeControl nodeControl1 = customerApplicationProcessService.getLastStatus(nodeControl.getCurrentNode());
+			//更新业务流程表
+			process.setNextNodeId(nodeControl1.getCurrentNode());
+			process.setFuheUser(null);
+			process.setCreatedTime(new Date());
+			customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(process);
+			
+			//更新流程备份表
+			
+			//查找当前所处流转状态
+			WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, process.getSerialNumber());
+			WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
+			//查找上一节点为复核
+			String beforeStatus = wfStatusQueueRecord.getBeforeStatus();
+			//通过复核节点获取复核流程
+			WfStatusQueueRecord befoRecord = wfStatusResultDao.getLastStatus(beforeStatus);
+			//获取录入标记
+			String lastLastNode = befoRecord.getBeforeStatus();
+			//通过录入节点获取录入流程
+			WfStatusQueueRecord lastlastRecord = wfStatusResultDao.getLastStatus(lastLastNode);
+			//设置节点为录入
+			wfProcessRecord.setWfStatusQueueRecord(lastlastRecord.getId());
+			commonDao.updateObject(wfProcessRecord);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
