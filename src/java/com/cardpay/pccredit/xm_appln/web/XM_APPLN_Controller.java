@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cardpay.pccredit.common.Cn2Spell;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
+import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
@@ -33,13 +34,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
-import com.cardpay.pccredit.product.filter.ProductFilter;
-import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
-import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
-import com.cardpay.pccredit.system.constants.YesNoEnum;
-import com.cardpay.pccredit.system.model.NodeAudit;
-import com.cardpay.pccredit.system.model.NodeControl;
 import com.cardpay.pccredit.system.service.NodeAuditService;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
@@ -54,24 +49,31 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KPMX;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_LXRZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_POZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_QTXYKXX;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SPED;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQCL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQED;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_TJINFO;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_YWXX;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZHSX;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXQSZL;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXXX;
 import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
 import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.i18n.I18nHelper;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
+import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
@@ -117,16 +119,44 @@ public class XM_APPLN_Controller extends BaseController {
 	@Autowired
 	private CustomerApplicationProcessService customerApplicationProcessService;
 	
+	/**
+	 * 浏览页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(@ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
+        filter.setRequest(request);
+        IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		filter.setUserId(user.getId());
+		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilter(filter);
+		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page0_browse",request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+
+		return mv;
+	}
+	
 	//跳转到page0
 	@ResponseBody
 	@RequestMapping(value = "xm_appln_page0.page")
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView xm_appln_page0(HttpServletRequest request) {        
 		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page0", request);
-		String customerId = request.getParameter("id");
-		CustomerInfor customerInfor = commonDao.findObjectById(CustomerInfor.class, customerId);
-		
-		mv.addObject("customerInfor", customerInfor);
+		String customerInforId = request.getParameter("customerId");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_Service.findXM_APPLN_JCZLByCustomerId(customerInforId);
+			XM_APPLN_POZL xM_APPLN_POZL = xM_APPLN_Service.findXM_APPLN_POZLByCustomerId(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("xM_APPLN_JCZL", xM_APPLN_JCZL);
+			mv.addObject("xM_APPLN_POZL", xM_APPLN_POZL);
+		}
 		return mv;
 	}
 	
@@ -140,7 +170,7 @@ public class XM_APPLN_Controller extends BaseController {
 			try {
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				String customerId = request.getParameter("customer_id");
-				customerId = xM_APPLN_Service.insertXM_APPLN_NEW_CUSTOMER(customerId,xM_APPLN_NEW_CUSTOMER_FORM,user);
+				customerId = xM_APPLN_Service.insertOrUpdateXM_APPLN_NEW_CUSTOMER(xM_APPLN_NEW_CUSTOMER_FORM,user);
 				returnMap.put(RECORD_ID, customerId);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {
@@ -309,14 +339,42 @@ public class XM_APPLN_Controller extends BaseController {
 		
 		//查找相关xm_xppln信息
 		XM_APPLN xM_APPLN = xM_APPLN_Service.findXM_APPLNByCustomerId(customerId);
+		if(xM_APPLN == null){
+			xM_APPLN = new XM_APPLN();
+		}
 		XM_APPLN_SQED xM_APPLN_SQED = xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customerId);
+		if(xM_APPLN_SQED == null){
+			xM_APPLN_SQED = new XM_APPLN_SQED();
+		}
 		List<XM_APPLN_KPMX> xM_APPLN_KPMX_ls = xM_APPLN_Service.findXM_APPLN_KPMXByCustomerId(customerId);
+		if(xM_APPLN_KPMX_ls == null || xM_APPLN_KPMX_ls.size() == 0){
+			xM_APPLN_KPMX_ls.add(new XM_APPLN_KPMX());
+			xM_APPLN_KPMX_ls.add(new XM_APPLN_KPMX());
+		}
 		XM_APPLN_HKSZ xM_APPLN_HKSZ = xM_APPLN_Service.findXM_APPLN_HKSZByCustomerId(customerId);
+		if(xM_APPLN_HKSZ == null){
+			xM_APPLN_HKSZ = new XM_APPLN_HKSZ();
+		}
 		XM_APPLN_DBXX xM_APPLN_DBXX = xM_APPLN_Service.findXM_APPLN_DBXXByCustomerId(customerId);
+		if(xM_APPLN_DBXX == null){
+			xM_APPLN_DBXX = new XM_APPLN_DBXX();
+		}
 		XM_APPLN_QTXYKXX xM_APPLN_QTXYKXX = xM_APPLN_Service.findXM_APPLN_QTXYKXXByCustomerId(customerId);
+		if(xM_APPLN_QTXYKXX == null){
+			xM_APPLN_QTXYKXX = new XM_APPLN_QTXYKXX();
+		}
 		XM_APPLN_DCSC xM_APPLN_DCSC = xM_APPLN_Service.findXM_APPLN_DCSCByCustomerId(customerId);
+		if(xM_APPLN_DCSC == null){
+			xM_APPLN_DCSC = new XM_APPLN_DCSC();
+		}
 		XM_APPLN_TJINFO xM_APPLN_TJINFO = xM_APPLN_Service.findXM_APPLN_TJINFOByCustomerId(customerId);
+		if(xM_APPLN_TJINFO == null){
+			xM_APPLN_TJINFO = new XM_APPLN_TJINFO();
+		}
 		XM_APPLN_ADDR xM_APPLN_ADDR = xM_APPLN_Service.findXM_APPLN_ADDRByCustomerId(customerId);
+		if(xM_APPLN_ADDR == null){
+			xM_APPLN_ADDR = new XM_APPLN_ADDR();
+		}
 		
 		//转化数据字典value为显示值
 		xM_APPLN.setProduct(conventDic2Title("PRODUCT", xM_APPLN.getProduct()));
@@ -333,24 +391,28 @@ public class XM_APPLN_Controller extends BaseController {
 			obj.setSms_yn((obj.getSms_yn()!=null&&obj.getSms_yn().equals("1"))?"是":"否");
 			obj.setPin_chk((obj.getPin_chk()!=null&&obj.getPin_chk().equals("1"))?"是":"否");
 			obj.setCdfrm(conventDic2Title("CDFRM", obj.getCdfrm()));
+			if(obj.getAtm() == null){obj.setAtm("MR");}
 			if(obj.getAtm().equals("MR"))
 				obj.setAtm("取产品新卡参数");
 			if(obj.getAtm().equals("BKT"))
 				obj.setAtm("不开通");
 			if(obj.getAtm().equals("KT"))
 				obj.setAtm("开通");
+			if(obj.getTele() == null){obj.setTele("MR");}
 			if(obj.getTele().equals("MR"))
 				obj.setTele("取产品新卡参数");
 			if(obj.getTele().equals("BKT"))
 				obj.setTele("不开通");
 			if(obj.getTele().equals("KT"))
 				obj.setTele("开通");
+			if(obj.getNet() == null){obj.setNet("MR");}
 			if(obj.getNet().equals("MR"))
 				obj.setNet("取产品新卡参数");
 			if(obj.getNet().equals("BKT"))
 				obj.setNet("不开通");
 			if(obj.getNet().equals("KT"))
 				obj.setNet("开通");
+			if(obj.getPhone() == null){obj.setPhone("MR");}
 			if(obj.getPhone().equals("MR"))
 				obj.setPhone("取产品新卡参数");
 			if(obj.getPhone().equals("BKT"))
@@ -366,6 +428,9 @@ public class XM_APPLN_Controller extends BaseController {
 		
 		xM_APPLN_DBXX.setGuarn_code(conventDic2Title("GUARN_CODE", xM_APPLN_DBXX.getGuarn_code()));
 		
+		if(xM_APPLN_QTXYKXX.getXrefcode1() == null){
+			xM_APPLN_QTXYKXX.setXrefcode1("WU");
+		}
 		if(xM_APPLN_QTXYKXX.getXrefcode1().equals("WU")){
 			xM_APPLN_QTXYKXX.setXrefcode1("无");
 		}
@@ -374,6 +439,9 @@ public class XM_APPLN_Controller extends BaseController {
 		}
 		if(xM_APPLN_QTXYKXX.getXrefcode1().equals("TH")){
 			xM_APPLN_QTXYKXX.setXrefcode1("他行");
+		}
+		if(xM_APPLN_QTXYKXX.getXrefcode2() == null){
+			xM_APPLN_QTXYKXX.setXrefcode2("WU");
 		}
 		if(xM_APPLN_QTXYKXX.getXrefcode2().equals("WU")){
 			xM_APPLN_QTXYKXX.setXrefcode2("无");
@@ -419,7 +487,7 @@ public class XM_APPLN_Controller extends BaseController {
 		return mv;
 	}
 	
-	//iframe跳转到第page5
+	//跳转到第page5
 	@ResponseBody
 	@RequestMapping(value = "xm_appln_page5.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.CREATE)
@@ -430,14 +498,58 @@ public class XM_APPLN_Controller extends BaseController {
 		
 		//查找相关xm_xppln信息
 		XM_APPLN xM_APPLN = xM_APPLN_Service.findXM_APPLNByCustomerId(customerId);
+		if(xM_APPLN == null){
+			xM_APPLN = new XM_APPLN();
+		}
 		XM_APPLN_SQED xM_APPLN_SQED = xM_APPLN_Service.findXM_APPLN_SQEDByCustomerId(customerId);
+		if(xM_APPLN_SQED == null){
+			xM_APPLN_SQED = new XM_APPLN_SQED();
+		}
 		List<XM_APPLN_KPMX> xM_APPLN_KPMX_ls = xM_APPLN_Service.findXM_APPLN_KPMXByCustomerId(customerId);
+		if(xM_APPLN_KPMX_ls == null || xM_APPLN_KPMX_ls.size() == 0){
+			xM_APPLN_KPMX_ls.add(new XM_APPLN_KPMX());
+			xM_APPLN_KPMX_ls.add(new XM_APPLN_KPMX());
+		}
 		XM_APPLN_HKSZ xM_APPLN_HKSZ = xM_APPLN_Service.findXM_APPLN_HKSZByCustomerId(customerId);
+		if(xM_APPLN_HKSZ == null){
+			xM_APPLN_HKSZ = new XM_APPLN_HKSZ();
+		}
 		XM_APPLN_DBXX xM_APPLN_DBXX = xM_APPLN_Service.findXM_APPLN_DBXXByCustomerId(customerId);
+		if(xM_APPLN_DBXX == null){
+			xM_APPLN_DBXX = new XM_APPLN_DBXX();
+		}
 		XM_APPLN_QTXYKXX xM_APPLN_QTXYKXX = xM_APPLN_Service.findXM_APPLN_QTXYKXXByCustomerId(customerId);
+		if(xM_APPLN_QTXYKXX == null){
+			xM_APPLN_QTXYKXX = new XM_APPLN_QTXYKXX();
+		}
 		XM_APPLN_DCSC xM_APPLN_DCSC = xM_APPLN_Service.findXM_APPLN_DCSCByCustomerId(customerId);
+		if(xM_APPLN_DCSC == null){
+			xM_APPLN_DCSC = new XM_APPLN_DCSC();
+		}
 		XM_APPLN_TJINFO xM_APPLN_TJINFO = xM_APPLN_Service.findXM_APPLN_TJINFOByCustomerId(customerId);
+		if(xM_APPLN_TJINFO == null){
+			xM_APPLN_TJINFO = new XM_APPLN_TJINFO();
+		}
 		XM_APPLN_ADDR xM_APPLN_ADDR = xM_APPLN_Service.findXM_APPLN_ADDRByCustomerId(customerId);
+		if(xM_APPLN_ADDR == null){
+			xM_APPLN_ADDR = new XM_APPLN_ADDR();
+		}
+		XM_APPLN_SPED xM_APPLN_SPED = xM_APPLN_Service.findXM_APPLN_SPEDByCustomerId(customerId);
+		if(xM_APPLN_SPED == null){
+			xM_APPLN_SPED = new XM_APPLN_SPED();
+		}
+		XM_APPLN_SQCL xM_APPLN_SQCL = xM_APPLN_Service.findXM_APPLN_SQCLByCustomerId(customerId);
+		if(xM_APPLN_SQCL == null){
+			xM_APPLN_SQCL = new XM_APPLN_SQCL();
+		}
+		XM_APPLN_ZHSX xM_APPLN_ZHSX = xM_APPLN_Service.findXM_APPLN_ZHSXByCustomerId(customerId);
+		if(xM_APPLN_ZHSX == null){
+			xM_APPLN_ZHSX = new XM_APPLN_ZHSX();
+		}
+		XM_APPLN_ZXXX xM_APPLN_ZXXX = xM_APPLN_Service.findXM_APPLN_ZXXXByCustomerId(customerId);
+		if(xM_APPLN_ZXXX == null){
+			xM_APPLN_ZXXX = new XM_APPLN_ZXXX();
+		}
 		
 		//转化数据字典value为显示值
 		xM_APPLN.setProduct(conventDic2Title("PRODUCT", xM_APPLN.getProduct()));
@@ -454,24 +566,28 @@ public class XM_APPLN_Controller extends BaseController {
 			obj.setSms_yn((obj.getSms_yn()!=null&&obj.getSms_yn().equals("1"))?"是":"否");
 			obj.setPin_chk((obj.getPin_chk()!=null&&obj.getPin_chk().equals("1"))?"是":"否");
 			obj.setCdfrm(conventDic2Title("CDFRM", obj.getCdfrm()));
+			if(obj.getAtm() == null){obj.setAtm("MR");}
 			if(obj.getAtm().equals("MR"))
 				obj.setAtm("取产品新卡参数");
 			if(obj.getAtm().equals("BKT"))
 				obj.setAtm("不开通");
 			if(obj.getAtm().equals("KT"))
 				obj.setAtm("开通");
+			if(obj.getTele() == null){obj.setTele("MR");}
 			if(obj.getTele().equals("MR"))
 				obj.setTele("取产品新卡参数");
 			if(obj.getTele().equals("BKT"))
 				obj.setTele("不开通");
 			if(obj.getTele().equals("KT"))
 				obj.setTele("开通");
+			if(obj.getNet() == null){obj.setNet("MR");}
 			if(obj.getNet().equals("MR"))
 				obj.setNet("取产品新卡参数");
 			if(obj.getNet().equals("BKT"))
 				obj.setNet("不开通");
 			if(obj.getNet().equals("KT"))
 				obj.setNet("开通");
+			if(obj.getPhone() == null){obj.setPhone("MR");}
 			if(obj.getPhone().equals("MR"))
 				obj.setPhone("取产品新卡参数");
 			if(obj.getPhone().equals("BKT"))
@@ -487,6 +603,9 @@ public class XM_APPLN_Controller extends BaseController {
 		
 		xM_APPLN_DBXX.setGuarn_code(conventDic2Title("GUARN_CODE", xM_APPLN_DBXX.getGuarn_code()));
 		
+		if(xM_APPLN_QTXYKXX.getXrefcode1() == null){
+			xM_APPLN_QTXYKXX.setXrefcode1("WU");
+		}
 		if(xM_APPLN_QTXYKXX.getXrefcode1().equals("WU")){
 			xM_APPLN_QTXYKXX.setXrefcode1("无");
 		}
@@ -495,6 +614,9 @@ public class XM_APPLN_Controller extends BaseController {
 		}
 		if(xM_APPLN_QTXYKXX.getXrefcode1().equals("TH")){
 			xM_APPLN_QTXYKXX.setXrefcode1("他行");
+		}
+		if(xM_APPLN_QTXYKXX.getXrefcode2() == null){
+			xM_APPLN_QTXYKXX.setXrefcode2("WU");
 		}
 		if(xM_APPLN_QTXYKXX.getXrefcode2().equals("WU")){
 			xM_APPLN_QTXYKXX.setXrefcode2("无");
@@ -522,7 +644,7 @@ public class XM_APPLN_Controller extends BaseController {
 		
 		xM_APPLN.setMail_to(conventDic2Title("MAIL_TO", xM_APPLN.getMail_to()));
 		
-		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page4", request);
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page5", request);
 		
 		mv.addObject("customerId", customerId);
 		mv.addObject("customer", customerInfor);
@@ -536,7 +658,10 @@ public class XM_APPLN_Controller extends BaseController {
 		mv.addObject("xM_APPLN_DCSC", xM_APPLN_DCSC);
 		mv.addObject("xM_APPLN_TJINFO", xM_APPLN_TJINFO);
 		mv.addObject("xM_APPLN_ADDR", xM_APPLN_ADDR);
-		
+		mv.addObject("xM_APPLN_SPED", xM_APPLN_SPED);
+		mv.addObject("xM_APPLN_SQCL", xM_APPLN_SQCL);
+		mv.addObject("xM_APPLN_ZHSX", xM_APPLN_ZHSX);
+		mv.addObject("xM_APPLN_ZXXX", xM_APPLN_ZXXX);
 		return mv;
 	}
 		
@@ -649,6 +774,9 @@ public class XM_APPLN_Controller extends BaseController {
 	
 	//转化数据字典的vlaue值为显示值
 	private String conventDic2Title(String dicName,String value){
+		if(value == null){
+			return "";
+		}
 		DictionaryManager dictMgr = Beans.get(DictionaryManager.class);
 		Dictionary dictionary = dictMgr.getDictionaryByName(dicName);
 		List<DictionaryItem> ls = dictionary.getItems();
@@ -660,9 +788,9 @@ public class XM_APPLN_Controller extends BaseController {
 		return "";
 	}
 	
-		//提交时先判断是录入还是复核
-		@ResponseBody
-		@RequestMapping(value = "checkFuheOrLuru.page")
+	//保存page4
+	@ResponseBody
+	@RequestMapping(value = "checkFuheOrLuru.page")
 	public JRadReturnMap checkFuheOrLuru(HttpServletRequest request)throws Exception {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		String appId = request.getParameter("appId");

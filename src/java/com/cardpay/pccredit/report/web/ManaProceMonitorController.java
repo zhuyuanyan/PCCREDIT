@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.report.filter.StatisticalFilter;
+import com.cardpay.pccredit.report.model.LCJC;
 import com.cardpay.pccredit.report.model.manaProceMonitor;
 import com.cardpay.pccredit.report.service.ProceMonitorService;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -49,7 +50,7 @@ public class ManaProceMonitorController extends BaseController {
 	public AbstractModelAndView browse(@ModelAttribute StatisticalFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 
-		List<manaProceMonitor> result = proceMonitorService.getProceMonitorStatistical(filter);
+		List<LCJC> result = proceMonitorService.getProceMonitorStatistical(filter);
 		JRadModelAndView mv = new JRadModelAndView("/report/cardbussiness/manager_business_monitoring_browse", request);
 		mv.addObject(PAGED_RESULT, result);
 

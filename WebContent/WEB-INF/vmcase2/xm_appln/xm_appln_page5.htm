@@ -22,7 +22,7 @@
 				<tr>
 					<td class="label">申请产品</td>
 					<td>
-						<span name="PRODUCT"></span>
+						<span name="product">$!xM_APPLN.product</span>
 					</td>
 					<td class="label">申请类型</td>
 					<td>
@@ -32,21 +32,21 @@
 				<tr>
 					<td class="label">主卡证件号</td>
 					<td>
-						<span name="CUSTR_NBR1"></span>
+						<span name="custr_nbr1">$!xM_APPLN_KPMX_ls.get(0).custr_nbr</span>
 					</td>
 					<td class="label">主卡姓名</td>
 					<td>
-						<span name="ACC_NAME1"></span>
+						<span name="acc_name1">$!xM_APPLN_JCZL.surname</span>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">附卡1证件号</td>
 					<td>
-						<span name="CUSTR_NBR2"></span>
+						<span name="custr_nbr2">$!xM_APPLN_KPMX_ls.get(1).custr_nbr</span>
 					</td>
 					<td class="label">附卡1姓名</td>
 					<td>
-						<span name="ACC_NAME2"></span>
+						<span name="acc_name2">$!xM_APPLN_JCZL.surname</span>
 					</td>
 				</tr>
 				<tr>
@@ -56,7 +56,7 @@
 					</td>
 					<td class="label">单位名称凸字</td>
 					<td>
-						<span name="EMBOSS_CPY"></span>
+						<span name="emboss_cpy">$!xM_APPLN.emboss_cpy</span>
 					</td>
 				</tr>	
 			</table>
@@ -80,7 +80,7 @@
 					</td>
 					<td class="label">产生信函?</td>
 					<td>
-						<input type="checkbox" name="DECCAN_LET"/>
+						<input type="checkbox" name="DECCAN_LET" value="1"/>
 					</td>
 					<td class="label">补件原因代码</td>
 					<td>
@@ -90,11 +90,11 @@
 				<tr>					
 					<td class="label">快速发卡?</td>
 					<td>
-						<input type="checkbox" name="RUSH_CARD"/>
+						<input type="checkbox" name="rush_card" value="1" #if($!xM_APPLN.rush_card == '1') checked #end/>
 					</td>
 					<td class="label">快速发卡费?</td>
 					<td>
-						<input type="checkbox" name="RUSH_FEE"/>
+						<input type="checkbox" name="rush_fee" value="1" #if($!xM_APPLN.rush_fee == '1') checked #end/>
 					</td>
 					<td class="label">核准/拒绝日期</td>
 					<td>
@@ -111,7 +111,7 @@
 					<td class="label">密信递送方式</td>
 					<td>
 						<select name="PIN_DSPCH" style="width:150px;">
-							<option></option>
+							#dict("CDESPMTD",$null)
 						</select>
 					</td>
 				</tr>
@@ -119,7 +119,7 @@
 					<td class="label">密信递送费用</td>
 					<td colspan="5">
 						<select name="PINCOURFEE" style="width:150px;">
-							<option></option>
+							#dict("COURIERF",$null)
 						</select>
 					</td>
 				</tr>
@@ -139,25 +139,25 @@
 				<tr>					
 					<td class="label">信用额度</td>
 					<td>
-						<input type="text" name="CRED_LIMIT" maxlength="10"/>
+						<input type="text" name="cred_limit" value="$!xM_APPLN_SPED.cred_limit" maxlength="10"/>
 					</td>
 					<td class="label">分期付款额度</td>
 					<td>
-						<input type="text" name="MP_LIMIT" maxlength="10"/>
+						<input type="text" name="mp_limit" value="$!xM_APPLN_SPED.mp_limit" maxlength="10"/>
 					</td>
 					<td class="label">美元账户额度</td>
 					<td>
-						<input type="text" name="CREDLIM_X" maxlength="6"/>
+						<input type="text" name="credlim_x" value="$!xM_APPLN_SPED.credlim_x" maxlength="6"/>
 					</td>
 				</tr>
 				<tr>					
 					<td class="label">预借现金比例%</td>
 					<td>
-						<input type="text" name="CA_PCNT" maxlength="6"/>
+						<input type="text" name="ca_pcnt" value="$!xM_APPLN_SPED.ca_pcnt" maxlength="6"/>
 					</td>
 					<td class="label">现金分期额度固定值</td>
 					<td colspan="3">
-						<input type="text" name="CALLMT" maxlength="10"/>
+						<input type="text" name="callmt" value="$!xM_APPLN_SPED.callmt" maxlength="10"/>
 					</td>
 				</tr>
 			</table>
@@ -176,30 +176,22 @@
 				<tr>					
 					<td class="label">利率代码</td>
 					<td>
-						<select name="INT_CODE" style="width:150px;">
-							<option>标准利率代码01</option>
-							<option>专项卡年利率16.2</option>
-							<option>专项卡年利率14.4</option>
-							<option>专项卡年利率12.6</option>
-							<option>专项卡年利率10.8</option>
-							<option>专项卡年利率9%</option>
-							<option>专项卡标准利率18</option>
-							<option>专项卡利率9.9%</option>
-							<option>专项卡利率11.7%</option>
-							<option>渔保卡专用利率</option>
-							<option>专项卡利率13.5%</option>
+						<select name="int_code" style="width:150px;">
+							#if(!$xM_APPLN_ZHSX)
+							#dict("INT_CODE","$!xM_APPLN.int_code")
+							#else
+							#dict("INT_CODE","$!xM_APPLN_ZHSX.int_code")
+							#end
 						</select>
 					</td>
 					<td class="label">年费代码</td>
 					<td colspan="3">
-						<select name="ACC_TYPE_N" style="width:170px;">
-							<option>3131重要客户终身免年费</option>
-							<option>3232员工卡终身免年费</option>
-							<option>3333刷卡3赐或满3000</option>
-							<option>3636年费全收</option>
-							<option>3737年费全收(500元/年)</option>
-							<option>3838年费全收(1000元/年)</option>
-							<option>3939年费全收(2000元/年)</option>
+						<select name="acc_type_n" style="width:170px;">
+							#if(!$xM_APPLN_ZHSX)
+							#dict("ACC_TYPE","$!xM_APPLN.acc_type")
+							#else
+							#dict("ACC_TYPE","$!xM_APPLN_ZHSX.acc_type_n")
+							#end
 						</select>
 					</td>
 				</tr>
@@ -208,61 +200,41 @@
 				<tr>					
 					<td class="label">降级/更换产品?</td>
 					<td>
-						<input type="checkbox" name="GTOC"/>
+						<input type="checkbox" name="gtoc" value="1" #if($!xM_APPLN_ZHSX.gtoc == '1') checked #end/>
 					</td>
 					<td class="label">降级账单日</td>
 					<td>
-						<input type="text mini" name="CYCLE_NBR" maxlength="2"/>
+						<input type="text mini" name="cycle_nbr" value="$!xM_APPLN_ZHSX.cycle_nbr" maxlength="2"/>
 					</td>
 					<td class="label">降级申请来源</td>
 					<td>
-						<select name="APP_SOURCE" style="width:200px;">
-							<option></option>
+						<select name="app_source" style="width:200px;">
+							#dict("APP_SOURCE","$!xM_APPLN_ZHSX.app_source")
 						</select>
 					</td>
 				</tr>
 				<tr>					
 					<td class="label">降级收件分行</td>
 					<td>
-						<input type="texy" name="AB_BRANCH" maxlength="4"/>
+						<input type="text" name="ab_branch" value="$!xM_APPLN_ZHSX.ab_branch" maxlength="4"/>
 					</td>
 					<td class="label">降级产品</td>
 					<td colspan="3">
-						<select name="DOWNPROD" style="width:200px;">
-							<option>1 福万通白金卡</option>
-							<option>2 福万通普卡</option>
-							<option>3 福万通金卡</option>
-							<option>4 福万通渔保卡</option>
-							<option>5 公务</option>
-							<option>6 员工卡</option>
-							<option>7 福万通海峡旅游普卡</option>
-							<option>8 福万通海峡旅游金卡</option>
-							<option>9 普惠金融卡3年</option>
-							<option>10 福万通移搜联名金卡</option>
-							<option>11 普惠金融卡1年</option>
-							<option>12 福万通移搜联名白金卡</option>
-							<option>13 福万通单位卡</option>
-							<option>14 晋江小鱼卡</option>
-							<option>15 罗源富农卡</option>
+						<select name="downprod" style="width:200px;">
+							#dict("PRODUCT","$!xM_APPLN_ZHSX.downprod")
 						</select>
 					</td>
 				</tr>
 				<tr>					
 					<td class="label">降级年费代码</td>
 					<td colspan="3">
-						<select name="ACC_TYPE" style="width:200px;">
-							<option>3131重要客户终身免年费</option>
-							<option>3232员工卡终身免年费</option>
-							<option>3333刷卡3赐或满3000</option>
-							<option>3636年费全收</option>
-							<option>3737年费全收(500元/年)</option>
-							<option>3838年费全收(1000元/年)</option>
-							<option>3939年费全收(2000元/年)</option>
+						<select name="acc_type" style="width:200px;">
+							#dict("ACC_TYPE","$!xM_APPLN_ZHSX.acc_type")
 						</select>
 					</td>
 					<td class="label">账单代码</td>
 					<td>
-						<span name="STM_CODE"></span>
+						<span name="stm_code">$!xM_APPLN_ZHSX.stm_code</span>
 					</td>
 				</tr>
 			</table>
@@ -281,7 +253,7 @@
 				<tr>					
 					<td class="label">申请人个数</td>
 					<td>
-						<span name="CUST_COUNT"></span>
+						<span name="CUST_COUNT">$!xM_APPLN_KPMX_ls.size()</span>
 					</td>
 				</tr>
 			</table>
@@ -295,7 +267,7 @@
 						<tr>
 							<td class="label">主卡凸字姓名</td>
 							<td>
-								<input type="text" name="EMBOSNME_L" maxlength="28"/>
+								<input type="text" name="embosnme_l" value="$!xM_APPLN_KPMX_ls.get(0).embname_d" maxlength="28"/>
 							</td>
 							<td class="label" style="color:#b5b0b6;">自选卡号</td>
 							<td>
@@ -306,18 +278,12 @@
 							<td class="label">卡片版面</td>
 							<td>
 								<select name="CDFRM_L">
-									<option>标准卡版面</option>
-									<option>60周年卡表面</option>
-									<option>晋江金翼主题卡版面</option>
-									<option>福州藏天园卡</option>
-									<option>泉州渔贷卡</option>
-									<option>泉州农贷卡</option>
-									<option>泉州商贷卡</option>
+									#dict("CDFRM","$!xM_APPLN_KPMX_ls.get(0).cdfrm")
 								</select>
 							</td>
 							<td class="label">有效日期</td>
 							<td>
-								<input type="text" name="EXPYDATE_L" maxlength="4" placeholder="MMYY"/>
+								<input type="text" name="EXPYDATE_L" maxlength="4" placeholder="MMYY" onmouseover="__calendarFormat()"/>
 							</td>
 						</tr>						
 						<tr>
@@ -353,41 +319,41 @@
 						<tr>
 							<td class="label">递送方式</td>
 							<td>
-								<span name="CDESPMTD_L"></span>
+								<span name="cdespmtd_l">$!xM_APPLN_KPMX_ls.get(0).cdespmtd</span>
 							</td>
 							<td class="label">递送分行</td>
 							<td>
-								<span name="CDESPLOC_L"></span>
+								<span name="cdesploc_l">$!xM_APPLN_KPMX_ls.get(0).cdesploc</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="label">递送费用</td>
 							<td>
-								<span name="COURIERF_L"></span>
+								<span name="courierf_l">$!xM_APPLN_KPMX_ls.get(0).courierf</span>
 							</td>
 							<td class="label">需要凸字</td>
 							<td>
-								<input type="checkbox" name="EMBOSS_CD_L" readonly></span>
+								<input type="checkbox" name="emboss_cd_l" value="1" #if($!xM_APPLN_KPMX_ls.get(0).emboss_cd == '1') checked #end readonly></span>
 							</td>
 						</tr>
 						<tr>
 							<td class="label">需要PIN(密信函)</td>
 							<td>
-								<input type="checkbox" name="PIN_REQD_L" readonly></span>
+								<input type="checkbox" name="pin_reqd_l" value="1" #if($!xM_APPLN_KPMX_ls.get(0).pin_reqd == '1') checked #end readonly></span>
 							</td>
 							<td class="label">特别提示</td>
 							<td>
-								<span name="SPEC_INST_L"></span>
+								<span name="SPEC_INST_L">$!xM_APPLN_KPMX_ls.get(0).spec_inst</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="label">消费需要密码</td>
 							<td>
-								<input type="checkbox" name="PIN_CHK_L" readonly></span>
+								<input type="checkbox" name="pin_chk_l" value="1" #if($!xM_APPLN_KPMX_ls.get(0).pin_chk == '1') checked #end readonly></span>
 							</td>
 							<td class="label">开通短信通知</td>
 							<td>
-								<input type="checkbox" name="SMS_YN_L" readonly></span>
+								<input type="checkbox" name="sms_yn_l" value="1" #if($!xM_APPLN_KPMX_ls.get(0).sms_yn == '1') checked #end readonly></span>
 							</td>
 						</tr>
 					</table>
@@ -408,21 +374,21 @@
 				<tr>
 					<td class="label">征信代码-行业</td>
 					<td>
-						<input type="text" name="CU_CRCOD1" maxlength="4"/>
+						<input type="text" name="cu_crcod1" value="$!xM_APPLN_ZXXX.cu_crcod1" maxlength="4"/>
 					</td>
 					<td class="label">征信代码-职务</td>
 					<td>
-						<input type="text" name="CU_CRCOD2" maxlength="4"/>
+						<input type="text" name="cu_crcod2" value="$!xM_APPLN_ZXXX.cu_crcod2" maxlength="4"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">征信代码-专案</td>
 					<td>
-						<input type="text" name="AC_CRCOD1" maxlength="4"/>
+						<input type="text" name="ac_crcod1" value="$!xM_APPLN_ZXXX.ac_crcod1" maxlength="4"/>
 					</td>
 					<td class="label">征信代码-项目</td>
 					<td>
-						<input type="text" name="AC_CRCOD2" maxlength="4"/>
+						<input type="text" name="ac_crcod2" value="$!xM_APPLN_ZXXX.ac_crcod2" maxlength="4"/>
 					</td>
 				</tr>
 			</table>
@@ -474,43 +440,42 @@
 				<tr>
 					<td class="label">本币自扣还款方式</td>
 					<td>
-						<span name="REPAY_CODE"></span>
+						<span name="repay_code">$!xM_APPLN_HKSZ.repay_code</span>
 					</td>
 					<td class="label">本币自扣还款金额</td>
 					<td>
-						<span name="REPAY_AMT"></span>
+						<span name="repay_amt">$!xM_APPLN_HKSZ.repay_amt</span>
 					</td>
 					<td class="label">本币自扣还款百分比</td>
 					<td>
-						<span name="REPAY_PCT"></span>
+						<span name="repay_pct">$!xM_APPLN_HKSZ.repay_pct</span>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">外币自扣还款方式</td>
 					<td>
-						<span name="REPAY_CODX"></span>
+						<span name="repay_codx">$!xM_APPLN_HKSZ.repay_codx</span>
 					</td>
 					<td class="label">外币自扣还款金额</td>
 					<td>
-						<span name="REPAY_AMTX"></span>
+						<span name="repay_amtx">$!xM_APPLN_HKSZ.repay_amtx</span>
 					</td>
 					<td class="label">外币自扣还款百分比</td>
 					<td>
-						<span name="REPAY_PCTX"></span>
+						<span name="repay_pctx">$!xM_APPLN_HKSZ.repay_pctx</span>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">自扣还款日期</td>
 					<td colspan="5">
-						<span name="REPAY_DAY"></span>
+						<span name="repay_day">$!xM_APPLN_HKSZ.repay_day</span>
 					</td>
 				</tr>
 			</table>
 		</div><!--/content-->
 	</div>	
 </form>	
-	<script type="text/javascript" src="jquery-1.js"></script>
-	<script type="text/javascript" src="jquery.js"></script>
+	<script src="${contextPath}/js/xm_appln/xm_appln.js" type="text/javascript"></script>
 	
 </body>
 #parse ("common/iframe_page_footer.htm")

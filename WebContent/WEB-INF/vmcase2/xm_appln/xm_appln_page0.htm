@@ -6,10 +6,10 @@
 	<h1>客户信息新增</h1>
 	<div class="buttons"><!--按钮组放置区域-->
 		<input id="id_save_button" type="button" value="保存" class="button"/>
-		<!-- <input id="id_apply_button" type="button" value="申请" class="button"/> -->
 	</div>
 </div>
 <form id="id_module_form" action="${contextPath}/xm_appln/xm_appln_page0_update.json">
+<input type="hidden" value="$!customerId" name="customer_id">
 <!--*************************************************************基本资料*************************************************************-->
 	<div class="box">
 		<table class="title" onclick="Open(this)">
@@ -23,36 +23,36 @@
 				<tr>
 					<td class="label">姓名<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text mast" value="$!customerInfor.chineseName" name="surname" maxlength=30 onchange="changeBg(this)"/>
+						<input type="text" class="text mast" name="surname" value="$!xM_APPLN_JCZL.surname" maxlength=30 onchange="changeBg(this)"/>
 					</td>
 					<td class="label">手机<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" value="$!customerInfor.telephone" class="text" name="mo_phone" maxlength="12"/>
+						<input type="text" class="text" name="mo_phone" value="$!xM_APPLN_JCZL.mo_phone" maxlength="12"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">证件类型<font color="#ff0000">*</font></td>
 					<td>
 						<select id="race_code" name="race_code">
-							#dict("RACE_CODE",$customerInfor.cardType)
+							#dict("RACE_CODE","$!xM_APPLN_JCZL.race_code")
 						</select>
 					</td>
 					<td class="label">证件号码<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text mast" id="card_id" value="$!customerInfor.cardId" name="card_id" maxlength=32 onchange="changeBg(this)"/>
+						<input type="text" class="text mast" id="card_id" name="card_id" value="$!xM_APPLN_JCZL.card_id" maxlength=32 onchange="changeBg(this)"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">婚姻状况<font color="#ff0000">*</font></td>
 					<td>
 						<select name="mar_status" class="mast">
-							#dict("MAR_STATUS",$customerInfor.maritalStatus)
+						#dict("MAR_STATUS",$!xM_APPLN_JCZL.mar_status)
 						</select>
 					</td>
 					<td class="label">性别<font color="#ff0000">*</font></td>
 					<td>
-						<label><input type="radio" name="gender" value="M" checked/>男</label>
-						<label><input type="radio" name="gender" value="F"/>女</label>
+						<label><input type="radio" name="gender" value="M" #if(!$xM_APPLN_JCZL||!$xM_APPLN_JCZL.gender||$xM_APPLN_JCZL.gender==''||$!xM_APPLN_JCZL.gender == 'M') checked #end/>男</label>
+						<label><input type="radio" name="gender" value="F" #if($!xM_APPLN_JCZL.gender == 'F') checked #end/>女</label>
 					</td>
 				</tr>
 			</table>
@@ -71,11 +71,11 @@
 				<tr>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text" name="spu_name" maxlength="30"/>
+						<input type="text" class="text" name="spu_name" value="$!xM_APPLN_POZL.name" maxlength="30"/>
 					</td>
 					<td class="label">证件号码</td>
 					<td>
-						<input type="text" class="text" name="spu_custr_nbr" id="spu_custr_nbr" maxlength="18"/>
+						<input type="text" class="text" name="spu_custr_nbr" id="spu_custr_nbr" value="$!xM_APPLN_POZL.custr_nbr" maxlength="18"/>
 						<input type="button" value="检测" onclick="checkCard()"/>
 					</td>
 				</tr>
@@ -122,47 +122,7 @@
 	   	          $.post($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	Dialog.message("保存成功!");
-	   	            	window.location.href= contextPath + "/xm_appln/xm_appln_page0.page" ;
-	   	            }
-	   	          });
-	   	        }
-	    	}
-	       
-	      });
-		
-		//申请
-		$("#id_apply_button").click(function() {
-			 //清空上一次验证
-			 $("#cardIde").remove();
-			
-				var race_code = $("select[name=race_code]").val();
-				if( race_code == "01"){
-			   
-				var card_id = $("#card_id").val();
-				if(card_id !=""){
-				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X])$)/;
-			
-			     if(idReg.test(card_id)){
-			    	 $("#cardIde").remove();	
-			       
-			        }else{
-				       $("input[name='card_id']").after("<label class='error' id='cardIde' generated='true' >请输入正确的身份证号(15/18位)</label>");   
-			     }	
-				 }
-				
-				}
-			var leng = 0;
-	    	 leng = $("#cardIde").length;
-	    	if(leng > 0){
-	    		return;
-	    	}else{
-	    	  if ($($formName).valid()) {
-	   	          var formjson = $($formName).serialize();
-	   	       	  $($formName).attr("action",contextPath+"/xm_appln/xm_appln_page0_apply.json")
-	   	          $.post($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-	   	            if (data.success) {
-	   	            	Dialog.message("保存成功!");
-	   	            	window.location.href= contextPath + "/customer/basiccustomerinforUpdate/browse.page" ;
+	   	            	window.location.href= contextPath + "/xm_appln/browse.page" ;
 	   	            }
 	   	          });
 	   	        }

@@ -471,3 +471,16 @@ function _calendarFormat(format){
 	$(thisObj).calendar(_args);
 	$(thisObj).removeAttr("on"+thisEvent.type);
 }
+
+function __calendarFormat(format){
+	_args=arguments[0]||{ format:'MMyy',btnBar:false };
+	 var thisEvent = window.event;
+     if (thisEvent == undefined) {
+         var caller = arguments.callee.caller;
+         while (caller.caller != null) { caller = caller.caller; }
+         thisEvent = caller.arguments[0];
+     }
+    var thisObj=thisEvent.target||thisEvent.srcElement;
+	$(thisObj).calendar(_args);
+	$(thisObj).removeAttr("on"+thisEvent.type);
+}

@@ -18,4 +18,5 @@ public interface XM_APPLN_SQCL_Dao {
 	 */
 	public XM_APPLN_SQCL findByCurrentStatus(String currentStatus);
 	public List<XM_APPLN_SQCL> findByApplicationID(String applicationId);
+	public XM_APPLN_SQCL findByCustomerId(String customer_id);
 }

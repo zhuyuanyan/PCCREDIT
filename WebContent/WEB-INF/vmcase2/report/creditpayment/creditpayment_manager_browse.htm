@@ -53,6 +53,14 @@
               <col width="140"/>
               <col width="140"/>
               <col width="140"/>
+              
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
             </colgroup>
             <tr class="title" align="center">
               <th nowrap="nowrap">序号</th>
@@ -68,6 +76,14 @@
               
               <th nowrap="nowrap">透支本金余额净增</th>
               <th nowrap="nowrap">透支余额净增</th>
+              
+              <th nowrap="nowrap">有偿还本金的卡数</th>
+              <th nowrap="nowrap">还款金额</th>
+              <th nowrap="nowrap">有增加透支本金的卡数</th>
+              <th nowrap="nowrap">额度提取金额</th>
+              <th nowrap="nowrap">透支本金不变的卡数</th>
+              <th nowrap="nowrap">所属二级支行</th>
+              <th nowrap="nowrap">所属一级支行</th>
             </tr>
           </table>
         </div>  
@@ -78,6 +94,14 @@
               <col width="60"/>
               <col width="140"/>
               <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
+              
               <col width="140"/>
               <col width="140"/>
               <col width="140"/>
@@ -98,6 +122,14 @@
 	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.rOverdraftAmount)</td>
 	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.addOverdraftPrincipal)</td>
 	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.addOverdraftAmount)</td>
+	              
+	              <td nowrap="nowrap">0</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $null)</td>
+	              <td nowrap="nowrap">0</td>
+	              <td nowrap="nowrap">$format.formatNumber(2, $null)</td>
+	              <td nowrap="nowrap">0</td>
+	              <td nowrap="nowrap"></td>
+	              <td nowrap="nowrap"></td>
 	            </tr>
             #end
           </table>
