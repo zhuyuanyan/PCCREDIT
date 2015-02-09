@@ -208,6 +208,10 @@
 		<item name="RETURNAPPROVE" title="审核退回" />
 		<item name="REJECTAPPROVE" title="审核拒绝" />
 	</dictionary>
+	<dictionary name="approveOperationNormalStatus1" title="申请件状态">
+		<item name="APPROVE" title="审核通过" />
+		<item name="REJECTAPPROVE" title="审核拒绝" />
+	</dictionary>
 	<dictionary name="AmountAdjustmentApprovalStatus" title="调额状态">
 		<item name="Audit" title="审批中" />
 		<item name="Refuse" title="拒绝" />

@@ -18,6 +18,8 @@ public class IntoPieces  extends BusinessModel {
     private String statusName;
     
     private String nodeName;
+    
+    private String serialNumber;
     //进度
 	public String getId() {
 		return id;
@@ -84,6 +86,12 @@ public class IntoPieces  extends BusinessModel {
 	}
 	public void setCardType(String cardType) {
 		this.cardType = cardType;
+	}
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
 	}
 
 }

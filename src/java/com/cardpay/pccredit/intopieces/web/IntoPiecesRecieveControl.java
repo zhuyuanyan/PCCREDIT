@@ -249,4 +249,26 @@ public class IntoPiecesRecieveControl extends BaseController {
 		}
 		return returnMap;
 	}
+	
+	/**
+	 * 退回进件
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "checkDoNot.json")
+	public JRadReturnMap checkDoNot(@ModelAttribute XmApplnSxjcForm filter, HttpServletRequest request) throws SQLException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+
+		try {
+			intoPiecesService.checkDoNot(filter);
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			returnMap.addGlobalMessage("退回失败");
+			e.printStackTrace();
+		}
+		return returnMap;
+	}
 }

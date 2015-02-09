@@ -2,6 +2,7 @@ package com.cardpay.pccredit.common;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +12,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -188,9 +191,10 @@ public class UploadFileTool {
 
 	/* 拼接字符串导出报文格式 */
 	public static StringBuffer getContent(StringBuffer allContent,
-			String appendContent, int length) {
+			String appendContent, int length) throws UnsupportedEncodingException {
 		StringBuffer sb = new StringBuffer();
 		if (appendContent != null) {
+			appendContent = new String(appendContent.getBytes("GBK"),"ISO8859_1");
 			if (appendContent.length() == length) {
 				sb.append(appendContent);
 			} else if (appendContent.length() < length) {
@@ -290,8 +294,9 @@ public class UploadFileTool {
 		map.put("old", path + fileName);
 		return map;
 	}
-	//读取本地图片
-	public void showPicture(HttpServletResponse response,String filePath){
+
+	// 读取本地图片
+	public void showPicture(HttpServletResponse response, String filePath) {
 		FileInputStream is;
 		try {
 			is = new FileInputStream(filePath);
@@ -310,22 +315,24 @@ public class UploadFileTool {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-}
+	}
+
 	/**
 	 * 测试
+	 * 
 	 * @param fileName
 	 * @param content
+	 * @throws IOException 
 	 */
-	public static void create(String fileName,String content){
-		File f=new File("f:\\"+fileName);  
-		try  {
-			FileWriter fw=new FileWriter(f);
-			fw.write(content);
-			fw.close();
-		}catch(IOException e)  {
-			e.printStackTrace();
-		}
+	public static void create(String fileName, String content) throws IOException {
+
+		File f = new File("d://"+fileName);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(f), "GBK"));
+		content = new String(content.getBytes("ISO8859_1"),"GBK");
+		writer.write(content);
+		writer.close();
+
 	}
-	
 
 }

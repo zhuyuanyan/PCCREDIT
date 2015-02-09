@@ -126,8 +126,8 @@
 							</p>
 						</div>
 						<div class="bottom">
-							<input id="id_in_button" type="button" class="btn btn-submit" value="保存" /> <input
-								id="id_out_button" type="button" class="btn" value="取消" />
+							<input id="id_in_button" type="button" class="btn btn-submit" value="通过" /> <input
+								id="id_out_button" type="button" class="btn btn-submit" value="退回" />
 						</div>
 					</form>
 				</div>
@@ -135,7 +135,7 @@
 				<div class="controlbtn">
 					<a id="id_check_button" class="btn_g" href="javascript:void(0);"
 						title="检测" onclick="$('.dialog').show();" />检测</a>
-					<!-- <a class="btn_g" href="javascript:void(0);" onclick="javascript :history.back(-1)">返回</a> -->
+					 <a class="btn_g" href="javascript:void(0);" onclick="javascript :history.back(-1)">返回</a> 
 				</div>
 				#parse ("common/pagination.htm")
 				<div class="clear"></div>
@@ -173,6 +173,14 @@
 		});
 		$("#id_out_button").click(function() {
 			$('.dialog').hide();
+			#set ($formName = "'#checkForm'")
+			var formjson = $($formName).serialize();
+			 $.get("${contextPath}/intopieces/intopiecesrecieve/checkDoNot.json", formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	Dialog.message("保存成功!");	
+	            	window.location.reload(true);
+	            }
+	          });
 		})
 		
 		

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.Cn2Spell;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
+import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
@@ -166,6 +167,19 @@ public class XM_APPLN_Service {
 		
 		return customerId;
 	}
+	
+	/**
+	 * 修改数据
+	 * @param 基本资料
+	 * @return
+	 */
+	public void updateXM_APPLN_NEW_CUSTOMER(String cardId){
+		XM_APPLN_NEW_CUSTOMER_FORM xM_APPLN_NEW_CUSTOMER_FORM = new XM_APPLN_NEW_CUSTOMER_FORM();
+		CustomerInforFilter filter = new CustomerInforFilter();
+		filter.setCardId(cardId);
+		CustomerInfor infor  = commonDao.findObjectsByFilter(CustomerInfor.class, filter).getItems().get(0);
+	}
+	
 	
 	/**
 	 * 插入数据
@@ -604,7 +618,9 @@ public class XM_APPLN_Service {
 			customerApplicationInfo.setApplyQuota("0");//设置额度
 		}
 		customerApplicationInfo.setCustomerId(customer_id);
-		customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
+		if(customerApplicationInfo.getApplyQuota()!=null){
+			customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
+		}
 		customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
 		//查找默认产品
 		ProductFilter filter = new ProductFilter();

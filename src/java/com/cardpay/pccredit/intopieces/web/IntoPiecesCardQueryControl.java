@@ -162,22 +162,22 @@ public class IntoPiecesCardQueryControl extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "cardQuery.page", method = { RequestMethod.GET })
+	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute IntoPiecesCardQueryFilter filter,
 			HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		QueryResult<IntoPiecesCardQuery> result=null;
+		QueryResult<IntoPiecesCardQueryFilter> result=null;
 		String userId = user.getId();
 		filter.setApproveId(userId);
 		result = intoPiecesService.findintoPiecesCardQueryByFilter(filter);
-		JRadPagedQueryResult<IntoPiecesCardQuery> pagedResult = new JRadPagedQueryResult<IntoPiecesCardQuery>(
+		JRadPagedQueryResult<IntoPiecesCardQueryFilter> pagedResult = new JRadPagedQueryResult<IntoPiecesCardQueryFilter>(
 				filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView(
 				"/intopieces/intopieces_cardQuery", request);
-		mv.addObject(PAGED_RESULT, null);
+		mv.addObject(PAGED_RESULT, pagedResult);
 
 		return mv;
 	}
