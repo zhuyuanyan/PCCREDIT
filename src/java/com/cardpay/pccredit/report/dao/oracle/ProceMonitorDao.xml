@@ -32,152 +32,75 @@
 		<result property="fushenapprove" column="fushenapprove" />
 	</resultMap>
 	
-	<select id="getProceMonitorStatistical" resultMap="ResultMap"
+	<resultMap id="LCJCResultMap" type="com.cardpay.pccredit.report.model.LCJC">
+		<result property="total" column="total" />
+		<result property="display_name" column="display_name" />
+		<result property="examine_result" column="examine_result" />
+		<result property="seq_no" column="seq_no" />
+		<result property="userid" column="userid" />
+	</resultMap>
+	
+	<select id="getProceMonitorStatistical" resultMap="LCJCResultMap"
 			parameterType="com.cardpay.pccredit.report.filter.StatisticalFilter">
 
-
-select a.*,ROWNUM as rowindex from(
 SELECT
-	COUNT (c.ID) AS jinjian,
-	(
-		SELECT
-			SUM (
-				CASE
-				WHEN A .SEQ_NO = '1' THEN
-					1
-				ELSE
-					0
-				END
-			)
-		FROM
-			CUSTOMER_APPLICATION_PROCESS P,
-			WF_STATUS_QUEUE_RECORD r,
-			NODE_AUDIT A,
-			CUSTOMER_APPLICATION_INFO c
-		WHERE
-			A . ID = r.CURRENT_STATUS
-		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
-		AND P .APPLICATION_ID = c. ID
-		AND A .NODE_TYPE = 'Product'
-	) AS chushen,
-	(
-		SELECT
-			SUM (
-				CASE
-				WHEN A .SEQ_NO = '2' THEN
-					1
-				ELSE
-					0
-				END
-			)
-		FROM
-			CUSTOMER_APPLICATION_PROCESS P,
-			WF_STATUS_QUEUE_RECORD r,
-			NODE_AUDIT A,
-			CUSTOMER_APPLICATION_INFO c
-		WHERE
-			A . ID = r.CURRENT_STATUS
-		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
-		AND P .APPLICATION_ID = c. ID
-		AND A .NODE_TYPE = 'Product'
-	) AS luru,
-	(
-		SELECT
-			SUM (
-				CASE
-				WHEN A .SEQ_NO = '3' THEN
-					1
-				ELSE
-					0
-				END
-			)
-		FROM
-			CUSTOMER_APPLICATION_PROCESS P,
-			WF_STATUS_QUEUE_RECORD r,
-			NODE_AUDIT A,
-			CUSTOMER_APPLICATION_INFO c
-		WHERE
-			A . ID = r.CURRENT_STATUS
-		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
-		AND P .APPLICATION_ID = c. ID
-		AND A .NODE_TYPE = 'Product'
-	) AS fushen,
-	(
-		SELECT
-			SUM (
-				CASE
-				WHEN A .SEQ_NO = '1'
-				AND r.EXAMINE_RESULT = 'APPROVE' THEN
-					1
-				ELSE
-					0
-				END
-			)
-		FROM
-			CUSTOMER_APPLICATION_PROCESS P,
-			WF_STATUS_QUEUE_RECORD r,
-			NODE_AUDIT A,
-			CUSTOMER_APPLICATION_INFO c
-		WHERE
-			A . ID = r.CURRENT_STATUS
-		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
-		AND P .APPLICATION_ID = c. ID
-		AND A .NODE_TYPE = 'Product'
-	) AS chushenapprove,
-	(
-		SELECT
-			SUM (
-				CASE
-				WHEN A .SEQ_NO = '2'
-				AND r.EXAMINE_RESULT = 'APPROVE' THEN
-					1
-				ELSE
-					0
-				END
-			)
-		FROM
-			CUSTOMER_APPLICATION_PROCESS P,
-			WF_STATUS_QUEUE_RECORD r,
-			NODE_AUDIT A,
-			CUSTOMER_APPLICATION_INFO c
-		WHERE
-			A . ID = r.CURRENT_STATUS
-		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
-		AND P .APPLICATION_ID = c. ID
-		AND A .NODE_TYPE = 'Product'
-	) AS luruapprove,
-	(
-		SELECT
-			SUM (
-				CASE
-				WHEN A .SEQ_NO = '3'
-				AND r.EXAMINE_RESULT = 'APPROVE' THEN
-					1
-				ELSE
-					0
-				END
-			)
-		FROM
-			CUSTOMER_APPLICATION_PROCESS P,
-			WF_STATUS_QUEUE_RECORD r,
-			NODE_AUDIT A,
-			CUSTOMER_APPLICATION_INFO c
-		WHERE
-			A . ID = r.CURRENT_STATUS
-		AND P .SERIAL_NUMBER = r.CURRENT_PROCESS
-		AND P .APPLICATION_ID = c. ID
-		AND A .NODE_TYPE = 'Product'
-	) AS fushenapprove,
-u.DISPLAY_NAME as displayName
-FROM
-	CUSTOMER_APPLICATION_INFO c,
-	BASIC_CUSTOMER_INFORMATION b,
-	SYS_USER u
-WHERE
-	c.CUSTOMER_ID = b. ID
-	and u.ID = b.USER_ID
-GROUP BY
- u.DISPLAY_NAME) a 
+    COUNT (1) AS TOTAL,
+    c.DISPLAY_NAME,
+    r.EXAMINE_RESULT,
+    A .SEQ_NO,
+    c.USERID
+  FROM
+    (
+      SELECT
+        U .DISPLAY_NAME,
+        U . ID AS userid,
+        r.*
+      FROM
+        SYS_USER U
+      LEFT JOIN (
+        SELECT
+          c.*, b.USER_ID
+        FROM
+          CUSTOMER_APPLICATION_INFO c,
+          BASIC_CUSTOMER_INFORMATION b
+        WHERE
+          c.CUSTOMER_ID = b. ID
+      ) r ON r.USER_ID = U . ID
+      ORDER BY
+        U . ID
+    ) c,
+    (
+      SELECT
+        r1.*, r2.CURRENT_STATUS,
+        r2.CURRENT_PROCESS,
+        r2.EXAMINE_RESULT
+      FROM
+        WF_process_RECORD r1
+      LEFT JOIN WF_STATUS_QUEUE_RECORD r2 ON r1.WF_STATUS_QUEUE_RECORD = R2. ID
+    ) r,
+    WF_STATUS_INFO s,
+    (
+      SELECT
+        *
+      FROM
+        NODE_AUDIT
+      WHERE
+        NODE_TYPE = 'Product'
+    ) A
+  WHERE
+    r.CURRENT_STATUS = s. ID
+  AND s.STATUS_CODE = A . ID
+  AND c.SERIAL_NUMBER = r.CURRENT_PROCESS
+  GROUP BY
+    (
+      A .SEQ_NO,
+      r.EXAMINE_RESULT,
+      c.USERID,
+      c.DISPLAY_NAME
+    ) 
+    ORDER BY
+    c.USERID,
+    A .SEQ_NO
 	</select>
 	
 	<select id="getBankProceMonitorStatistical" resultMap="BankResultMap"

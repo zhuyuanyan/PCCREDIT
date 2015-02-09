@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.xm_appln.dao.XM_APPLN_ZHSX_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZHSX">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="current_process" column="current_process" />
+		<result property="before_status" column="before_status" />
+		<result property="current_status" column="current_status" />
+		<result property="int_code" column="int_code" />
+		<result property="acc_type_n" column="acc_type_n" />
+		<result property="gtoc" column="gtoc" />
+		<result property="cycle_nbr" column="cycle_nbr" />
+		<result property="app_source" column="app_source" />
+		<result property="ab_branch" column="ab_branch" />
+		<result property="downprod" column="downprod" />
+		<result property="acc_type" column="acc_type" />
+		<result property="stm_code" column="stm_code" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from XM_APPLN_ZHSX T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>

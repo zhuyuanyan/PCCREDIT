@@ -58,10 +58,14 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KPMX;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_LXRZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_POZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_QTXYKXX;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SPED;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQCL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQED;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_TJINFO;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_YWXX;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZHSX;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXQSZL;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXXX;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_ADDR_FORM;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_FORM;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_JBZL_FORM;
@@ -144,19 +148,35 @@ public class XM_APPLN_Service {
 	 * @param 基本资料page0
 	 * @return
 	 */
-	public String insertXM_APPLN_NEW_CUSTOMER(String customerId,XM_APPLN_NEW_CUSTOMER_FORM xM_APPLN_NEW_CUSTOMER_FORM,User user){
-		if(customerId == null){
+	public String insertOrUpdateXM_APPLN_NEW_CUSTOMER(XM_APPLN_NEW_CUSTOMER_FORM xM_APPLN_NEW_CUSTOMER_FORM,User user){
+		String customerId = xM_APPLN_NEW_CUSTOMER_FORM.getCustomer_id();
+		if(customerId.equals("") || customerId == null){
 			CustomerInfor customerinfor = new CustomerInfor();
 			customerinfor.setCreatedBy(user.getId());
+			customerinfor.setCreatedTime(new Date());
 			customerinfor.setUserId(user.getId());
 			customerinfor.setChineseName(xM_APPLN_NEW_CUSTOMER_FORM.getSurname());
 			customerinfor.setPinyinenglishName(Cn2Spell.converterToSpell(xM_APPLN_NEW_CUSTOMER_FORM.getSurname()));
 			customerinfor.setNationality("NTC00000000156");//中国
+			customerinfor.setTelephone(xM_APPLN_NEW_CUSTOMER_FORM.getMo_phone());
 //			customerinfor.setCardType("CST0000000000A");//身份证
 			customerinfor.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());//身份证
 			customerinfor.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());//身份证
 			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("1")?"Male":"Female");
 			customerId = customerInforService.insertCustomerInfor(customerinfor);
+		}else{
+			CustomerInfor customerinfor = customerInforService.findCustomerInforById(customerId);
+			customerinfor.setChineseName(xM_APPLN_NEW_CUSTOMER_FORM.getSurname());
+			customerinfor.setPinyinenglishName(Cn2Spell.converterToSpell(xM_APPLN_NEW_CUSTOMER_FORM.getSurname()));
+			customerinfor.setNationality("NTC00000000156");//中国
+			customerinfor.setTelephone(xM_APPLN_NEW_CUSTOMER_FORM.getMo_phone());
+//			customerinfor.setCardType("CST0000000000A");//身份证
+			customerinfor.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());//身份证
+			customerinfor.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());//身份证
+			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("1")?"Male":"Female");
+			customerinfor.setModifiedBy(user.getId());
+			customerinfor.setModifiedTime(new Date());
+			customerInforService.updateCustomerInfor(customerinfor);
 		}
 		
 		XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_NEW_CUSTOMER_FORM.createXM_APPLN_JCZL(customerId,user.getId());
@@ -602,6 +622,18 @@ public class XM_APPLN_Service {
 	}
 	public XM_APPLN_YWXX findXM_APPLN_YWXXByCustomerId(String customer_Id){
 		return this.xM_APPLN_YWXX_Dao.findByCustomerId(customer_Id);
+	}
+	public XM_APPLN_SPED findXM_APPLN_SPEDByCustomerId(String customer_Id){
+		return this.xM_APPLN_SPED_Dao.findByCustomerId(customer_Id);
+	}
+	public XM_APPLN_SQCL findXM_APPLN_SQCLByCustomerId(String customer_Id){
+		return this.xM_APPLN_SQCL_Dao.findByCustomerId(customer_Id);
+	}
+	public XM_APPLN_ZHSX findXM_APPLN_ZHSXByCustomerId(String customer_Id){
+		return this.xM_APPLN_ZHSX_Dao.findByCustomerId(customer_Id);
+	}
+	public XM_APPLN_ZXXX findXM_APPLN_ZXXXByCustomerId(String customer_Id){
+		return this.xM_APPLN_ZXXX_Dao.findByCustomerId(customer_Id);
 	}
 	
 	/**
