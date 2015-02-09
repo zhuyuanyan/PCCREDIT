@@ -36,6 +36,7 @@ public class CustomerInforForm extends BaseForm {
 	private String userId;
 	private String divisionalStatus;
 	private String displayName;
+	private String processId;
 
 	public String getDivisionalStatus() {
 		return divisionalStatus;
@@ -252,4 +253,13 @@ public class CustomerInforForm extends BaseForm {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
+	public String getProcessId() {
+		return processId;
+	}
+
+	public void setProcessId(String processId) {
+		this.processId = processId;
+	}
+	
 }

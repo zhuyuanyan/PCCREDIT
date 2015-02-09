@@ -23,30 +23,30 @@
 				<tr>
 					<td class="label">姓名<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text mast" name="surname" maxlength=30 onchange="changeBg(this)"/>
+						<input type="text" class="text mast" value="$!customerInfor.chineseName" name="surname" maxlength=30 onchange="changeBg(this)"/>
 					</td>
 					<td class="label">手机<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text" name="mo_phone" maxlength="12"/>
+						<input type="text" value="$!customerInfor.telephone" class="text" name="mo_phone" maxlength="12"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">证件类型<font color="#ff0000">*</font></td>
 					<td>
 						<select id="race_code" name="race_code">
-							#dict("RACE_CODE",$null)
+							#dict("RACE_CODE",$customerInfor.cardType)
 						</select>
 					</td>
 					<td class="label">证件号码<font color="#ff0000">*</font></td>
 					<td>
-						<input type="text" class="text mast" id="card_id" name="card_id" maxlength=32 onchange="changeBg(this)"/>
+						<input type="text" class="text mast" id="card_id" value="$!customerInfor.cardId" name="card_id" maxlength=32 onchange="changeBg(this)"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">婚姻状况<font color="#ff0000">*</font></td>
 					<td>
 						<select name="mar_status" class="mast">
-							#dict("MAR_STATUS",$null)
+							#dict("MAR_STATUS",$customerInfor.maritalStatus)
 						</select>
 					</td>
 					<td class="label">性别<font color="#ff0000">*</font></td>

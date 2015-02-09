@@ -219,59 +219,59 @@ public class AmountAdjustmentService {
 	 * @param amountAdjustmentForm
 	 * @param request
 	 */
-	public void approveAmountAdjustment(
-			AmountAdjustmentForm amountAdjustmentForm,
-			HttpServletRequest request) {
-		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
-		String approveStatus = amountAdjustmentForm.getApproveStatus(); 
-		AmountAdjustment amountAdjustment = commonDao.findObjectById(AmountAdjustment.class, amountAdjustmentForm.getId());
-		
-		AmountAdjustmentProcess amountAdjustmentProcess = amountAdjustmentComdao.findAmountAdjustmentProcess(amountAdjustmentForm.getId(), amountAdjustmentForm.getSerialNumber());
-		
-		if (StringUtils.isNotEmpty(approveStatus)&&approveStatus.equals(ApproveOperationTypeEnum.RETURNAPPROVE)) {
-			String fallbackReason = request.getParameter("reason");
-			amountAdjustmentProcess.setFallbackReason(fallbackReason);
-		}else if(StringUtils.isNotEmpty(approveStatus)&&approveStatus.equals(ApproveOperationTypeEnum.REJECTAPPROVE)){
-			amountAdjustmentProcess.setRefusalReason(amountAdjustmentForm.getReason());
-		}
-	    String examineResutl = processService.examine(amountAdjustmentForm.getSerialNumber(), user.getId(), approveStatus, amountAdjustmentForm.getApprovalLimit());
-		
-	    //更新单据状态
-	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
-	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
-	    		examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())) {
-			if(examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
-				amountAdjustment.setApproval(AmountAdjustmentApproveStatusEnum.Refuse.toString());
-			}
-			if(examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString())){
-				amountAdjustment.setApproval(AmountAdjustmentApproveStatusEnum.Back.toString());
-			}
-			if(examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())){
-				amountAdjustment.setApproval(AmountAdjustmentApproveStatusEnum.Success.toString());
-			}
-			amountAdjustment.setId(amountAdjustmentForm.getId());
-			amountAdjustment.setModifiedBy(user.getId());
-			amountAdjustment.setModifiedTime(new Date());
-			commonDao.updateObject(amountAdjustment);
-			
-			amountAdjustmentProcess.setNextNodeId(null);
-		} else {
-			amountAdjustment.setApproval(AmountAdjustmentApproveStatusEnum.Audit.toString());
-			amountAdjustment.setId(amountAdjustmentForm.getId());
-			amountAdjustment.setModifiedBy(user.getId());
-			amountAdjustment.setModifiedTime(new Date());
-			commonDao.updateObject(amountAdjustment);
-			
-			amountAdjustmentProcess.setNextNodeId(examineResutl);
-		}
-	    
-	    amountAdjustmentProcess.setProcessOpStatus(approveStatus);
-		amountAdjustmentProcess.setExamineAmount(amountAdjustmentForm.getApprovalLimit());
-		amountAdjustmentProcess.setAuditUser(user.getId());
-		amountAdjustmentProcess.setAuditTime(new Date());
-		
-		amountAdjustmentDao.updateAmountAdjustmentProcess(amountAdjustmentProcess);
-	}
+//	public void approveAmountAdjustment(
+//			AmountAdjustmentForm amountAdjustmentForm,
+//			HttpServletRequest request) {
+//		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+//		String approveStatus = amountAdjustmentForm.getApproveStatus(); 
+//		AmountAdjustment amountAdjustment = commonDao.findObjectById(AmountAdjustment.class, amountAdjustmentForm.getId());
+//		
+//		AmountAdjustmentProcess amountAdjustmentProcess = amountAdjustmentComdao.findAmountAdjustmentProcess(amountAdjustmentForm.getId(), amountAdjustmentForm.getSerialNumber());
+//		
+//		if (StringUtils.isNotEmpty(approveStatus)&&approveStatus.equals(ApproveOperationTypeEnum.RETURNAPPROVE)) {
+//			String fallbackReason = request.getParameter("reason");
+//			amountAdjustmentProcess.setFallbackReason(fallbackReason);
+//		}else if(StringUtils.isNotEmpty(approveStatus)&&approveStatus.equals(ApproveOperationTypeEnum.REJECTAPPROVE)){
+//			amountAdjustmentProcess.setRefusalReason(amountAdjustmentForm.getReason());
+//		}
+//	    String examineResutl = processService.examine(amountAdjustmentForm.getSerialNumber(), user.getId(), approveStatus, amountAdjustmentForm.getApprovalLimit());
+//		
+//	    //更新单据状态
+//	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
+//	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
+//	    		examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())) {
+//			if(examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
+//				amountAdjustment.setApproval(AmountAdjustmentApproveStatusEnum.Refuse.toString());
+//			}
+//			if(examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString())){
+//				amountAdjustment.setApproval(AmountAdjustmentApproveStatusEnum.Back.toString());
+//			}
+//			if(examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())){
+//				amountAdjustment.setApproval(AmountAdjustmentApproveStatusEnum.Success.toString());
+//			}
+//			amountAdjustment.setId(amountAdjustmentForm.getId());
+//			amountAdjustment.setModifiedBy(user.getId());
+//			amountAdjustment.setModifiedTime(new Date());
+//			commonDao.updateObject(amountAdjustment);
+//			
+//			amountAdjustmentProcess.setNextNodeId(null);
+//		} else {
+//			amountAdjustment.setApproval(AmountAdjustmentApproveStatusEnum.Audit.toString());
+//			amountAdjustment.setId(amountAdjustmentForm.getId());
+//			amountAdjustment.setModifiedBy(user.getId());
+//			amountAdjustment.setModifiedTime(new Date());
+//			commonDao.updateObject(amountAdjustment);
+//			
+//			amountAdjustmentProcess.setNextNodeId(examineResutl);
+//		}
+//	    
+//	    amountAdjustmentProcess.setProcessOpStatus(approveStatus);
+//		amountAdjustmentProcess.setExamineAmount(amountAdjustmentForm.getApprovalLimit());
+//		amountAdjustmentProcess.setAuditUser(user.getId());
+//		amountAdjustmentProcess.setAuditTime(new Date());
+//		
+//		amountAdjustmentDao.updateAmountAdjustmentProcess(amountAdjustmentProcess);
+//	}
 
 	public AmountAdjustmentForm findWaitApproveAmountAdjustById(String id) {
 		return amountAdjustmentDao.findWaitApproveAmountAdjustById(id);

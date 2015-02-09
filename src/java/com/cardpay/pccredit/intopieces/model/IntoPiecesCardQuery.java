@@ -3,14 +3,14 @@ package com.cardpay.pccredit.intopieces.model;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
 
-@ModelParam(table = "xm_appln_card_result")
+@ModelParam(table = "xm_appln_card_return")
 public class IntoPiecesCardQuery  extends BusinessModel {
 	
-	
+	private static final long serialVersionUID = -7222084343994887647L;
 	/**
 	 * 制卡结果查询
 	 */
-	private static final long serialVersionUID = 1L;
+
 	private String id;//制卡主键
 	private String bankId;//银行id
     private String approveCardId; //申请卡片id
@@ -20,6 +20,7 @@ public class IntoPiecesCardQuery  extends BusinessModel {
     private String resultText;//制卡结果内容
     private String approveId;//审批人id
     private String approveName;//审批人姓名
+    private String chineseName;//申请人姓名
 	public String getId() {
 		return id;
 	}
@@ -74,6 +75,11 @@ public class IntoPiecesCardQuery  extends BusinessModel {
 	public void setApproveName(String approveName) {
 		this.approveName = approveName;
 	}
-    
-  
+	public String getChineseName() {
+		return chineseName;
+	}
+	public void setChineseName(String chineseName) {
+		this.chineseName = chineseName;
+	}
+	
 }

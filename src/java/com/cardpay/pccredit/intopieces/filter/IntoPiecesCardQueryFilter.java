@@ -13,6 +13,7 @@ public class IntoPiecesCardQueryFilter extends BusinessFilter{
     private String resultText;//制卡结果内容
     private String approveId;//审批人id
     private String approveName;//审批人姓名
+    private String chineseName;
     
     
 	public String getId() {
@@ -69,5 +70,10 @@ public class IntoPiecesCardQueryFilter extends BusinessFilter{
 	public void setApproveName(String approveName) {
 		this.approveName = approveName;
 	}
-	
+	public String getChineseName() {
+		return chineseName;
+	}
+	public void setChineseName(String chineseName) {
+		this.chineseName = chineseName;
+	}
 }

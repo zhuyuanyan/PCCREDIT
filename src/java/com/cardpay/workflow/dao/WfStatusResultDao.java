@@ -51,7 +51,7 @@ public class WfStatusResultDao {
 	}
 	
 	/**
-	 * 根据上一节点查找上一节点流程
+	 * 根据节点查找节点流程
 	 * @param currentStatus
 	 * @param exUserID
 	 * @param exResult
@@ -69,4 +69,5 @@ public class WfStatusResultDao {
 			return null;
 		}
 	}
+
 }

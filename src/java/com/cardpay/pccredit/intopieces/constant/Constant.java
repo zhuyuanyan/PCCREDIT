@@ -80,4 +80,10 @@ public class Constant {
 	public static String DEFAULT_TYPE = "1";
 	//进件接收标志
 	public static String recieve_type = "1";
+	
+	public static String APP_STATE_1="已申请";
+	public static String APP_STATE_2="未申请";
+	public static String APP_STATE_3="退回";
+	
+	
 }
