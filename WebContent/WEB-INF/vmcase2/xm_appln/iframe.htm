@@ -18,6 +18,7 @@
 			<input id="tabContent0_save" type="button" value="保存申请录入" class="button"/>
 			<input id="tabContent1_save" type="button" value="保存地址录入" class="button"/>
 			<input id="tabContent4_save" type="button" value="保存授信评估" class="button"/>
+			<input id="tabContent5_save" type="button" value="保存行内评分" class="button"/>
 			<input id="tabContent3_save" type="button" value="申请提交" class="button"/>
 		</div>
 	</div>
@@ -27,6 +28,7 @@
 		<li onclick="selectTab(0,this);" style="margin-left:0;">申请录入画面</li>
 		<li onclick="selectTab(1,this);">地址录入画面</li>
 		<li onclick="selectTab(4,this);">授信评估画面</li>
+		<li onclick="selectTab(5,this);">行内评分</li>
 		<li onclick="selectTab(3,this);">申请提交画面</li>
 	</ul>
 	<div class="TabContent" id="Content1">
@@ -43,6 +45,9 @@
 		<div class="tabContent" id="tabContent4">
 			<iframe id="tabContent4_frame" frameborder="0" width="100%;" src="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
 		</div>
+		<div class="tabContent" id="tabContent5">
+			<iframe id="tabContent5_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page5.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
 		<div class="tabContent" id="tabContent3">
 			<iframe id="tabContent3_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page4.page?id=${customerId}&appId=${appId}" marginheight="0" marginwidth="0" height="420px"></iframe>
 		</div>
@@ -56,7 +61,7 @@
 			$(".TabContent div").hide();
 			$("#tabContent"+index).show();
 			
-			for(var i=0;i<5;i++){
+			for(var i=0;i<6;i++){
 				if(i==index){
 					$("#tabContent"+i+"_save").show();
 				}else{
@@ -72,6 +77,7 @@
 			$("#tabContent0_save").hide();
 			$("#tabContent1_save").hide();
 			$("#tabContent4_save").hide();
+			$("#tabContent5_save").hide();
 			$("#tabContent3_save").hide();
 			
 			$("#tabContent2_save").click(function() {
@@ -88,6 +94,10 @@
 			
 			$("#tabContent4_save").click(function() {
 				document.getElementById('tabContent4_frame').contentWindow.onSave(); 
+			});
+			
+			$("#tabContent5_save").click(function() {
+				document.getElementById('tabContent5_frame').contentWindow.onSave(); 
 			});
 			
 			$("#tabContent3_save").click(function() {

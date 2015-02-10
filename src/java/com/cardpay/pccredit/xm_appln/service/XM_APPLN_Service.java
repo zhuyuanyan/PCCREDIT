@@ -29,6 +29,7 @@ import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_DBXX_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_DCSC_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_HKSZ_Dao;
+import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_HNPF_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_JCZL_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_KHED_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_KHFW_Dao;
@@ -50,6 +51,7 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DBXX;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DCSC;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_HKSZ;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_HNPF;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_JCZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHED;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHFW;
@@ -68,6 +70,7 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXQSZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXXX;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_ADDR_FORM;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_FORM;
+import com.cardpay.pccredit.xm_appln.web.XM_APPLN_HNPF_FORM;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_JBZL_FORM;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_NEW_CUSTOMER_FORM;
 import com.cardpay.workflow.models.WfProcessInfo;
@@ -142,6 +145,8 @@ public class XM_APPLN_Service {
 	private XM_APPLN_ZHSX_Dao xM_APPLN_ZHSX_Dao;
 	@Autowired
 	private XM_APPLN_ZXXX_Dao xM_APPLN_ZXXX_Dao;
+	@Autowired
+	private XM_APPLN_HNPF_Dao xM_APPLN_HNPF_Dao;
 	
 	/**
 	 * 插入数据
@@ -275,6 +280,17 @@ public class XM_APPLN_Service {
 		
 		insertOrUpdateXM_APPLN_TJINFO(xM_APPLN_TJINFO);
 		insertOrUpdateXM_APPLN_ADDR(xM_APPLN_ADDR);
+	}
+	
+	/**
+	 * 插入数据
+	 * @param 行内评分
+	 * @return
+	 */
+	public void insertXM_APPLN_HNPF(XM_APPLN_HNPF_FORM xM_APPLN_HNPF_FORM,User user){
+		XM_APPLN_HNPF xM_APPLN_HNPF = xM_APPLN_HNPF_FORM.createXM_APPLN_HNPF(user.getId());
+		
+		insertOrUpdateXM_APPLN_HNPF(xM_APPLN_HNPF);
 	}
 	
 	/**
@@ -572,6 +588,23 @@ public class XM_APPLN_Service {
 		return xM_APPLN_ADDR.getId();
 	}
 	
+	/**
+	 * 插入数据
+	 * @param XM_APPLN_HNPF行内评分
+	 * @return
+	 */
+	public String insertOrUpdateXM_APPLN_HNPF(XM_APPLN_HNPF xM_APPLN_HNPF) {
+		XM_APPLN_HNPF tmp = this.xM_APPLN_HNPF_Dao.findByCustomerId(xM_APPLN_HNPF.getCustomer_id());
+		if(tmp != null){
+			commonDao.deleteObject(XM_APPLN_HNPF.class, tmp.getId());
+		}
+		String id = IDGenerator.generateID();
+		xM_APPLN_HNPF.setId(id);
+		xM_APPLN_HNPF.setCreatedTime(new Date());
+		commonDao.insertObject(xM_APPLN_HNPF);
+		return xM_APPLN_HNPF.getId();
+	}
+	
 	public XM_APPLN findXM_APPLNByCustomerId(String customer_Id){
 		return this.xM_APPLN_Dao.findByCustomerId(customer_Id);
 	}
@@ -634,6 +667,9 @@ public class XM_APPLN_Service {
 	}
 	public XM_APPLN_ZXXX findXM_APPLN_ZXXXByCustomerId(String customer_Id){
 		return this.xM_APPLN_ZXXX_Dao.findByCustomerId(customer_Id);
+	}
+	public XM_APPLN_HNPF findXM_APPLN_HNPFByCustomerId(String customer_Id){
+		return this.xM_APPLN_HNPF_Dao.findByCustomerId(customer_Id);
 	}
 	
 	/**

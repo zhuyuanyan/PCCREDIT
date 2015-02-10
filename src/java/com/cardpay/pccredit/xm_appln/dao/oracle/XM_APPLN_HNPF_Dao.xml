@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.xm_appln.dao.XM_APPLN_HNPF_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.xm_appln.model.XM_APPLN_HNPF">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="huji" column="huji" />
+		<result property="have_house_bank" column="have_house_bank" />
+		<result property="have_house_huji" column="have_house_huji" />
+		<result property="is_xwkh" column="is_xwkh" />
+		<result property="reg_type" column="reg_type" />
+		<result property="reg_no" column="reg_no" />
+		<result property="org_no" column="org_no" />
+		<result property="is_farmer" column="is_farmer" />
+		<result property="is_with_farm" column="is_with_farm" />
+		<result property="income_src" column="income_src" />
+		<result property="is_add" column="is_add" />
+		<result property="is_gun" column="is_gun" />
+		<result property="is_com_xyk_c" column="is_com_xyk_c" />
+		<result property="is_loan_c" column="is_loan_c" />
+		<result property="is_loan_cus" column="is_loan_cus" />
+		<result property="prj" column="prj" />
+		<result property="std_gb_level_1" column="std_gb_level_1" />
+		<result property="std_gb_level_2" column="std_gb_level_2" />
+		<result property="std_gb_level_3" column="std_gb_level_3" />
+		<result property="std_gb_level_4" column="std_gb_level_4" />
+	</resultMap>
+
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="map">
+		SELECT * from XM_APPLN_HNPF T
+		WHERE T.customer_id = #{customer_id}
+	</select>
+
+</mapper>

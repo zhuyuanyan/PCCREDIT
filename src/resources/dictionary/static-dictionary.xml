@@ -604,5 +604,20 @@
 	    <item name="未设置" title="" />
 	</dictionary>
 	
+	<dictionary name="BELONG_BANK" title="所属支行">
+	    <item name="2404" title="思明区" />
+	    <item name="2304" title="湖里区" />
+	    <item name="2204" title="集美区" />
+	    <item name="2604" title="海沧区" />
+	    <item name="2104" title="同安区" />
+	    <item name="4704" title="翔安区" />
+	</dictionary>
+	
+	<dictionary name="INCOME_SRC_2" title="收入来源">
+	    <item name="经营收入" title="经营收入" />
+	    <item name="工资收入" title="工资收入" />
+	    <item name="其他报酬收入" title="其他报酬收入" />
+	</dictionary>
+	
 	<!-- xm_appln 数据字典结束 -->
 </dictionaries>

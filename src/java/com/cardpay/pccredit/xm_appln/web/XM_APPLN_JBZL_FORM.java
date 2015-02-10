@@ -51,6 +51,7 @@ public class XM_APPLN_JBZL_FORM extends BaseForm {
 	public String busi_phone;
 	public String cune_cr;
 	public String secur_nbr;
+	public String belong_bank; 
 	
 	//xm_appln_khfw
 	public String mail_code;
@@ -303,6 +304,12 @@ public class XM_APPLN_JBZL_FORM extends BaseForm {
 	public void setSecur_nbr(String secur_nbr) {
 		this.secur_nbr = secur_nbr;
 	}
+	public String getBelong_bank() {
+		return belong_bank;
+	}
+	public void setBelong_bank(String belong_bank) {
+		this.belong_bank = belong_bank;
+	}
 	public String getMail_code() {
 		return mail_code;
 	}
@@ -552,6 +559,7 @@ public class XM_APPLN_JBZL_FORM extends BaseForm {
 		obj.setTitle_inp(title_inp);
 		obj.setYr_in_comp(yr_in_comp);
 		obj.setYr_there(yr_there);
+		obj.setBelong_bank(belong_bank);
 		obj.setCreatedBy(userId);
 		return obj;
 	}
