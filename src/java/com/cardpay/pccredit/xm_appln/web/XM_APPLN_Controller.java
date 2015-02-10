@@ -41,6 +41,7 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DBXX;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DCSC;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_HKSZ;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_HNPF;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_JCZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHED;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHFW;
@@ -487,11 +488,30 @@ public class XM_APPLN_Controller extends BaseController {
 		return mv;
 	}
 	
-	//跳转到第page5
+	//跳转到page5
 	@ResponseBody
-	@RequestMapping(value = "xm_appln_page5.page", method = { RequestMethod.GET })
+	@RequestMapping(value = "xm_appln_page5.page")
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView xm_appln_page5(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page5", request);
+		
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			XM_APPLN_HNPF xM_APPLN_HNPF = xM_APPLN_Service.findXM_APPLN_HNPFByCustomerId(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			
+			mv.addObject("xM_APPLN_HNPF", xM_APPLN_HNPF);
+		}
+		return mv;
+	}
+		
+	//跳转到第page6
+	@ResponseBody
+	@RequestMapping(value = "xm_appln_page6.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView xm_appln_page6(HttpServletRequest request) {
 		String customerId = RequestHelper.getStringValue(request, ID);
 		String appId = RequestHelper.getStringValue(request, "appId");
 		CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerId);
@@ -644,7 +664,7 @@ public class XM_APPLN_Controller extends BaseController {
 		
 		xM_APPLN.setMail_to(conventDic2Title("MAIL_TO", xM_APPLN.getMail_to()));
 		
-		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page5", request);
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page6", request);
 		
 		mv.addObject("customerId", customerId);
 		mv.addObject("customer", customerInfor);
@@ -771,6 +791,25 @@ public class XM_APPLN_Controller extends BaseController {
 		return returnMap;
 	}
 
+	//保存page5
+	@ResponseBody
+	@RequestMapping(value = "update_xm_appln_page5.json")
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap update_xm_appln_page5(@ModelAttribute XM_APPLN_HNPF_FORM xM_APPLN_HNPF_FORM, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				xM_APPLN_Service.insertXM_APPLN_HNPF(xM_APPLN_HNPF_FORM,user);
+				returnMap.put("customerId",xM_APPLN_HNPF_FORM.getCustomer_id());
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
+	}
 	
 	//转化数据字典的vlaue值为显示值
 	private String conventDic2Title(String dicName,String value){
@@ -788,7 +827,6 @@ public class XM_APPLN_Controller extends BaseController {
 		return "";
 	}
 	
-	//保存page4
 	@ResponseBody
 	@RequestMapping(value = "checkFuheOrLuru.page")
 	public JRadReturnMap checkFuheOrLuru(HttpServletRequest request)throws Exception {

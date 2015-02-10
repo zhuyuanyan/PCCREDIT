@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import net.htmlparser.jericho.Element;
@@ -37,6 +38,7 @@ import com.cardpay.pccredit.pbccrcReport.model.RH_XYTS_INFO;
 import com.cardpay.pccredit.pbccrcReport.model.RH_YH_INFO;
 import com.cardpay.pccredit.pbccrcReport.model.RH_YQ_INFO;
 import com.cardpay.pccredit.pbccrcReport.model.RH_ZY_INFO;
+import com.cardpay.pccredit.pbccrcReport.util.DateUtil;
 import com.cardpay.pccredit.pbccrcReport.util.RegEX;
 import com.cardpay.pccredit.sample2.filter.Sample2Filter;
 import com.cardpay.pccredit.sample2.model.Sample2;
@@ -750,7 +752,10 @@ public class RhzxService {
 		}
 		else{
 			rh_info.setModifiedTime(Calendar.getInstance().getTime());
-			readRH(rh_info);
+			//如果大于30天 重新读取征信文件
+			if(DateUtil.daysBetween(rh_info.getModifiedTime(), new Date())>30){
+				readRH(rh_info);
+			}
 			this.commonDao.updateObject(rh_info);
 		}
 		

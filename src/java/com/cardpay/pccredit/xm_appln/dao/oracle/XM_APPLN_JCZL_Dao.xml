@@ -38,6 +38,7 @@
 		<result property="busi_phone" column="BUSI_PHONE" />
 		<result property="cune_cr" column="CUNE_CR" />
 		<result property="secur_nbr" column="SECUR_NBR" />
+		<result property="belong_bank" column="BELONG_BANK" />
 	</resultMap>
 
 	<select id="findByCustomerId" resultMap="ResultMap"

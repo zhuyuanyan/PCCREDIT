@@ -1,0 +1,482 @@
+#parse ("common/iframe_page_header2.htm")
+	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
+</head>
+<body>
+<div class="fixed">
+	<h1>申请书信用审核</h1>
+	<div class="buttons"><!--按钮组放置区域-->
+		<input id="id_save_button" type="button" value="保存" class="button">
+	</div>
+</div>
+<form>
+<!--*************************************************************申请基本信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>申请基本信息</td>
+				<td><img src="min.gif"/></td>
+			</tr>
+		</table>
+		<div name="content">
+			<table class="message">
+				<tr>
+					<td class="label">申请产品</td>
+					<td>
+						<span name="product">$!xM_APPLN.product</span>
+					</td>
+					<td class="label">申请类型</td>
+					<td>
+						<span name="ADDL_CARD"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">主卡证件号</td>
+					<td>
+						<span name="custr_nbr1">$!xM_APPLN_KPMX_ls.get(0).custr_nbr</span>
+					</td>
+					<td class="label">主卡姓名</td>
+					<td>
+						<span name="acc_name1">$!xM_APPLN_JCZL.surname</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">附卡1证件号</td>
+					<td>
+						<span name="custr_nbr2">$!xM_APPLN_KPMX_ls.get(1).custr_nbr</span>
+					</td>
+					<td class="label">附卡1姓名</td>
+					<td>
+						<span name="acc_name2">$!xM_APPLN_JCZL.surname</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">客户总信用额度</td>
+					<td>
+						<span name="CUSTR_CRED"></span>
+					</td>
+					<td class="label">单位名称凸字</td>
+					<td>
+						<span name="emboss_cpy">$!xM_APPLN.emboss_cpy</span>
+					</td>
+				</tr>	
+			</table>
+		</div><!--/content-->
+	</div>
+<!--*************************************************************申请处理*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>申请处理</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>					
+					<td class="label" colspan="2">
+						<label><input type="radio" name="DECCAN_CDE" checked/>核准</label>
+						<label><input type="radio" name="DECCAN_CDE"/>拒绝</label>
+						<label><input type="radio" name="DECCAN_CDE"/>取消\补件</label>
+					</td>
+					<td class="label">产生信函?</td>
+					<td>
+						<input type="checkbox" name="DECCAN_LET" value="1"/>
+					</td>
+					<td class="label">补件原因代码</td>
+					<td>
+						<input type="text" name="DECCAN_SUP" maxlength="4"/>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">快速发卡?</td>
+					<td>
+						<input type="checkbox" name="rush_card" value="1" #if($!xM_APPLN.rush_card == '1') checked #end/>
+					</td>
+					<td class="label">快速发卡费?</td>
+					<td>
+						<input type="checkbox" name="rush_fee" value="1" #if($!xM_APPLN.rush_fee == '1') checked #end/>
+					</td>
+					<td class="label">核准/拒绝日期</td>
+					<td>
+						<span name="APPDEC_DTE"></span>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">审核原因代码</td>
+					<td colspan="3">
+						<select name="DECCAN_REA" style="width:260px;">
+							<option></option>
+						</select>
+					</td>
+					<td class="label">密信递送方式</td>
+					<td>
+						<select name="PIN_DSPCH" style="width:150px;">
+							#dict("CDESPMTD",$null)
+						</select>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">密信递送费用</td>
+					<td colspan="5">
+						<select name="PINCOURFEE" style="width:150px;">
+							#dict("COURIERF",$null)
+						</select>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************审批额度*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>审批额度</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>					
+					<td class="label">信用额度</td>
+					<td>
+						<input type="text" name="cred_limit" value="$!xM_APPLN_SPED.cred_limit" maxlength="10"/>
+					</td>
+					<td class="label">分期付款额度</td>
+					<td>
+						<input type="text" name="mp_limit" value="$!xM_APPLN_SPED.mp_limit" maxlength="10"/>
+					</td>
+					<td class="label">美元账户额度</td>
+					<td>
+						<input type="text" name="credlim_x" value="$!xM_APPLN_SPED.credlim_x" maxlength="6"/>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">预借现金比例%</td>
+					<td>
+						<input type="text" name="ca_pcnt" value="$!xM_APPLN_SPED.ca_pcnt" maxlength="6"/>
+					</td>
+					<td class="label">现金分期额度固定值</td>
+					<td colspan="3">
+						<input type="text" name="callmt" value="$!xM_APPLN_SPED.callmt" maxlength="10"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************账户属性*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>账户属性</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>					
+					<td class="label">利率代码</td>
+					<td>
+						<select name="int_code" style="width:150px;">
+							#if(!$xM_APPLN_ZHSX)
+							#dict("INT_CODE","$!xM_APPLN.int_code")
+							#else
+							#dict("INT_CODE","$!xM_APPLN_ZHSX.int_code")
+							#end
+						</select>
+					</td>
+					<td class="label">年费代码</td>
+					<td colspan="3">
+						<select name="acc_type_n" style="width:170px;">
+							#if(!$xM_APPLN_ZHSX)
+							#dict("ACC_TYPE","$!xM_APPLN.acc_type")
+							#else
+							#dict("ACC_TYPE","$!xM_APPLN_ZHSX.acc_type_n")
+							#end
+						</select>
+					</td>
+				</tr>
+				<tr><td colspan="6"><div class="border"></div></td></tr><!--/分割线-->
+				<tr><td class="label" colspan="6"><b>降级/更换产品</b></tr>
+				<tr>					
+					<td class="label">降级/更换产品?</td>
+					<td>
+						<input type="checkbox" name="gtoc" value="1" #if($!xM_APPLN_ZHSX.gtoc == '1') checked #end/>
+					</td>
+					<td class="label">降级账单日</td>
+					<td>
+						<input type="text mini" name="cycle_nbr" value="$!xM_APPLN_ZHSX.cycle_nbr" maxlength="2"/>
+					</td>
+					<td class="label">降级申请来源</td>
+					<td>
+						<select name="app_source" style="width:200px;">
+							#dict("APP_SOURCE","$!xM_APPLN_ZHSX.app_source")
+						</select>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">降级收件分行</td>
+					<td>
+						<input type="text" name="ab_branch" value="$!xM_APPLN_ZHSX.ab_branch" maxlength="4"/>
+					</td>
+					<td class="label">降级产品</td>
+					<td colspan="3">
+						<select name="downprod" style="width:200px;">
+							#dict("PRODUCT","$!xM_APPLN_ZHSX.downprod")
+						</select>
+					</td>
+				</tr>
+				<tr>					
+					<td class="label">降级年费代码</td>
+					<td colspan="3">
+						<select name="acc_type" style="width:200px;">
+							#dict("ACC_TYPE","$!xM_APPLN_ZHSX.acc_type")
+						</select>
+					</td>
+					<td class="label">账单代码</td>
+					<td>
+						<span name="stm_code">$!xM_APPLN_ZHSX.stm_code</span>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+<!--*************************************************************卡片明细*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>卡片明细</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>			
+		<div name="content" class="display">
+			<table class="message">
+				<tr>					
+					<td class="label">申请人个数</td>
+					<td>
+						<span name="CUST_COUNT">$!xM_APPLN_KPMX_ls.size()</span>
+					</td>
+				</tr>
+			</table>
+			<ul class="tags" id="tab1">
+				<li class="active" onclick="selectTag('tagContent0',this);" style="margin-left:0;">主卡</li>
+			</ul>
+			<div class="Content" id="Content1">
+			<!--*************************************主卡*****************************************-->
+				<div class="tagContent selectTag" id="tagContent0">
+					<table class="message">
+						<tr>
+							<td class="label">主卡凸字姓名</td>
+							<td>
+								<input type="text" name="embosnme_l" value="$!xM_APPLN_KPMX_ls.get(0).embname_d" maxlength="28"/>
+							</td>
+							<td class="label" style="color:#b5b0b6;">自选卡号</td>
+							<td>
+								<span name=""></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">卡片版面</td>
+							<td>
+								<select name="CDFRM_L">
+									#dict("CDFRM","$!xM_APPLN_KPMX_ls.get(0).cdfrm")
+								</select>
+							</td>
+							<td class="label">有效日期</td>
+							<td>
+								<input type="text" name="EXPYDATE_L" maxlength="4" placeholder="MMYY" onmouseover="__calendarFormat()"/>
+							</td>
+						</tr>						
+						<tr>
+							<td class="label">卡号</td>
+							<td>
+								<span name="CD_NBR_D_L"></span>
+							</td>
+							<td class="label">是否为自选卡号</td>
+							<td>
+								<span name="CARDSEL"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">会员编号</td>
+							<td>
+								<span name="MS_MEM_L"></span>
+							</td>
+							<td class="label">会员来源</td>
+							<td>
+								<span name="MSMEM_SOUR_L"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">会员启始年份</td>
+							<td>
+								<span name="MEMBER_L"></span>
+							</td>
+							<td class="label">是否为PLC</td>
+							<td>
+								<span name="PLC_YN_L"></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">递送方式</td>
+							<td>
+								<span name="cdespmtd_l">$!xM_APPLN_KPMX_ls.get(0).cdespmtd</span>
+							</td>
+							<td class="label">递送分行</td>
+							<td>
+								<span name="cdesploc_l">$!xM_APPLN_KPMX_ls.get(0).cdesploc</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">递送费用</td>
+							<td>
+								<span name="courierf_l">$!xM_APPLN_KPMX_ls.get(0).courierf</span>
+							</td>
+							<td class="label">需要凸字</td>
+							<td>
+								<input type="checkbox" name="emboss_cd_l" value="1" #if($!xM_APPLN_KPMX_ls.get(0).emboss_cd == '1') checked #end readonly></span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">需要PIN(密信函)</td>
+							<td>
+								<input type="checkbox" name="pin_reqd_l" value="1" #if($!xM_APPLN_KPMX_ls.get(0).pin_reqd == '1') checked #end readonly></span>
+							</td>
+							<td class="label">特别提示</td>
+							<td>
+								<span name="SPEC_INST_L">$!xM_APPLN_KPMX_ls.get(0).spec_inst</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">消费需要密码</td>
+							<td>
+								<input type="checkbox" name="pin_chk_l" value="1" #if($!xM_APPLN_KPMX_ls.get(0).pin_chk == '1') checked #end readonly></span>
+							</td>
+							<td class="label">开通短信通知</td>
+							<td>
+								<input type="checkbox" name="sms_yn_l" value="1" #if($!xM_APPLN_KPMX_ls.get(0).sms_yn == '1') checked #end readonly></span>
+							</td>
+						</tr>
+					</table>
+				</div><!-- /tagContent1 -->		
+			</div><!-- /Content -->	
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************征信信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>征信信息</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">征信代码-行业</td>
+					<td>
+						<input type="text" name="cu_crcod1" value="$!xM_APPLN_ZXXX.cu_crcod1" maxlength="4"/>
+					</td>
+					<td class="label">征信代码-职务</td>
+					<td>
+						<input type="text" name="cu_crcod2" value="$!xM_APPLN_ZXXX.cu_crcod2" maxlength="4"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">征信代码-专案</td>
+					<td>
+						<input type="text" name="ac_crcod1" value="$!xM_APPLN_ZXXX.ac_crcod1" maxlength="4"/>
+					</td>
+					<td class="label">征信代码-项目</td>
+					<td>
+						<input type="text" name="ac_crcod2" value="$!xM_APPLN_ZXXX.ac_crcod2" maxlength="4"/>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************申请风险信息*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>申请风险信息</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">本次评分注记</td>
+					<td>
+						<span name="SCOR_NOTE"></span>
+					</td>
+					<td class="label">最近一次拒绝原因</td>
+					<td>
+						<span name="CUNEG_RSN"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">最近一次拒绝日期</td>
+					<td>
+						<span name="CUNEG_INPD"></span>
+					</td>
+					<td class="label">被拒绝的申请人</td>
+					<td>
+						<span name="CUNEG_CUS"></span>
+					</td>	
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>		
+<!--*************************************************************自扣还款*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>自扣还款</td>
+				<td><img src="max.gif"/></td>
+			</tr>
+		</table>
+		<div name="content" class="display">
+			<table class="message">
+				<tr>
+					<td class="label">本币自扣还款方式</td>
+					<td>
+						<span name="repay_code">$!xM_APPLN_HKSZ.repay_code</span>
+					</td>
+					<td class="label">本币自扣还款金额</td>
+					<td>
+						<span name="repay_amt">$!xM_APPLN_HKSZ.repay_amt</span>
+					</td>
+					<td class="label">本币自扣还款百分比</td>
+					<td>
+						<span name="repay_pct">$!xM_APPLN_HKSZ.repay_pct</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">外币自扣还款方式</td>
+					<td>
+						<span name="repay_codx">$!xM_APPLN_HKSZ.repay_codx</span>
+					</td>
+					<td class="label">外币自扣还款金额</td>
+					<td>
+						<span name="repay_amtx">$!xM_APPLN_HKSZ.repay_amtx</span>
+					</td>
+					<td class="label">外币自扣还款百分比</td>
+					<td>
+						<span name="repay_pctx">$!xM_APPLN_HKSZ.repay_pctx</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">自扣还款日期</td>
+					<td colspan="5">
+						<span name="repay_day">$!xM_APPLN_HKSZ.repay_day</span>
+					</td>
+				</tr>
+			</table>
+		</div><!--/content-->
+	</div>	
+</form>	
+	<script src="${contextPath}/js/xm_appln/xm_appln.js" type="text/javascript"></script>
+	
+</body>
+#parse ("common/iframe_page_footer.htm")
+

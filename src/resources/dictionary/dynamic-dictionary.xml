@@ -385,4 +385,28 @@ AND A.IS_DELETED = '0'
 		select next_node  from NODE_CONTROL where current_node in(
 		select NEXT_NODE_ID from CUSTOMER_APPLICATION_PROCESS where APPLICATION_ID= '#P{0}')))
 	</dictionary>
+	
+	<dictionary name="STD_GB_LEVEL_1" title="贷款投向" timeout="10000">
+		select ABVENNAME||'_'||ENNAME as NAME,CNNAME as title 
+		from std_gb
+		where (length(locate)-length(replace(locate,',','')))=2
+	</dictionary>
+	
+	<dictionary name="STD_GB_LEVEL_2" title="贷款投向" timeout="10000">
+		select ABVENNAME||'_'||ENNAME as NAME,CNNAME as title 
+		from std_gb
+		where (length(locate)-length(replace(locate,',','')))=3
+	</dictionary>
+	
+	<dictionary name="STD_GB_LEVEL_3" title="贷款投向" timeout="10000">
+		select ABVENNAME||'_'||ENNAME as NAME,CNNAME as title 
+		from std_gb
+		where (length(locate)-length(replace(locate,',','')))=4
+	</dictionary>
+	
+	<dictionary name="STD_GB_LEVEL_4" title="贷款投向" timeout="10000">
+		select ABVENNAME||'_'||ENNAME as NAME,CNNAME as title 
+		from std_gb
+		where (length(locate)-length(replace(locate,',','')))=5
+	</dictionary>
 </dictionaries>
