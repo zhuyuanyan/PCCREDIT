@@ -56,6 +56,14 @@ public class XM_APPLN_JCZL extends BusinessModel {
 	private String busi_phone;
 	private String cune_cr;
 	private String secur_nbr;
+	private String belong_bank;
+	
+	public String getBelong_bank() {
+		return belong_bank;
+	}
+	public void setBelong_bank(String belong_bank) {
+		this.belong_bank = belong_bank;
+	}
 	public String getCustomer_id() {
 		return customer_id;
 	}
