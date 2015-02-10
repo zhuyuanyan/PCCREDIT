@@ -64,28 +64,6 @@ public class CustomerZXController extends BaseController {
 	private RhzxService rhzxService;
 	
 	/**
-	 * 浏览页面
-	 * 
-	 * @param filter
-	 * @param request
-	 * @return
-	 */
-
-	@ResponseBody
-	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView browse(@ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
-        filter.setRequest(request);
-        IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		filter.setUserId(user.getId());
-		QueryResult<CustomerInfor> result = customerInforService.findCustomerInforByFilter(filter);
-		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
-		JRadModelAndView mv = new JRadModelAndView("/customer/customerzx/customerzx_browse",request);
-		mv.addObject(PAGED_RESULT, pagedResult);
-
-		return mv;
-	}
-	/**
 	 * 设置征信查询条件
 	 */
 	@ResponseBody

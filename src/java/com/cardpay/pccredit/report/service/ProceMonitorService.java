@@ -1,20 +1,28 @@
 package com.cardpay.pccredit.report.service;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.report.dao.ProceMonitorDao;
 import com.cardpay.pccredit.report.dao.QuailMonitorRejectDao;
 import com.cardpay.pccredit.report.dao.QuailMonitorReturnDao;
 import com.cardpay.pccredit.report.filter.StatisticalFilter;
+import com.cardpay.pccredit.report.model.LCJC;
 import com.cardpay.pccredit.report.model.QuailBankRejectMonitor;
 import com.cardpay.pccredit.report.model.QuailBankReturnMonitor;
 import com.cardpay.pccredit.report.model.QuailManaRejectMonitor;
 import com.cardpay.pccredit.report.model.QuailManaReturnMonitor;
 import com.cardpay.pccredit.report.model.bankProceMonitor;
 import com.cardpay.pccredit.report.model.manaProceMonitor;
+import com.cardpay.pccredit.system.filter.SystemUserFilter;
+import com.cardpay.pccredit.system.model.SystemUser;
+import com.cardpay.pccredit.system.service.SystemUserService;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+import com.wicresoft.jrad.base.database.model.QueryResult;
 
 
 /**
@@ -36,15 +44,19 @@ public class ProceMonitorService {
 	
 	@Autowired
 	private QuailMonitorReturnDao quailMonitorReturnDao;
+	
+	@Autowired
+	private SystemUserService systemUserService;
+	
 	/**
 	 * “灵活金”/普通信用卡业务流程监测报表（统计期间：XXXX年XX月XX日-XXXX年XX月XX日，客户经理/微贷经理维度）
 	 * @param filter
 	 * @return
 	 */
-	public List<manaProceMonitor> getProceMonitorStatistical(StatisticalFilter filter) {
-		return proceMonitorDao.getProceMonitorStatistical(filter);
+	public List<LCJC> getProceMonitorStatistical(StatisticalFilter filter) {
+		List<LCJC> LCJC_ls = proceMonitorDao.getProceMonitorStatistical(filter);
+		return LCJC_ls;
 	}
-	
 
 	/**
 	 * “灵活金”/信用卡业务流程监测报表（统计期间：XXXX年XX月XX日-XXXX年XX月XX日，一级支行/二级支行维度）
