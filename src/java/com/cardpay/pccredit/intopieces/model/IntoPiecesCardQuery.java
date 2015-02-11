@@ -26,6 +26,7 @@ public class IntoPiecesCardQuery  extends BusinessModel {
     private Date approveDate;//制卡申请时间
     private String applicationId;//原系统申请件id
     private String makeCardId;//发卡系统申请书编号
+    private String uuid19;//外部系统uuid(申请书条形码/流水号)
 	public String getId() {
 		return id;
 	}
@@ -103,6 +104,12 @@ public class IntoPiecesCardQuery  extends BusinessModel {
 	}
 	public void setMakeCardId(String makeCardId) {
 		this.makeCardId = makeCardId;
+	}
+	public String getUuid19() {
+		return uuid19;
+	}
+	public void setUuid19(String uuid19) {
+		this.uuid19 = uuid19;
 	}
 	
 }
