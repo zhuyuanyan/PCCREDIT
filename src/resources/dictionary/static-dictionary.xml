@@ -330,21 +330,20 @@
 	</dictionary>
 	
 	<dictionary name="EDUCA" title="教育程度">
-		<item name="初中及以下" title="初中及以下" />
-		<item name="高中及中专" title="高中及中专" />
-		<item name="大专" title="大专" />
-		<item name="本科" title="本科" />
-		<item name="硕士" title="硕士" />
-		<item name="博士" title="博士" />
+		<item name="1" title="初中及以下" />
+		<item name="2" title="高中及中专" />
+		<item name="3" title="大专" />
+		<item name="4" title="本科" />
+		<item name="5" title="硕士" />
+		<item name="6" title="博士" />
 	</dictionary>
 	
 	<dictionary name="HOME_CODE" title="住房情况">
-	    <item name="未设置" title="" />
-		<item name="寄宿" title="寄宿" />
-		<item name="自购有贷款" title="自购有贷款" />
-		<item name="与双亲同住" title="与双亲同住" />
-		<item name="住在自有住房" title="住在自有住房" />
-		<item name="租房住" title="租房住" />
+	    <item name="1" title="与父母同住" />
+		<item name="2" title="租用" />
+		<item name="3" title="自购无贷款" />
+		<item name="4" title="自购有贷款" />
+		<item name="5" title="公司宿舍" />
 	</dictionary>
 	
 	<dictionary name="INCOME_SRC" title="收入来源">
@@ -356,21 +355,18 @@
 	</dictionary>
 	
 	<dictionary name="OCC_CATGRY" title="单位属性">
-	    <item name="未设置" title="" />
-		<item name="01" title="国有" />
-		<item name="02" title="独资" />
-		<item name="03" title="合资" />
-		<item name="04" title="股份制" />
-		<item name="05" title="私营" />
-		<item name="06" title="其他" />
-		<item name="07" title="机关事业单位" />
-		<item name="08" title="民营企业" />
-		<item name="09" title="离职客户" />
 		<item name="1" title="国有" />
+		<item name="2" title="独资" />
+		<item name="3" title="合资" />
+		<item name="4" title="股份制" />
+		<item name="5" title="私营" />
+		<item name="6" title="其他" />
+		<item name="7" title="机关事业单位" />
+		<item name="8" title="民营企业" />
+		<item name="9" title="离职客户" />
 	</dictionary>
 	
 	<dictionary name="INT_TAXCOD" title="职务/岗位">
-	    <item name="未设置" title="" />
 		<item name="01" title="负责人" />
 		<item name="02" title="高级主管" />
 		<item name="03" title="中级主管" />
@@ -482,18 +478,16 @@
 	</dictionary>
 	
 	<dictionary name="CDESPMTD" title="递送方式">
-	    <item name="到收件网点领取" title="到收件网点领取" />
-		<item name="快递给持卡人" title="快递给持卡人" />
-		<item name="重发卡暂不递送-信用原因" title="重发卡暂不递送-信用原因" />
-		<item name="暂不递送-持卡人再境外" title="暂不递送-持卡人再境外" />
-		<item name="寄往指定地址" title="寄往指定地址" />
+	    <item name="LT" title="信件寄送" />
+		<item name="EM" title="电子邮件寄送" />
+		<item name="NO" title="不寄送账单" />
 	</dictionary>
 	
 	<dictionary name="COURIERF" title="递送费用">
-	    <item name="无" title="无" />
-		<item name="同城" title="同城" />
-		<item name="外地" title="外地" />
-		<item name="境外" title="境外" />
+	    <item name="0" title="无" />
+		<item name="1" title="同城" />
+		<item name="2" title="外地" />
+		<item name="3" title="境外" />
 	</dictionary>
 	
 	<dictionary name="CDFRM" title="卡片版面">
@@ -617,6 +611,18 @@
 	    <item name="经营收入" title="经营收入" />
 	    <item name="工资收入" title="工资收入" />
 	    <item name="其他报酬收入" title="其他报酬收入" />
+	</dictionary>
+	<dictionary name="industry_type" title="行业类别">
+	    <item name="A001" title="政府机关事业单位" />
+	    <item name="A002" title="工科教文卫" />
+	    <item name="A003" title="邮电通信" />
+	    <item name="A004" title="部队" />
+	    <item name="A005" title="IT网络、计算机" />
+	    <item name="A006" title="邮电通信" />
+	    <item name="A007" title="金融机构" />
+	    <item name="A008" title="房地产开发" />
+	    <item name="A009" title="保险经纪、中介" />
+	    <item name="A010" title="旅游、饭店、娱乐" />
 	</dictionary>
 	
 	<!-- xm_appln 数据字典结束 -->

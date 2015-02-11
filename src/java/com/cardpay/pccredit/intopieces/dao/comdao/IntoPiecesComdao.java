@@ -211,9 +211,16 @@ public class IntoPiecesComdao {
 	public QueryResult<IntoPieces> findintoApplayPiecesByFilter(
 			IntoPiecesFilter filter) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
-		String sql = "select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and t.product_id=p.id and t.status='approved' order by t.id desc";
+		String sql = "select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and t.product_id=p.id  order by t.id desc";
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql, params,
 				filter.getStart(), filter.getLimit());
+	}
+	/* 查询进件信息count */
+	public int findintoApplayPiecesCountByFilter(
+			IntoPiecesFilter filter) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		String sql = "select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and t.product_id=p.id order by t.id desc";
+		return commonDao.queryBySql(sql, params).size();
 	}
 
 	/* 查询进价信息 */
@@ -429,7 +436,7 @@ public class IntoPiecesComdao {
 	 */
 	public List<ApproveHistoryForm> findApproveHistoryByDataId(String id,
 			String dataType) {
-		String sql = "select s.status_name, t.examine_result, su.display_name, t.examine_amount, t.start_examine_time "
+		String sql = "select s.status_name, t.examine_result, su.display_name, su.id,t.examine_amount, t.start_examine_time "
 				+ " from wf_status_queue_record t left join wf_status_info s on t.current_status = s.id "
 				+ " left join wf_process_record pr on t.current_process = pr.id";
 		if (dataType.equals("application")) {
