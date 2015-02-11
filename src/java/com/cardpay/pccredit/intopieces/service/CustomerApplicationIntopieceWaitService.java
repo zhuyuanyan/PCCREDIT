@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.UploadFileTool;
+import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
@@ -18,6 +20,7 @@ import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.model.AgrCrdXykCuneg;
@@ -141,6 +144,7 @@ public class CustomerApplicationIntopieceWaitService {
 		String reason = request.getParameter("reason");
 		String cardId = request.getParameter("cardId");
 		String cardType = request.getParameter("cardType");
+		String chineseName = request.getParameter("chineseName");
 		if(objection.equals("true")){
 			applicationStatus = ApproveOperationTypeEnum.OBJECTION.toString();
 		}
@@ -186,10 +190,25 @@ public class CustomerApplicationIntopieceWaitService {
 			commonDao.updateObject(customerApplicationInfo);
 			
 			customerApplicationProcess.setNextNodeId(examineResutl);
+			if(request.getAttribute("appType")!=null){
+				//终审后导入appln至服务器
+				intoPiecesService.exportData(applicationId, customerId, null);
+				IntoPiecesCardQuery cardQuery = new IntoPiecesCardQuery();
+				
+				cardQuery.setApproveId(loginId);
+				cardQuery.setApproveName(user.getDisplayName());
+				cardQuery.setCardId(cardId);
+				cardQuery.setCardType(cardType);
+				cardQuery.setBankId(CustomerInforConstant.BANK_ID);
+				cardQuery.setApproveCardId(CustomerInforConstant.PRODUCT_ID);
+				cardQuery.setApproveDate(new Date());
+				cardQuery.setApplicationId(applicationId);
+				CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+				CustomerInfor customerInfor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
+				cardQuery.setChineseName(customerInfor.getChineseName());
+				commonDao.insertObject(cardQuery);
+			}
 		}
-	    if(Constant.APPROVED_INTOPICES.equalsIgnoreCase(customerApplicationInfo.getStatus())){
-	    	intoPiecesService.exportData(applicationId, customerId, null);
-	    }
 		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.RETURNAPPROVE)) {
 			String fallbackReason = request.getParameter("reason");
 			customerApplicationProcess.setFallbackReason(fallbackReason);
@@ -211,7 +230,6 @@ public class CustomerApplicationIntopieceWaitService {
 				commonDao.insertObject(risk);
 			}
 			if(!blacklist.equals("-1")){
-				String chineseName = request.getParameter("chineseName");
 				AgrCrdXykCuneg agr = new AgrCrdXykCuneg();
 				agr.setCustrNbr(cardId);
 				agr.setNameExtnd(chineseName);

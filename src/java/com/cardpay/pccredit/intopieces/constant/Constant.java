@@ -85,5 +85,10 @@ public class Constant {
 	public static String APP_STATE_2="未申请";
 	public static String APP_STATE_3="退回";
 	
+	public static String APP_STATE_END="end";
 	
+	//制卡返回结果
+	public static String CARD_RETURN_TYPE1="成功";
+	public static String CARD_RETURN_TYPE2="资料不全";
+	public static String CARD_RETURN_TYPE3="格式错误";
 }

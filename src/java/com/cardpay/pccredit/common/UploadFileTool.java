@@ -326,7 +326,8 @@ public class UploadFileTool {
 	 */
 	public static void create(String fileName, String content) throws IOException {
 
-		File f = new File("d://"+fileName);
+//		File f = new File("d://"+fileName);
+		File f = new File(File.separator+"ftp"+File.separator+fileName);
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
 				new FileOutputStream(f), "GBK"));
 		content = new String(content.getBytes("ISO8859_1"),"GBK");

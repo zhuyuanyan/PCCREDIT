@@ -187,12 +187,29 @@ public class XM_APPLN_Controller extends BaseController {
 	}
 	
 
-	//跳转到iframe
+	//录入跳转到iframe
 	@ResponseBody
 	@RequestMapping(value = "changewh_xm_appln.page")
 	@JRadOperation(JRadOperation.MAINTENANCE)
 	public AbstractModelAndView changewh_xm_appln(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/xm_appln/iframe", request);
+		
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appId = RequestHelper.getStringValue(request, "aid");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+		}
+		return mv;
+	}
+	//复核跳转到iframe_fuhe
+	@ResponseBody
+	@RequestMapping(value = "changewh_xm_appln_fuhe.page")
+	@JRadOperation(JRadOperation.MAINTENANCE)
+	public AbstractModelAndView changewh_xm_appln_fuhe(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/iframe_fuhe", request);
 		
 		String customerInforId = RequestHelper.getStringValue(request, ID);
 		String appId = RequestHelper.getStringValue(request, "aid");

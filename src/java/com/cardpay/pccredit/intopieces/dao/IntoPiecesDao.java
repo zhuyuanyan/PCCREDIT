@@ -17,4 +17,6 @@ public interface IntoPiecesDao {
 	List<IntoPiecesCardQueryFilter> cardQuery(IntoPiecesCardQueryFilter filter);
 	
 	int cardQueryCount(IntoPiecesCardQueryFilter filter);
+	
+	int nowCount(String approveDate);
 }

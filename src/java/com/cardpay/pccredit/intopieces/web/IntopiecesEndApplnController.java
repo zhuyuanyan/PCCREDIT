@@ -144,7 +144,6 @@ public class IntopiecesEndApplnController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "change.page")
-	@JRadOperation(JRadOperation.APPROVE)
 	public AbstractModelAndView change(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_end_approve", request);
 
@@ -233,14 +232,13 @@ public class IntopiecesEndApplnController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "update.json")
-	@JRadOperation(JRadOperation.APPROVE)
+	@RequestMapping(value = "update.json", method = { RequestMethod.GET })
 	public JRadReturnMap update(HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 
 		if (returnMap.isSuccess()) {
 			try {
-//				request.setAttribute("appType", Constant);
+				request.setAttribute("appType", Constant.APP_STATE_END);
 				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumberApplicationInfo(request);
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			} catch (Exception e) {
