@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.intopieces.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
 
@@ -13,7 +15,7 @@ public class IntoPiecesCardQuery  extends BusinessModel {
 
 	private String id;//制卡主键
 	private String bankId;//银行id
-    private String approveCardId; //申请卡片id
+    private String approveCardId; //申请产品id
     private String cardType; //证件类型
     private String cardId; //证件号码
     private String resultType;//制卡结果类型
@@ -21,6 +23,9 @@ public class IntoPiecesCardQuery  extends BusinessModel {
     private String approveId;//审批人id
     private String approveName;//审批人姓名
     private String chineseName;//申请人姓名
+    private Date approveDate;//制卡申请时间
+    private String applicationId;//原系统申请件id
+    private String makeCardId;//发卡系统申请书编号
 	public String getId() {
 		return id;
 	}
@@ -80,6 +85,24 @@ public class IntoPiecesCardQuery  extends BusinessModel {
 	}
 	public void setChineseName(String chineseName) {
 		this.chineseName = chineseName;
+	}
+	public Date getApproveDate() {
+		return approveDate;
+	}
+	public void setApproveDate(Date approveDate) {
+		this.approveDate = approveDate;
+	}
+	public String getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
+	}
+	public String getMakeCardId() {
+		return makeCardId;
+	}
+	public void setMakeCardId(String makeCardId) {
+		this.makeCardId = makeCardId;
 	}
 	
 }

@@ -1,8 +1,13 @@
 package com.cardpay.pccredit.intopieces.service;
 
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +18,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +70,7 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SXJC;
 import com.cardpay.workflow.dao.WfStatusResultDao;
 import com.cardpay.workflow.models.WfProcessRecord;
 import com.cardpay.workflow.models.WfStatusQueueRecord;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
@@ -797,7 +804,15 @@ public class IntoPiecesService {
 			    default:break;
 			}
 		}
-		String fileName = customerInfor.getChineseName()+"("+customerInfor.getCardId()+")";
+		//生成文件名
+		DateFormat format2 = new SimpleDateFormat("yyyyMMdd");
+		String nowDate  = format2.format(new Date());
+		String fileName = CustomerInforConstant.BANK_ID+"-APPLN-";
+		String nowCount = intoPiecesDao.nowCount(nowDate)+1+"";
+		for(int i=6;i>nowCount.length();i--){
+			fileName+="0";
+		}
+		fileName+=nowCount+"-"+nowDate;
 		/*生成的接口数据上传到ftp文件上*/
 
 //		UploadFileTool.uploadFileToFtp(Constant.FTPIP, Integer.valueOf(Constant.FTPPORT), Constant.FTPUSERNAME, Constant.FTPPASSWORD, Constant.FTPPATH, fileName, content.toString());
@@ -1002,6 +1017,8 @@ public class IntoPiecesService {
 		sxjc.setStandard(filter.getStandard());
 		commonDao.insertObject(sxjc);
 		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(filter.getApplicationId());
+		process.setIfRecieved(Constant.recieve_type);
+		commonDao.updateObject(process);
 		request.setAttribute("serialNumber", process.getSerialNumber());
 		request.setAttribute("applicationId", process.getApplicationId());
 		request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
@@ -1076,4 +1093,69 @@ public class IntoPiecesService {
 		infor.setProcessId("1");
 		commonDao.updateObject(infor);
 	}
+	
+	/**
+	 * 定时解析FTP获取的文件
+	 */
+	public void importDataFromBank(){
+        InputStreamReader inputReader = null;
+        BufferedReader bufferReader = null;
+        try
+        {
+            InputStream inputStream = new FileInputStream("e://6517-APPRESULT-000008-20150127");
+            inputReader = new InputStreamReader(inputStream);
+            bufferReader = new BufferedReader(inputReader);
+            
+            // 读取一行
+            String line = null;
+            StringBuffer strBuffer = new StringBuffer();
+                
+            while ((line = bufferReader.readLine()) != null)
+            {
+                strBuffer.append(line);
+            } 
+            System.out.println(strBuffer);
+        	bufferReader.close();
+        	inputReader.close();
+        	//将制卡数据存入data
+        	inputData(strBuffer);
+        }
+        catch (IOException e)
+        {
+        	e.printStackTrace();
+        }
+	}
+	
+	private void inputData(StringBuffer str){
+		IntoPiecesCardQueryFilter cardQueryFilter = new IntoPiecesCardQueryFilter();
+		//银行id
+		String bankId = str.substring(0, 3);
+		//发卡系统申请书编号
+		String makeCardId = str.substring(23, 32);
+		//申请人证件类型
+		String cardType = str.substring(33, 34);
+		//申请人证件号码
+		String cardId = str.substring(35, 52);
+		//处理结果
+		String resultType = str.substring(53, 54);
+		String resultText = "";
+		if(resultType.equals("00")){
+			resultText = Constant.CARD_RETURN_TYPE1;
+		}else if(resultType.equals("10")){
+			resultText = Constant.CARD_RETURN_TYPE2;
+		}else{
+			resultText = Constant.CARD_RETURN_TYPE3;
+		}
+		
+		cardQueryFilter.setCardId(cardId);
+		cardQueryFilter.setMakeCardId(null);
+		QueryResult<IntoPiecesCardQuery> cardList = commonDao.findObjectsByFilter(IntoPiecesCardQuery.class, cardQueryFilter);
+		if(cardList.getItems().size()>0){
+			IntoPiecesCardQuery card = cardList.getItems().get(0);
+			card.setMakeCardId(makeCardId);
+			card.setResultType(resultType);
+			card.setResultText(resultText);
+			commonDao.updateObject(card);
+		}
+	} 
 }

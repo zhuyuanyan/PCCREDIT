@@ -26,6 +26,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
@@ -53,7 +54,7 @@ public class IntoPiecesComdao {
 		String status = filter.getStatus();
 		StringBuffer sql = null;
 		sql = new StringBuffer(
-				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.status,t.serial_number from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
 		if (StringUtils.trimToNull(cardId) != null
 				|| StringUtils.trimToNull(chineseName) != null) {
 			if (StringUtils.trimToNull(cardId) != null
@@ -491,4 +492,5 @@ public class IntoPiecesComdao {
 			return null;
 		}
 	}
+	
 }

@@ -35,4 +35,8 @@
 	and s.card_id=#{cardId}
 	</if>
   </select>
+  <select id="nowCount" resultType="int">
+  select count(*) from (select * from xm_appln_card_return where to_char(approve_date,'yyyymmdd')=#{approveDate})
+ 
+  </select>
 </mapper>

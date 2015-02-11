@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.intopieces.filter;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.dao.business.BusinessFilter;
 
 public class IntoPiecesCardQueryFilter extends BusinessFilter{
@@ -14,6 +16,9 @@ public class IntoPiecesCardQueryFilter extends BusinessFilter{
     private String approveId;//审批人id
     private String approveName;//审批人姓名
     private String chineseName;
+    private Date approveDate;//制卡申请时间
+    private String applicationId;//原系统申请件id
+    private String makeCardId;//发卡系统申请书编号
     
     
 	public String getId() {
@@ -76,4 +81,23 @@ public class IntoPiecesCardQueryFilter extends BusinessFilter{
 	public void setChineseName(String chineseName) {
 		this.chineseName = chineseName;
 	}
+	public Date getApproveDate() {
+		return approveDate;
+	}
+	public void setApproveDate(Date approveDate) {
+		this.approveDate = approveDate;
+	}
+	public String getApplicationId() {
+		return applicationId;
+	}
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
+	}
+	public String getMakeCardId() {
+		return makeCardId;
+	}
+	public void setMakeCardId(String makeCardId) {
+		this.makeCardId = makeCardId;
+	}
+	
 }
