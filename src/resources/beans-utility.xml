@@ -327,12 +327,36 @@
         </property>
     </bean>
     
+    <!-- 每日解析ftp制卡文件 start -->
+    <bean id="addImportDataJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="intoPiecesService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>importDataFromBank</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addImportDataTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addImportDataJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0/10 * * * * ?</value>
+        </property>
+    </bean>
+    
     
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
    
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
+                
+            	<!-- <ref bean="addImportDataTigger"/>
             	<ref bean="statisticsYearScheduleServicerTrigger"/>
             	<ref bean="statisticsMonthScheduleServicerTrigger"/>
             	<ref bean="statisticsWeekScheduleServicerTrigger"/>
@@ -345,7 +369,7 @@
                
                 <ref bean="addNplsInfomationTigger"/>
                 <ref bean="addManagerAssessmentScoreTigger"/>
-				<ref bean="addDownLevelAdjustmentTigger"/>
+				<ref bean="addDownLevelAdjustmentTigger"/> -->
             </list>
         </property>
     </bean>
