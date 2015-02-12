@@ -83,6 +83,7 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQED;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_TJINFO;
 import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
 import com.cardpay.pccredit.xm_appln.web.XM_APPLN_Controller;
+import com.cardpay.pccredit.xm_appln.web.XM_APPLN_NEW_CUSTOMER_FORM;
 import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
@@ -182,4 +183,27 @@ public class IntoPiecesCardQueryControl extends BaseController {
 		return mv;
 	}
 	
+	//制卡退回到录入
+	@ResponseBody
+	@RequestMapping(value = "returnToLuru.json")
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap returnToLuru( HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				String applicationId = request.getParameter("applicationId");
+				intoPiecesService.makeToLuru(applicationId);
+				returnMap.addGlobalMessage(CREATE_SUCCESS);
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
 }

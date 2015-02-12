@@ -331,6 +331,7 @@ public class UploadFileTool {
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
 				new FileOutputStream(f), "GBK"));
 		content = new String(content.getBytes("ISO8859_1"),"GBK");
+		content+= "\n";
 		writer.write(content);
 		writer.close();
 
