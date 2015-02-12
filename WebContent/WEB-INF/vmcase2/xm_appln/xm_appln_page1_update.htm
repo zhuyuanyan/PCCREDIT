@@ -195,7 +195,9 @@
 				<tr>
 					<td class="label">行业类别</td>
 					<td>
-						<input type="text" class="text" name="occ_code" value="$!xM_APPLN_JCZL.occ_code" maxlength="4"/>
+						<select name="int_taxcod">
+							#dict("industry_type","$!xM_APPLN_JCZL.occ_code")
+						</select>
 					</td>
 					<td class="label">职务</td>
 					<td>

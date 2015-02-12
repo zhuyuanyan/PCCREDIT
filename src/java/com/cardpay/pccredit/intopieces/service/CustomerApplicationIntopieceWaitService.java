@@ -21,6 +21,7 @@ import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery;
+import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.model.AgrCrdXykCuneg;
@@ -192,17 +193,24 @@ public class CustomerApplicationIntopieceWaitService {
 			customerApplicationProcess.setNextNodeId(examineResutl);
 			if(request.getAttribute("appType")!=null){
 				//终审后导入appln至服务器
-				intoPiecesService.exportData(applicationId, customerId, null);
+				String uuid19 = intoPiecesService.exportData(applicationId, customerId, null);
 				IntoPiecesCardQuery cardQuery = new IntoPiecesCardQuery();
-				
-				cardQuery.setApproveId(loginId);
-				cardQuery.setApproveName(user.getDisplayName());
+				//查看历史审批记录，获取审批节点审批人
+				List<ApproveHistoryForm> historyForms = intoPiecesService.findApplicationDataImport(applicationId, "application");
+				for(int i=0;i<historyForms.size();i++){
+					String statusName = historyForms.get(i).getStatusName();
+					if(statusName.equals("审批")){
+						cardQuery.setApproveId(historyForms.get(i).getId());
+						cardQuery.setApproveName(historyForms.get(i).getDisplayName());
+					}
+				}
 				cardQuery.setCardId(cardId);
 				cardQuery.setCardType(cardType);
 				cardQuery.setBankId(CustomerInforConstant.BANK_ID);
 				cardQuery.setApproveCardId(CustomerInforConstant.PRODUCT_ID);
 				cardQuery.setApproveDate(new Date());
 				cardQuery.setApplicationId(applicationId);
+				cardQuery.setUuid19(uuid19);
 				CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
 				CustomerInfor customerInfor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
 				cardQuery.setChineseName(customerInfor.getChineseName());
