@@ -331,10 +331,62 @@ public class CustomerApplicationIntopieceWaitService {
 	public CustomerApplicationProcess getProcessById(String id){
 		return customerApplicationProcessService.findByAppId(id);
 	}
+	
 	/**
-	 * 接收进件后，修改进件状态
+	 * 制卡通过后，自动完成流程
+	 * @param request
+	 * @throws Exception
 	 */
-	public void updateRecieveState(){
-		
+	public void stepToNextNode(String applicationId) throws Exception {
+		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+		CustomerApplicationProcess customerApplicationProcess = new CustomerApplicationProcess();
+		String loginId = "";
+		CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(applicationId);
+		String serialNumber = process.getSerialNumber();
+		String examineAmount = process.getExamineAmount();
+		if(StringUtils.isNotEmpty(examineAmount)){
+			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
+		}
+		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, ApplicationStatusEnum.APPROVE, examineAmount);
+		//更新单据状态
+	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
+	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
+	    		examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())) {
+			if(examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
+				customerApplicationInfo.setStatus(Constant.REFUSE_INTOPICES);
+			}
+			if(examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString())){
+				customerApplicationInfo.setStatus(Constant.NOPASS_INTOPICES);
+				//退回时 删除提交申请备份的信息
+				CustomerApplicationInfo returnApp = commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+				customerInforService.deleteCloneSubmitAppByReturn(returnApp.getCustomerId(), applicationId);
+			}
+			if(examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())){
+				customerApplicationInfo.setFinalApproval(examineAmount);
+				customerApplicationInfo.setStatus(Constant.APPROVED_INTOPICES);
+			}
+			customerApplicationInfo.setId(applicationId);
+			customerApplicationInfo.setModifiedTime(new Date());
+			commonDao.updateObject(customerApplicationInfo);
+			
+			customerApplicationProcess.setNextNodeId(null);
+		} else {
+			customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
+			customerApplicationInfo.setId(applicationId);
+			customerApplicationInfo.setModifiedTime(new Date());
+			commonDao.updateObject(customerApplicationInfo);
+			
+			customerApplicationProcess.setNextNodeId(examineResutl);
+		}
+		customerApplicationProcess.setProcessOpStatus(ApplicationStatusEnum.APPROVE);
+		customerApplicationProcess.setSerialNumber(serialNumber);
+		customerApplicationProcess.setExamineAmount(examineAmount);
+		customerApplicationProcess.setAuditUser(loginId);
+		customerApplicationProcess.setCreatedTime(new Date());
+		customerApplicationProcess.setExamineAmount(examineAmount);
+//		customerApplicationProcess.setDelayAuditUser(user.getId());//清空字段值 
+		customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(customerApplicationProcess);
+
 	}
 }

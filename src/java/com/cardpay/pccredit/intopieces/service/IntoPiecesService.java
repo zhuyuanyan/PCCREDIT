@@ -1178,8 +1178,16 @@ public class IntoPiecesService {
 			    case 80:content = UploadFileTool.getContent(content,lxr.get(1).getCompnm(),length);break;
 			    case 81:content = UploadFileTool.getContent(content,lxr.get(1).getMobile(),length);break;
 			    //配偶信息
-			    case 82:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 83:content = UploadFileTool.getContent(content,pozl.getCustr_nbr(),length);break;
+			    case 82:
+			    	if(pozl.getCustr_nbr()!=null){
+			    		content = UploadFileTool.getContent(content,"01",length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    	break;
+			    case 83:
+			    		content = UploadFileTool.getContent(content,pozl.getCustr_nbr(),length);
+			    	break;
 			    case 84:content = UploadFileTool.getContent(content,pozl.getName(),length);break;
 			    case 85:content = UploadFileTool.getContent(content,pozl.getMobile(),length);break;
 			    case 86:content = UploadFileTool.getContent(content,pozl.getCompnm(),length);break;
@@ -1189,7 +1197,13 @@ public class IntoPiecesService {
 			    case 90:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 91:content = UploadFileTool.getContent(content,pozl.getIncome_ann(),length);break;
 			    //附卡信息
-			    case 92:content = UploadFileTool.getContent(content,"01",length);break;
+			    case 92:
+			    	if(kpmx.get(1).getCustr_nbr()!=null){
+			    		content = UploadFileTool.getContent(content,"01",length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    	}
+			    	break;
 			    case 93:content = UploadFileTool.getContent(content,kpmx.get(1).getCustr_nbr(),length);break;
 			    case 94:content = UploadFileTool.getContent(content,kpmx.get(1).getEmbname_d(),length);break;
 			    case 95:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -1271,10 +1285,11 @@ public class IntoPiecesService {
 			    case 171:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 172:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 173:content = UploadFileTool.getContent(content,appln.getCycle_nbr(),length);break;
-			    case 174:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //邮递地址
+			    case 174:content = UploadFileTool.getContent(content,"1",length);break;
 			    case 175:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    //主卡英文
-			    case 176:content = UploadFileTool.getContent(content,kpmx.get(0).getEmbname_d(),length);break;
+			    case 176:content = UploadFileTool.getContent(content,kpmx.get(0).getEmbname_d().replace(" ", "").toUpperCase(),length);break;
 			    case 177:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    //是否需要密码
 			    case 178:content = UploadFileTool.getContent(content,kpmx.get(0).getPin_chk(),length);break;
@@ -1774,7 +1789,6 @@ public class IntoPiecesService {
             {
                 strBuffer.append(line);
             } 
-            System.out.println(strBuffer);
         	bufferReader.close();
         	inputReader.close();
         	//将制卡数据存入data
@@ -1786,6 +1800,10 @@ public class IntoPiecesService {
         }
 	}
 	
+	/**
+	 * 导入返回文件信息
+	 * @param str
+	 */
 	private void inputData(StringBuffer str){
 		IntoPiecesCardQueryFilter cardQueryFilter = new IntoPiecesCardQueryFilter();
 		//银行id
@@ -1803,19 +1821,94 @@ public class IntoPiecesService {
 			resultText = Constant.CARD_RETURN_TYPE1;
 		}else if(resultType.equals("10")){
 			resultText = Constant.CARD_RETURN_TYPE2;
+			resultText+=","+str.substring(55,str.length()-1).trim();
 		}else{
 			resultText = Constant.CARD_RETURN_TYPE3;
+			resultText+=","+str.substring(55,str.length()-1).trim();
 		}
 		
 		cardQueryFilter.setCardId(cardId);
 		cardQueryFilter.setMakeCardId(null);
 		QueryResult<IntoPiecesCardQuery> cardList = commonDao.findObjectsByFilter(IntoPiecesCardQuery.class, cardQueryFilter);
 		if(cardList.getItems().size()>0){
+			
 			IntoPiecesCardQuery card = cardList.getItems().get(0);
-			card.setMakeCardId(makeCardId);
-			card.setResultType(resultType);
-			card.setResultText(resultText);
-			commonDao.updateObject(card);
+			try {
+				//流程自动下一步
+				if(resultType.equals("00")){
+					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
+				}
+				//更新制卡数据
+				card.setMakeCardId(makeCardId);
+				card.setResultType(resultType);
+				card.setResultText(resultText);
+				commonDao.updateObject(card);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	} 
+	
+	/*
+	 * 制卡退回到录入
+	 */
+	public void makeToLuru(String applicationId) {
+		try {
+			//更新申请表
+			CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
+			customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
+			customerApplicationInfo.setId(applicationId);
+			customerApplicationInfo.setModifiedTime(new Date());
+			commonDao.updateObject(customerApplicationInfo);
+			
+			//通过申请表ID获取流程表
+			CustomerApplicationProcess process =  customerApplicationProcessService.findByAppId(applicationId);
+			//通过流程表的当前节点获取上一节点--终审
+			NodeControl nodeControl = customerApplicationProcessService.getLastStatus(process.getNextNodeId());
+			//通过流程表的当前节点获取上一节点--审批
+			NodeControl nodeControl1 = customerApplicationProcessService.getLastStatus(nodeControl.getCurrentNode());
+			//通过流程表的当前节点获取上一节点--复核
+			NodeControl nodeControl2 = customerApplicationProcessService.getLastStatus(nodeControl1.getCurrentNode());
+			//通过流程表的当前节点获取上一节点--录入
+			NodeControl nodeControl3 = customerApplicationProcessService.getLastStatus(nodeControl2.getCurrentNode());
+			//更新业务流程表
+			process.setNextNodeId(nodeControl3.getCurrentNode());
+			process.setFuheUser(null);
+			process.setCreatedTime(new Date());
+			customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(process);
+			
+			//更新流程备份表
+			
+			//查找当前所处流转状态
+			WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, process.getSerialNumber());
+			WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
+			
+			//查找上一节点为终审
+			String beforeStatus1 = wfStatusQueueRecord.getBeforeStatus();
+			//通过终审节点获取终审流程
+			WfStatusQueueRecord befoRecord1 = wfStatusResultDao.getLastStatus(beforeStatus1);
+			//获取审批标记
+			String lastLastNode1 = befoRecord1.getBeforeStatus();
+			//通过审批节点获取审批流程
+			WfStatusQueueRecord lastlastRecord2 = wfStatusResultDao.getLastStatus(lastLastNode1);
+			
+			//获取复核标记
+			String lastLastNode2 = lastlastRecord2.getBeforeStatus();
+			//通过复核节点获取复核流程
+			WfStatusQueueRecord befoRecord = wfStatusResultDao.getLastStatus(lastLastNode2);
+			
+			//获取录入标记
+			String lastLastNode = befoRecord.getBeforeStatus();
+			//通过录入节点获取录入流程
+			WfStatusQueueRecord lastlastRecord = wfStatusResultDao.getLastStatus(lastLastNode);
+			//设置节点为录入
+			wfProcessRecord.setWfStatusQueueRecord(lastlastRecord.getId());
+			commonDao.updateObject(wfProcessRecord);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }
