@@ -23,4 +23,5 @@ public class CustomerInforConstant {
 	public static final String PRODUCT_STATUS = "1";//主卡/副卡标志
 	public static final String APPROVE_STATUS = "2";//申请流程状态标志
 	public static final String PRODUCT_TYPE= "31";//申请流程状态标志
+	public static final String APPROVE_INCOME= "0002";//申请书来源
 }

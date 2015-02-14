@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesCardQueryFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
 import com.cardpay.pccredit.intopieces.model.ApplicationDataImport;
@@ -500,4 +501,12 @@ public class IntoPiecesComdao {
 		}
 	}
 	
+	public List<IntoPiecesCardQuery> getRetrunMakeData(IntoPiecesCardQueryFilter cardQueryFilter) {
+		String sql = "select * from xm_appln_card_return where uuid19=#{uuid19}";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("uuid19", cardQueryFilter.getUuid19());
+
+		return commonDao.queryBySql(IntoPiecesCardQuery.class, sql, params);
+	}
 }

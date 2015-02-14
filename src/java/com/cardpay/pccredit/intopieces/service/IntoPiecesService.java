@@ -73,6 +73,7 @@ import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_JCZL_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_KPMX_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_LXRZL_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_POZL_Dao;
+import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_SQED_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_TJINFO_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_ZXQSZL_Dao;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
@@ -81,6 +82,7 @@ import com.cardpay.pccredit.xm_appln.model.XM_APPLN_JCZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KPMX;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_LXRZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_POZL;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQED;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SXJC;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_TJINFO;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXQSZL;
@@ -143,6 +145,8 @@ public class IntoPiecesService {
 	private XM_APPLN_KPMX_Dao kpmx_Dao;
 	@Autowired
 	private XM_APPLN_TJINFO_Dao tjinfo_Dao;
+	@Autowired
+	private XM_APPLN_SQED_Dao sqed_Dao;
 	
 	/* 查询进价信息 */
 	/*
@@ -465,6 +469,8 @@ public class IntoPiecesService {
 		List<XM_APPLN_KPMX> kpmx = kpmx_Dao.findByCustomerId(customerId);
 		//推荐人
 		XM_APPLN_TJINFO tjinfo = tjinfo_Dao.findByCustomerId(customerId);
+		//申请额度
+		XM_APPLN_SQED sqed = sqed_Dao.findByCustomerId(customerId);
 		String uuid19 = NumberContext.getUUid(19);
 		for(int i=0;i<applicationDataImportList.size();i++){
 			ApplicationDataImport applicationDataImport = applicationDataImportList.get(i);
@@ -1276,7 +1282,8 @@ public class IntoPiecesService {
 			    case 162:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 163:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 164:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 165:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //申请书来源代码
+			    case 165:content = UploadFileTool.getContent(content,CustomerInforConstant.APPROVE_INCOME,length);break;
 			    case 166:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 167:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 168:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -1299,7 +1306,8 @@ public class IntoPiecesService {
 			    case 181:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 182:
 			    	content = UploadFileTool.getContent(content,kpmx.get(0).getCdespmtd(),length);break;
-			    case 183:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    	//申请金卡未核准，是否同意核发普卡选项
+			    case 183:content = UploadFileTool.getContent(content,"0",length);break;
 			    case 184:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    //主卡暗语
 			    case 185:content = UploadFileTool.getContent(content,kpmx.get(0).getSpec_inst(),length);break;
@@ -1320,7 +1328,17 @@ public class IntoPiecesService {
 			    
 			    case 199:content = UploadFileTool.getContent(content,"A",length);break;
 			    case 200:content = UploadFileTool.getContent(content,"10",length);break;
-			    case 201:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //人民币信用额度(数据置右)
+			    case 201:
+			    	String conString =sqed.getCrdlmt_req();
+			    	if(sqed.getCrdlmt_req().length()<length){
+			    		
+			    	}
+			    	for(int j=sqed.getCrdlmt_req().length();j<length;j++){
+			    		conString=" "+conString;
+			    	}
+			    	content = UploadFileTool.getContent(content,conString,length);
+			    	break;
 			    case 202:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 203:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    //递送方式
@@ -1354,9 +1372,11 @@ public class IntoPiecesService {
 			    case 230:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 231:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    //是否快速发卡
-			    case 232:content = UploadFileTool.getContent(content,appln.getRush_card(),length);break;
+//			    case 232:content = UploadFileTool.getContent(content,appln.getRush_card(),length);break;
+			    case 232:content = UploadFileTool.getContent(content,"1",length);break;
 			    //是否收取发卡费用
-			    case 233:content = UploadFileTool.getContent(content,appln.getRush_fee(),length);break;
+//			    case 233:content = UploadFileTool.getContent(content,appln.getRush_fee(),length);break;
+			    case 233:content = UploadFileTool.getContent(content,"1",length);break;
 			    case 234:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 235:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 236:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -1371,11 +1391,14 @@ public class IntoPiecesService {
 			    case 245:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 246:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 247:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 248:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //密信递送费用
+			    case 248:content = UploadFileTool.getContent(content,"0",length);break;
 			    case 249:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 250:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //主卡是否打印密信？
+			    case 250:content = UploadFileTool.getContent(content,"0",length);break;
 			    case 251:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 252:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			  //主卡申请人类型
+			    case 252:content = UploadFileTool.getContent(content,"N",length);break;
 			    case 253:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 254:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 255:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -1390,7 +1413,8 @@ public class IntoPiecesService {
 			    case 263:content = UploadFileTool.getContent(content,tjinfo.getIntr_nbr(),length);break;
 			    case 264:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 265:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 266:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //账户预借现金比例
+			    case 266:content = UploadFileTool.getContent(content," 2500",length);break;
 			    case 267:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 268:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    //利率代码
@@ -1777,7 +1801,7 @@ public class IntoPiecesService {
         BufferedReader bufferReader = null;
         try
         {
-            InputStream inputStream = new FileInputStream("e://6517-APPRESULT-000008-20150127");
+            InputStream inputStream = new FileInputStream("d://6517-APPRESULT-000008-20150127");
             inputReader = new InputStreamReader(inputStream);
             bufferReader = new BufferedReader(inputReader);
             
@@ -1808,6 +1832,8 @@ public class IntoPiecesService {
 		IntoPiecesCardQueryFilter cardQueryFilter = new IntoPiecesCardQueryFilter();
 		//银行id
 		String bankId = str.substring(0, 3);
+		//外部系统id
+		String uuid19 = str.substring(4, 22);
 		//发卡系统申请书编号
 		String makeCardId = str.substring(23, 32);
 		//申请人证件类型
@@ -1827,27 +1853,26 @@ public class IntoPiecesService {
 			resultText+=","+str.substring(55,str.length()-1).trim();
 		}
 		
-		cardQueryFilter.setCardId(cardId);
-		cardQueryFilter.setMakeCardId(null);
-		QueryResult<IntoPiecesCardQuery> cardList = commonDao.findObjectsByFilter(IntoPiecesCardQuery.class, cardQueryFilter);
-		if(cardList.getItems().size()>0){
-			
-			IntoPiecesCardQuery card = cardList.getItems().get(0);
-			try {
-				//流程自动下一步
-				if(resultType.equals("00")){
-					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
-				}
-				//更新制卡数据
-				card.setMakeCardId(makeCardId);
-				card.setResultType(resultType);
-				card.setResultText(resultText);
-				commonDao.updateObject(card);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		cardQueryFilter.setUuid19(uuid19);
+		List<IntoPiecesCardQuery>  list = intoPiecesComdao.getRetrunMakeData(cardQueryFilter);
+//		if(list.size()>0){
+////			IntoPiecesCardQuery card = cardList.getItems().get(0);
+//			System.out.println(card.getChineseName());
+//			try {
+//				//流程自动下一步
+//				if(resultType.equals("00")){
+//					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
+//				}
+//				//更新制卡数据
+//				card.setMakeCardId(makeCardId);
+//				card.setResultType(resultType);
+//				card.setResultText(resultText);
+//				commonDao.updateObject(card);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 	} 
 	
 	/*
