@@ -103,6 +103,7 @@
          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>#end
          #btnpriv("delete")<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">#i18n("button.delete")</a>#end
          #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
+         <a id="id_cuishou_button" class="btn_g" href="javascript:void(0);" title="催收记录">催收记录</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -181,6 +182,29 @@
 	              Dialog.message("请选择一行");
 	          }
 	      });
+	      
+	      $("#id_cuishou_button").click(function() {
+				var url = "${modulePath}/create_collection.json?customer_id=" + "8b978bab4b735a0e014b735f98920002";
+				
+				$.get(url, "", function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	window.location.href= contextPath + "/riskcontrol/riskcustomercollection/display.page?id="+data.collectionPlanId ;
+	   	            }
+	   	          });
+				
+				/* if ($(".checkbox :checked").length == 1) {
+					var rowId = getCurrentRowId();
+					var url = "${modulePath}/create_collection.json?customerId=" + "4028b2fa4ac37795014ac381c2dc005f";
+					
+					$.get(url, null, function(data, textStatus, jqXhr) {
+		   	            if (data.success) {
+		   	            	window.location.href= contextPath + "/customer/maintenance/display.page?id="+data.collectionPlanId ;
+		   	            }
+		   	          });
+				}else {
+	                Dialog.message("请选择一行");
+	            } */
+		    });
 	});
 	
 	function confirm(rowid){
@@ -236,5 +260,7 @@
                     });
                 });
 	}
+	
+	
 </script>
 #parse ("common/iframe_page_footer.htm")

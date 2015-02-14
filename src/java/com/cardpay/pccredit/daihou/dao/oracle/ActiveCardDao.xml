@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.daihou.dao.ActiveCardDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.daihou.model.ActiveCard">
+		<result property="customer_id" column="customer_id" />
+		<result property="chinese_name" column="chinese_name" />
+		<result property="product" column="product" />
+		<result property="cardid" column="cardid" />
+		<result property="card_number" column="card_number" />
+		<result property="card_activate_date" column="card_activate_date" />
+		<result property="expire_date" column="expire_date" />
+	</resultMap>
+	
+</mapper>

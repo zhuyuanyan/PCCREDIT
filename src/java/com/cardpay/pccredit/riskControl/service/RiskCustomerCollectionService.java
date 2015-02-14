@@ -393,4 +393,12 @@ public class RiskCustomerCollectionService {
 		return riskCustomerCollectionDao.findCollectionCountToday(customerManagerId, result, DateHelper.getDateFormat(start, "yyyy-MM-dd HH:mm:ss"), DateHelper.getDateFormat(end, "yyyy-MM-dd HH:mm:ss"));
 
 	}
+	
+	/**
+	 * 根据客户ID查找催收计划
+	 */
+	public List<RiskCustomerCollectionPlanForm> findRiskCollectionPlansByCustomerId(String customerId) {
+		List<RiskCustomerCollectionPlanForm> riskCustomerCollectionPlanForm = riskCustomerCollectionDao.findRiskCollectionPlansByCustomerId(customerId);
+		return riskCustomerCollectionPlanForm;
+	}
 }

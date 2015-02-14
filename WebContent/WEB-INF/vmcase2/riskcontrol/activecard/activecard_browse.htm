@@ -3,7 +3,7 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">逾期客户</div>
+        <div class="title">激活卡客户</div>
       </div>
       <div class="inquiry">
       <!-----------搜索------------------------------------------->  
@@ -38,25 +38,19 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%"/>
-              <col width="10%"/>
-              <col width="10%" />
-              <col />
-              <col />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%"/>
+              <col width="20%"/>
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名</th>
               <th nowrap="nowrap">产品</th>
-              <th nowrap="nowrap">逾期天数</th>
-              <th nowrap="nowrap">当前余额</th>
-              <th nowrap="nowrap">最低还款额</th>
-              <th nowrap="nowrap">是否出催</th>
-              <th nowrap="nowrap">出催方式</th>
-              <th nowrap="nowrap">出催日期</th>
+              <th nowrap="nowrap">卡号</th>
+              <th nowrap="nowrap">激活日期</th>
+              <th nowrap="nowrap">到期日</th>
             </tr>
           </table>
         </div>
@@ -64,27 +58,21 @@
           <table>
             <colgroup>
                <col width="5%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%"/>
-              <col width="10%"/>
-              <col width="10%" />
-              <col />
-              <col />
+               <col width="15%" />
+               <col width="20%" />
+               <col width="20%" />
+               <col width="20%" />
+               <col width="20%" />
             </colgroup>
             #foreach ($sample in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!sample.id"
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!sample.customer_id"
                   #if ($!request.getParameter("recordId") == $sample.id) checked="checked" #end /></td>
-              <td nowrap="nowrap">$!sample.chineseName</td>
-              <td nowrap="nowrap">$!sample.productName</td>
-              <td nowrap="nowrap">$!sample.numberDaysOverdue</td>
-              <td nowrap="nowrap">$!sample.currentBalance</td>
-              <td nowrap="nowrap">$!sample.minimumPayment</td>
-              <td nowrap="nowrap">$!sample.reminder</td>
-              <td nowrap="nowrap">$!sample.reminderWay</td>
-              <td nowrap="nowrap">$!date.format("yyyy-MM-dd", $!sample.reminderDate)</td>
+              <td nowrap="nowrap">$!sample.chinese_name</td>
+              <td nowrap="nowrap">$!sample.product</td>
+              <td nowrap="nowrap">$!sample.card_number</td>
+              <td nowrap="nowrap">$!sample.card_activate_date</td>
+              <td nowrap="nowrap">$!sample.expire_date</td>
             </tr>
             #end
           </table>
@@ -92,7 +80,6 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #btnpriv("collectiontransfer")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="催收移交">催收移交</a>#end
           <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="催收记录">催收记录</a>
         </div>
         #parse ("common/pagination.htm")
@@ -108,15 +95,10 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		opsObj.createUrl = "${modulePath}/create.page";
-		opsObj.displayUrl = "${modulePath}/display.page";
-		opsObj.changeUrl = "${modulePath}/change.page";
-		opsObj.deleteUrl = "${modulePath}/delete.json";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-		opsObj.exportUrl = "${modulePath}/export.page";
 		
 		$("#id_create_button").click(function() {
-			var url = "${modulePath}/create_collection.json?customer_id=" + "4028b2fa4ac78a03014ac78cf2e4000c";
+			var url = "${modulePath}/create_collection.json?customer_id=" + "4028b2fa4ac37795014ac381c2dc005f";
 			
 			$.get(url, "", function(data, textStatus, jqXhr) {
    	            if (data.success) {
