@@ -1306,7 +1306,8 @@ public class IntoPiecesService {
 			    case 181:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 182:
 			    	content = UploadFileTool.getContent(content,kpmx.get(0).getCdespmtd(),length);break;
-			    case 183:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    	//申请金卡未核准，是否同意核发普卡选项
+			    case 183:content = UploadFileTool.getContent(content,"0",length);break;
 			    case 184:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    //主卡暗语
 			    case 185:content = UploadFileTool.getContent(content,kpmx.get(0).getSpec_inst(),length);break;
@@ -1371,9 +1372,11 @@ public class IntoPiecesService {
 			    case 230:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 231:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    //是否快速发卡
-			    case 232:content = UploadFileTool.getContent(content,appln.getRush_card(),length);break;
+//			    case 232:content = UploadFileTool.getContent(content,appln.getRush_card(),length);break;
+			    case 232:content = UploadFileTool.getContent(content,"1",length);break;
 			    //是否收取发卡费用
-			    case 233:content = UploadFileTool.getContent(content,appln.getRush_fee(),length);break;
+//			    case 233:content = UploadFileTool.getContent(content,appln.getRush_fee(),length);break;
+			    case 233:content = UploadFileTool.getContent(content,"1",length);break;
 			    case 234:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 235:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 236:content = UploadFileTool.getContent(content,sb.toString(),length);break;
