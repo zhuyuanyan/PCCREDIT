@@ -12,6 +12,7 @@
     <result column="approve_id" property="approveId" jdbcType="VARCHAR" />
     <result column="approve_name" property="approveName" jdbcType="VARCHAR" />
     <result column="chinese_name" property="chineseName" jdbcType="VARCHAR" />
+    <result column="application_id" property="applicationId" jdbcType="VARCHAR" />
   </resultMap>
   <select id="checkValue" resultType="int">
   select count(1) from account_manager_parameter a, manager_customer_type c   where  a.level_information = c.level_id  and  a.user_id=#{userId} and c.customer_type =#{valueType} 

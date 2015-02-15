@@ -97,9 +97,10 @@
 		
 		
 		if (opsObj.createUrl1) {
+	        
 	        $("#id_create_button_1").click(function() {
-	            if ($(".checkbox :checked").length == 1) {
-	            	$("input[name='checkbox']:checked").each(function() {
+				if ($(".checkbox :checked").length == 1) {
+					$("input[name='checkbox']:checked").each(function() {
 	            		rowid = $(this).val().split("@")[1];
 	            		aid = $(this).val().split("@")[0];
 	        		});
@@ -107,27 +108,16 @@
 	            		Dialog.message("无法退回该进件!");
 	            		return;
 	            	}
-	                 var url ="";
-	                
-	                if(opsObj.createUrl1.indexOf("?")>=0){
-	                	url = opsObj.createUrl1 + "&id=" + rowid+ "&applicationId=" + aid;
-	                }else{
-	                	url = opsObj.createUrl1 + "?id=" + rowid+ "&applicationId=" + aid;
-	                }
-	                if (opsObj.formObj) {
-	                    // 回调URL
-	                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
-	                    if (callBackUrlObj) {
-	                        url += "&" + $.param({
-	                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
-	                        });
-	                    }
-	                }
-	                window.location.href = url; 
-	            } else {
-	                Dialog.message("请选择一行");
-	            }
-	        });
+						$.post("${contextPath}/intopieces/applycardquery/returnToLuru.page", {applicationId:aid},
+			            function(data, textStatus, jqXhr) {
+			                if (data.success) {
+			                    window.location.reload(true);
+			                } else {
+			                    //Dialog.message(data.message);
+			                }
+			            });
+				}
+		    });
 	    }
 		
 	});

@@ -164,7 +164,6 @@ public class IntoPiecesCardQueryControl extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute IntoPiecesCardQueryFilter filter,
 			HttpServletRequest request) {
 		filter.setRequest(request);
@@ -185,8 +184,7 @@ public class IntoPiecesCardQueryControl extends BaseController {
 	
 	//制卡退回到录入
 	@ResponseBody
-	@RequestMapping(value = "returnToLuru.json")
-	@JRadOperation(JRadOperation.CREATE)
+	@RequestMapping(value = "returnToLuru.page")
 	public JRadReturnMap returnToLuru( HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
@@ -194,7 +192,7 @@ public class IntoPiecesCardQueryControl extends BaseController {
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				String applicationId = request.getParameter("applicationId");
 				intoPiecesService.makeToLuru(applicationId);
-				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.addGlobalMessage("退回成功");
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
 				returnMap.put(JRadConstants.SUCCESS, false);
