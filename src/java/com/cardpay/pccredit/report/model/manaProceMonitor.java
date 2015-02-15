@@ -24,7 +24,25 @@ public class manaProceMonitor extends BusinessModel {
 	private String chushenapprove;
 	private String luruapprove;
 	private String fushenapprove;
-
+	
+	private String userId;
+	
+	public manaProceMonitor(){}
+	public manaProceMonitor(String bank,String rowindex,String displayName,String jinjian,String chushen,String luru,
+			String fushen,String chushenapprove,String luruapprove,String fushenapprove,String userId){
+		this.setBank(bank);
+		this.setRowindex(rowindex);
+		this.setDisplayName(displayName);
+		this.setJinjian(jinjian);
+		this.setChushen(chushen);
+		this.setChushenapprove(chushenapprove);
+		this.setLuru(luru);
+		this.setLuruapprove(luruapprove);
+		this.setFushen(fushen);
+		this.setFushenapprove(fushenapprove);
+		this.setUserId(userId);
+	}
+	
 	public String getRowindex() {
 		return rowindex;
 	}
@@ -105,4 +123,11 @@ public class manaProceMonitor extends BusinessModel {
 		this.fushenapprove = fushenapprove;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 }

@@ -50,7 +50,7 @@ public class ManaProceMonitorController extends BaseController {
 	public AbstractModelAndView browse(@ModelAttribute StatisticalFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 
-		List<LCJC> result = proceMonitorService.getProceMonitorStatistical(filter);
+		List<manaProceMonitor> result = proceMonitorService.getProceMonitorStatistical(filter);
 		JRadModelAndView mv = new JRadModelAndView("/report/cardbussiness/manager_business_monitoring_browse", request);
 		mv.addObject(PAGED_RESULT, result);
 
