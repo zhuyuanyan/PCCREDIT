@@ -94,4 +94,9 @@ public interface RiskCustomerCollectionDao {
 	 * @return
 	 */
 	public int findCollectionPromiseCountByDay(@Param("customerManagerId") String customerManagerId,@Param("result") String result,@Param("startTime") String start,@Param("endTime") String end);
+	
+	/**
+	 * 根据客户ID查找催收计划
+	 */
+	public List<RiskCustomerCollectionPlanForm> findRiskCollectionPlansByCustomerId(String customerId);
 }

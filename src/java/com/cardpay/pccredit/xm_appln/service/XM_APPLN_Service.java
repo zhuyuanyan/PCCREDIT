@@ -278,8 +278,13 @@ public class XM_APPLN_Service {
 		XM_APPLN_TJINFO xM_APPLN_TJINFO = xM_APPLN_ADDR_FORM.createXM_APPLN_TJINFO(user.getId());
 		XM_APPLN_ADDR xM_APPLN_ADDR = xM_APPLN_ADDR_FORM.createXM_APPLN_ADDR(user.getId());
 		
+		XM_APPLN xM_APPLN = xM_APPLN_Dao.findByCustomerId(xM_APPLN_TJINFO.getCustomer_id());
+		xM_APPLN.setMail_to(xM_APPLN_ADDR_FORM.getMail_to());
+		
 		insertOrUpdateXM_APPLN_TJINFO(xM_APPLN_TJINFO);
 		insertOrUpdateXM_APPLN_ADDR(xM_APPLN_ADDR);
+		
+		insertOrUpdateXM_APPLN(xM_APPLN);
 	}
 	
 	/**

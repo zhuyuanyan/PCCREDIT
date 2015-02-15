@@ -113,6 +113,12 @@
 			<menu id="100113" name="reviewriskcontrol" title="评审岗位人员风控状况统计 " url="/report/reviewriskcontrol/browse.page" img="" operations="browse"/>
 		</menu>
 		
+		<menu id="110000" name="daihou" title="贷后管理" url="" img="images/icon_sys.gif" operations="">
+		    <menu id="110100" name="nplsinfomationinfo" title="不良资产管理" url="/daihou/nplsinfomationinfo/browse.page" img="" operations="create|display|browse"/>
+		    <menu id="110200" name="activecardinfo" title="激活卡客户列表" url="/daihou/activecardinfo/browse.page" img="" operations="create|display|browse"/>
+		    <menu id="110300" name="riskcustomeroverdueinfo" title="逾期客户列表" url="/daihou/riskcustomeroverdueinfo/browse.page" img="" operations="create|display|browse"/>
+		</menu>
+		
 		<menu id="1030000" name="system" title="系统管理" url="" img="images/icon_sys.gif" operations="">
 			<menu id="1030100" name="resource" title="权限配置" url="/system/resource/browse.page" img="" operations="browse" />
 			<menu id="1030200" name="datapri" title="数据权限" url="/system/datapri/browse.page" img="" operations="display|change|browse" />

@@ -565,10 +565,10 @@
 	</dictionary>
 	
 	<dictionary name="MAIL_TO" title="寄送地址">
-	    <item name="地址1" title="地址1" />
-		<item name="地址2" title="地址2" />
-		<item name="地址3" title="地址3" />
-		<item name="地址4" title="地址4" />
+	    <item name="1" title="地址1" />
+		<item name="2" title="地址2" />
+		<item name="3" title="地址3" />
+		<item name="4" title="地址4" />
 	</dictionary>
 	
 	<dictionary name="ADDR_TYPE" title="地址类型">
@@ -579,15 +579,15 @@
 	</dictionary>
 	
 	<dictionary name="APP_SOURCE" title="申请来源">
-	    <item name="0001 福州" title="0001 福州" />
-		<item name="0002 厦门" title="0002 厦门" />
-		<item name="0003 三明" title="0003 三明" />
-		<item name="0004 莆田" title="0004 莆田" />
-		<item name="0005 南平" title="0005 南平" />
-		<item name="0006 宁德" title="0006 宁德" />
-		<item name="0007 泉州" title="0007 泉州" />
-		<item name="0008 漳州" title="0008 漳州" />
-		<item name="0009 龙岩" title="0009 龙岩" />
+	    <item name="0001" title="0001 福州" />
+		<item name="0002" title="0002 厦门" />
+		<item name="0003" title="0003 三明" />
+		<item name="0004" title="0004 莆田" />
+		<item name="0005" title="0005 南平" />
+		<item name="0006" title="0006 宁德" />
+		<item name="0007" title="0007 泉州" />
+		<item name="0008" title="0008 漳州" />
+		<item name="0009" title="0009 龙岩" />
 	</dictionary>
 	
 	<dictionary name="ID_VERIFY" title="身份核查标志">
@@ -625,5 +625,41 @@
 	    <item name="A010" title="旅游、饭店、娱乐" />
 	</dictionary>
 	
+	<dictionary name="reg_type" title="注册类型">
+	    <item name="港澳台商投资企业-港澳台商股份有限责任公司" title="港澳台商投资企业-港澳台商股份有限责任公司" />
+		<item name="港澳台商投资企业-港澳台商合资经营企业" title="港澳台商投资企业-港澳台商合资经营企业" />
+		<item name="港澳台商投资企业-合资经营企业" title="港澳台商投资企业-合资经营企业" />
+		<item name="港澳台商投资企业-合作经营企业" title="港澳台商投资企业-合作经营企业" />
+		<item name="个人经营户" title="个人经营户" />
+		<item name="个体经营－城镇个体工商户" title="个体经营－城镇个体工商户" />
+		<item name="个体经营－农村个体工商户" title="个体经营－农村个体工商户" />
+		<item name="股份有限公司" title="股份有限公司" />
+		<item name="股份制合作企业" title="股份制合作企业" />
+		<item name="国有企业" title="国有企业" />
+		<item name="集体企业" title="集体企业" />
+		<item name="联营企业-国有联营企业" title="联营企业-国有联营企业" />
+		<item name="联营企业-国有与集体联营企业" title="联营企业-国有与集体联营企业" />
+		<item name="联营企业-集体联营企业" title="联营企业-集体联营企业" />
+		<item name="联营企业-其他联营企业" title="联营企业-其他联营企业" />
+		<item name="其他组织-村民委员会" title="其他组织-村民委员会" />
+		<item name="其他组织-基金会" title="其他组织-基金会" />
+		<item name="其他组织-居民委员会" title="其他组织-居民委员会" />
+		<item name="其他组织-农民专业合作社" title="其他组织-农民专业合作社" />
+		<item name="其他组织-其他" title="其他组织-其他" />
+		<item name="其他组织-社会团体" title="其他组织-社会团体" />
+		<item name="其他组织-事业单位" title="其他组织-事业单位" />
+		<item name="其他组织-政府机关" title="其他组织-政府机关" />
+		<item name="私营企业－私营独资企业" title="私营企业－私营独资企业" />
+		<item name="私营企业－私营股份有限公司" title="私营企业－私营股份有限公司" />
+		<item name="私营企业－私营合伙企业" title="私营企业－私营合伙企业" />
+		<item name="私营企业－私营有限责任公司" title="私营企业－私营有限责任公司" />
+		<item name="外商投资企业-外商投资企业" title="外商投资企业-外商投资企业" />
+		<item name="外商投资企业-外资企业" title="外商投资企业-外资企业" />
+		<item name="外商投资企业-中外合资企业" title="外商投资企业-中外合资企业" />
+		<item name="外商投资企业-中外合作企业" title="外商投资企业-中外合作企业" />
+		<item name="有限责任公司－国有独资责任公司" title="有限责任公司－国有独资责任公司" />
+		<item name="有限责任公司－其他有限责任公司" title="有限责任公司－其他有限责任公司" />
+	    
+	</dictionary>
 	<!-- xm_appln 数据字典结束 -->
 </dictionaries>

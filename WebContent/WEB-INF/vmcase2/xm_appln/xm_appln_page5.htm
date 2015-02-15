@@ -18,33 +18,36 @@
 		<div name="content">
 			<table class="message">
 				<tr>
-					<td class="label">户籍所在地<font color="#ff0000">*</font></td>
+					<td class="label">户籍所在地</td>
 					<td>
 						<input type="text" class="text" name="huji" value="$!xM_APPLN_HNPF.huji" maxlength="32"/>
 					</td>
 					<td class="label">在我行支行所在地市有无商品房产?</td>
 					<td>
-						<input type="checkbox" name="have_house_bank" value="1" #if($!xM_APPLN_HNPF.have_house_bank == '1') checked #end/>
+						<label><input type="radio" name="have_house_bank" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.have_house_bank||$xM_APPLN_HNPF.have_house_bank==''||$!xM_APPLN_HNPF.have_house_bank == '1') checked #end/>有</label>
+						<label><input type="radio" name="have_house_bank" value="0" #if($!xM_APPLN_HNPF.have_house_bank == '0') checked #end/>无</label>
 					</td>
 					<td class="label">在户籍地有无商品房产?</td>
 					<td>
-						<input type="checkbox" name="have_house_huji" value="1" #if($!xM_APPLN_HNPF.have_house_huji == '1') checked #end/>
+						<label><input type="radio" name="have_house_huji" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.have_house_huji||$xM_APPLN_HNPF.have_house_huji==''||$!xM_APPLN_HNPF.have_house_huji == '1') checked #end/>有</label>
+						<label><input type="radio" name="have_house_huji" value="0" #if($!xM_APPLN_HNPF.have_house_huji == '0') checked #end/>无</label>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">是否小微客户?</td>
 					<td>
-						<input type="checkbox" name="is_xwkh" value="1" onclick="checkYYZZ()" id="sfxwkh" #if($!xM_APPLN_HNPF.is_xwkh == '1') checked #end/>
+						<label><input type="radio" name="is_xwkh" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.is_xwkh||$xM_APPLN_HNPF.is_xwkh==''||$!xM_APPLN_HNPF.is_xwkh == '1') checked #end onclick="checkYYZZ(1)"/>是</label>
+						<label><input type="radio" name="is_xwkh" value="0" #if($!xM_APPLN_HNPF.is_xwkh == '0') checked #end onclick="checkYYZZ(0)"/>否</label>
 					</td>
 					<td class="label">个体工商户及小微企业主登记注册类型</td>
 					<td>
 						<select name="reg_type">
-							<option></option>
+							#dict("reg_type","$!xM_APPLN_HNPF.reg_type")
 						</select>
 					</td>
 					<td class="label">营业执照注册号</td>
 					<td>
-						<input type="text" class="text" name="reg_no" value="$!xM_APPLN_HNPF.reg_no" maxlength="32" id="yyzzzch" disabled/>
+						<input type="text" class="text" name="reg_no" value="$!xM_APPLN_HNPF.reg_no" maxlength="32" id="yyzzzch" #if($!xM_APPLN_HNPF.is_xwkh == '0') disabled #end/>
 					</td>
 				</tr>
 				<tr>
@@ -54,11 +57,13 @@
 					</td>
 					<td class="label">是否农户?</td>
 					<td>
-						<input type="checkbox" name="is_farmer" #if($!xM_APPLN_HNPF.is_farmer == '1') checked #end value="1"/>
+						<label><input type="radio" name="is_farmer" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.is_farmer||$xM_APPLN_HNPF.is_farmer==''||$!xM_APPLN_HNPF.is_farmer == '1') checked #end/>是</label>
+						<label><input type="radio" name="is_farmer" value="0" #if($!xM_APPLN_HNPF.is_farmer == '0') checked #end/>否</label>
 					</td>
 					<td class="label">营项目是否涉农?</td>
 					<td>
-						<input type="checkbox" name="is_with_farm" #if($!xM_APPLN_HNPF.is_with_farm == '1') checked #end value="1"/>
+						<label><input type="radio" name="is_with_farm" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.is_with_farm||$xM_APPLN_HNPF.is_with_farm==''||$!xM_APPLN_HNPF.is_with_farm == '1') checked #end/>是</label>
+						<label><input type="radio" name="is_with_farm" value="0" #if($!xM_APPLN_HNPF.is_with_farm == '0') checked #end/>否</label>
 					</td>
 				</tr>
 				<tr>
@@ -70,25 +75,30 @@
 					</td>
 					<td class="label">是否新增客户?</td>
 					<td>
-						<input type="checkbox" name="is_add" value="1" #if($!xM_APPLN_HNPF.is_add == '1') checked #end/>
+						<label><input type="radio" name="is_add" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.is_add||$xM_APPLN_HNPF.is_add==''||$!xM_APPLN_HNPF.is_add == '1') checked #end/>是</label>
+						<label><input type="radio" name="is_add" value="0" #if($!xM_APPLN_HNPF.is_add == '0') checked #end/>否</label>
 					</td>
 					<td class="label">是否抵押贷款配套?</td>
 					<td>
-						<input type="checkbox" name="is_gun" value="1" #if($!xM_APPLN_HNPF.is_gun == '1') checked #end/>
+						<label><input type="radio" name="is_gun" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.is_gun||$xM_APPLN_HNPF.is_gun==''||$!xM_APPLN_HNPF.is_gun == '1') checked #end/>是</label>
+						<label><input type="radio" name="is_gun" value="0" #if($!xM_APPLN_HNPF.is_gun == '0') checked #end/>否</label>
 					</td>
 				</tr>
 				<tr>
 					<td class="label">是否属于普通信用卡转化?</td>
 					<td>
-						<input type="checkbox" name="is_com_xyk_c" value="1" #if($!xM_APPLN_HNPF.is_com_xyk_c == '1') checked #end/>
+						<label><input type="radio" name="is_com_xyk_c" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.is_com_xyk_c||$xM_APPLN_HNPF.is_com_xyk_c==''||$!xM_APPLN_HNPF.is_com_xyk_c == '1') checked #end/>是</label>
+						<label><input type="radio" name="is_com_xyk_c" value="0" #if($!xM_APPLN_HNPF.is_com_xyk_c == '0') checked #end/>否</label>
 					</td>
 					<td class="label">是否存量到期贷款转化?</td>
 					<td>
-						<input type="checkbox" name="is_loan_c" value="1" #if($!xM_APPLN_HNPF.is_loan_c == '1') checked #end/>
+						<label><input type="radio" name="is_loan_c" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.is_loan_c||$xM_APPLN_HNPF.is_loan_c==''||$!xM_APPLN_HNPF.is_loan_c == '1') checked #end/>是</label>
+						<label><input type="radio" name="is_loan_c" value="0" #if($!xM_APPLN_HNPF.is_loan_c == '0') checked #end/>否</label>
 					</td>
 					<td class="label">是否属于其他存量贷款客户?</td>
 					<td>
-						<input type="checkbox" name="is_loan_cus" value="1" #if($!xM_APPLN_HNPF.is_loan_cus == '1') checked #end/>
+						<label><input type="radio" name="is_loan_cus" value="1" #if(!$xM_APPLN_HNPF||!$xM_APPLN_HNPF.is_loan_cus||$xM_APPLN_HNPF.is_loan_cus==''||$!xM_APPLN_HNPF.is_loan_cus == '1') checked #end/>是</label>
+						<label><input type="radio" name="is_loan_cus" value="0" #if($!xM_APPLN_HNPF.is_loan_cus == '0') checked #end/>否</label>
 					</td>
 				</tr>
 				<tr>
@@ -102,13 +112,13 @@
 				<tr>
 					<td class="label">行业投向1</td>
 					<td colspan="3">
-						<select id="std_gb_level_1" name="std_gb_level_1" onchange="change_level_1(this);">
+						<select id="std_gb_level_1" name="std_gb_level_1" onchange="change_level_1(this.value);">
 							#dict("STD_GB_LEVEL_1","$!xM_APPLN_HNPF.std_gb_level_1")
 						</select>
 					</td>
 					<td class="label">行业投向2</td>
 					<td colspan="3">
-						<select id="std_gb_level_2" name="std_gb_level_2" onchange="change_level_2(this);">
+						<select id="std_gb_level_2" name="std_gb_level_2" onchange="change_level_2(this.value);">
 							#dict("STD_GB_LEVEL_2","$!xM_APPLN_HNPF.std_gb_level_2")
 						</select>
 					</td>
@@ -116,7 +126,7 @@
 				<tr>
 					<td class="label">行业投向3</td>
 					<td colspan="3">
-						<select id="std_gb_level_3" name="std_gb_level_3" onchange="change_level_3(this);">
+						<select id="std_gb_level_3" name="std_gb_level_3" onchange="change_level_3(this.value);">
 							#dict("STD_GB_LEVEL_3","$!xM_APPLN_HNPF.std_gb_level_3")
 						</select>
 					</td>
@@ -135,12 +145,12 @@
 	<script type="text/javascript">		
 		#set ($formName = "'#id_module_form'")
 	
-		function checkYYZZ(){
-			if($("#sfxwkh").attr("checked")){
-				$("#yyzzzch").attr("disabled","disabled")
+		function checkYYZZ(value){
+			if(value == 1){
+				$("#yyzzzch").removeAttr("disabled");
 			}
 			else{
-				$("#yyzzzch").removeAttr("disabled");
+				$("#yyzzzch").attr("disabled","disabled")
 			}
 		}
 		
@@ -160,47 +170,59 @@
 		    });
 		});
 		
-		function change_level_1(obj){
+		function change_level_1(objval){
 			$("#std_gb_level_2").empty();
 			$.each(array2,function(n,opt) { 
-				if(opt.val().split("_")[0] == obj.value.split("_")[1]){
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
 					$("#std_gb_level_2").append(opt);
 				}
 			});
 			
-			//var tmp = $("#std_gb_level_2").find("option:selected");
-			//change_level_2(tmp);
+			var tmp = $("#std_gb_level_2").find("option:selected");
+			change_level_2(tmp.val());
 		}
-		function change_level_2(obj){
+		function change_level_2(objval){
 			$("#std_gb_level_3").empty();
 			$.each(array3,function(n,opt) {  
-				if(opt.val().split("_")[0] == obj.value.split("_")[1]){
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
 					$("#std_gb_level_3").append(opt);
 				}
 			});
 			
-			//var tmp = $("#std_gb_level_3").find("option:selected");
-			//change_level_3(tmp);
+			var tmp = $("#std_gb_level_3").find("option:selected");
+			change_level_3(tmp.val());
 		}
-		function change_level_3(obj){
+		function change_level_3(objval){
 			$("#std_gb_level_4").empty();
 			$.each(array4,function(n,opt) {  
-				if(opt.val().split("_")[0] == obj.value.split("_")[1]){
+				if(opt.val().split("_")[0] == objval.split("_")[1]){
 					$("#std_gb_level_4").append(opt);
 				}
 			});
 		}
 		
 		function onSave() {
-			if ($($formName).valid()) {
-	          var formjson = $($formName).serialize();
-	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-	            if (data.success) {
-	            	Dialog.message("保存成功!");
-	            	window.location.reload();
-	            }
-	          });
-	        }
+			//清空上一次验证
+			$("#cardIde").remove();
+			if($('input[name="is_xwkh"]:checked').val() == '1' && $('input[name="reg_no"]').val()==""){
+				$("input[name='reg_no']").after("<label class='error' id='cardIde' generated='true' >请输入营业执照</label>");   
+			}
+			var leng = 0;
+	    	 leng = $("#cardIde").length;
+	    	if(leng > 0){
+	    		return;
+	    	}else{
+	    		if ($($formName).valid()) {
+	  	          var formjson = $($formName).serialize();
+	  	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	  	            if (data.success) {
+	  	            	Dialog.message("保存成功!");
+	  	            	window.location.reload();
+	  	            }
+	  	          });
+	  	        }
+	    	}
+			
 	      }
 		
 	</script>	

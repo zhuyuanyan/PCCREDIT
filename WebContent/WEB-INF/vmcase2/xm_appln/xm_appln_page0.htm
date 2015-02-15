@@ -71,7 +71,7 @@
 				<tr>
 					<td class="label">姓名</td>
 					<td>
-						<input type="text" class="text" name="spu_name" value="$!xM_APPLN_POZL.name" maxlength="30"/>
+						<input type="text" class="text" name="spu_name" id="spu_name" value="$!xM_APPLN_POZL.name" maxlength="30"/>
 					</td>
 					<td class="label">证件号码</td>
 					<td>
@@ -110,6 +110,14 @@
 			     }	
 				 }
 				
+				}
+				
+				//验证是否已婚
+				if($("select[name=mar_status]").val()=='M' && $("#spu_name").val()==""){
+					$("input[name='spu_name']").after("<label class='error' id='cardIde' generated='true' >请输入配偶姓名</label>"); 
+				}
+				if($("select[name=mar_status]").val()=='M' && $("#spu_custr_nbr").val()==""){
+					$("input[name='spu_custr_nbr']").after("<label class='error' id='cardIde' generated='true' >请输入配偶证件号码</label>"); 
 				}
 			var leng = 0;
 	    	 leng = $("#cardIde").length;
