@@ -50,7 +50,7 @@ public class BankProceMonitorController extends BaseController {
 	public AbstractModelAndView browse(@ModelAttribute StatisticalFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 
-		List<bankProceMonitor> result = proceMonitorService.getBankProceMonitorStatistical(filter);
+		List<manaProceMonitor> result = proceMonitorService.getBankProceMonitorStatistical(filter);
 		JRadModelAndView mv = new JRadModelAndView("/report/cardbussiness/bank_business_monitoring_browse", request);
 		mv.addObject(PAGED_RESULT, result);
 
