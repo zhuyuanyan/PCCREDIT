@@ -3,6 +3,7 @@ package com.cardpay.pccredit.intopieces.service;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +12,7 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -1796,12 +1798,12 @@ public class IntoPiecesService {
 	/**
 	 * 定时解析FTP获取的文件
 	 */
-	public void importDataFromBank(){
+	private void analize(String url){
         InputStreamReader inputReader = null;
         BufferedReader bufferReader = null;
         try
         {
-            InputStream inputStream = new FileInputStream("d://6517-APPRESULT-000008-20150127");
+            InputStream inputStream = new FileInputStream(url);
             inputReader = new InputStreamReader(inputStream);
             bufferReader = new BufferedReader(inputReader);
             
@@ -1833,9 +1835,9 @@ public class IntoPiecesService {
 		//银行id
 		String bankId = str.substring(0, 3);
 		//外部系统id
-		String uuid19 = str.substring(4, 22);
+		String uuid19 = str.substring(4, 23);
 		//发卡系统申请书编号
-		String makeCardId = str.substring(23, 32);
+		String makeCardId = str.substring(24, 32);
 		//申请人证件类型
 		String cardType = str.substring(33, 34);
 		//申请人证件号码
@@ -1855,30 +1857,29 @@ public class IntoPiecesService {
 		
 		cardQueryFilter.setUuid19(uuid19);
 		List<IntoPiecesCardQuery>  list = intoPiecesComdao.getRetrunMakeData(cardQueryFilter);
-//		if(list.size()>0){
-////			IntoPiecesCardQuery card = cardList.getItems().get(0);
-//			System.out.println(card.getChineseName());
-//			try {
-//				//流程自动下一步
-//				if(resultType.equals("00")){
-//					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
-//				}
-//				//更新制卡数据
-//				card.setMakeCardId(makeCardId);
-//				card.setResultType(resultType);
-//				card.setResultText(resultText);
-//				commonDao.updateObject(card);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+		if(list.size()>0){
+			IntoPiecesCardQuery card = list.get(0);
+			try {
+				//流程自动下一步
+				if(resultType.equals("00")){
+					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
+				}
+				//更新制卡数据
+				card.setMakeCardId(makeCardId);
+				card.setResultType(resultType);
+				card.setResultText(resultText);
+				commonDao.updateObject(card);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	} 
 	
 	/*
 	 * 制卡退回到录入
 	 */
-	public void makeToLuru(String applicationId) {
+	public void makeToLuru(String applicationId,String id) {
 		try {
 			//更新申请表
 			CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
@@ -1930,10 +1931,51 @@ public class IntoPiecesService {
 			//设置节点为录入
 			wfProcessRecord.setWfStatusQueueRecord(lastlastRecord.getId());
 			commonDao.updateObject(wfProcessRecord);
+			//更新制卡结果表为退回状态
+			IntoPiecesCardQuery cardQuery = commonDao.findObjectById(IntoPiecesCardQuery.class, id);
+			cardQuery.setSendBack("1");
+			commonDao.updateObject(cardQuery);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	
+	
+	
+	/**
+	 * 读取指定文件夹下指定文件
+	 */
+	public void importDataFromBank(){
+		try {
+			//获取昨天日期
+			Calendar cal=Calendar.getInstance();
+	        cal.add(Calendar.DATE,-1);
+	        Date date=cal.getTime();
+			//yyyyMMdd格式
+			DateFormat format = new SimpleDateFormat("yyyyMMdd");
+			String dateString = format.format(date);
+			//获取指定文件夹目录
+			String filepath = "D:/";
+			File file = new File(filepath);
+			if (file.isDirectory()) {
+				String[] filelist = file.list();
+				for (int i = 0; i < filelist.length; i++) {
+					//获取目录下文件
+					File readfile = new File(filepath + "\\" + filelist[i]);
+					//读到的文件名
+					String filename = readfile.getName();
+					if(filename.indexOf(dateString)>-1){
+						System.out.println(filename);
+						//解析文件
+						analize(filepath+File.separator+filelist[i]);
+					}
+				}
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 }
