@@ -189,9 +189,9 @@ public class IntoPiecesCardQueryControl extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
-				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				String applicationId = request.getParameter("applicationId");
-				intoPiecesService.makeToLuru(applicationId);
+				String id = request.getParameter("id");
+				intoPiecesService.makeToLuru(applicationId,id);
 				returnMap.addGlobalMessage("退回成功");
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
@@ -199,7 +199,7 @@ public class IntoPiecesCardQueryControl extends BaseController {
 				return WebRequestHelper.processException(e);
 			}
 		}else{
-			returnMap.setSuccess(false);
+			returnMap.setSuccess(false);	
 			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
 		}
 		return returnMap;

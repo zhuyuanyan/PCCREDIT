@@ -20,6 +20,7 @@ public class IntoPiecesCardQueryFilter extends BusinessFilter{
     private String applicationId;//原系统申请件id
     private String makeCardId;//发卡系统申请书编号
     private String uuid19;//外部系统uuid(申请书条形码/流水号)
+    private String sendBack;//退回标记
     
     
 	public String getId() {
@@ -105,6 +106,12 @@ public class IntoPiecesCardQueryFilter extends BusinessFilter{
 	}
 	public void setUuid19(String uuid19) {
 		this.uuid19 = uuid19;
+	}
+	public String getSendBack() {
+		return sendBack;
+	}
+	public void setSendBack(String sendBack) {
+		this.sendBack = sendBack;
 	}
 	
 }

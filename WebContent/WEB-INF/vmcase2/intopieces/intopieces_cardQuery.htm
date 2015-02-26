@@ -30,10 +30,11 @@
           <table>
             <colgroup>
              <col width="5%" />
-             <col width="20%" />
+             <col width="10%" />
               <col width="20%" />
               <col width="20%"/>
               <col width="15%"/>
+              <col width="10%" />
 
             </colgroup>
             <tr class="title">
@@ -42,6 +43,7 @@
               <th nowrap="nowrap">证件号码</th>
               <th nowrap="nowrap">制卡结果</th>
               <th nowrap="nowrap">审批人</th>
+              <th nowrap="nowrap">处理结果</th>
             </tr>
           </table>
         </div>
@@ -49,22 +51,28 @@
           <table>
             <colgroup>
               <col width="5%" />
-               <col width="20%" />
+               <col width="10%" />
               <col width="20%" />
               <col width="20%"/>
               <col width="15%"/>
+              <col width="10%" />
             </colgroup>
            #foreach ($wait in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.applicationId@$!wait.resultType"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.applicationId@$!wait.resultType@$!wait.id@$!wait.sendBack"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.cardId</td>
               <td nowrap="nowrap">$!wait.resultText</td>
               <td nowrap="nowrap">$!wait.approveName</td>
+              #if($!wait.sendBack=='1')
+			  <td nowrap="nowrap">已退回</td>
+			  #elseif($!wait.resultType=='00')
+			  <td nowrap="nowrap">无需处理</td>
+			  #else
+			  <td nowrap="nowrap">待处理</td>
+			  #end
             </tr>
             #end
-
-
           </table>
         </div>
       </div>
@@ -103,12 +111,17 @@
 					$("input[name='checkbox']:checked").each(function() {
 	            		rowid = $(this).val().split("@")[1];
 	            		aid = $(this).val().split("@")[0];
+	            		uuid = $(this).val().split("@")[2];
+	            		sendBack = $(this).val().split("@")[3];
 	        		});
 	            	if(rowid!="10"){
 	            		Dialog.message("无法退回该进件!");
 	            		return;
+	            	}else if(sendBack=="1"){
+            			Dialog.message("此进件已退回!");
+            			return;
 	            	}
-						$.post("${contextPath}/intopieces/applycardquery/returnToLuru.page", {applicationId:aid},
+						$.post("${contextPath}/intopieces/applycardquery/returnToLuru.page", {applicationId:aid,id:uuid},
 			            function(data, textStatus, jqXhr) {
 			                if (data.success) {
 			                    window.location.reload(true);

@@ -13,19 +13,29 @@
     <result column="approve_name" property="approveName" jdbcType="VARCHAR" />
     <result column="chinese_name" property="chineseName" jdbcType="VARCHAR" />
     <result column="application_id" property="applicationId" jdbcType="VARCHAR" />
+    <result column="send_back" property="sendBack" jdbcType="VARCHAR" />
   </resultMap>
   <select id="checkValue" resultType="int">
   select count(1) from account_manager_parameter a, manager_customer_type c   where  a.level_information = c.level_id  and  a.user_id=#{userId} and c.customer_type =#{valueType} 
   </select>
   
     <select id="cardQuery" resultMap="cardQueryResultMap">
-  select s.* from xm_appln_card_return s where approve_id =#{approveId}
+  select s.* from xm_appln_card_return s where approve_id =#{approveId} 
   <if test="chineseName!=null ">
 		<![CDATA[ and s.chinese_name like '%'||#{chineseName}||'%' ]]>
   </if>
   <if test="cardId!=null and cardId!=''">
 		and s.card_id=#{cardId}
 	</if>
+	ORDER BY
+			CASE
+		WHEN RESULT_TYPE='10' THEN
+			0
+		WHEN RESULT_TYPE is null THEN
+			1
+		ELSE
+			2
+		END
   </select>
   <select id="cardQueryCount" resultType="int">
   select count(*) from xm_appln_card_return s where approve_id =#{approveId} 
@@ -35,6 +45,15 @@
   <if test="cardId!=null and cardId!=''">
 	and s.card_id=#{cardId}
 	</if>
+	ORDER BY
+			CASE
+		WHEN RESULT_TYPE='10' THEN
+			0
+		WHEN RESULT_TYPE is null THEN
+			1
+		ELSE
+			2
+		END
   </select>
   <select id="nowCount" resultType="int">
   select count(*) from (select * from xm_appln_card_return where to_char(approve_date,'yyyymmdd')=#{approveDate})
