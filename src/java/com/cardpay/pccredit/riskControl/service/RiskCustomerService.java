@@ -1,11 +1,16 @@
 package com.cardpay.pccredit.riskControl.service;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.common.ConnUtils;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.riskControl.constant.RiskCustomerStatusEnum;
 import com.cardpay.pccredit.riskControl.dao.RiskCustomerDao;
@@ -189,5 +194,40 @@ public class RiskCustomerService {
 			e.printStackTrace();
 		}
 		return flag;
+	}
+	
+	/**
+	 * 通过cardId查询风险客户
+	 * @param cardId
+	 * @return
+	 */
+	public int findRiskByCardId(String cardId){
+		return riskCustomerDao.findRiskByCardId(cardId);
+	}
+	
+	/**
+	 * 通过cardId查询产品信息
+	 * @param cardId
+	 * @return
+	 */
+	public String findProductByCardId(String cardId){
+		Connection conn = null;
+        CallableStatement statement = null;
+        String sname="";
+//        String sql = "{call stu_test(?, ?)}";
+      String sql = "{call ods.xmnx_qk_pkg.xmnx_idens_info_view(?, ?)}";
+        try {
+            conn = ConnUtils.getConnection();
+            statement = conn.prepareCall(sql);
+            statement.setString(1, cardId);
+            statement.registerOutParameter(2, Types.VARCHAR);
+            statement.execute();
+            sname = statement.getString(2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            ConnUtils.free(null, statement, conn);
+        }
+        return sname;
 	}
 }

@@ -1,5 +1,11 @@
 #parse ("common/iframe_page_header2.htm")
 	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
+	<style type="text/css">
+		.title{height:30px;}
+		.message tr td{line-height:40px;}
+		.info{width:40px;}
+		.info img{width:15px;vertical-align:middle;}
+	</style>
 </head>
 <body>
 <div class="fixed">
@@ -40,6 +46,29 @@
 					<td class="label">证件号码<font color="#ff0000">*</font></td>
 					<td>
 						<input type="text" class="text mast" id="card_id" name="card_id" value="$!xM_APPLN_JCZL.card_id" maxlength=32 onchange="changeBg(this)"/>
+						<input type="button" value="检测" onclick="checkCardId()"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3"></td>
+					<td style="width:500px;">
+						<div id="checkIds" style="display:none">
+							<input type="button" value="内部风险名单检测" onclick="checkCard1()" style="width:20%"/>
+							<span class="info">
+								<img id="right1" src="${uicasePath}/images/right.png" style="display:none"/>
+								<img id="wrong1" src="${uicasePath}/images/wrong.png" style="display:none"/>
+							</span>
+							<input type="button" value="行内现有产品检测" onclick="checkCard2()" style="width:20%"/>
+							<span class="info">
+								<img id="right2" src="${uicasePath}/images/right.png" style="display:none"/>
+								<img id="wrong2" src="${uicasePath}/images/wrong.png" style="display:none"/>
+							</span>
+							<input type="button" value="银联风险名单检测" onclick="checkCard3()" style="width:20%"/>
+							<span class="info">
+								<img id="right3" src="${uicasePath}/images/right.png" style="display:none"/>
+								<img id="wrong3" src="${uicasePath}/images/wrong.png" style="display:none"/>
+							</span>
+						</div>
 					</td>
 				</tr>
 				<tr>
@@ -59,7 +88,7 @@
 		</div><!--/content-->
 	</div>	
 <!--*************************************************************配偶资料*************************************************************-->
-	<div class="box">
+	<div class="box" style="margin-top:20px;">
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>配偶资料</td>
@@ -74,7 +103,7 @@
 						<input type="text" class="text" name="spu_name" id="spu_name" value="$!xM_APPLN_POZL.name" maxlength="30"/>
 					</td>
 					<td class="label">证件号码</td>
-					<td>
+					<td style="width:500px;">
 						<input type="text" class="text" name="spu_custr_nbr" id="spu_custr_nbr" value="$!xM_APPLN_POZL.custr_nbr" maxlength="18"/>
 						<input type="button" value="检测" onclick="checkCard()"/>
 					</td>
@@ -197,6 +226,65 @@
 		
 	}
 	
+	function checkCardId(){
+		document.getElementById("checkIds").style.display='block';
+	}
+	function checkCard1(){
+		var card_id = $("#card_id").val();
+		$.ajax({
+			url : "${contextPath}/xm_appln/checkRisk1.json?cardId="+card_id,
+			type : "post",
+			dataType : "json",
+			success : function(data) {
+				if(data.result){
+					Dialog.message("此客户属于本系统风险名单!");
+					document.getElementById("right1").style.display='none';
+					document.getElementById("wrong1").style.display='block';
+				}else{
+					Dialog.message("此客户为正常客户!");
+					document.getElementById("wrong1").style.display='none';
+					document.getElementById("right1").style.display='block';
+				}
+			},
+			error : function(data) {
+			}
+		});
+	}
+	function checkCard2(){
+	 	var card_id = $("#card_id").val();
+		$.ajax({
+			url : "${contextPath}/xm_appln/checkRisk2.json?cardId="+card_id,
+			type : "post",
+			dataType : "json",
+			success : function(data) {
+				if(data.length>2){
+					var data = eval("("+data+")");
+					var d = data.D;
+					var str="此客户近三月日均"+d;
+					var l = data.L;
+					for(var i=0;i<l.length;i++){
+						str+=",";
+						var t = l[i].T;
+						var r = l[i].R;
+						var c = l[i].C;
+						str+="授信金额为"+t+",余额为"+r+",五级分类为"+c;
+					}
+					Dialog.message(str);
+					document.getElementById("wrong2").style.display='block';
+					document.getElementById("right2").style.display='none';
+				}else{
+					Dialog.message("此客户没有办理产品!");
+					document.getElementById("wrong2").style.display='none';
+					document.getElementById("right2").style.display='block';
+				}
+			},
+			error : function(data) {
+			}
+		}); 
+	}
+	function checkCard3(){
+		
+	}
   </script>
 </body>
 #parse ("common/iframe_page_footer.htm")

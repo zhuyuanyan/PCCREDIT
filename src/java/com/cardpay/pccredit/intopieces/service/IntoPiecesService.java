@@ -1309,8 +1309,21 @@ public class IntoPiecesService {
 			    case 182:
 			    	content = UploadFileTool.getContent(content,kpmx.get(0).getCdespmtd(),length);break;
 			    	//申请金卡未核准，是否同意核发普卡选项
-			    case 183:content = UploadFileTool.getContent(content,"0",length);break;
-			    case 184:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 183:
+			    	if(appln.getGtoc()!="1"){
+			    		content = UploadFileTool.getContent(content,"0",length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,appln.getGtoc(),length);
+			    	}
+			    	break;
+			    	//降级产品编号
+			    case 184:
+			    	if(appln.getGtoc()=="1"){
+			    		content = UploadFileTool.getContent(content,appln.getDownprod(),length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    	break;
 			    //主卡暗语
 			    case 185:content = UploadFileTool.getContent(content,kpmx.get(0).getSpec_inst(),length);break;
 			    case 186:content = UploadFileTool.getContent(content,kpmx.get(1).getSpec_inst(),length);break;

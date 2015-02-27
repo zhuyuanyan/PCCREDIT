@@ -174,11 +174,11 @@
 			<tr>
 				<td rowspan="5" style="vertical-align:top"><b>地址-1</b><font color="#ff0000">*</font></td>
 				<td>
-					<input type="text" class="text" name="addr1_l1" value="$!xM_APPLN_ADDR.addr1_l1" maxlength="30" >
+					<input type="text" class="text" name="addr1_l1" id="addr1_l1" value="$!xM_APPLN_ADDR.addr1_l1" maxlength="30" >
 				</td>
 				<td class="label">地址类型<font color="#ff0000">*</font></td>
 				<td colspan="3">
-					<select name="addr1_type">
+					<select name="addr1_type" id="addr1_type">
 						#dict("ADDR_TYPE","$!xM_APPLN_ADDR.addr1_type")
 					</select>
 				</td>
@@ -235,7 +235,7 @@
 					</td>
 					<td class="label">地址类型<font color="#ff0000">*</font></td>
 					<td colspan="3">
-						<select name="addr2_type">
+						<select name="addr2_type" id="addr2_type">
 							#dict("ADDR_TYPE","$!xM_APPLN_ADDR.addr2_type")
 						</select>
 					</td>
@@ -281,7 +281,7 @@
 					</td>
 					<td class="label">地址类型<font color="#ff0000">*</font></td>
 					<td colspan="3">
-						<select name="addr3_type">
+						<select name="addr3_type" id="addr3_type">
 							#dict("ADDR_TYPE","$!xM_APPLN_ADDR.addr3_type")
 						</select>
 					</td>
@@ -327,7 +327,7 @@
 					</td>
 					<td class="label">地址类型<font color="#ff0000">*</font></td>
 					<td colspan="3">
-						<select name="addr4_type">
+						<select name="addr4_type" id="addr4_type">
 							#dict("ADDR_TYPE","$!xM_APPLN_ADDR.addr4_type")
 						</select>
 					</td>
@@ -375,6 +375,7 @@
 	function onSave(){
 		if ($($formName).valid()) {
 	          var formjson = $($formName).serialize();
+	          //判断是否填写家庭地址
 	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	            if (data.success) {
 	            	Dialog.message("保存成功!");
