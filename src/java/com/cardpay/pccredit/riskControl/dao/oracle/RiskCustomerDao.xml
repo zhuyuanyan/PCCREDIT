@@ -166,4 +166,8 @@ SELECT count(*)from(   select tt.*,c.num_risk as  numRisk ,b.chinese_name as cus
  where a.risk_attribute=t.risk_attribute and t.customer_id=#{customerId} and t.status ='CONFIRMED_CARDCENTER' and b.id=t.customer_id
 	
 	</select>
+	<select id="findRiskByCardId" resultType="Int">
+	select count(*) from risk_list a,basic_customer_information b
+ where b.card_id=#{cardId} and a.customer_id=b.id
+	</select>
 </mapper>
