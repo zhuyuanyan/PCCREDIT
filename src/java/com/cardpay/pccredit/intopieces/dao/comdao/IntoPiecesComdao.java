@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.model.CardCur;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesCardQueryFilter;
@@ -508,5 +509,15 @@ public class IntoPiecesComdao {
 		params.put("uuid19", cardQueryFilter.getUuid19());
 
 		return commonDao.queryBySql(IntoPiecesCardQuery.class, sql, params);
+	}
+	
+	//根据身份证号查询卡号
+	public List<CardCur> getCardNbrByCardId(String cardId) {
+		String sql = "select card_nbr as cardNbr,custr_nbr as custrNbr from pccredit1.s_xyk_card_cur where custr_nbr=#{cardId}";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("cardId", cardId);
+
+		return commonDao.queryBySql(CardCur.class, sql, params);
 	}
 }

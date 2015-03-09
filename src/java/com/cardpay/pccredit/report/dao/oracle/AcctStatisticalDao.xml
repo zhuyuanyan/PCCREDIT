@@ -246,7 +246,6 @@
 	                                   sum(nvl(t.bad_overdraft_principal, 0)) as bad_overdraft_principal /*不良透支本金*/
 	                              from statistical_table t
 	                             where t.created_date <![CDATA[ <= ]]> #{basicDate}
-	                               and t.product_id=#{productId}
 	                             group by t.customer_manager_id) basic_date_info
 	                    on user_info.user_id = basic_date_info.manager_id
 	                
@@ -260,7 +259,6 @@
 	                                   sum(nvl(t.bad_overdraft_principal, 0)) as bad_overdraft_principal /*不良透支本金*/
 	                              from statistical_table t
 	                             where t.created_date <![CDATA[ <= ]]> #{reportDate}
-	                               and t.product_id=#{productId}
 	                             group by t.customer_manager_id) report_date_info
 	                    on user_info.user_id = report_date_info.manager_id) result_date
 	        
