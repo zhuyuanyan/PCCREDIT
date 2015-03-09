@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
+import com.cardpay.pccredit.customer.model.CardCur;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
@@ -1309,8 +1310,21 @@ public class IntoPiecesService {
 			    case 182:
 			    	content = UploadFileTool.getContent(content,kpmx.get(0).getCdespmtd(),length);break;
 			    	//申请金卡未核准，是否同意核发普卡选项
-			    case 183:content = UploadFileTool.getContent(content,"0",length);break;
-			    case 184:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 183:
+			    	if(appln.getGtoc()!="1"){
+			    		content = UploadFileTool.getContent(content,"0",length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,appln.getGtoc(),length);
+			    	}
+			    	break;
+			    	//降级产品编号
+			    case 184:
+			    	if(appln.getGtoc()=="1"){
+			    		content = UploadFileTool.getContent(content,appln.getDownprod(),length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    	break;
 			    //主卡暗语
 			    case 185:content = UploadFileTool.getContent(content,kpmx.get(0).getSpec_inst(),length);break;
 			    case 186:content = UploadFileTool.getContent(content,kpmx.get(1).getSpec_inst(),length);break;
@@ -1831,19 +1845,20 @@ public class IntoPiecesService {
 	 * @param str
 	 */
 	private void inputData(StringBuffer str){
+		System.out.println("导入数据：");
 		IntoPiecesCardQueryFilter cardQueryFilter = new IntoPiecesCardQueryFilter();
 		//银行id
-		String bankId = str.substring(0, 3);
+		String bankId = str.substring(0, 4);
 		//外部系统id
 		String uuid19 = str.substring(4, 23);
 		//发卡系统申请书编号
-		String makeCardId = str.substring(24, 32);
+		String makeCardId = str.substring(23, 33);
 		//申请人证件类型
-		String cardType = str.substring(33, 34);
+		String cardType = str.substring(33, 35);
 		//申请人证件号码
-		String cardId = str.substring(35, 52);
+		String cardId = str.substring(35, 53);
 		//处理结果
-		String resultType = str.substring(53, 54);
+		String resultType = str.substring(53, 55);
 		String resultText = "";
 		if(resultType.equals("00")){
 			resultText = Constant.CARD_RETURN_TYPE1;
@@ -1862,13 +1877,32 @@ public class IntoPiecesService {
 			try {
 				//流程自动下一步
 				if(resultType.equals("00")){
-					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
+//					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
+					//制卡成功后，保存至makecard表
+					List<CardCur> curList = intoPiecesComdao.getCardNbrByCardId(cardId);
+					System.out.println(curList.size());
+					for(int i=0;i<curList.size();i++){
+						//更新madecard表
+						MakeCard makeCard = new MakeCard();
+						makeCard.setCustomerName(card.getChineseName());
+						makeCard.setCustomerIdentity(cardId);
+						makeCard.setCardNumber(curList.get(i).getCardNbr());
+						commonDao.insertObject(makeCard);
+					}
+					if(curList.size()<1){
+						//更新madecard表
+						MakeCard makeCard = new MakeCard();
+						makeCard.setCustomerName(card.getChineseName());
+						makeCard.setCardNumber(cardId);
+						commonDao.insertObject(makeCard);
+					}
 				}
 				//更新制卡数据
 				card.setMakeCardId(makeCardId);
 				card.setResultType(resultType);
 				card.setResultText(resultText);
-				commonDao.updateObject(card);
+//				commonDao.updateObject(card);
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1949,6 +1983,7 @@ public class IntoPiecesService {
 	 */
 	public void importDataFromBank(){
 		try {
+			System.out.println("开始定时任务：");
 			//获取昨天日期
 			Calendar cal=Calendar.getInstance();
 	        cal.add(Calendar.DATE,-1);
@@ -1957,7 +1992,7 @@ public class IntoPiecesService {
 			DateFormat format = new SimpleDateFormat("yyyyMMdd");
 			String dateString = format.format(date);
 			//获取指定文件夹目录
-			String filepath = "D:/";
+			String filepath = "D://测试结果";
 			File file = new File(filepath);
 			if (file.isDirectory()) {
 				String[] filelist = file.list();

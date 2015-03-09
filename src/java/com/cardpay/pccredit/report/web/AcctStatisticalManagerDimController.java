@@ -55,13 +55,13 @@ public class AcctStatisticalManagerDimController extends BaseController {
 	public AbstractModelAndView browse(@ModelAttribute StatisticalFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 
-		ProductFilter pFilter = new ProductFilter();
-		pFilter.setLimit(Integer.MAX_VALUE);
-		QueryResult<ProductAttribute> qs = productService.findProductsByFilter(pFilter);
+//		ProductFilter pFilter = new ProductFilter();
+//		pFilter.setLimit(Integer.MAX_VALUE);
+//		QueryResult<ProductAttribute> qs = productService.findProductsByFilter(pFilter);
 		
-		if(StringUtils.isEmpty(filter.getProductId())){
-			filter.setProductId(qs.getItems().size() != 0 ? qs.getItems().get(0).getId() : "");
-		}
+//		if(StringUtils.isEmpty(filter.getProductId())){
+//			filter.setProductId(qs.getItems().size() != 0 ? qs.getItems().get(0).getId() : "");
+//		}
 		if(filter.getBasicDate() == null){
 			filter.setBasicDate(DateHelper.getDateFormat("2013-08-01", "yyyy-MM-dd"));
 		}
@@ -74,7 +74,7 @@ public class AcctStatisticalManagerDimController extends BaseController {
 		mv.addObject("list", list);
 		mv.addObject("filter", filter);
 		
-		mv.addObject(PAGED_RESULT, qs);
+//		mv.addObject(PAGED_RESULT, qs);
 		return mv;
 	}
 }

@@ -1,5 +1,9 @@
 package com.cardpay.pccredit.xm_appln.web;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.common.Cn2Spell;
+import com.cardpay.pccredit.common.ConnUtils;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
@@ -35,6 +40,8 @@ import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.product.service.ProductService;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.riskControl.service.RiskCustomerService;
 import com.cardpay.pccredit.system.service.NodeAuditService;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
@@ -119,6 +126,10 @@ public class XM_APPLN_Controller extends BaseController {
 	
 	@Autowired
 	private CustomerApplicationProcessService customerApplicationProcessService;
+	
+	@Autowired
+	private RiskCustomerService riskCustomerService;
+	
 	
 	/**
 	 * 浏览页面
@@ -859,4 +870,41 @@ public class XM_APPLN_Controller extends BaseController {
 			}
 		return returnMap;
 		}
+	
+	/**
+	 * 通过cardId查询是否风险客户
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "checkRisk1.json")
+	public JRadReturnMap checkRisk1(HttpServletRequest request)throws Exception {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		String cardId = request.getParameter("cardId");
+		int list = riskCustomerService.findRiskByCardId(cardId);
+		if(list>0){
+			returnMap.put("result", true);
+		}else{
+			returnMap.put("result", false);
+			}
+		return returnMap;
+		}
+	
+	/**
+	 * 通过cardId查询产品信息
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "checkRisk2.json")
+	public  String checkRisk2(HttpServletRequest request)throws Exception {
+		String cardId = request.getParameter("cardId");
+		String result  = riskCustomerService.findProductByCardId(cardId);
+//		String result = "{D:'1000',L:[{T:'2000000',R:'30000',C:'五级分类'}]}";
+		JSONObject obj = JSONObject.fromObject(result);
+		return obj.toString();
+		}
+	
 }
