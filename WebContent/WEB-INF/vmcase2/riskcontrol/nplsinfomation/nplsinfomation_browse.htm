@@ -50,7 +50,7 @@
             <colgroup>
               <col width="5%" />
               <col width="15%" />
-              <col width="15%" />
+              <!-- <col width="15%" /> -->
               <col width="20%" />
               <col width="20%" />
               <col width="20%" />
@@ -64,7 +64,7 @@
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">创建方式</th>
-              <th nowrap="nowrap">核销类型</th>
+              <!-- <th nowrap="nowrap">核销类型</th> -->
               <th nowrap="nowrap">进入逾期记录的金额</th>
               <th nowrap="nowrap">进入逾期记录的利息</th>
               <th nowrap="nowrap">五级分类理由</th>
@@ -80,7 +80,7 @@
             <colgroup>
               <col width="5%" />
               <col width="15%" />
-              <col width="15%" />
+              <!-- <col width="15%" /> -->
               <col width="20%" />
               <col width="20%" />
               <col width="20%" />
@@ -96,7 +96,7 @@
                   #if ($!request.getParameter("recordId") == $!nplsInfo.customerId) checked="checked" #end /></td>
               <td nowrap="nowrap">$!nplsInfo.customerName</td>
               <td nowrap="nowrap">#dictVal("CreateMethod", $!nplsInfo.createMethod)</td>
-              <td nowrap="nowrap">#dictVal("VERIFICATIONTYPE", $!nplsInfo.verificationType)</td>
+              <!-- <td nowrap="nowrap">#dictVal("VERIFICATIONTYPE", $!nplsInfo.verificationType)</td> -->
               <td nowrap="nowrap">$!nplsInfo.overdueBalanceIn</td>
               <td nowrap="nowrap">$!nplsInfo.overdueIntIn</td>
               <td nowrap="nowrap">$!nplsInfo.levelFiveReason</td>
