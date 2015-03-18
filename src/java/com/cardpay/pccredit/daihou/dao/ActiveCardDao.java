@@ -35,7 +35,7 @@ public class ActiveCardDao {
 			StringBuilder sql = new StringBuilder();
 			sql.append("select c.*,bci.chinese_name,xa.product from ");
 			sql.append("(select ci.customer_id,ci.card_number,ci.id as card_id,ci.card_activate_date,ci.expire_date from ");
-			sql.append("((select * from customer_card_information where activation_status = '0')cci ");
+			sql.append("((select * from customer_card_information where activation_status = '1')cci ");
 			sql.append("left join ");	
 			sql.append("card_information ci on cci.card_id = ci.id ))c,basic_customer_information bci,xm_appln xa where ");	
 			sql.append("c.customer_id = bci.id and c.customer_id = xa.customer_id ");	
