@@ -23,6 +23,9 @@
 		<result property="accountNumber" column="ACCOUNT_NUMBER" />
 		<result property="overdueAmount" column="OVERDUE_AMOUNT" />
 		<result property="overdueTime" column="OVERDUE_TIME" />
+		<result property="overdueBalanceIn" column="OVERDUE_BALANCE_IN"/>
+		<result property="overdueIntIn" column="OVERDUE_INT_IN"/>
+		<result property="levelFiveReason" column="LEVEL_FIVE_REASON"/>
 	</resultMap>
 	
 	<select id="findNplsInfomationByFilter" resultMap="ResultMap" 
