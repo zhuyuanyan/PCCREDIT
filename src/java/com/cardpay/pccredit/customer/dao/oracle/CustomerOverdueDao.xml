@@ -42,6 +42,7 @@
 	</select>
 	<select id="findCustomerOverdueCount" resultType="int"
 		parameterType="com.cardpay.pccredit.customer.filter.CustomerOverdueFilter">
+		with product_info_tmp as (select * from PRODUCT_ATTRIBUTE where default_type = '1')
 		SELECT COUNT(*)
 		FROM (	SELECT DISTINCT
 	c.*, P .PRODUCT_NAME,
@@ -50,13 +51,13 @@
 	i.user_id
 FROM
 	CUSTOMER_OVERDUE c,
-	PRODUCT_ATTRIBUTE P,
+	product_info_tmp P,
 	BASIC_CUSTOMER_INFORMATION i,
 	CUSTOMER_ACCOUNT_INFORMATION D
 
 WHERE
 	1 = 1
-AND c.product_id = P . ID
+
 AND c.customer_id = i. ID
 AND c.customer_id = D .customer_id
 <if test="chineseName != null and chineseName != '' ">
@@ -78,6 +79,7 @@ And i.CARD_TYPE=#{cardType}
 	
 
 	<select id="findCustomerOverdue" resultMap="OverdueFormResultMap">
+	    with product_info_tmp as (select * from PRODUCT_ATTRIBUTE where default_type = '1')
 		SELECT * FROM
 		(SELECT ROW_.*,ROWNUM ROWNUM_
 		FROM (
@@ -88,13 +90,12 @@ And i.CARD_TYPE=#{cardType}
 	i.user_id
 FROM
 	CUSTOMER_OVERDUE c,
-	PRODUCT_ATTRIBUTE P,
+	product_info_tmp P,
 	BASIC_CUSTOMER_INFORMATION i,
 	CUSTOMER_ACCOUNT_INFORMATION D
 
 WHERE
 	1 = 1
-AND c.product_id = P . ID
 AND c.customer_id = i. ID
 AND c.customer_id = D .customer_id
 <if test="chineseName != null and chineseName != '' ">
@@ -119,6 +120,7 @@ And i.CARD_TYPE=#{cardType}
 
 
 	<select id="findCustomerOverdueAll" resultMap="OverdueFormResultMap">
+	    with product_info_tmp as (select * from PRODUCT_ATTRIBUTE where default_type = '1')
 		SELECT
 		c.*,
 		P
@@ -127,7 +129,7 @@ And i.CARD_TYPE=#{cardType}
 		FROM
 		CUSTOMER_OVERDUE c
 		INNER JOIN
-		PRODUCT_ATTRIBUTE P ON c.product_id = P.ID
+		product_info_tmp P ON 1=1
 		INNER JOIN
 		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
 

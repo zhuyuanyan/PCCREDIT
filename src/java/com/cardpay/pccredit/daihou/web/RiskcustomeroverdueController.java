@@ -92,7 +92,7 @@ public class RiskcustomeroverdueController extends BaseController {
 	
 	@ResponseBody
 	@RequestMapping(value = "create_collection.json", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.CREATE)
+	//@JRadOperation(JRadOperation.CREATE)
 	public JRadReturnMap create_collection(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		JRadReturnMap returnMap = new JRadReturnMap();
