@@ -93,7 +93,7 @@
                                    sum(nvl(t.activate_card_number, 0)) as activate_card_number
                               from statistical_table t
                              where t.created_date <![CDATA[ <= ]]> #{basicDate}
-                               and t.product_id=#{productId}
+                             
                              group by t.customer_manager_id) basic_date_info
                     on user_info.user_id = basic_date_info.manager_id
                 
@@ -103,7 +103,7 @@
                                    sum(nvl(t.activate_card_number, 0)) as activate_card_number
                               from statistical_table t
                              where t.created_date <![CDATA[ <= ]]> #{reportDate}
-                               and t.product_id=#{productId}
+                             
                              group by t.customer_manager_id) report_date_info
                     on user_info.user_id = report_date_info.manager_id) result_date
         
@@ -126,7 +126,15 @@
        (r_send_card_number - b_send_card_number) add_send_card_number,
        (r_accept_card_number - b_accept_card_number) add_accept_card_number,
        (r_activate_card_number - b_activate_card_number) add_activate_card_number,
-       (r_no_activate_card_number - b_no_activate_card_number) add_no_activate_card_number
+       (r_no_activate_card_number - b_no_activate_card_number) add_no_activate_card_number,
+       (decode(a.r_send_card_number,
+              0,
+              0,
+              a.r_activate_card_number / a.r_send_card_number * 100)-
+        decode(a.b_send_card_number,
+              0,
+              0,
+              a.b_activate_card_number / a.b_send_card_number * 100)) as add_active_rate
 
   from (select result_date.user_id as id,
                result_date.user_name as name,
@@ -176,8 +184,8 @@
                                    sum(nvl(t.accept_card_number, 0)) as accept_card_number,
                                    sum(nvl(t.activate_card_number, 0)) as activate_card_number
                               from statistical_table t
-                             where t.created_date <![CDATA[ <= ]]> #{basicDate}
-                               and t.product_id=#{productId}
+                             where t.created_date = #{basicDate}
+                               
                              group by t.customer_manager_id) basic_date_info
                     on user_info.user_id = basic_date_info.manager_id
                 
@@ -186,8 +194,8 @@
                                    sum(nvl(t.accept_card_number, 0)) as accept_card_number,
                                    sum(nvl(t.activate_card_number, 0)) as activate_card_number
                               from statistical_table t
-                             where t.created_date <![CDATA[ <= ]]> #{reportDate}
-                               and t.product_id=#{productId}
+                             where t.created_date = #{reportDate}
+                               
                              group by t.customer_manager_id) report_date_info
                     on user_info.user_id = report_date_info.manager_id) result_date
         
