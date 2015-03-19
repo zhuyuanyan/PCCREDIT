@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.report.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.wicresoft.util.annotation.Mapper;
 
 /**
@@ -10,5 +12,5 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface StatisticalTableDao {
 
-	public int statisticalTableInfo();
+	public void statisticalTableInfo(@Param("dateStr") String dateStr);
 }

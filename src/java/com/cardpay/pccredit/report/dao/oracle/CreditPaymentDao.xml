@@ -61,8 +61,8 @@
 		                                   sum(nvl(t.overdraft_principal, 0)) as overdraft_principal,
 		                                   sum(nvl(t.overdraft_amount, 0)) as overdraft_amount
 		                              from statistical_table t
-		                             where t.created_date <![CDATA[ <= ]]> #{basicDate}
-		                               and t.product_id=#{productId}
+		                             where t.created_date = #{basicDate}
+		                               
 		                             group by t.customer_manager_id) basic_date_info
 		                    on user_info.user_id = basic_date_info.manager_id
 		                
@@ -70,8 +70,8 @@
 		                                   sum(nvl(t.overdraft_principal, 0)) as overdraft_principal,
 		                                   sum(nvl(t.overdraft_amount, 0)) as overdraft_amount
 		                              from statistical_table t
-		                             where t.created_date <![CDATA[ <= ]]> #{reportDate}
-		                               and t.product_id=#{productId}
+		                             where t.created_date = #{reportDate}
+		                               
 		                             group by t.customer_manager_id) report_date_info
 		                    on user_info.user_id = report_date_info.manager_id) result_date
 		        
@@ -127,8 +127,8 @@
                                    sum(nvl(t.overdraft_principal, 0)) as overdraft_principal,
                                    sum(nvl(t.overdraft_amount, 0)) as overdraft_amount
                               from statistical_table t
-                             where t.created_date <![CDATA[ <= ]]> #{basicDate}
-                               and t.product_id=#{productId}
+                             where t.created_date = #{basicDate}
+                             
                              group by t.customer_manager_id) basic_date_info
                     on user_info.user_id = basic_date_info.manager_id
                 
@@ -136,8 +136,8 @@
                                    sum(nvl(t.overdraft_principal, 0)) as overdraft_principal,
                                    sum(nvl(t.overdraft_amount, 0)) as overdraft_amount
                               from statistical_table t
-                             where t.created_date <![CDATA[ <= ]]> #{reportDate}
-                               and t.product_id=#{productId}
+                             where t.created_date = #{reportDate}
+                             
                              group by t.customer_manager_id) report_date_info
                     on user_info.user_id = report_date_info.manager_id) result_date
         

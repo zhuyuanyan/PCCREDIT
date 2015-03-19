@@ -43,6 +43,8 @@ public class StatisticalTable extends BaseModel{
 	private Date createdDate;
 	
 	private String productId;
+	
+	private String rateOfPrincipal;//不良率
 
 	public String getCustomerManagerId() {
 		return customerManagerId;
@@ -188,4 +190,12 @@ public class StatisticalTable extends BaseModel{
 		this.productId = productId;
 	}
 
+	public String getRateOfPrincipal() {
+		return rateOfPrincipal;
+	}
+
+	public void setRateOfPrincipal(String rateOfPrincipal) {
+		this.rateOfPrincipal = rateOfPrincipal;
+	}
+	
 }
