@@ -776,6 +776,10 @@ public class RhzxService {
 		
 	}
 	
+	//查询是否已存在征信信息
+	public RH_INFO findByCustomerId(String customerId){
+		return this.rH_INFO_Dao.findByCustomerId(customerId);
+	}
 	/**
 	 * 插入对外担保信息汇总
 	 * @param dwdbInfo

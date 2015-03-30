@@ -323,7 +323,7 @@
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
         <property name="cronExpression">
-            <value>0 0 0/1 * * ?</value>
+            <value>0 30 22 * * ?</value>
         </property>
     </bean>
     
@@ -345,7 +345,7 @@
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
         <property name="cronExpression">
-            <value>01 42 * * * ?</value>
+            <value>0 0 3 * * ?</value>
         </property>
     </bean>
     
@@ -356,9 +356,10 @@
         <property name="triggers">
             <list>
                 
-            	<!-- 
+            	
             	<ref bean="addImportDataTigger"/>
-            	<ref bean="statisticsYearScheduleServicerTrigger"/>
+            	<ref bean="addStatisticalTableTigger"/>
+            	<!-- <ref bean="statisticsYearScheduleServicerTrigger"/>
             	<ref bean="statisticsMonthScheduleServicerTrigger"/>
             	<ref bean="statisticsWeekScheduleServicerTrigger"/>
             	

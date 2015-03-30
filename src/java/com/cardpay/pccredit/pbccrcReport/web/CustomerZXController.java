@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.pbccrcReport.web;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.pbccrcReport.model.RH_INFO;
 import com.cardpay.pccredit.pbccrcReport.service.RhzxService;
+import com.cardpay.pccredit.pbccrcReport.util.DateUtil;
 import com.cardpay.pccredit.pbccrcReport.util.PbccrcReport;
 import com.cardpay.pccredit.pbccrcReport.util.PbocFileReader;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
@@ -99,16 +103,20 @@ public class CustomerZXController extends BaseController {
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			logger.info("人行征信查询---查询用户:"+user.getId()+",客户:"+customer.getChineseName());
 			PbccrcReport pbccrcReport = new PbccrcReport();
-			String fileFullPath = pbccrcReport.manuProcessPbocCreditInfo(customer.getChineseName(), customer.getCardType(), customer.getCardId(),
-					QueryReason,QueryType,Vertype);
-			if(fileFullPath != null){
-				//解析htm文件抓取内容并存入数据库
-				this.rhzxService.insertOrUpdateZX(customerId, fileFullPath);
-				
-				JRadModelAndView mv = new JRadModelAndView("/customer/customerzx/rhzx/"+customer+"_"+customer.getCardId(), request);
-				mv.addObject("customer", customer);
-				return mv;
+			RH_INFO rh_info = this.rhzxService.findByCustomerId(customerId);
+			//不存在或大于30天时重新抓征信
+			if(rh_info == null || DateUtil.daysBetween(rh_info.getModifiedTime(), new Date())>30){
+				//备份征信htm文件到服务器
+				String fileFullPath = pbccrcReport.manuProcessPbocCreditInfo(customer.getChineseName(), customer.getCardType(), customer.getCardId(),
+						QueryReason,QueryType,Vertype);
+				if(fileFullPath != null){
+					//解析htm文件抓取内容并存入数据库
+					this.rhzxService.insertOrUpdateZX(customerId, fileFullPath);
+				}
 			}
+			JRadModelAndView mv = new JRadModelAndView("/customer/customerzx/rhzx/"+customer.getChineseName()+"_"+customer.getCardId(), request);
+			mv.addObject("customer", customer);
+			return mv;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
