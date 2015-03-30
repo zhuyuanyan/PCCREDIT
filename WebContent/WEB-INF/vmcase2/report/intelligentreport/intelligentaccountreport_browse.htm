@@ -5,21 +5,38 @@
 			<div class="place">
 				<div class="title">客户账户智能报表</div>
 			</div>
-
+	
 			<div class="inquiry">
+				<div class="search_tag">自定义表头</div>
+				<form id="submitForm" action="${contextPath}/intopieces/intopiecesrecieve/recieve.page">
+				<input type="hidden" value="$!result.filter.chineseName" name="user_def_chk_value" />
+		        <div class="search">
+			        <table>
+					<tr>
+						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="1" checked disabled />卡号</td>
+						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="2" checked />是否新增客户</td>
+						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="4" checked />账户透支本金</td>
+						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="8" checked />应付利息</td>
+						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="16" checked />账户透支余额</td>
+					</tr>					
+					<tr>
+						<td><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="32" checked />上期账单最小还款金额</td>
+						<td><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="64" checked />本期还款日应还金额</td>
+						<td><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="128" checked />本期还款日应还的最低还款金额</td>
+						<td><!-- <input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="256" checked />全额还款户数 --></td>
+						<td><!-- <input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="512" checked />最低还款户数 --></td>
+					</tr>
+				</table>
+		        </div>
+		        </form>
 				<!-------------- 信息显示 ------------------------------------->
 				<div id="topDiv" class="inquiry_list inquiry_top" >
-					<table>
+					<table id="user_def_head">
 						<colgroup>
 							<col width="100" />
 							<col width="140" />
 							<col width="140" />
 							<col width="140" />
-							<col width="140" />
-							<col width="140" />
-							<col width="140" />
-							<col width="140" />
-							<col width="200" />
 							<col width="140" />
 							<col width="140" />
 							<col width="140" />
@@ -27,24 +44,19 @@
 						</colgroup>
 						<tr class="title" align="center">
 							<th nowrap="nowrap">卡号</th>
-							<th nowrap="nowrap">卡状态</th>
+							<th nowrap="nowrap">是否新增客户</th>
 							<th nowrap="nowrap">账户透支本金</th>
 							<th nowrap="nowrap">应付利息</th>
-							<th nowrap="nowrap">年费</th>
-							<th nowrap="nowrap">已用额度</th>
-							<th nowrap="nowrap">可用额度</th>
-							<th nowrap="nowrap">上期账单总金额</th>
-							<th nowrap="nowrap">上期账单透支本金</th>
-							<th nowrap="nowrap">上期账单利息</th>
+							<th nowrap="nowrap">账户透支余额</th>
 							<th nowrap="nowrap">上期账单最小还款金额</th>
-							<th nowrap="nowrap">逾期透支本金</th>
-							<th nowrap="nowrap">逾期天数</th>
+							<th nowrap="nowrap">本期还款日应还金额</th>
+							<th nowrap="nowrap">本期还款日应还的最低还款金额</th>
 						</tr>
 					</table>
 				</div>
 
 				<div id="downDiv" class="inquiry_list inquiry_down" >
-					<table>
+					<table id="user_def_content">
 						<colgroup>
 							<col width="100" />
 							<col width="140" />
@@ -54,33 +66,26 @@
 							<col width="140" />
 							<col width="140" />
 							<col width="140" />
-							<col width="200" />
-							<col width="140" />
-							<col width="140" />
-							<col width="140" />
-							<col width="140" />
 						</colgroup>
 						#foreach ($account in $result)
 						<tr id="$!account.id" >
-							<td nowrap="nowrap">$!account.cardNbr</td>
-							<td nowrap="nowrap">$!account.activationStatus</td>
+							<td nowrap="nowrap">$!account.card_number</td>
+							<td nowrap="nowrap">否</td>
 							<td nowrap="nowrap">$format.formatNumber(2,$!account.principalOverdraft)</td>
-							<td nowrap="nowrap">$format.formatNumber(2,$!account.interest)</td>
-							<td nowrap="nowrap">$format.formatNumber(2,$!account.annualFee)</td>
-							<td nowrap="nowrap">$format.formatNumber(2,$!account.totalAmountOverdraft)</td>
-							<td nowrap="nowrap">$format.formatNumber(2,$!account.availableLimit)</td>
-							<td nowrap="nowrap">$format.formatNumber(2,$!account.lastTotalAmountOverdraft)</td>
-							<td nowrap="nowrap">$format.formatNumber(2,$!account.lastPrincipalOverdraft)</td>
-							<td nowrap="nowrap">$format.formatNumber(2,$!account.lastInterest)</td>
-							<td nowrap="nowrap">$format.formatNumber(2,$!account.paybackAccount)</td>
-							<td nowrap="nowrap">$format.formatNumber(2,$!account.overdueAmount)</td>
-							<td nowrap="nowrap">$!account.overdueTime</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.interest_receivable)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.total_amount_overdraft)</td>
+							<td nowrap="nowrap">$format.formatNumber(2,$!account.recent_lowest_bill)</td>
+							<td nowrap="nowrap">0</td>
+							<td nowrap="nowrap">0</td>
 						</tr>
 						#end
 					</table>
 				</div>
 			</div>
-			<div class="clear"></div>
+			<div class="pagebar">
+		        #parse ("common/pagination.htm")
+		        <div class="clear"></div>
+	       </div>
 		</div>
 	</div>
 </body>
@@ -99,6 +104,32 @@
 		opsObj.browseUrl = "${modulePath}/browse.page";
 
 		prepareOperations(opsObj);
+		
 	});
+	
+	//自定义表头
+	function user_def_chk_clk(val){
+		var index = Math.log(val) / Math.log(2);
+		var tab = document.getElementById('user_def_head');
+		var trs = tab.rows;
+        for(var i = 0, len = trs.length; i < len; i++){
+            var cell = trs[i].cells[index];
+            if(cell.style.display == 'none'){
+                cell.style.display = '';
+            }else{
+                cell.style.display = 'none';
+            }
+        }
+        tab = document.getElementById('user_def_content');
+		trs = tab.rows;
+        for(var i = 0, len = trs.length; i < len; i++){
+            var cell = trs[i].cells[index];
+            if(cell.style.display == 'none'){
+                cell.style.display = '';
+            }else{
+                cell.style.display = 'none';
+            }
+        }
+    }
 </script>
 #parse ("common/iframe_page_footer.htm")

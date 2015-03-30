@@ -23,6 +23,6 @@ public interface IntelligentReportDao {
 	List<IntelligentCustomerReport> findIntelligentCustomerReport();
 	
 	List<IntelligentAccountReport> findIntelligentAccountReport(@Param("year") int year,@Param("month") int month,@Param("lastYear") int lastYear,@Param("lastMonth") int lastMonth);
-	
+
 	PostLoanManagementData findPostLoanManagementData();
 }
