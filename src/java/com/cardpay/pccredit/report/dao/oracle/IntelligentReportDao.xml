@@ -42,6 +42,15 @@
 		<result property="overdueTime" column="overdue_time" />
 	</resultMap>
 	
+	<resultMap id="AccountResultMap2" type="com.cardpay.pccredit.report.model.IntelligentAccountReport2">
+		<result property="card_number" column="card_number" />
+	    <result property="is_new_customer" column="is_new_customer" />
+		<result property="principal_overdraft" column="principal_overdraft" />
+		<result property="interest_receivable" column="interest_receivable" />
+		<result property="total_amount_overdraft" column="total_amount_overdraft" />
+		<result property="recent_lowest_bill" column="recent_lowest_bill" />
+	</resultMap>
+	
 	<sql id="AccountList">
 		cai.CARD_NUMBER,ACTIVATION_STATUS,ado.PRINCIPAL_OVERDRAFT,INTEREST,ANNUAL_FEE,ado.TOTAL_AMOUNT_OVERDRAFT,PAYBACK_ACCOUNT,
 		cab.OVERDUE_AMOUNT,overdue_time
@@ -69,69 +78,15 @@
 		on b.id=c.customer_id
 	</select>
 	
-	<select id="findIntelligentAccountReport" resultMap="AccountResultMap">
-		select (CREDIT_AMOUNT-ado.TOTAL_AMOUNT_OVERDRAFT) as availableLimit,
-		(select ado.TOTAL_AMOUNT_OVERDRAFT from customer_card_information cci
-		left join
-		card_information ci 
-		on ci.id=cci.card_id
-		inner join
-		customer_account_information cai
-		on ci.card_number =cai.card_number
-		inner join
-		AVERAGE_DAILY_OVERDRAFT ado
-		on cai.ACCOUNT_NUMBER = ado.ACCOUNT_NUMBER
-		inner join
-		customer_account_bill cab
-		on cab.ACCOUNT_NUMBER=cai.ACCOUNT_NUMBER
-		where cci.year=#{lastYear}
-		and cci.month=#{lastMonth}) as lastTotalAmountOverdraft,
-		(select ado.PRINCIPAL_OVERDRAFT from customer_card_information cci
-		left join
-		card_information ci 
-		on ci.id=cci.card_id
-		inner join
-		customer_account_information cai
-		on ci.card_number =cai.card_number
-		inner join
-		AVERAGE_DAILY_OVERDRAFT ado
-		on cai.ACCOUNT_NUMBER = ado.ACCOUNT_NUMBER
-		inner join
-		customer_account_bill cab
-		on cab.ACCOUNT_NUMBER=cai.ACCOUNT_NUMBER
-		where cci.year=#{lastYear}
-		and cci.month=#{lastMonth}) as lastPrincipalOverdraft,
-		(select INTEREST from customer_card_information cci
-		left join
-		card_information ci 
-		on ci.id=cci.card_id
-		inner join
-		customer_account_information cai
-		on ci.card_number =cai.card_number
-		inner join
-		AVERAGE_DAILY_OVERDRAFT ado
-		on cai.ACCOUNT_NUMBER = ado.ACCOUNT_NUMBER
-		inner join
-		customer_account_bill cab
-		on cab.ACCOUNT_NUMBER=cai.ACCOUNT_NUMBER
-		where cci.year=#{lastYear}
-		and cci.month=#{lastMonth}) as lastInterest,
-		<include refid="AccountList" />
-		from customer_card_information cci
-		left join
-		card_information ci 
-		on ci.id=cci.card_id
-		inner join
-		customer_account_information cai
-		on ci.card_number =cai.card_number
-		inner join
-		AVERAGE_DAILY_OVERDRAFT ado
-		on cai.ACCOUNT_NUMBER = ado.ACCOUNT_NUMBER
-		inner join
-		customer_account_bill cab
-		on cab.ACCOUNT_NUMBER=cai.ACCOUNT_NUMBER
-		where cci.year=#{year}
-		and cci.month=#{month}
+	<select id="findIntelligentAccountReport" resultMap="AccountResultMap2">
+		select 
+		CARD_NUMBER,
+		1 as is_new_customer,
+		PRINCIPAL_OVERDRAFT,
+		INTEREST_RECEIVABLE,
+		TOTAL_AMOUNT_OVERDRAFT,
+		RECENT_LOWEST_BILL
+		from customer_account_information
 	</select>
 	
 	<select id="findPostLoanManagementData" resultMap="DataResultMap">

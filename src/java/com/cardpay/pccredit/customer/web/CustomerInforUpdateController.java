@@ -906,7 +906,7 @@ public class CustomerInforUpdateController extends BaseController {
 					String selfOtherValue = request.getParameter("selfOtherValue");
 					String selfTotalCreditAmount = request.getParameter("selfTotalCreditAmount");
 					String selfApplicantExternalAmount = request.getParameter("selfApplicantExternalAmount");
-					//String selfWetValue = request.getParameter("selfWetValue");
+					String selfWetValue = request.getParameter("selfWetValue");
 					String selfOtherDebitValue = request.getParameter("selfOtherDebitValue");
 					customerCreditEvaluation.setModelType(model);
 					customerCreditEvaluation.setHouseValue(selfHouseValue);
@@ -916,7 +916,7 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setOtherValue(selfOtherValue);
 					customerCreditEvaluation.setTotalCreditAmount(selfTotalCreditAmount);
 					customerCreditEvaluation.setApplicantExternalAmount(selfApplicantExternalAmount);
-					//customerCreditEvaluation.setWetValue(selfWetValue);
+					customerCreditEvaluation.setWetValue(selfWetValue);
 					customerCreditEvaluation.setOtherDebitValue(selfOtherDebitValue);
 					String chineseName = request.getParameter("chineseName");
 					String sex = request.getParameter("sex");
@@ -926,6 +926,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_1"));
+					
 					String id = customerCreditEvaluationService.insertCustomerCreditEvaluation(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CREATE_SUCCESS);
 				}else if(StringUtils.isNotEmpty(model) && model.equals("familyHouse")) {
@@ -937,7 +940,7 @@ public class CustomerInforUpdateController extends BaseController {
 					String familyOtherValue = request.getParameter("familyOtherValue");
 					String familyTotalCreditAmount = request.getParameter("familyTotalCreditAmount");
 					String familyApplicantExternalAmount = request.getParameter("familyApplicantExternalAmount");
-					//String familyWetValue = request.getParameter("familyWetValue");
+					String familyWetValue = request.getParameter("familyWetValue");
 					String familyOtherDebitValue = request.getParameter("familyOtherDebitValue");
 					customerCreditEvaluation.setModelType(model);
 					customerCreditEvaluation.setHouseValue(familyHouseValue);
@@ -947,7 +950,7 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setOtherValue(familyOtherValue);
 					customerCreditEvaluation.setTotalCreditAmount(familyTotalCreditAmount);
 					customerCreditEvaluation.setApplicantExternalAmount(familyApplicantExternalAmount);
-					//customerCreditEvaluation.setWetValue(familyWetValue);
+					customerCreditEvaluation.setWetValue(familyWetValue);
 					customerCreditEvaluation.setOtherDebitValue(familyOtherDebitValue);
 					String chineseName = request.getParameter("chineseName");
 					String sex = request.getParameter("sex");
@@ -957,6 +960,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_2"));
+					
 					String id = customerCreditEvaluationService.insertCustomerCreditEvaluation(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CREATE_SUCCESS);
 					
@@ -994,6 +1000,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_3"));
+					
 					String id = customerCreditEvaluationService.insertCustomerCreditEvaluation(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CREATE_SUCCESS);
 				}else if(StringUtils.isNotEmpty(model) && model.equals("cunkuan")) {
@@ -1008,6 +1017,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_4"));
+					
 					String id = customerCreditEvaluationService.insertCustomerCreditEvaluation(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CREATE_SUCCESS);
 				}else if(StringUtils.isNotEmpty(model) && model.equals("gujin")) {
@@ -1024,6 +1036,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_5"));
+					
 					String id = customerCreditEvaluationService.insertCustomerCreditEvaluation(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CREATE_SUCCESS);
 				}else if(StringUtils.isNotEmpty(model) && model.equals("needGuaraLocal")) {
@@ -1042,7 +1057,7 @@ public class CustomerInforUpdateController extends BaseController {
 						String applicantCreditUsedMax = request.getParameter("applicantCreditUsedMax"); 
 						String applicantCreditTotalQuota = request.getParameter("applicantCreditTotalQuota"); 
 						String applicantExternalAmount = request.getParameter("applicantExternalAmount"); 
-						
+						String wetValue = request.getParameter("wetValue"); 
 						customerCreditEvaluation.setGuaranteeType(guaranteeType);
 						customerCreditEvaluation.setGuarantorPropertyValue(guarantorPropertyValue);
 						customerCreditEvaluation.setGuarantorCreditLoan(guarantorCreditLoan);
@@ -1056,6 +1071,7 @@ public class CustomerInforUpdateController extends BaseController {
 						customerCreditEvaluation.setApplicantCreditUsedMax(applicantCreditUsedMax);
 						customerCreditEvaluation.setApplicantCreditTotalQuota(applicantCreditTotalQuota);
 						customerCreditEvaluation.setApplicantExternalAmount(applicantExternalAmount);
+						customerCreditEvaluation.setWetValue(wetValue);
 						String chineseName = request.getParameter("chineseName");
 						String sex = request.getParameter("sex");
 						String cardId = request.getParameter("cardId");
@@ -1064,6 +1080,9 @@ public class CustomerInforUpdateController extends BaseController {
 						customerCreditEvaluation.setGender(sex);
 						customerCreditEvaluation.setIdCard(cardId);
 						customerCreditEvaluation.setCreatedBy(loginId);
+						
+						customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_6"));
+						
 						String id = customerCreditEvaluationService.insertCustomerCreditEvaluation(customerCreditEvaluation);
 						returnMap.addGlobalMessage(JRadConstants.CREATE_SUCCESS);
 						
@@ -1102,6 +1121,8 @@ public class CustomerInforUpdateController extends BaseController {
 						String chineseName = request.getParameter("chineseName");
 						String sex = request.getParameter("sex");
 						String cardId = request.getParameter("cardId");
+						String wetValue_1 = request.getParameter("wetValue_1");
+						
 						customerCreditEvaluation.setCustomerName(chineseName);
 						customerCreditEvaluation.setCustomerId(customerId);
 						customerCreditEvaluation.setGender(sex);
@@ -1122,6 +1143,10 @@ public class CustomerInforUpdateController extends BaseController {
 						customerCreditEvaluation.setApplicantCreditUsedMax(applicantCreditUsedMax);
 						customerCreditEvaluation.setApplicantCreditTotalQuota(applicantCreditTotalQuota);
 						customerCreditEvaluation.setApplicantExternalAmount(applicantExternalAmount);
+						customerCreditEvaluation.setWetValue(wetValue_1);
+						
+						customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_7"));
+						
 						String id = customerCreditEvaluationService.insertCustomerCreditEvaluation(customerCreditEvaluation);
 						returnMap.addGlobalMessage(JRadConstants.CREATE_SUCCESS);
 						
@@ -1146,6 +1171,9 @@ public class CustomerInforUpdateController extends BaseController {
 						String highQuailtyIndustry = request.getParameter("highQuailtyIndustry");
 						customerCreditEvaluation.setHighQuailtyIndustry(highQuailtyIndustry);
 						customerCreditEvaluation.setModelType(model);
+						
+						customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_8"));
+						
 						String id = customerCreditEvaluationService.insertCustomerCreditEvaluation(customerCreditEvaluation);
 						returnMap.addGlobalMessage(JRadConstants.CREATE_SUCCESS);
 				}
@@ -1187,7 +1215,7 @@ public class CustomerInforUpdateController extends BaseController {
 					String selfOtherValue = request.getParameter("selfOtherValue");
 					String selfTotalCreditAmount = request.getParameter("selfTotalCreditAmount");
 					String selfApplicantExternalAmount = request.getParameter("selfApplicantExternalAmount");
-					//String selfWetValue = request.getParameter("selfWetValue");
+					String selfWetValue = request.getParameter("selfWetValue");
 					String selfOtherDebitValue = request.getParameter("selfOtherDebitValue");
 					customerCreditEvaluation.setModelType(model);
 					customerCreditEvaluation.setHouseValue(selfHouseValue);
@@ -1197,7 +1225,7 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setOtherValue(selfOtherValue);
 					customerCreditEvaluation.setTotalCreditAmount(selfTotalCreditAmount);
 					customerCreditEvaluation.setApplicantExternalAmount(selfApplicantExternalAmount);
-					//customerCreditEvaluation.setWetValue(selfWetValue);
+					customerCreditEvaluation.setWetValue(selfWetValue);
 					customerCreditEvaluation.setOtherDebitValue(selfOtherDebitValue);
 					String chineseName = request.getParameter("chineseName");
 					String sex = request.getParameter("sex");
@@ -1207,6 +1235,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_1"));
+					
 					customerCreditEvaluationService.updateCustomerCreidtEvaluationByCustomerId(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CHANGE_SUCCESS);
 				}else if(StringUtils.isNotEmpty(model) && model.equals("familyHouse")) {
@@ -1218,7 +1249,7 @@ public class CustomerInforUpdateController extends BaseController {
 					String familyOtherValue = request.getParameter("familyOtherValue");
 					String familyTotalCreditAmount = request.getParameter("familyTotalCreditAmount");
 					String familyApplicantExternalAmount = request.getParameter("familyApplicantExternalAmount");
-					//String familyWetValue = request.getParameter("familyWetValue");
+					String familyWetValue = request.getParameter("familyWetValue");
 					String familyOtherDebitValue = request.getParameter("familyOtherDebitValue");
 					customerCreditEvaluation.setModelType(model);
 					customerCreditEvaluation.setHouseValue(familyHouseValue);
@@ -1228,7 +1259,7 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setOtherValue(familyOtherValue);
 					customerCreditEvaluation.setTotalCreditAmount(familyTotalCreditAmount);
 					customerCreditEvaluation.setApplicantExternalAmount(familyApplicantExternalAmount);
-					//customerCreditEvaluation.setWetValue(familyWetValue);
+					customerCreditEvaluation.setWetValue(familyWetValue);
 					customerCreditEvaluation.setOtherDebitValue(familyOtherDebitValue);
 					String chineseName = request.getParameter("chineseName");
 					String sex = request.getParameter("sex");
@@ -1238,6 +1269,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_2"));
+					
 					customerCreditEvaluationService.updateCustomerCreidtEvaluationByCustomerId(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CHANGE_SUCCESS);
 					
@@ -1275,6 +1309,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_3"));
+					
 					customerCreditEvaluationService.updateCustomerCreidtEvaluationByCustomerId(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CHANGE_SUCCESS);
 				}else if(StringUtils.isNotEmpty(model) && model.equals("cunkuan")) {
@@ -1289,6 +1326,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_4"));
+					
 					customerCreditEvaluationService.updateCustomerCreidtEvaluationByCustomerId(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CHANGE_SUCCESS);
 				}else if(StringUtils.isNotEmpty(model) && model.equals("gujin")) {
@@ -1305,6 +1345,9 @@ public class CustomerInforUpdateController extends BaseController {
 					customerCreditEvaluation.setGender(sex);
 					customerCreditEvaluation.setIdCard(cardId);
 					customerCreditEvaluation.setCreatedBy(loginId);
+					
+					customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_5"));
+					
 					customerCreditEvaluationService.updateCustomerCreidtEvaluationByCustomerId(customerCreditEvaluation);
 					returnMap.addGlobalMessage(JRadConstants.CHANGE_SUCCESS);
 				}else if(StringUtils.isNotEmpty(model) && model.equals("needGuaraLocal")) {
@@ -1323,7 +1366,7 @@ public class CustomerInforUpdateController extends BaseController {
 						String applicantCreditUsedMax = request.getParameter("applicantCreditUsedMax"); 
 						String applicantCreditTotalQuota = request.getParameter("applicantCreditTotalQuota"); 
 						String applicantExternalAmount = request.getParameter("applicantExternalAmount"); 
-						
+						String wetValue = request.getParameter("wetValue"); 
 						customerCreditEvaluation.setGuaranteeType(guaranteeType);
 						customerCreditEvaluation.setGuarantorPropertyValue(guarantorPropertyValue);
 						customerCreditEvaluation.setGuarantorCreditLoan(guarantorCreditLoan);
@@ -1337,6 +1380,7 @@ public class CustomerInforUpdateController extends BaseController {
 						customerCreditEvaluation.setApplicantCreditUsedMax(applicantCreditUsedMax);
 						customerCreditEvaluation.setApplicantCreditTotalQuota(applicantCreditTotalQuota);
 						customerCreditEvaluation.setApplicantExternalAmount(applicantExternalAmount);
+						customerCreditEvaluation.setWetValue(wetValue);
 						String chineseName = request.getParameter("chineseName");
 						String sex = request.getParameter("sex");
 						String cardId = request.getParameter("cardId");
@@ -1345,6 +1389,9 @@ public class CustomerInforUpdateController extends BaseController {
 						customerCreditEvaluation.setGender(sex);
 						customerCreditEvaluation.setIdCard(cardId);
 						customerCreditEvaluation.setCreatedBy(loginId);
+						
+						customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_6"));
+						
 						customerCreditEvaluationService.updateCustomerCreidtEvaluationByCustomerId(customerCreditEvaluation);
 						returnMap.addGlobalMessage(JRadConstants.CHANGE_SUCCESS);
 						
@@ -1375,6 +1422,7 @@ public class CustomerInforUpdateController extends BaseController {
 						String chineseName = request.getParameter("chineseName");
 						String sex = request.getParameter("sex");
 						String cardId = request.getParameter("cardId");
+						String wetValue_1 = request.getParameter("wetValue_1");
 						customerCreditEvaluation.setCustomerName(chineseName);
 						customerCreditEvaluation.setCustomerId(customerId);
 						customerCreditEvaluation.setGender(sex);
@@ -1395,6 +1443,9 @@ public class CustomerInforUpdateController extends BaseController {
 						customerCreditEvaluation.setApplicantCreditUsedMax(applicantCreditUsedMax);
 						customerCreditEvaluation.setApplicantCreditTotalQuota(applicantCreditTotalQuota);
 						customerCreditEvaluation.setApplicantExternalAmount(applicantExternalAmount);
+						customerCreditEvaluation.setWetValue(wetValue_1);
+						customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_7"));
+						
 						customerCreditEvaluationService.updateCustomerCreidtEvaluationByCustomerId(customerCreditEvaluation);
 						returnMap.addGlobalMessage(JRadConstants.CHANGE_SUCCESS);
 						
@@ -1411,6 +1462,19 @@ public class CustomerInforUpdateController extends BaseController {
 						String highQuailtyIndustry = request.getParameter("highQuailtyIndustry");
 						customerCreditEvaluation.setHighQuailtyIndustry(highQuailtyIndustry);
 						customerCreditEvaluation.setModelType(model);
+						
+						String chineseName = request.getParameter("chineseName");
+						String sex = request.getParameter("sex");
+						String cardId = request.getParameter("cardId");
+						
+						customerCreditEvaluation.setCustomerName(chineseName);
+						customerCreditEvaluation.setCustomerId(customerId);
+						customerCreditEvaluation.setGender(sex);
+						customerCreditEvaluation.setIdCard(cardId);
+						customerCreditEvaluation.setCreatedBy(loginId);
+						
+						customerCreditEvaluation.setCreditLimit(request.getParameter("credit_limit_8"));
+						
 					    customerCreditEvaluationService.updateCustomerCreidtEvaluationByCustomerId(customerCreditEvaluation);
 						returnMap.addGlobalMessage(JRadConstants.CHANGE_SUCCESS);
 				}

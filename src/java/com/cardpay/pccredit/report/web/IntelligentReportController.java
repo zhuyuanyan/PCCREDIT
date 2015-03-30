@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.report.model.IntelligentAccountReport;
 import com.cardpay.pccredit.report.model.IntelligentCustomerReport;
 import com.cardpay.pccredit.report.model.PostLoanManagementData;
 import com.cardpay.pccredit.report.service.IntelligentReportService;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
+import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 /**
@@ -66,6 +69,13 @@ public class IntelligentReportController extends BaseController {
 		List<IntelligentAccountReport> result = intelligentReportService.findIntelligentAccountReport();
 		mv.addObject("result", result);
 		return mv;
+		
+		/*QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
+
+		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("filter", filter);
+		return mv;*/
 	}
 	/**
 	 * 贷后管理数据

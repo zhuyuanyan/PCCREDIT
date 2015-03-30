@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
 <style>
 .form-l .form-r{height:32px;}
+b{color:#366fb2;}
 </style>
 
 <body class="whitebg">
@@ -59,33 +60,39 @@
 						</tr>
 						<tr>
 							<td><label>房产价值：</label></td>
-                            <td><input name="selfHouseValue" id="houseValue" type="text" value="$!customerCreidtEvaluation.houseValue"/></td>
+                            <td><input name="selfHouseValue" id="houseValue" type="text" value="$!customerCreidtEvaluation.houseValue" onchange="YFZY_JZC()"/></td>
                 			<td><label>征信贷款剩余金额：</label></td>
-							<td><input name="selfDebitRemainingValue" id="debitRemainingValue" type="text" value="$!customerCreidtEvaluation.debitRemainingValue"/></td>
+							<td><input name="selfDebitRemainingValue" id="debitRemainingValue" type="text" value="$!customerCreidtEvaluation.debitRemainingValue" onchange="YFZY_JZC()"/></td>
 						</tr>
 						<tr>
 							<td><label>车产价值：</label></td>
-							<td><input name="selfCarValue" id="carValue" type="text" value="$!customerCreidtEvaluation.carValue"/></td>
+							<td><input name="selfCarValue" id="carValue" type="text" value="$!customerCreidtEvaluation.carValue" onchange="YFZY_JZC()"/></td>
                             <td><label>贷记卡授信总额/已用额度/最近6月平均使用额度(三者取最大):</label></td>
-							<td><input name="selfTotalUsedAmountMax" id="totalUsedAmountMax" type="text" value="$!customerCreidtEvaluation.totalUsedAmountMax" /></td>
+							<td><input name="selfTotalUsedAmountMax" id="totalUsedAmountMax" type="text" value="$!customerCreidtEvaluation.totalUsedAmountMax" onchange="YFZY_JZC()"/></td>
 						</tr>
 						<tr>
 							<td><label>其他资产:</label></td>
-                			<td><input name="selfOtherValue" id="otherValue" type="text" value="$!customerCreidtEvaluation.otherValue" /></td>
+                			<td><input name="selfOtherValue" id="otherValue" type="text" value="$!customerCreidtEvaluation.otherValue" onchange="YFZY_JZC()"/></td>
                             <td><label>贷记卡总授信额度:</label></td>
-							<td><input name="selfTotalCreditAmount" id="totalCreditAmount" type="text" value="$!customerCreidtEvaluation.totalCreditAmount" /></td>
+							<td><input name="selfTotalCreditAmount" id="totalCreditAmount" type="text" value="$!customerCreidtEvaluation.totalCreditAmount" onchange="YFZY_JZC()"/></td>
 						</tr>
 						<tr>
 							<td></td>
                 			<td></td>
                             <td><label>对外担保金额:</label></td>
-							<td><input id="applicantExternalAmount" type="text" name="selfApplicantExternalAmount" value="$!customerCreidtEvaluation.applicantExternalAmount"></td>
+							<td><input id="applicantExternalAmount" type="text" name="selfApplicantExternalAmount" value="$!customerCreidtEvaluation.applicantExternalAmount" onchange="YFZY_JZC()"></td>
 						</tr>
                         <tr>
                         	<td><label>净资产：</label></td>
                 			<td><input id="wetValue" type="text" readonly="readonly" class="readonly" name="selfWetValue" value="$!customerCreidtEvaluation.wetValue"></td>
                             <td><label>其他负债:</label></td>
-							<td><input id="otherDebitValue" type="text" name="selfOtherDebitValue" value="$!customerCreidtEvaluation.otherDebitValue"></td>
+							<td><input id="otherDebitValue" type="text" name="selfOtherDebitValue" value="$!customerCreidtEvaluation.otherDebitValue" onchange="YFZY_JZC()"></td>
+						</tr>
+						<tr>
+                        	<td><label>额度上限：</label></td>
+                			<td><b><input name="credit_limit_1" value="$!customerCreidtEvaluation.creditLimit" id="selfEDSX" ></input>万</b></td>
+							<td></td>
+                			<td></td>
 						</tr>
                         <!--<tr>
                         	<td><label><input type="text" id="" name=""/></label></td>
@@ -111,33 +118,39 @@
 						</tr>
 						<tr>
 							<td><label>房产价值：</label></td>
-                            <td><input name="familyHouseValue" id="" type="text" value="$!customerCreidtEvaluation.houseValue"/></td>
+                            <td><input name="familyHouseValue" id="" type="text" value="$!customerCreidtEvaluation.houseValue" onchange="YFJY_JZC()"/></td>
                 			<td><label>征信贷款剩余金额：</label></td>
-							<td><input name="familyDebitRemainingValue" id="" type="text" value="$!customerCreidtEvaluation.debitRemainingValue" /></td>
+							<td><input name="familyDebitRemainingValue" id="" type="text" value="$!customerCreidtEvaluation.debitRemainingValue" onchange="YFJY_JZC()"/></td>
 						</tr>
 						<tr>
 							<td><label>车产价值：</label></td>
-							<td><input name="familyCarValue" id="" type="text"  value="$!customerCreidtEvaluation.carValue"/></td>
+							<td><input name="familyCarValue" id="" type="text"  value="$!customerCreidtEvaluation.carValue" onchange="YFJY_JZC()"/></td>
                             <td><label>贷记卡授信总额/已用额度/最近6月平均使用额度(三者取最大):</label></td>
-							<td><input name="familyTotalUsedAmountMax" id="" type="text" value="$!customerCreidtEvaluation.totalUsedAmountMax" /></td>
+							<td><input name="familyTotalUsedAmountMax" id="" type="text" value="$!customerCreidtEvaluation.totalUsedAmountMax" onchange="YFJY_JZC()"/></td>
 						</tr>
 						<tr>
 							<td><label>其他资产:</label></td>
-                			<td><input name="familyOtherValue" id="" type="text" value="$!customerCreidtEvaluation.otherValue"/></td>
+                			<td><input name="familyOtherValue" id="" type="text" value="$!customerCreidtEvaluation.otherValue" onchange="YFJY_JZC()"/></td>
                             <td><label>贷记卡总授信额度:</label></td>
-							<td><input name="familyTotalCreditAmount" id="" type="text" value="$!customerCreidtEvaluation.totalCreditAmount"/></td>
+							<td><input name="familyTotalCreditAmount" id="" type="text" value="$!customerCreidtEvaluation.totalCreditAmount" onchange="YFJY_JZC()"/></td>
 						</tr>
 						<tr>
 							<td></td>
                 			<td></td>
                             <td><label>对外担保金额:</label></td>
-							<td><input id="familyApplicantExternalAmount" type="text" name="familyApplicantExternalAmount" value="$!customerCreidtEvaluation.applicantExternalAmount"></td>
+							<td><input id="familyApplicantExternalAmount" type="text" name="familyApplicantExternalAmount" value="$!customerCreidtEvaluation.applicantExternalAmount" onchange="YFJY_JZC()"></td>
 						</tr>
                         <tr>
                         	<td><label>净资产：</label></td>
                 			<td><input id="" type="text" readonly="readonly" class="readonly" name="familyWetValue" value="$!customerCreidtEvaluation.wetValue"></td>
                             <td><label>其他负债:</label></td>
-							<td><input id="" type="text" name="familyOtherDebitValue" value="$!customerCreidtEvaluation.otherDebitValue"></td>
+							<td><input id="" type="text" name="familyOtherDebitValue" value="$!customerCreidtEvaluation.otherDebitValue" onchange="YFJY_JZC()"></td>
+						</tr>
+						<tr>
+                        	<td><label>额度上限：</label></td>
+                			<td><b><input name="credit_limit_2" value="$!customerCreidtEvaluation.creditLimit" id="familyEDSX" ></input>万</b></td>
+							<td></td>
+                			<td></td>
 						</tr>
                         <!--<tr>
                         	<td><label><input type="text" id="" name=""/></label></td>
@@ -163,7 +176,7 @@
 						</tr>
 						<tr>
 							<td><label>日均流水大于1万：</label></td>
-							<td><select name="dailyFlowOver10000">
+							<td><select name="dailyFlowOver10000" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.dailyFlowOver10000")
 							</select></td>
@@ -171,7 +184,7 @@
 						</tr>
 						<tr>
 							<td><label>年龄35-50岁：</label></td>
-							<td><select name="age3550">
+							<td><select name="age3550" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.age3550")
 							</select></td>
@@ -179,7 +192,7 @@
 						</tr>
 						<tr>
 							<td><label>岛内（思明区/湖里区）：</label></td>
-							<td><select name="inland">
+							<td><select name="inland" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.inland")
 							</select></td>
@@ -187,7 +200,7 @@
 						</tr>
                         <tr>
 							<td><label>已婚：</label></td>
-							<td><select name="married">
+							<td><select name="married" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.married")
 							</select></td>
@@ -195,7 +208,7 @@
 						</tr>
 					    <tr>
 							<td><label>有征信记录：</label></td>
-							<td><select name="haveRecord">
+							<td><select name="haveRecord" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.haveRecord")
 							</select></td>
@@ -203,14 +216,14 @@
 						</tr>
                         <tr>
 							<td><label>征信贷记卡使用情况（低于70%）：</label></td>
-							<td><select name="creidtBelow70per">
+							<td><select name="creidtBelow70per" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.creidtBelow70per")
 							</select></td>
 						</tr>
                         <tr>
 							<td><label>性别（女）：</label></td>
-							<td><select name="sexFemale">
+							<td><select name="sexFemale" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.sexFemale")
 							</select></td>
@@ -218,7 +231,7 @@
 						</tr>
                         <tr>
 							<td><label>民生行业：</label></td>
-							<td><select name="livelihood">
+							<td><select name="livelihood" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.livelihood")
 							</select></td>
@@ -226,7 +239,7 @@
 						</tr>
                         <tr>
 							<td><label>我行业务品种：</label></td>
-							<td><select name="ourBusiness">
+							<td><select name="ourBusiness" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.ourBusiness")
 							</select></td>
@@ -234,7 +247,7 @@
 						</tr>
                         <tr>
 							<td><label>在我行有贷款余额的：</label></td>
-							<td><select name="haveLoans">
+							<td><select name="haveLoans" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.haveLoans")
 							</select></td>
@@ -242,7 +255,7 @@
 						</tr>
                         <tr>
 							<td><label>车产价值大于5万：</label></td>
-							<td><select name="carValueOver5">
+							<td><select name="carValueOver5" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.carValueOver5")
 							</select></td>
@@ -250,13 +263,16 @@
 						</tr>
                         <tr>
 							<td><label>个体户经营年限大于1年：</label></td>
-							<td><select name="selfBusinessLifeOver1">
+							<td><select name="selfBusinessLifeOver1" onchange="WFBDKH_ZGZED()">
 							<option  value="">---请选择---</option>
 							#dict("YESNO","$!customerCreidtEvaluation.selfBusinessLifeOver1")
 							</select></td>
 							
+						</tr>                        
+                        <tr>
+							<td><label>最高总额度：</label></td>
+							<td><b><input name="credit_limit_3" value="$!customerCreidtEvaluation.creditLimit" id="ZGZED" ></input>万</b></td>							
 						</tr>
-                        
 						</table>
                 
                 <!--无房客户-我行有存款 Start-->
@@ -275,8 +291,13 @@
 					
                         <tr>
 							<td><label>我行日均流水：</label></td>
-                            <td><input name="averageDailyFlow" id="" type="text"  value="$!customerCreidtEvaluation.averageDailyFlow"/></td>
+                            <td><input name="averageDailyFlow" id="" type="text"  value="$!customerCreidtEvaluation.averageDailyFlow" onchange="WFYCK_EDSX()"/></td>
                             <td>在我行有存款的，按照存款年日均的50%，最高不超过15万</td>
+						</tr>						                     
+                        <tr>
+							<td><label>额度上限：</label></td>
+							<td><b><input name="credit_limit_4" value="$!customerCreidtEvaluation.creditLimit" id="wfyckEdsx" ></input>万</b></td>								
+							<td></td>
 						</tr>
 						</table>
                         
@@ -296,15 +317,19 @@
 						
 						<tr>
 							<td><label>股金价值：</label></td>
-							<td><input name="capitalValue" id="" type="text" value="$!customerCreidtEvaluation.capitalValue"/></td>
+							<td><input name="capitalValue" id="" type="text" value="$!customerCreidtEvaluation.capitalValue" onchange="WFYGJ_EDSX()"/></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td><label>家庭在我行授信额度：</label></td>
-							<td><input name="familyLineCredit" id="" type="text" value="$!customerCreidtEvaluation.familyLineCredit" /></td>
+							<td><input name="familyLineCredit" id="" type="text" value="$!customerCreidtEvaluation.familyLineCredit" onchange="WFYGJ_EDSX()"/></td>
 							<td>持我行股金的，股金价值覆盖家庭在我行剩余授信余额后的部分</td>
+						</tr>                       						                     
+                        <tr>
+							<td><label>额度上限：</label></td>
+							<td><b><input name="credit_limit_5" value="$!customerCreidtEvaluation.creditLimit" id="wfygjEdsx" ></input>万</b></td>															
+							<td></td>
 						</tr>
-                       
 						</table> 
             
             	<!--无房需担保本地客户 Start--> 
@@ -321,7 +346,7 @@
                         <tr>
 							<td><label>担保人：</label></td>
                             <td>
-                            	<select name="guaranteeType" id="assure_1" onchange="change_2()">
+                            	<select name="guaranteeType" id="assure_1" onchange="change_2();DBBDKU_EDSX();">
                             		<option #if($!customerCreidtEvaluation.guaranteeType=='haveHouseGuarantee') selected="selected" #end value="haveHouseGuarantee">有房担保人</option>
                                     <option #if($!customerCreidtEvaluation.guaranteeType=='nohouseGuarantee') selected="selected" #end vaule="nohouseGuarantee">无房担保人</option>
                             	</select>
@@ -330,56 +355,64 @@
 						</tr>
 						<tr>
 							<td><label>担保人房产价值：</label></td>
-                            <td><input name="guarantorPropertyValue" id="guarantorPropertyValue_1" type="text" value="$!customerCreidtEvaluation.guarantorPropertyValue" /></td>
+                            <td><input name="guarantorPropertyValue" id="guarantorPropertyValue_1" type="text" value="$!customerCreidtEvaluation.guarantorPropertyValue" onchange="DBBDKU_JZC()"/></td>
                 			<td><label>担保人征信贷款剩余金额：</label></td>
-							<td><input name="guarantorCreditLoan" id="guarantorCreditLoan_1" type="text" value="$!customerCreidtEvaluation.guarantorCreditLoan" /></td>
+							<td><input name="guarantorCreditLoan" id="guarantorCreditLoan_1" type="text" value="$!customerCreidtEvaluation.guarantorCreditLoan" onchange="DBBDKU_JZC()"/></td>
 						</tr>
 						<tr>
 							<td><label>担保人车产价值：</label></td>
-							<td><input name="guarantorCarValue" id="guarantorCarValue_1" type="text" value="$!customerCreidtEvaluation.guarantorCarValue"/></td>
+							<td><input name="guarantorCarValue" id="guarantorCarValue_1" type="text" value="$!customerCreidtEvaluation.guarantorCarValue" onchange="DBBDKU_JZC()"/></td>
                             <td><label>担保人贷记卡授信总额/已用额度/最近6月平均使用额度(三者取最大):</label></td>
-							<td><input name="guarantorCreditUsedMax" id="guarantorCreditUsedMax_1" type="text" value="$!customerCreidtEvaluation.guarantorCreditUsedMax"/></td>
+							<td><input name="guarantorCreditUsedMax" id="guarantorCreditUsedMax_1" type="text" value="$!customerCreidtEvaluation.guarantorCreditUsedMax" onchange="DBBDKU_JZC()"/></td>
 						</tr>
 						<tr>
 							<td><label>担保人其他资产:</label></td>
-                			<td><input name="guarantorOtherAssets" id="guarantorOtherAssets_1" type="text" value="$!customerCreidtEvaluation.guarantorOtherAssets" /></td>
+                			<td><input name="guarantorOtherAssets" id="guarantorOtherAssets_1" type="text" value="$!customerCreidtEvaluation.guarantorOtherAssets" onchange="DBBDKU_JZC()"/></td>
                             <td><label>担保人准贷记卡总授信额度:</label></td>
-							<td><input name="guarantorCreditTotalLimit" id="guarantorCreditTotalLimit_1" type="text" value="$!customerCreidtEvaluation.guarantorCreditTotalLimit" /></td>
+							<td><input name="guarantorCreditTotalLimit" id="guarantorCreditTotalLimit_1" type="text" value="$!customerCreidtEvaluation.guarantorCreditTotalLimit" onchange="DBBDKU_JZC()"/></td>
 						</tr>
                         <tr>
 							<td><label>申请人资产:</label></td>
-                			<td><input name="applicantAssets" id="applicantAssets_1" type="text" value="$!customerCreidtEvaluation.applicantAssets"/></td>
+                			<td><input name="applicantAssets" id="applicantAssets_1" type="text" value="$!customerCreidtEvaluation.applicantAssets" onchange="DBBDKU_JZC()"/></td>
                             <td><label>对外担保金额:</label></td>
-							<td><input name="guarantorExternalAmount" id="guarantorExternalAmount_1" type="text" value="$!customerCreidtEvaluation.guarantorExternalAmount" /></td>
+							<td><input name="guarantorExternalAmount" id="guarantorExternalAmount_1" type="text" value="$!customerCreidtEvaluation.guarantorExternalAmount" onchange="DBBDKU_JZC()" /></td>
 						</tr>
 						<tr>
 							<td></td>
                 			<td></td>
                             <td><label>申请人征信贷款剩余金额：</label></td>
-							<td><input name="applicantCreditLoanSum" id="applicantCreditLoanSum_1" type="text" value="$!customerCreidtEvaluation.applicantCreditLoanSum"></td>
+							<td><input name="applicantCreditLoanSum" id="applicantCreditLoanSum_1" type="text" value="$!customerCreidtEvaluation.applicantCreditLoanSum" onchange="DBBDKU_JZC()"></td>
 						</tr>
                         <tr>
 							<td></td>
                 			<td></td>
                             <td><label>申请人贷记卡授信总额/已用额度/最近6月平均使用额度(三者取最大):</label></td>
-							<td><input name="applicantCreditUsedMax" id="applicantCreditUsedMax_1" type="text" value="$!customerCreidtEvaluation.applicantCreditUsedMax"></td>
+							<td><input name="applicantCreditUsedMax" id="applicantCreditUsedMax_1" type="text" value="$!customerCreidtEvaluation.applicantCreditUsedMax" onchange="DBBDKU_JZC()"></td>
 						</tr>
                         <tr>
 							<td></td>
                 			<td></td>
                             <td><label>申请人贷记卡总授信额度:</label></td>
-							<td><input name="applicantCreditTotalQuota" id="applicantCreditTotalQuota_1" type="text" value="$!customerCreidtEvaluation.applicantCreditTotalQuota" /></td>
+							<td><input name="applicantCreditTotalQuota" id="applicantCreditTotalQuota_1" type="text" value="$!customerCreidtEvaluation.applicantCreditTotalQuota"  onchange="DBBDKU_JZC()"/></td>
 						</tr>
                         <tr>
 							<td><label>净资产：</label></td>
                 			<td><input id="wetValue_1" type="text" readonly="readonly" class="readonly" name="wetValue" value="$!customerCreidtEvaluation.wetValue"></td>
                             <td><label>申请人对外担保金额:</label></td>
-							<td><input name="applicantExternalAmount" id="applicantExternalAmount_1" type="text" value="$!customerCreidtEvaluation.applicantExternalAmount" /></td>
+							<td><input name="applicantExternalAmount" id="applicantExternalAmount_1" type="text" value="$!customerCreidtEvaluation.applicantExternalAmount"  onchange="DBBDKU_JZC()"/></td>
 						</tr>
                         <tr>
                         	<td><label>担保人数：</label></td>
-                            <td><input name="guarantorAmount" id="guarantorAmount_1" class="readonly" readonly="readonly" type="text" value="$!customerCreidtEvaluation.guarantorAmount" /></td>
-                        </tr>                   
+                            <td><input name="guarantorAmount" id="guarantorAmount_1" class="readonly" readonly="readonly" type="text" value="$!customerCreidtEvaluation.guarantorAmount" onchange="DBBDKU_EDSX()"/></td>
+							<td></td>
+                			<td></td>
+						</tr>						
+						<tr>
+							<td><label>额度上限：</label></td>
+                			<td><b><input name="credit_limit_6" value="$!customerCreidtEvaluation.creditLimit" id="EDSX" ></input>万</b></td>
+                            <td></td>
+							<td></td>
+						</tr>
 						</table> 
     
                 <!--无房需担保外地客户 Start-->
@@ -405,56 +438,64 @@
 						</tr>
 						<tr>
 							<td><label>担保人房产价值：</label></td>
-                            <td><input name="guarantorPropertyValue_1" id="guarantorPropertyValue" type="text" value="$!customerCreidtEvaluation.guarantorPropertyValue"/></td>
+                            <td><input name="guarantorPropertyValue_1" id="guarantorPropertyValue" type="text" value="$!customerCreidtEvaluation.guarantorPropertyValue" onchange="DBWDKU_JZC()"/></td>
                 			<td><label>担保人征信贷款剩余金额：</label></td>
-							<td><input name="guarantorCreditLoan_1" id="" type="text" value="$!customerCreidtEvaluation.guarantorCreditLoan" /></td>
+							<td><input name="guarantorCreditLoan_1" id="" type="text" value="$!customerCreidtEvaluation.guarantorCreditLoan" onchange="DBWDKU_JZC()"/></td>
 						</tr>
 						<tr>
 							<td><label>担保人车产价值：</label></td>
-							<td><input name="guarantorCarValue_1" id="guarantorCarValue" type="text" value="$!customerCreidtEvaluation.guarantorCarValue"/></td>
+							<td><input name="guarantorCarValue_1" id="guarantorCarValue" type="text" value="$!customerCreidtEvaluation.guarantorCarValue" onchange="DBWDKU_JZC()"/></td>
                             <td><label>担保人贷记卡授信总额/已用额度/最近6月平均使用额度(三者取最大):</label></td>
-							<td><input name="guarantorCreditUsedMax_1" id="guarantorCreditUsedMax" type="text" value="$!customerCreidtEvaluation.guarantorCreditUsedMax"/></td>
+							<td><input name="guarantorCreditUsedMax_1" id="guarantorCreditUsedMax" type="text" value="$!customerCreidtEvaluation.guarantorCreditUsedMax" onchange="DBWDKU_JZC()"/></td>
 						</tr>
 						<tr>
 							<td><label>担保人其他资产:</label></td>
-                			<td><input name="guarantorOtherAssets_1" id="guarantorOtherAssets" type="text" value="$!customerCreidtEvaluation.guarantorOtherAssets"/></td>
+                			<td><input name="guarantorOtherAssets_1" id="guarantorOtherAssets" type="text" value="$!customerCreidtEvaluation.guarantorOtherAssets" onchange="DBWDKU_JZC()"/></td>
                             <td><label>担保人准贷记卡总授信额度:</label></td>
-							<td><input name="guarantorCreditTotalLimit_1" id="guarantorCreditTotalLimit" type="text" value="$!customerCreidtEvaluation.guarantorCreditTotalLimit"/></td>
+							<td><input name="guarantorCreditTotalLimit_1" id="guarantorCreditTotalLimit" type="text" value="$!customerCreidtEvaluation.guarantorCreditTotalLimit" onchange="DBWDKU_JZC()"/></td>
 						</tr>
                         <tr>
 							<td><label>申请人资产:</label></td>
-                			<td><input name="applicantAssets_1" id="applicantAssets" type="text" value="$!customerCreidtEvaluation.applicantAssets"/></td>
+                			<td><input name="applicantAssets_1" id="applicantAssets" type="text" value="$!customerCreidtEvaluation.applicantAssets" onchange="DBWDKU_JZC()"/></td>
                             <td><label>对外担保金额:</label></td>
-							<td><input name="guarantorExternalAmount_1" id="guarantorExternalAmount" type="text" value="$!customerCreidtEvaluation.guarantorExternalAmount"/></td>
+							<td><input name="guarantorExternalAmount_1" id="guarantorExternalAmount" type="text" value="$!customerCreidtEvaluation.guarantorExternalAmount" onchange="DBWDKU_JZC()"/></td>
 						</tr>
 						<tr>
 							<td></td>
                 			<td></td>
                             <td><label>申请人征信贷款剩余金额：</label></td>
-							<td><input name="applicantCreditLoanSum_1" id="applicantCreditLoanSum" type="text" value="$!customerCreidtEvaluation.applicantCreditLoanSum"></td>
+							<td><input name="applicantCreditLoanSum_1" id="applicantCreditLoanSum" type="text" value="$!customerCreidtEvaluation.applicantCreditLoanSum" onchange="DBWDKU_JZC()"></td>
 						</tr>
                         <tr>
 							<td></td>
                 			<td></td>
                             <td><label>申请人贷记卡授信总额/已用额度/最近6月平均使用额度(三者取最大):</label></td>
-							<td><input name="applicantCreditUsedMax_1" id="applicantCreditUsedMax" type="text" value="$!customerCreidtEvaluation.applicantCreditUsedMax"></td>
+							<td><input name="applicantCreditUsedMax_1" id="applicantCreditUsedMax" type="text" value="$!customerCreidtEvaluation.applicantCreditUsedMax" onchange="DBWDKU_JZC()"></td>
 						</tr>
                         <tr>
 							<td></td>
                 			<td></td>
                             <td><label>申请人贷记卡总授信额度:</label></td>
-							<td><input name="applicantCreditTotalQuota_1" id="applicantCreditTotalQuota" type="text"  value="$!customerCreidtEvaluation.applicantCreditTotalQuota"/></td>
+							<td><input name="applicantCreditTotalQuota_1" id="applicantCreditTotalQuota" type="text"  value="$!customerCreidtEvaluation.applicantCreditTotalQuota" onchange="DBWDKU_JZC()"/></td>
 						</tr>
                         <tr>
 							<td><label>净资产：</label></td>
                 			<td><input id="wetValue" type="text" readonly="readonly" class="readonly" name="wetValue_1" value="$!customerCreidtEvaluation.wetValue"></td>
                             <td><label>申请人对外担保金额:</label></td>
-							<td><input name="applicantExternalAmount_1" id="applicantExternalAmount" type="text" value="$!customerCreidtEvaluation.applicantExternalAmount"/></td>
+							<td><input name="applicantExternalAmount_1" id="applicantExternalAmount" type="text" value="$!customerCreidtEvaluation.applicantExternalAmount" onchange="DBWDKU_JZC()"/></td>
 						</tr>
                         <tr>
                         	<td><label>担保人数：</label></td>
                             <td><input name="guarantorAmount_1" id="guarantorAmount" class="readonly" readonly="readonly" type="text" value="$!customerCreidtEvaluation.guarantorAmount"/></td>
-                        </tr>      
+							<td></td>
+                			<td></td>
+						</tr> 												
+						<tr>
+							<td><label>额度上限：</label></td>
+                			<td><b><input name="credit_limit_7" value="$!customerCreidtEvaluation.creditLimit" id="EDSX_1" ></input>万</b></td>
+                            <td></td>
+							<td></td>
+						</tr>
 						</table>
 				
                 <!--无房优质行业客户 Start--> 
@@ -467,12 +508,16 @@
 						<tr>
 							<td><label>优质行业：</label></td>
                             <td>
-                            	<select name="highQuailtyIndustry">
+                            	<select name="highQuailtyIndustry" onchange="YZHYKU_EDSX()">
                                 	<option value="">--请选择--</option>
                             		<option  #if($!customerCreidtEvaluation.highQuailtyIndustry=='normal') selected="selected" #end value="normal">一般员工</option>
-                                    <option  #if($!customerCreidtEvaluation.highQuailtyIndustry=='middle') selected="selected" #end  value="middle">中层领导</option>
+                                    <option  #if($!customerCreidtEvaluation.highQuailtyIndustry=='middle') selected="selected" #end value="middle">中层领导</option>
                                     <option  #if($!customerCreidtEvaluation.highQuailtyIndustry=='high') selected="selected" #end value="high">高层领导</option>
                             	</select></td>
+						</tr>												
+						<tr>
+							<td><label>额度范围：</label></td>
+                			<td><b><input name="credit_limit_8" value="$!customerCreidtEvaluation.creditLimit" id="highQuailtyEDSX" ></input>万</b></td>
 						</tr>
 				</table>
 				
@@ -652,6 +697,212 @@ document.write(os.options["select='selected'"].value);
 		          });
 	     	    }
     }
+	function YFZY_JZC(){//有房客户-自有
+		var jzc=0;
+		var a1=$("#houseValue").val();//房产价值
+		var a2=$("#carValue").val();//车产价值
+		var a3=$("#otherValue").val();//其他资产
+		var b1=$("#debitRemainingValue").val();//征信贷款剩余金额
+		var b2=$("#totalUsedAmountMax").val();//贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度
+		var b3=$("#totalCreditAmount").val();//准贷记卡总授信额度
+		var b4=$("#applicantExternalAmount").val();//对外担保金额
+		var b5=$("#otherDebitValue").val();//其他负债
+		if(a1==""){a1=0;}else{a1=parseFloat(a1);}
+		if(a2==""){a2=0;}else{a2=parseFloat(a2);}
+		if(a3==""){a3=0;}else{a3=parseFloat(a3);}
+		if(b1==""){b1=0;}else{b1=parseFloat(b1);}
+		if(b2==""){b2=0;}else{b2=parseFloat(b2);}
+		if(b3==""){b3=0;}else{b3=parseFloat(b3);}
+		if(b4==""){b4=0;}else{b4=parseFloat(b4);}
+		if(b5==""){b5=0;}else{b5=parseFloat(b5);}
+		jzc=a1+a2+a3-(b1+b2+b3+b4*0.5+b5)
+		$("input[name=selfWetValue]").val(jzc);
+		if(jzc<40)
+			$("#selfEDSX").val("10");
+		if(jzc>=40&&jzc<70)
+			$("#selfEDSX").val("15");
+		if(jzc>=70&&jzc<100)
+			$("#selfEDSX").val("20");
+		if(jzc>=100&&jzc<130)
+			$("#selfEDSX").val("25");
+		if(jzc>130)
+			$("#selfEDSX").val("30");
+	}
+	function YFJY_JZC(){//有房客户-家庭所有
+		var jzc=0;
+		var a1=$("input[name=familyHouseValue]").val();//房产价值
+		var a2=$("input[name=familyCarValue]").val();//车产价值
+		var a3=$("input[name=familyOtherValue]").val();//其他资产
+		var b1=$("input[name=familyDebitRemainingValue]").val();//征信贷款剩余金额
+		var b2=$("input[name=familyTotalUsedAmountMax]").val();//贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度
+		var b3=$("input[name=familyTotalCreditAmount]").val();//准贷记卡总授信额度
+		var b4=$("input[name=familyApplicantExternalAmount]").val();//对外担保金额
+		var b5=$("input[name=familyOtherDebitValue]").val();//其他负债
+		if(a1==""){a1=0;}else{a1=parseFloat(a1);}
+		if(a2==""){a2=0;}else{a2=parseFloat(a2);}
+		if(a3==""){a3=0;}else{a3=parseFloat(a3);}
+		if(b1==""){b1=0;}else{b1=parseFloat(b1);}
+		if(b2==""){b2=0;}else{b2=parseFloat(b2);}
+		if(b3==""){b3=0;}else{b3=parseFloat(b3);}
+		if(b4==""){b4=0;}else{b4=parseFloat(b4);}
+		if(b5==""){b5=0;}else{b5=parseFloat(b5);}
+		jzc=a1+a2+a3-(b1+b2+b3+b4*0.5+b5)
+		$("input[name=familyWetValue]").val(jzc);
+		if(jzc<60)
+			$("#familyEDSX").val("10");
+		if(jzc>=60&&jzc<100)
+			$("#familyEDSX").val("15");
+		if(jzc>=100&&jzc<140)
+			$("#familyEDSX").val("20");
+		if(jzc>=140&&jzc<180)
+			$("#familyEDSX").val("25");
+		if(jzc>180)
+			$("#familyEDSX").val("30");
+	}
+	function WFBDKH_ZGZED(){//无房本地客户
+		var zgzed=0;
+		var a1=$("select[name=dailyFlowOver10000]").val();//日均流水大于1万
+		var a2=$("select[name=age3550]").val();//年龄35-50岁
+		var a3=$("select[name=inland]").val();//岛内（思明区/湖里区）
+		var a4=$("select[name=married]").val();//已婚
+		var a5=$("select[name=haveRecord]").val();//有征信记录
+		var a6=$("select[name=creidtBelow70per]").val();//征信贷记卡使用情况（低于70%）
+		var a7=$("select[name=sexFemale]").val();//性别（女）
+		var a8=$("select[name=livelihood]").val();//民生行业
+		var a9=$("select[name=ourBusiness]").val();//我行业务品种
+		var a10=$("select[name=haveLoans]").val();//我行业务品种
+		var a11=$("select[name=carValueOver5]").val();//车产价值大于5万
+		var a12=$("select[name=selfBusinessLifeOver1]").val();//个体户经营年限大于1年
+		if(a1=="YES"){b1=2;}else{b1=0;}
+		if(a2=="YES"){b2=2;}else{b2=0;}
+		if(a3=="YES"){b3=2;}else{b3=0;}
+		if(a4=="YES"){b4=1;}else{b4=0;}
+		if(a5=="YES"){b5=2;}else{b5=0;}
+		if(a6=="YES"){b6=2;}else{b6=0;}
+		if(a7=="YES"){b7=1;}else{b7=0;}
+		if(a8=="YES"){b8=1;}else{b8=0;}
+		if(a9=="YES"){b9=1;}else{b9=0;}
+		if(a10=="YES"){b10=5;}else{b10=0;}
+		if(a11=="YES"){b11=2;}else{b11=0;}
+		if(a12=="YES"){b12=2;}else{b12=0;}
+		zgzed=2+b1+b2+b3+b4+b5+b6+b7+b8+b9+b10+b11+b12;
+		$("#ZGZED").val(zgzed);	
+	}
+	function WFYCK_EDSX(){//无房客户-我行有存款
+		var edsx=0;
+		var a1=$("input[name=averageDailyFlow]").val();//我行日均流水
+		if(a1==""){a1=0;}else{a1=parseFloat(a1);}
+		edsx=a1*0.5;
+		if(edsx<15)
+			$("#wfyckEdsx").val(edsx);	
+		else
+			$("#wfyckEdsx").val("15");	
+	}
+	function WFYGJ_EDSX(){//无房客户-我行有股金
+		var edsx=0;
+		var a1=$("input[name=capitalValue]").val();//股金价值
+		var a2=$("input[name=familyLineCredit]").val();//家庭在我行授信额度
+		if(a1==""){a1=0;}else{a1=parseFloat(a1);}
+		if(a2==""){a2=0;}else{a2=parseFloat(a2);}
+		edsx=a1-a2;
+		$("#wfygjEdsx").val(edsx);	
+	}
+	function DBBDKU_JZC(){//无房需担保本地客户-有房净资产
+		var jzc=0;
+		var a1=$("input[name=guarantorPropertyValue]").val();//担保人房产价值
+		var a2=$("input[name=guarantorCarValue]").val();//担保人车产价值
+		var a3=$("input[name=guarantorOtherAssets]").val();//担保人其他资产
+		var a4=$("input[name=applicantAssets]").val();//申请人资产
+		var b1=$("input[name=guarantorCreditLoan]").val();//担保人征信贷款剩余金额
+		var b2=$("input[name=guarantorCreditUsedMax]").val();//担保人贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度
+		var b3=$("input[name=guarantorCreditTotalLimit]").val();//担保人准贷记卡总授信额度
+		var b4=$("input[name=guarantorExternalAmount]").val();//担保人对外担保金额*0.5
+		var b5=$("input[name=applicantCreditLoanSum]").val();//申请人征信贷款剩余金额
+		var b6=$("input[name=applicantCreditUsedMax]").val();//申请人贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度
+		var b7=$("input[name=applicantCreditTotalQuota]").val();//申请人准贷记卡总授信额度
+		var b8=$("input[name=applicantExternalAmount]").val();//申请人对外担保金额*0.5
+		if(a1==""){a1=0;}else{a1=parseFloat(a1);}
+		if(a2==""){a2=0;}else{a2=parseFloat(a2);}
+		if(a3==""){a3=0;}else{a3=parseFloat(a3);}
+		if(a4==""){a4=0;}else{a4=parseFloat(a4);}
+		if(b1==""){b1=0;}else{b1=parseFloat(b1);}
+		if(b2==""){b2=0;}else{b2=parseFloat(b2);}
+		if(b3==""){b3=0;}else{b3=parseFloat(b3);}
+		if(b4==""){b4=0;}else{b4=parseFloat(b4);}
+		if(b5==""){b5=0;}else{b5=parseFloat(b5);}
+		if(b6==""){b6=0;}else{b6=parseFloat(b6);}
+		if(b7==""){b7=0;}else{b7=parseFloat(b7);}
+		if(b8==""){b8=0;}else{b8=parseFloat(b8);}
+		jzc=a1+a2+a3+a4-(b1+b2+b3+b4*0.5+b5+b6+b7+b8*0.5)
+		$("input[name=wetValue]").val(jzc);
+		DBBDKU_EDSX();
+	}
+	function DBBDKU_EDSX(){//无房需担保本地客户-额度上限
+		if($("select[name=guaranteeType]").val()=="haveHouseGuarantee"){//有房
+			var jzc=$("input[name=wetValue]").val();
+			if(jzc<60)
+				$("#EDSX").val("8");
+			if(jzc>=60&&jzc<100)
+				$("#EDSX").val("10");
+			if(jzc>=100&&jzc<150)
+				$("#EDSX").val("15");
+			if(jzc>150)
+				$("#EDSX").val("20");
+		}
+		else{//无房
+			var dbrs=$("input[name=guarantorAmount]").val()
+			if(dbrs==""){dbrs=0;}else{dbrs=parseInt(dbrs);}			
+			if(dbrs*5<20)
+				$("#EDSX").val(dbrs*5);	
+			else
+				$("#EDSX").val("20");
+		}		
+	}
+	function DBWDKU_JZC(){//无房需担保外地客户
+		var jzc=0;
+		var a1=$("input[name=guarantorPropertyValue_1]").val();//担保人房产价值
+		var a2=$("input[name=guarantorCarValue_1]").val();//担保人车产价值
+		var a3=$("input[name=guarantorOtherAssets_1]").val();//担保人其他资产
+		var a4=$("input[name=applicantAssets_1]").val();//申请人资产
+		var b1=$("input[name=guarantorCreditLoan_1]").val();//担保人征信贷款剩余金额
+		var b2=$("input[name=guarantorCreditUsedMax_1]").val();//担保人贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度
+		var b3=$("input[name=guarantorCreditTotalLimit_1]").val();//担保人准贷记卡总授信额度
+		var b4=$("input[name=guarantorExternalAmount_1]").val();//担保人对外担保金额*0.5
+		var b5=$("input[name=applicantCreditLoanSum_1]").val();//申请人征信贷款剩余金额
+		var b6=$("input[name=applicantCreditUsedMax_1]").val();//申请人贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度
+		var b7=$("input[name=applicantCreditTotalQuota_1]").val();//申请人准贷记卡总授信额度
+		var b8=$("input[name=applicantExternalAmount_1]").val();//申请人对外担保金额*0.5
+		if(a1==""){a1=0;}else{a1=parseFloat(a1);}
+		if(a2==""){a2=0;}else{a2=parseFloat(a2);}
+		if(a3==""){a3=0;}else{a3=parseFloat(a3);}
+		if(a4==""){a4=0;}else{a4=parseFloat(a4);}
+		if(b1==""){b1=0;}else{b1=parseFloat(b1);}
+		if(b2==""){b2=0;}else{b2=parseFloat(b2);}
+		if(b3==""){b3=0;}else{b3=parseFloat(b3);}
+		if(b4==""){b4=0;}else{b4=parseFloat(b4);}
+		if(b5==""){b5=0;}else{b5=parseFloat(b5);}
+		if(b6==""){b6=0;}else{b6=parseFloat(b6);}
+		if(b7==""){b7=0;}else{b7=parseFloat(b7);}
+		if(b8==""){b8=0;}else{b8=parseFloat(b8);}
+		jzc=a1+a2+a3+a4-(b1+b2+b3+b4*0.5+b5+b6+b7+b8*0.5)
+		$("input[name=wetValue_1]").val(jzc);
+		if(jzc<80)
+			$("#EDSX_1").val("8");
+		if(jzc>=80&&jzc<140)
+			$("#EDSX_1").val("10");
+		if(jzc>=140&&jzc<200)
+			$("#EDSX_1").val("15");
+		if(jzc>200)
+			$("#EDSX_1").val("20");
+	}
+	function YZHYKU_EDSX(){//无房优质行业客户
+		if($("select[name=highQuailtyIndustry]").val()=="normal")//一般员工
+			$("#highQuailtyEDSX").val("3-10");
+		if($("select[name=highQuailtyIndustry]").val()=="middle")//中层领导
+			$("#highQuailtyEDSX").val("5-20");
+		if($("select[name=highQuailtyIndustry]").val()=="high")//高层领导
+			$("#highQuailtyEDSX").val("5-30");
+	}
 	</script>
 
 
