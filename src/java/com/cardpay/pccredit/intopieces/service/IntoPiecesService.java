@@ -2,13 +2,17 @@ package com.cardpay.pccredit.intopieces.service;
 
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -405,7 +409,7 @@ public class IntoPiecesService {
 	}
 	
 	/*
-	 * 导出文本格式的文件并且上传到ftp服务器上
+	 * 导出文本格式的文件并且上传到ftp服务器上(1.审批后立马传至FTP)
 	 */
 	public String exportData(String applicationId, String customerId,HttpServletResponse response) throws Exception {
 		StringBuffer content = new StringBuffer();
@@ -1828,11 +1832,11 @@ public class IntoPiecesService {
             while ((line = bufferReader.readLine()) != null)
             {
                 strBuffer.append(line);
+                //将制卡数据存入data
+                inputData(line);
             } 
         	bufferReader.close();
         	inputReader.close();
-        	//将制卡数据存入data
-        	inputData(strBuffer);
         }
         catch (IOException e)
         {
@@ -1844,68 +1848,70 @@ public class IntoPiecesService {
 	 * 导入返回文件信息
 	 * @param str
 	 */
-	private void inputData(StringBuffer str){
+	private void inputData(String str){
 		System.out.println("导入数据：");
-		IntoPiecesCardQueryFilter cardQueryFilter = new IntoPiecesCardQueryFilter();
-		//银行id
-		String bankId = str.substring(0, 4);
-		//外部系统id
-		String uuid19 = str.substring(4, 23);
-		//发卡系统申请书编号
-		String makeCardId = str.substring(23, 33);
-		//申请人证件类型
-		String cardType = str.substring(33, 35);
-		//申请人证件号码
-		String cardId = str.substring(35, 53);
-		//处理结果
-		String resultType = str.substring(53, 55);
-		String resultText = "";
-		if(resultType.equals("00")){
-			resultText = Constant.CARD_RETURN_TYPE1;
-		}else if(resultType.equals("10")){
-			resultText = Constant.CARD_RETURN_TYPE2;
-			resultText+=","+str.substring(55,str.length()-1).trim();
-		}else{
-			resultText = Constant.CARD_RETURN_TYPE3;
-			resultText+=","+str.substring(55,str.length()-1).trim();
-		}
-		
-		cardQueryFilter.setUuid19(uuid19);
-		List<IntoPiecesCardQuery>  list = intoPiecesComdao.getRetrunMakeData(cardQueryFilter);
-		if(list.size()>0){
-			IntoPiecesCardQuery card = list.get(0);
-			try {
-				//流程自动下一步
-				if(resultType.equals("00")){
-//					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
-					//制卡成功后，保存至makecard表
-					List<CardCur> curList = intoPiecesComdao.getCardNbrByCardId(cardId);
-					System.out.println(curList.size());
-					for(int i=0;i<curList.size();i++){
-						//更新madecard表
-						MakeCard makeCard = new MakeCard();
-						makeCard.setCustomerName(card.getChineseName());
-						makeCard.setCustomerIdentity(cardId);
-						makeCard.setCardNumber(curList.get(i).getCardNbr());
-						commonDao.insertObject(makeCard);
-					}
-					if(curList.size()<1){
-						//更新madecard表
-						MakeCard makeCard = new MakeCard();
-						makeCard.setCustomerName(card.getChineseName());
-						makeCard.setCardNumber(cardId);
-						commonDao.insertObject(makeCard);
-					}
+		if(str.length()>0){
+			IntoPiecesCardQueryFilter cardQueryFilter = new IntoPiecesCardQueryFilter();
+			//银行id
+			String bankId = str.substring(0, 4);
+			//外部系统id
+			String uuid19 = str.substring(4, 23);
+			//发卡系统申请书编号
+			String makeCardId = str.substring(23, 33);
+			//申请人证件类型
+			String cardType = str.substring(33, 35);
+			//申请人证件号码
+			String cardId = str.substring(35, 53);
+			//处理结果
+			String resultType = str.substring(53, 55);
+			String resultText = "";
+			if(resultType.equals("00")){
+				resultText = Constant.CARD_RETURN_TYPE1;
+			}else if(resultType.equals("10")){
+				resultText = Constant.CARD_RETURN_TYPE2;
+				resultText+=","+str.substring(55,str.length()-1).trim();
+			}else{
+				resultText = Constant.CARD_RETURN_TYPE3;
+				resultText+=","+str.substring(55,str.length()-1).trim();
+			}
+			
+			cardQueryFilter.setUuid19(uuid19);
+			List<IntoPiecesCardQuery>  list = intoPiecesComdao.getRetrunMakeData(cardQueryFilter);
+			if(list.size()>0){
+				IntoPiecesCardQuery card = list.get(0);
+				try {
+					//流程自动下一步
+//					if(resultType.equals("00")){
+////					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
+//						//制卡成功后，保存至makecard表
+//						List<CardCur> curList = intoPiecesComdao.getCardNbrByCardId(cardId);
+//						System.out.println(curList.size());
+//						for(int i=0;i<curList.size();i++){
+//							//更新madecard表
+//							MakeCard makeCard = new MakeCard();
+//							makeCard.setCustomerName(card.getChineseName());
+//							makeCard.setCustomerIdentity(cardId);
+//							makeCard.setCardNumber(curList.get(i).getCardNbr());
+//							commonDao.insertObject(makeCard);
+//						}
+//						if(curList.size()<1){
+//							//更新madecard表
+//							MakeCard makeCard = new MakeCard();
+//							makeCard.setCustomerName(card.getChineseName());
+//							makeCard.setCardNumber(cardId);
+//							commonDao.insertObject(makeCard);
+//						}
+//					}
+					//更新制卡数据
+					card.setMakeCardId(makeCardId);
+					card.setResultType(resultType);
+					card.setResultText(resultText);
+				commonDao.updateObject(card);
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				//更新制卡数据
-				card.setMakeCardId(makeCardId);
-				card.setResultType(resultType);
-				card.setResultText(resultText);
-//				commonDao.updateObject(card);
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 	} 
@@ -1976,23 +1982,21 @@ public class IntoPiecesService {
 	}
 	
 	
-	
-	
 	/**
 	 * 读取指定文件夹下指定文件
 	 */
 	public void importDataFromBank(){
 		try {
 			System.out.println("开始定时任务：");
-			//获取昨天日期
-			Calendar cal=Calendar.getInstance();
-	        cal.add(Calendar.DATE,-1);
-	        Date date=cal.getTime();
+//			//获取今天日期（昨天的制卡文件）
+//			Calendar cal=Calendar.getInstance();
+//	        cal.add(Calendar.DATE,-1);
+//	        Date date=cal.getTime();
 			//yyyyMMdd格式
 			DateFormat format = new SimpleDateFormat("yyyyMMdd");
-			String dateString = format.format(date);
+			String dateString = format.format(new Date());
 			//获取指定文件夹目录
-			String filepath = "D://测试结果";
+			String filepath = Constant.FTPTODOWN;
 			File file = new File(filepath);
 			if (file.isDirectory()) {
 				String[] filelist = file.list();
@@ -2002,7 +2006,6 @@ public class IntoPiecesService {
 					//读到的文件名
 					String filename = readfile.getName();
 					if(filename.indexOf(dateString)>-1){
-						System.out.println(filename);
 						//解析文件
 						analize(filepath+File.separator+filelist[i]);
 					}
@@ -2012,5 +2015,1122 @@ public class IntoPiecesService {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	
+	
+	
+	
+	/*
+	 * 导出文本格式的文件并且上传到ftp服务器上(2.每晚定时发送至FTP)
+	 */
+	public void makeCardByDay(){
+		try {
+			System.out.println("开始打包制卡：");
+			IntoPiecesCardQueryFilter cardQuery = new IntoPiecesCardQueryFilter();
+			cardQuery.setIfSend("0");
+			List<IntoPiecesCardQuery> list = intoPiecesDao.getResult(cardQuery);
+			StringBuffer contentBuffer = new StringBuffer();
+			for(int i=0;i<list.size();i++){
+				contentBuffer.append(exportData2(list.get(i).getApplicationId()));
+				//改为已发送至服务器状态
+				list.get(i).setIfSend("1");
+				commonDao.updateObject(list.get(i));
+			}
+			//生成文件名
+			Calendar cal=Calendar.getInstance();
+	        cal.add(Calendar.DATE,1);
+	        Date date=cal.getTime();
+			DateFormat format2 = new SimpleDateFormat("yyyyMMdd");
+			String nowDate  = format2.format(date);
+			String fileName = CustomerInforConstant.BANK_ID+"-APPLN-";
+			fileName=fileName+nowDate;
+			/*生成的接口数据上传到ftp文件上*/
+//			UploadFileTool.create(fileName,content.toString());
+			UploadFileTool.uploadFileToFtp(Constant.FTPIP, Integer.valueOf(Constant.FTPPORT), Constant.FTPUSERNAME, Constant.FTPPASSWORD, Constant.FTPPATH, fileName, contentBuffer.toString());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 导出文本格式的文件并且上传到ftp服务器上
+	 */
+	public StringBuffer exportData2(String applicationId) throws Exception {
+		StringBuffer content = new StringBuffer();
+		StringBuffer sb = new StringBuffer();
+		CustomerApplicationInfo customerApplicationInfo = this.findCustomerApplicationInfoByApplicationId(applicationId);
+		String customerId = customerApplicationInfo.getCustomerId();
+		CustomerInfor customerInfor = this.findCustomerInforById(customerId);
+		customerInfor = customerInfor==null?new CustomerInfor():customerInfor;
+		List<ApplicationDataImport> applicationDataImportList = this.findApplicationDataImport();
+		//基本资料form
+		XM_APPLN_JCZL jczl = jczl_Dao.findByCustomerId(customerId) ;
+		//地址录入form
+		XM_APPLN appln = appln_Dao.findByCustomerId(customerId);
+		//地址form
+		XM_APPLN_ADDR addr = addr_Dao.findByCustomerId(customerId);
+		//直系亲属form
+		XM_APPLN_ZXQSZL zxqszl = zxqs_Dao.findByCustomerId(customerId);
+		//联系人
+		List<XM_APPLN_LXRZL> lxr = lxrzl_Dao.findByCustomerId(customerId);
+		//配偶
+		XM_APPLN_POZL pozl = pozl_Dao.findByCustomerId(customerId);
+		//卡片明细
+		List<XM_APPLN_KPMX> kpmx = kpmx_Dao.findByCustomerId(customerId);
+		//推荐人
+		XM_APPLN_TJINFO tjinfo = tjinfo_Dao.findByCustomerId(customerId);
+		//申请额度
+		XM_APPLN_SQED sqed = sqed_Dao.findByCustomerId(customerId);
+		String uuid19 = NumberContext.getUUid(19);
+		for(int i=0;i<applicationDataImportList.size();i++){
+			ApplicationDataImport applicationDataImport = applicationDataImportList.get(i);
+			int id = Integer.valueOf(applicationDataImport.getId());
+			int length = Integer.valueOf(applicationDataImport.getFieldLength());
+			switch(id-1){
+				 //银行编号
+			    case 0:content = UploadFileTool.getContent(content,CustomerInforConstant.BANK_ID,length);break;
+			    //申请书条形码/流水号
+			    case 1:content = UploadFileTool.getContent(content,uuid19,length);break;
+			    //申请卡片产品
+			    case 2:content = UploadFileTool.getContent(content,CustomerInforConstant.PRODUCT_ID,length);break;
+			    //主卡/副卡标志
+			    case 3:content = UploadFileTool.getContent(content,CustomerInforConstant.PRODUCT_STATUS,length);break;
+			    //申请流程状态标志
+			    case 4:content = UploadFileTool.getContent(content,CustomerInforConstant.APPROVE_STATUS,length);break;
+			    case 5:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //申请卡片费用类型
+			    case 6:content = UploadFileTool.getContent(content,CustomerInforConstant.PRODUCT_TYPE,length);break;
+			    //卡片所属分行
+			    case 7:content = UploadFileTool.getContent(content,jczl.getBelong_bank(),length);break;
+			    case 8:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 9:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 10:
+			    	content = UploadFileTool.getContent(content,customerInfor.getCardType(),length);
+			    	break;
+			    case 11:content = UploadFileTool.getContent(content,customerInfor.getCardId(),length);break;
+			    case 12:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 13:content = UploadFileTool.getContent(content,customerInfor.getChineseName(),length);break;
+			    case 14:content = UploadFileTool.getContent(content,customerInfor.getPinyinenglishName(),length);break;
+			    case 15:
+			    	if(customerInfor.getSex()!=null){
+				    	if(customerInfor.getSex().equals("Male")){
+				    		content = UploadFileTool.getContent(content,"M",length);
+				    	}else{
+				    		content = UploadFileTool.getContent(content,"F",length);
+				    	}
+			    	}
+			    	break;
+			    case 16:
+			    	content = UploadFileTool.getContent(content,customerInfor.getCardId().substring(6, 14),length);
+			    	break;
+			    case 17:
+			    	content = UploadFileTool.getContent(content,"1",length);
+			    	break;
+			    case 18:
+			    	//婚姻状况
+			    	content = UploadFileTool.getContent(content,jczl.getMar_status(),length);
+			    	break;
+			    	//教育程度
+			    case 19:content = UploadFileTool.getContent(content,jczl.getEduca(),length);break;
+			    	//职称/岗位
+			    case 20:content = UploadFileTool.getContent(content,jczl.getInt_taxcod(),length);break;
+			    //家庭电话
+			    case 21:content = UploadFileTool.getContent(content,jczl.getHome_phone(),length);break;
+			    //手机号码
+			    case 22:content = UploadFileTool.getContent(content,jczl.getMo_phone(),length);break;
+			    //E-mail地址
+			    case 23:content = UploadFileTool.getContent(content,jczl.getEmail_addr(),length);break;
+			    //传真机号码
+			    case 24:content = UploadFileTool.getContent(content,jczl.getIrd_number(),length);break;
+			    //家庭地址区段1
+			    case 25:
+			    	if(addr.getAddr1_type().equals("家庭地址")){
+			    		if(addr.getAddr1_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else if(addr.getAddr2_type().equals("家庭地址")){
+			    		if(addr.getAddr2_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else if(addr.getAddr3_type().equals("家庭地址")){
+			    		if(addr.getAddr3_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else if(addr.getAddr4_type().equals("家庭地址")){
+			    		if(addr.getAddr4_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    	break;
+		    	 //家庭地址区段2
+			    case 26:
+			    	if(addr.getAddr1_type().equals("家庭地址")){
+			    		if(addr.getAddr1_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else if(addr.getAddr2_type().equals("家庭地址")){
+			    		if(addr.getAddr2_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr3_type().equals("家庭地址")){
+			    		if(addr.getAddr3_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr4_type().equals("家庭地址")){
+			    		if(addr.getAddr4_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //家庭地址区段3
+			    case 27:
+			    	if(addr.getAddr1_type().equals("家庭地址")){
+			    		if(addr.getAddr1_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("家庭地址")){
+			    		if(addr.getAddr2_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr3_type().equals("家庭地址")){
+			    		if(addr.getAddr3_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr4_type().equals("家庭地址")){
+			    		if(addr.getAddr4_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    	break;
+			    	//家庭地址区段4
+			    case 28:
+			    	if(addr.getAddr1_type().equals("家庭地址")){
+			    		if(addr.getAddr1_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("家庭地址")){
+			    		if(addr.getAddr2_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("家庭地址")){
+			    		if(addr.getAddr3_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr4_type().equals("家庭地址")){
+			    		if(addr.getAddr4_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    	break;
+			    	//家庭邮政编码
+			    case 29:
+			    	if(addr.getAddr1_type().equals("家庭地址")){
+			    		if(addr.getPostcode1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("家庭地址")){
+			    		if(addr.getPostcode2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("家庭地址")){
+			    		if(addr.getPostcode3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("家庭地址")){
+			    		if(addr.getPostcode4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //家庭房屋状况
+			    case 30:
+			    	content = UploadFileTool.getContent(content,jczl.getHome_code(),length);break;
+			    	//居住年数
+			    case 31:content = UploadFileTool.getContent(content,jczl.getYr_there(),length);break;
+			    //月还款额/月租金额
+			    case 32:content = UploadFileTool.getContent(content,jczl.getHome_loan(),length);break;
+			    //户籍地址区段1
+			    case 33:
+			    	if(addr.getAddr1_type().equals("户籍地址")){
+			    		if(addr.getAddr1_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr2_type().equals("户籍地址")){
+			    		if(addr.getAddr2_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("户籍地址")){
+			    		if(addr.getAddr3_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("户籍地址")){
+			    		if(addr.getAddr4_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //户籍地址区段2
+			    case 34:
+			    	if(addr.getAddr1_type().equals("户籍地址")){
+			    		if(addr.getAddr1_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr2_type().equals("户籍地址")){
+			    		if(addr.getAddr2_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr3_type().equals("户籍地址")){
+			    		if(addr.getAddr3_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr4_type().equals("户籍地址")){
+			    		if(addr.getAddr4_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //户籍地址区段3
+			    case 35:
+			    	if(addr.getAddr1_type().equals("户籍地址")){
+			    		if(addr.getAddr1_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("户籍地址")){
+			    		if(addr.getAddr2_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr3_type().equals("户籍地址")){
+			    		if(addr.getAddr3_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("户籍地址")){
+			    		if(addr.getAddr4_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //户籍地址区段4
+			    case 36:
+			    	if(addr.getAddr1_type().equals("户籍地址")){
+			    		if(addr.getAddr1_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("户籍地址")){
+			    		if(addr.getAddr2_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr3_type().equals("户籍地址")){
+			    		if(addr.getAddr3_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr4_type().equals("户籍地址")){
+			    		if(addr.getAddr4_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //户籍邮政编码
+			    case 37:
+			    	if(addr.getAddr1_type().equals("户籍地址")){
+			    		if(addr.getPostcode1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr2_type().equals("户籍地址")){
+			    		if(addr.getPostcode2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("户籍地址")){
+			    		if(addr.getPostcode3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr4_type().equals("户籍地址")){
+			    		if(addr.getPostcode4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //房产地址区段1
+			    case 38:
+			    	if(addr.getAddr1_type().equals("房产地址")){
+			    		if(addr.getAddr1_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr2_type().equals("房产地址")){
+			    		if(addr.getAddr2_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("房产地址")){
+			    		if(addr.getAddr3_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr4_type().equals("房产地址")){
+			    		if(addr.getAddr4_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			  //房产地址区段2
+			    case 39:
+			    	if(addr.getAddr1_type().equals("房产地址")){
+			    		if(addr.getAddr1_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("房产地址")){
+			    		if(addr.getAddr2_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("房产地址")){
+			    		if(addr.getAddr3_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("房产地址")){
+			    		if(addr.getAddr4_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //房产地址段3
+			    case 40:
+			    	if(addr.getAddr1_type().equals("房产地址")){
+			    		if(addr.getAddr1_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr2_type().equals("房产地址")){
+			    		if(addr.getAddr2_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("房产地址")){
+			    		if(addr.getAddr3_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("房产地址")){
+			    		if(addr.getAddr4_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //房产地址段4
+			    case 41:
+			    	if(addr.getAddr1_type().equals("房产地址")){
+			    		if(addr.getAddr1_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("房产地址")){
+			    		if(addr.getAddr2_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr3_type().equals("房产地址")){
+			    		if(addr.getAddr3_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr4_type().equals("房产地址")){
+			    		if(addr.getAddr4_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //房产邮政编码
+			    case 42:
+			    	if(addr.getAddr1_type().equals("房产地址")){
+			    		if(addr.getPostcode1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("房产地址")){
+			    		if(addr.getPostcode2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("房产地址")){
+			    		if(addr.getPostcode3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("房产地址")){
+			    		if(addr.getPostcode4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    case 43:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 44:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 45:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 46:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //公司地段1
+			    case 47:
+			    	if(addr.getAddr1_type().equals("公司地址")){
+			    		if(addr.getAddr1_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("公司地址")){
+			    		if(addr.getAddr2_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("公司地址")){
+			    		if(addr.getAddr3_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("公司地址")){
+			    		if(addr.getAddr4_l1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    case 48:
+			    	if(addr.getAddr1_type().equals("公司地址")){
+			    		if(addr.getAddr1_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("公司地址")){
+			    		if(addr.getAddr2_l2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("公司地址")){
+			    		if(addr.getAddr3_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("公司地址")){
+			    		if(addr.getAddr4_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    case 49:
+			    	if(addr.getAddr1_type().equals("公司地址")){
+			    		if(addr.getAddr1_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("公司地址")){
+			    		if(addr.getAddr2_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("公司地址")){
+			    		if(addr.getAddr3_l3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("公司地址")){
+			    		if(addr.getAddr4_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    case 50:
+			    	if(addr.getAddr1_type().equals("公司地址")){
+			    		if(addr.getAddr1_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr1_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("公司地址")){
+			    		if(addr.getAddr2_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr2_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("公司地址")){
+			    		if(addr.getAddr3_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr3_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("公司地址")){
+			    		if(addr.getAddr4_l4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getAddr4_l4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //公司邮政编码
+			    case 51:
+			    	if(addr.getAddr1_type().equals("公司地址")){
+			    		if(addr.getPostcode1()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode1(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr2_type().equals("公司地址")){
+			    		if(addr.getPostcode2()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode2(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else   	if(addr.getAddr3_type().equals("公司地址")){
+			    		if(addr.getPostcode3()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode3(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else  	if(addr.getAddr4_type().equals("公司地址")){
+			    		if(addr.getPostcode4()!=null){
+			    			content = UploadFileTool.getContent(content,addr.getPostcode4(),length);
+			    		}else{
+			    			content = UploadFileTool.getContent(content,sb.toString(),length);
+			    		}
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    break;
+			    //公司中文全称
+			    case 52:content = UploadFileTool.getContent(content,jczl.getComp_name(),length);break;
+			    //公司部门
+			    case 53:content = UploadFileTool.getContent(content,jczl.getEmply_dept(),length);break;
+			    //公司职务
+			    case 54:content = UploadFileTool.getContent(content,jczl.getPosn_emply(),length);break;
+			    //公司行业类别
+			    case 55:content = UploadFileTool.getContent(content,jczl.getOcc_code(),length);break;
+			    case 56:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			  //公司性质
+			    case 57:content = UploadFileTool.getContent(content,jczl.getOcc_catgry(),length);break;
+			    //公司电话
+			    case 58:content = UploadFileTool.getContent(content,jczl.getBusi_phone(),length);break;
+			    //公司电话分机
+			    case 59:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 60:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //申请人年收入
+			    case 61:content = UploadFileTool.getContent(content,jczl.getIncome_ann(),length);break;
+			    case 62:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 63:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 64:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 65:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 66:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 67:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //直系亲属姓名
+			    case 68:content = UploadFileTool.getContent(content,zxqszl.getName(),length);break;
+			    //直系亲属电话
+			    case 69:content = UploadFileTool.getContent(content,zxqszl.getTelno(),length);break;
+			    //直系亲属关系
+			    case 70:content = UploadFileTool.getContent(content,zxqszl.getRel(),length);break;
+			    //直系亲属手机
+			    case 71:content = UploadFileTool.getContent(content,zxqszl.getMobile(),length);break;
+			    //联系人
+			    case 72:content = UploadFileTool.getContent(content,lxr.get(0).getName(),length);break;
+			    case 73:content = UploadFileTool.getContent(content,lxr.get(0).getTelno(),length);break;
+			    case 74:content = UploadFileTool.getContent(content,lxr.get(0).getRel(),length);break;
+			    case 75:content = UploadFileTool.getContent(content,lxr.get(0).getCompnm(),length);break;
+			    case 76:content = UploadFileTool.getContent(content,lxr.get(0).getMobile(),length);break;
+			    case 77:content = UploadFileTool.getContent(content,lxr.get(1).getName(),length);break;
+			    case 78:content = UploadFileTool.getContent(content,lxr.get(1).getTelno(),length);break;
+			    case 79:content = UploadFileTool.getContent(content,lxr.get(1).getRel(),length);break;
+			    case 80:content = UploadFileTool.getContent(content,lxr.get(1).getCompnm(),length);break;
+			    case 81:content = UploadFileTool.getContent(content,lxr.get(1).getMobile(),length);break;
+			    //配偶信息
+			    case 82:
+			    	if(pozl.getCustr_nbr()!=null){
+			    		content = UploadFileTool.getContent(content,"01",length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    	break;
+			    case 83:
+			    		content = UploadFileTool.getContent(content,pozl.getCustr_nbr(),length);
+			    	break;
+			    case 84:content = UploadFileTool.getContent(content,pozl.getName(),length);break;
+			    case 85:content = UploadFileTool.getContent(content,pozl.getMobile(),length);break;
+			    case 86:content = UploadFileTool.getContent(content,pozl.getCompnm(),length);break;
+			    case 87:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 88:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 89:content = UploadFileTool.getContent(content,pozl.getTelno(),length);break;
+			    case 90:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 91:content = UploadFileTool.getContent(content,pozl.getIncome_ann(),length);break;
+			    //附卡信息
+			    case 92:
+			    	if(kpmx.get(1).getCustr_nbr()!=null){
+			    		content = UploadFileTool.getContent(content,"01",length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    	}
+			    	break;
+			    case 93:content = UploadFileTool.getContent(content,kpmx.get(1).getCustr_nbr(),length);break;
+			    case 94:content = UploadFileTool.getContent(content,kpmx.get(1).getEmbname_d(),length);break;
+			    case 95:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 96:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 97:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 98:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 99:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 100:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 101:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 102:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 103:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 104:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 105:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 106:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 107:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 108:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 109:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 110:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 111:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 112:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 113:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 114:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 115:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 116:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 117:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 118:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 119:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 120:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 121:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 122:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 123:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 124:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 125:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 126:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 127:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 128:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 129:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 130:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 131:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 132:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 133:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 134:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 135:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 136:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 137:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 138:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 139:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 140:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 141:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 142:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 143:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 144:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 145:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 146:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 147:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 148:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 149:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 150:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 151:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 152:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 153:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 154:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 155:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 156:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 157:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 158:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 159:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 160:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 161:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 162:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 163:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 164:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //申请书来源代码
+			    case 165:content = UploadFileTool.getContent(content,CustomerInforConstant.APPROVE_INCOME,length);break;
+			    case 166:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 167:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 168:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 169:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 170:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 171:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 172:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 173:content = UploadFileTool.getContent(content,appln.getCycle_nbr(),length);break;
+			    //邮递地址
+			    case 174:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 175:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //主卡英文
+			    case 176:content = UploadFileTool.getContent(content,kpmx.get(0).getEmbname_d().replace(" ", "").toUpperCase(),length);break;
+			    case 177:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //是否需要密码
+			    case 178:content = UploadFileTool.getContent(content,kpmx.get(0).getPin_chk(),length);break;
+			    //是否短信通知
+			    case 179:content = UploadFileTool.getContent(content,kpmx.get(0).getSms_yn(),length);break;
+			    case 180:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 181:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 182:
+			    	content = UploadFileTool.getContent(content,kpmx.get(0).getCdespmtd(),length);break;
+			    	//申请金卡未核准，是否同意核发普卡选项
+			    case 183:
+			    	if(appln.getGtoc()!="1"){
+			    		content = UploadFileTool.getContent(content,"0",length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,appln.getGtoc(),length);
+			    	}
+			    	break;
+			    	//降级产品编号
+			    case 184:
+			    	if(appln.getGtoc()=="1"){
+			    		content = UploadFileTool.getContent(content,appln.getDownprod(),length);
+			    	}else{
+			    		content = UploadFileTool.getContent(content,sb.toString(),length);
+			    	}
+			    	break;
+			    //主卡暗语
+			    case 185:content = UploadFileTool.getContent(content,kpmx.get(0).getSpec_inst(),length);break;
+			    case 186:content = UploadFileTool.getContent(content,kpmx.get(1).getSpec_inst(),length);break;
+			    //征信确认
+			    case 187:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 188:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 189:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 190:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 191:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 192:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 193:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 194:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 195:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 196:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 197:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 198:content = UploadFileTool.getContent(content,"1",length);break;
+			    
+			    case 199:content = UploadFileTool.getContent(content,"A",length);break;
+			    case 200:content = UploadFileTool.getContent(content,"10",length);break;
+			    //人民币信用额度(数据置右)
+			    case 201:
+			    	String conString =sqed.getCrdlmt_req();
+			    	if(sqed.getCrdlmt_req().length()<length){
+			    		
+			    	}
+			    	for(int j=sqed.getCrdlmt_req().length();j<length;j++){
+			    		conString=" "+conString;
+			    	}
+			    	content = UploadFileTool.getContent(content,conString,length);
+			    	break;
+			    case 202:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 203:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //递送方式
+			    case 204:content = UploadFileTool.getContent(content,"COUR",length);break;
+			    case 205:content = UploadFileTool.getContent(content,kpmx.get(0).getCourierf(),length);break;
+			    case 206:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //主卡卡面版本
+			    case 207:content = UploadFileTool.getContent(content,kpmx.get(0).getCdfrm(),length);break;
+			    case 208:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 209:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 210:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 211:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 212:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 213:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 214:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 215:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 216:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 217:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 218:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 219:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 220:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 221:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 222:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 223:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 224:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 225:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 226:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 227:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 228:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 229:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 230:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 231:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //是否快速发卡
+//			    case 232:content = UploadFileTool.getContent(content,appln.getRush_card(),length);break;
+			    case 232:content = UploadFileTool.getContent(content,"1",length);break;
+			    //是否收取发卡费用
+//			    case 233:content = UploadFileTool.getContent(content,appln.getRush_fee(),length);break;
+			    case 233:content = UploadFileTool.getContent(content,"1",length);break;
+			    case 234:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 235:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 236:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 237:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 238:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 239:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 240:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 241:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 242:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 243:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 244:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 245:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 246:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 247:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //密信递送费用
+			    case 248:content = UploadFileTool.getContent(content,"0",length);break;
+			    case 249:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //主卡是否打印密信？
+			    case 250:content = UploadFileTool.getContent(content,"0",length);break;
+			    case 251:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			  //主卡申请人类型
+			    case 252:content = UploadFileTool.getContent(content,"N",length);break;
+			    case 253:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 254:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 255:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 256:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 257:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 258:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 259:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 260:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 261:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 262:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //推荐人代号
+			    case 263:content = UploadFileTool.getContent(content,tjinfo.getIntr_nbr(),length);break;
+			    case 264:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 265:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //账户预借现金比例
+			    case 266:content = UploadFileTool.getContent(content," 2500",length);break;
+			    case 267:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 268:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    //利率代码
+			    case 269:content = UploadFileTool.getContent(content,appln.getInt_code(),length);break;
+			    case 270:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 271:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 272:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 273:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 274:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 275:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 276:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 277:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 278:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 279:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 280:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 281:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 282:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 283:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 284:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 285:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 286:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 287:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 288:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 289:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 290:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 291:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 292:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 293:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 294:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 295:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 296:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 297:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 298:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 299:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 300:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 301:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 302:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 303:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 304:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 305:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 306:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 307:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 308:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 309:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 310:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 311:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 312:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 313:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 314:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 315:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 316:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 317:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 318:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 319:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 320:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 321:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 322:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 323:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 324:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 325:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 326:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 327:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 328:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 329:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 330:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 331:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 332:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 333:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 334:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 335:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 336:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 337:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 338:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 339:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 340:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 341:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 342:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 343:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 344:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 345:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 346:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 347:
+			    	content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 348:
+			    	content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    default:break;
+			    
+			}
+			
+		}
+		content.append("\n");
+		return content;
 	}
 }

@@ -37,10 +37,12 @@ import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
+import com.cardpay.pccredit.customer.model.XmZxLogin;
 import com.cardpay.pccredit.customer.web.CustomerInforForm;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
+import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationInfoFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
@@ -91,6 +93,9 @@ public class CustomerInforService {
 	
 	@Autowired
 	private ProcessService processService;
+	
+	@Autowired
+	private IntoPiecesComdao intoPiecesComdao;
 	
 	/**
 	 * 得到该客户经理下的客户数量
@@ -1439,5 +1444,25 @@ public class CustomerInforService {
 		}else{
 			return false;
 		}
+	}
+	
+	/**
+	 * 通过机构号查找征信帐号
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<XmZxLogin> getLoginByOrg(String id) {
+		
+		String sql="select user_name,pass_word from xm_zx_login where org_id='"+id+"'";
+		System.out.println(commonDao);
+		List<XmZxLogin> list = commonDao.queryBySql(XmZxLogin.class, sql,null );
+			return list;
+	}
+	/**
+	 * 通过applicationid查找实体
+	 */
+	public CustomerApplicationInfo getModelByAppId(String applicationId){
+		return intoPiecesComdao.findCustomerApplicationInfoByApplicationId(applicationId);
 	}
 }

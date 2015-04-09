@@ -1,6 +1,6 @@
 package com.cardpay.pccredit.pbccrcReport.web;
 
-import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cardpay.pccredit.pbccrcReport.model.RH_INFO;
 import com.cardpay.pccredit.pbccrcReport.service.RhzxService;
-import com.cardpay.pccredit.pbccrcReport.util.DateUtil;
 import com.cardpay.pccredit.pbccrcReport.util.PbccrcReport;
 import com.cardpay.pccredit.pbccrcReport.util.PbocFileReader;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerMainManager;
+import com.cardpay.pccredit.customer.model.XmZxLogin;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.CustomerMainManagerService;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -98,25 +97,28 @@ public class CustomerZXController extends BaseController {
 			String QueryReason = request.getParameter("QueryReason");
 			String QueryType = request.getParameter("QueryType");
 			String Vertype = request.getParameter("Vertype");
+			String orgId = request.getParameter("orgId");
 			
 			CustomerInfor customer = customerInforService.findCustomerInforById(customerId);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			
+			//通过机构号获取查询帐号和密码
+			List<XmZxLogin> list = customerInforService.getLoginByOrg(orgId);
+			String userid = list.get(0).getUserName();
+			String passwd = list.get(0).getPassWord();
+			
 			logger.info("人行征信查询---查询用户:"+user.getId()+",客户:"+customer.getChineseName());
 			PbccrcReport pbccrcReport = new PbccrcReport();
-			RH_INFO rh_info = this.rhzxService.findByCustomerId(customerId);
-			//不存在或大于30天时重新抓征信
-			if(rh_info == null || DateUtil.daysBetween(rh_info.getModifiedTime(), new Date())>30){
-				//备份征信htm文件到服务器
-				String fileFullPath = pbccrcReport.manuProcessPbocCreditInfo(customer.getChineseName(), customer.getCardType(), customer.getCardId(),
-						QueryReason,QueryType,Vertype);
-				if(fileFullPath != null){
-					//解析htm文件抓取内容并存入数据库
-					this.rhzxService.insertOrUpdateZX(customerId, fileFullPath);
-				}
+			String fileFullPath = pbccrcReport.manuProcessPbocCreditInfo(customer.getChineseName(), customer.getCardType(), customer.getCardId(),
+					QueryReason,QueryType,Vertype,userid,passwd);
+			if(fileFullPath != null){
+				//解析htm文件抓取内容并存入数据库
+				this.rhzxService.insertOrUpdateZX(customerId, fileFullPath);
+				
+				JRadModelAndView mv = new JRadModelAndView("/customer/customerzx/rhzx/"+customer+"_"+customer.getCardId(), request);
+				mv.addObject("customer", customer);
+				return mv;
 			}
-			JRadModelAndView mv = new JRadModelAndView("/customer/customerzx/rhzx/"+customer.getChineseName()+"_"+customer.getCardId(), request);
-			mv.addObject("customer", customer);
-			return mv;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
