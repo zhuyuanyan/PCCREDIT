@@ -223,6 +223,7 @@ public class RiskCustomerService {
             statement.registerOutParameter(2, Types.VARCHAR);
             statement.execute();
             sname = statement.getString(2);
+            System.out.println("身份id"+cardId+"---行内产品返回："+sname);
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{

@@ -7,6 +7,20 @@
 			</div>
 	
 			<div class="inquiry">
+			<div class="search_tag"></div>
+		        <div class="search">
+		          <form id="submitForm">
+		             <ul>
+		              <li>
+		              <li class="search_button">
+		                <input id="id_export_button" type="button" value="导出excel" class="search_button_inquiry"
+		                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+		              </li>
+		            </ul> 
+		          </form>
+		        </div>
+			
+			
 				<div class="search_tag">自定义表头</div>
 				<form id="submitForm" action="${contextPath}/intopieces/intopiecesrecieve/recieve.page">
 				<input type="hidden" value="$!result.filter.chineseName" name="user_def_chk_value" />
@@ -102,7 +116,7 @@
 		opsObj.changeUrl = "${modulePath}/change.page";
 		opsObj.displayUrl = "${modulePath}/display.page";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-
+		opsObj.exportUrl = "export.page";
 		prepareOperations(opsObj);
 		
 	});

@@ -9,7 +9,18 @@
       <div class="inquiry">
 <!-----------搜索------------------------------------------->  
   
-        <div class="search_tag"></div>
+         <div class="search_tag"></div>
+        <div class="search">
+          <form id="submitForm">
+             <ul>
+              <li>
+              <li class="search_button">
+                <input id="id_export_button" type="button" value="导出excel" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul> 
+          </form>
+        </div>
        
 		<!-------------- 信息显示 ------------------------------------->      
 		<div id="topDiv" class="inquiry_list inquiry_top">
@@ -122,7 +133,7 @@
 		opsObj.changeUrl = "${modulePath}/change.page";
 		opsObj.displayUrl = "${modulePath}/display.page";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-
+		opsObj.exportUrl = "${modulePath}/export.page";
 		prepareOperations(opsObj);
 	});
 </script>

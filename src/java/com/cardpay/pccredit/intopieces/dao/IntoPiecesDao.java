@@ -19,4 +19,7 @@ public interface IntoPiecesDao {
 	int cardQueryCount(IntoPiecesCardQueryFilter filter);
 	
 	int nowCount(String approveDate);
+	
+	//获得未发送至服务器数据
+	List<IntoPiecesCardQuery> getResult(IntoPiecesCardQueryFilter filter);
 }

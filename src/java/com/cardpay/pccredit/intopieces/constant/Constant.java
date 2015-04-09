@@ -66,15 +66,18 @@ public class Constant {
 	
 	
 	/*FTP链接配置*/
-	public static String FTPIP = "11.23.11.43";
+	public static String FTPIP = "33.1.49.1";
 	
 	public static String FTPPORT = "21";
 	
-	public static String FTPUSERNAME = "root";
+	public static String FTPUSERNAME = "ftpxm";
 	
-	public static String FTPPASSWORD = "abc,123";
+	public static String FTPPASSWORD = "fil@xm123";
 	
-	public static String FTPPATH = "/var/ftp/tmp";
+	public static String FTPPATH = "/xm_request/";
+	
+	/*ftp下载到本地的临时文件	 */
+	public static String FTPTODOWN="/var/ftp/makecard/";
 	
 	//系统默认产品
 	public static String DEFAULT_TYPE = "1";

@@ -15,6 +15,7 @@ import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.constant.NumberContext;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationInfoDao;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
@@ -193,7 +194,7 @@ public class CustomerApplicationIntopieceWaitService {
 			customerApplicationProcess.setNextNodeId(examineResutl);
 			if(request.getAttribute("appType")!=null){
 				//终审后导入appln至服务器
-				String uuid19 = intoPiecesService.exportData(applicationId, customerId, null);
+//				String uuid19 = intoPiecesService.exportData(applicationId, customerId, null);//作为定时任务
 				IntoPiecesCardQuery cardQuery = new IntoPiecesCardQuery();
 				//查看历史审批记录，获取审批节点审批人
 				List<ApproveHistoryForm> historyForms = intoPiecesService.findApplicationDataImport(applicationId, "application");
@@ -210,10 +211,13 @@ public class CustomerApplicationIntopieceWaitService {
 				cardQuery.setApproveCardId(CustomerInforConstant.PRODUCT_ID);
 				cardQuery.setApproveDate(new Date());
 				cardQuery.setApplicationId(applicationId);
+				String uuid19 = NumberContext.getUUid(19);//先生成uuid
 				cardQuery.setUuid19(uuid19);
 				CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
 				CustomerInfor customerInfor = commonDao.findObjectById(CustomerInfor.class, applicationInfo.getCustomerId());
 				cardQuery.setChineseName(customerInfor.getChineseName());
+				//设置为未发送，晚上定时发送
+				cardQuery.setIfSend("0");
 				commonDao.insertObject(cardQuery);
 			}
 		}

@@ -52,16 +52,20 @@
                   </span>
               </li>
             </ul>
+            <ul><li class="rhzx_li">
+                <span>机构号：
+                <input type="text" name="orgId" id="orgId" value="" /></span>
+              </li>
+             </ul>
             </div>
             <div style="clear:both;">
-            	<input id="id_browse_button" type="submit" value="查询" class="search_button_inquiry"
+            	<input type="button" id="id_browse_button"  value="查询" class="search_button_inquiry"  onclick="check()"
                   		title="查询" style="height: 26px; line-height: 24px;margin-right: 220px;float: right;"/>
             </div>
           </form>
         </div>
       </div>
       <div class="pagebar">
-        #parse ("common/pagination.htm")
         <div class="clear"></div>
       </div>
     </div>
@@ -70,14 +74,17 @@
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
-
-	$(document).ready(function() {
-		var opsObj = new Object();
-		opsObj.formObj = $("#submitForm");
-		//opsObj.browseUrl = "${modulePath}/checkRhzx.page";
-		
-		prepareOperations(opsObj);
-	});
+	
+	
+	function check(){
+		var orgId = $("#orgId").val();
+		if(orgId==''){
+			Dialog.message("请输入机构号");
+			return;
+		}else{
+			$("#submitForm").submit();
+		}
+	}
 </script>
    <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
 #parse ("common/iframe_page_footer.htm")
