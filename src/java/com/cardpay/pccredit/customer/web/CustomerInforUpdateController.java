@@ -59,6 +59,7 @@ import com.cardpay.pccredit.divisional.constant.DivisionalProgressEnum;
 import com.cardpay.pccredit.divisional.constant.DivisionalTypeEnum;
 import com.cardpay.pccredit.divisional.service.DivisionalService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.riskControl.constant.RiskAttributeEnum;
@@ -1644,7 +1645,9 @@ public class CustomerInforUpdateController extends BaseController {
 	@RequestMapping(value = "create_yxzl.page")
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView createYxzl(@ModelAttribute VideoAccessoriesFilter filter,HttpServletRequest request) {
-		filter.setCustomerId(request.getParameter(ID));
+		//通过applicationid转为用户id
+		CustomerApplicationInfo info =  customerInforservice.getModelByAppId(request.getParameter(ID));
+		filter.setCustomerId(info.getCustomerId());
 		filter.setRequest(request);
 		QueryResult<VideoAccessories> result = customerInforservice.findCustomerVideoAccessoriesByFilter(filter);		
 		JRadPagedQueryResult<VideoAccessories> pagedResult = new JRadPagedQueryResult<VideoAccessories>(filter, result);

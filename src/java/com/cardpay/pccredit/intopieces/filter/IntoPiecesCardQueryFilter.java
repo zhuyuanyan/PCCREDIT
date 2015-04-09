@@ -21,7 +21,7 @@ public class IntoPiecesCardQueryFilter extends BusinessFilter{
     private String makeCardId;//发卡系统申请书编号
     private String uuid19;//外部系统uuid(申请书条形码/流水号)
     private String sendBack;//退回标记
-    
+    private String ifSend;//是否已发至ftp标记
     
 	public String getId() {
 		return id;
@@ -112,6 +112,12 @@ public class IntoPiecesCardQueryFilter extends BusinessFilter{
 	}
 	public void setSendBack(String sendBack) {
 		this.sendBack = sendBack;
+	}
+	public String getIfSend() {
+		return ifSend;
+	}
+	public void setIfSend(String ifSend) {
+		this.ifSend = ifSend;
 	}
 	
 }

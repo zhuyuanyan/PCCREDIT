@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.report.dao.IntelligentReportDao;
 import com.cardpay.pccredit.report.model.IntelligentAccountReport;
+import com.cardpay.pccredit.report.model.IntelligentAccountReport2;
 import com.cardpay.pccredit.report.model.IntelligentCustomerReport;
 import com.cardpay.pccredit.report.model.PostLoanManagementData;
 
@@ -31,7 +32,7 @@ public class IntelligentReportService {
 		return intelligentReportDao.findIntelligentCustomerReport();		
 	}
 	/*客户信息智能报表*/
-	public List<IntelligentAccountReport> findIntelligentAccountReport(){
+	public List<IntelligentAccountReport2> findIntelligentAccountReport(){
 		Calendar cal = Calendar.getInstance();
 		int month = cal.get(Calendar.MONTH)+1;
 		int year = cal.get(Calendar.YEAR);

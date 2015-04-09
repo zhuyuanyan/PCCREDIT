@@ -34,6 +34,8 @@
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+                  <input id="id_export_button" type="button" value="导出excel" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
               </li>
             </ul>
           </form>
@@ -143,7 +145,7 @@
 		opsObj.changeUrl = "${modulePath}/change.page";
 		opsObj.displayUrl = "${modulePath}/display.page";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-
+		opsObj.exportUrl = "${modulePath}/export.page";
 		prepareOperations(opsObj);
 	});
 </script>

@@ -15,7 +15,7 @@ import java.sql.Statement;
  * 
  */
 public final class ConnUtils {
-    private static String url = "jdbc:oracle:thin:@11.23.11.61:1521/odsptdb";
+    private static String url = "jdbc:oracle:thin:@11.23.11.25:1521/odsptdb";
     private static String user = "qkcompany";
     private static String password = "qk888888";
 

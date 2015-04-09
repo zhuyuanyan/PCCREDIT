@@ -1,4 +1,8 @@
 package com.cardpay.pccredit.pbccrcReport.util;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;
@@ -6,8 +10,13 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.model.XmZxLogin;
+import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.pbccrcReport.constant.Constants;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
 /**   
  * @Title: PbccrcReport.java 
@@ -16,7 +25,7 @@ import com.cardpay.pccredit.pbccrcReport.constant.Constants;
  * @date 2014年12月8日 上午10:56:51
 */
 public class PbccrcReport {
-
+	
 	//private static final String cLoginSuccess = "欢迎 汇丰银行";
 	//修改江南农村商业银行登录人民银行的欢迎语 updated by jinping.chen 20140423
 	private static final String cLoginSuccess = "欢迎";
@@ -33,16 +42,17 @@ public class PbccrcReport {
 	
 	private static final Logger logger = Logger.getLogger(PbccrcReport.class);
 	private PropertyUtil propertyUtil;
+
 	
-	private boolean pbocLogin(HttpClient httpClient) throws Exception {
+	private boolean pbocLogin(HttpClient httpClient,String userid,String passwd) throws Exception {
 		NameValuePair ie = new NameValuePair("User-Agent",
 				"Mozilla/4.0 (compatible; MSIE 6.0; Windows 2000)");
 		boolean loginFlag = false;
-		
-		propertyUtil = new PropertyUtil();
-		NameValuePair username = new NameValuePair("userid", propertyUtil.getPropertyByKey("userid"));
-		NameValuePair password = new NameValuePair("password", propertyUtil.getPropertyByKey("passwd"));
-		String pbocloginUrl = propertyUtil.getPropertyByKey("pbocloginUrl");
+//		propertyUtil = new PropertyUtil();
+		NameValuePair username = new NameValuePair("userid", userid);
+		NameValuePair password = new NameValuePair("password", passwd);
+//		String pbocloginUrl = propertyUtil.getPropertyByKey("pbocloginUrl");
+		String pbocloginUrl ="http://9.104.47.15/shcreditunion/logon.do";
 		PostMethod method = new PostMethod(pbocloginUrl);
 		method.setRequestBody(new NameValuePair[] { ie, username, password });
 		Cookie[] cookies = httpClient.getState().getCookies();
@@ -77,7 +87,7 @@ public class PbccrcReport {
 		return loginFlag;
 	}
 	
-	public String manuProcessPbocCreditInfo(String customerName,String creditType,String creditNo,String QueryReason,String QueryType,String Vertype)
+	public String manuProcessPbocCreditInfo(String customerName,String creditType,String creditNo,String QueryReason,String QueryType,String Vertype,String userid,String passwd)
 			throws Exception {
 		// 查询待征信人行信息
 		String fileFullPath = null;
@@ -85,7 +95,7 @@ public class PbccrcReport {
 		HttpClient httpClient = new HttpClient();
 		httpClient.getParams().setCookiePolicy(
 				CookiePolicy.BROWSER_COMPATIBILITY);
-		if (pbocLogin(httpClient)) {
+		if (pbocLogin(httpClient,userid,passwd)) {
 			/*
 			 * 储存cookies
 			 * 
@@ -237,8 +247,9 @@ public class PbccrcReport {
 		return rtnFlag;
 	}
 	
+	
 	public static void main(String[] args) throws Exception {
 		PbccrcReport pbccrcReport = new PbccrcReport();
-		pbccrcReport.manuProcessPbocCreditInfo("许福宾", "1", "350583198110215438","03","0","20");
+		pbccrcReport.manuProcessPbocCreditInfo("许福宾", "1", "350583198110215438","03","0","20","","");
 	}
 }

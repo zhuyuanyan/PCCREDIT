@@ -262,14 +262,19 @@
 					var d = data.D;
 					var str="此客户近三月日均"+d;
 					var l = data.L;
-					for(var i=0;i<l.length;i++){
-						str+=",";
-						var t = l[i].T;
-						var r = l[i].R;
-						var c = l[i].C;
-						str+="授信金额为"+t+",余额为"+r+",五级分类为"+c;
+					if(l==null){
+						Dialog.message(str);
+					}else{
+						for(var i=0;i<l.length;i++){
+							str+=",";
+							var t = l[i].T;
+							var r = l[i].R;
+							var c = l[i].C;
+							str+="授信金额为"+t+",余额为"+r+",五级分类为"+c;
+						}
+						Dialog.message(str);
+						
 					}
-					Dialog.message(str);
 					document.getElementById("wrong2").style.display='block';
 					document.getElementById("right2").style.display='none';
 				}else{
