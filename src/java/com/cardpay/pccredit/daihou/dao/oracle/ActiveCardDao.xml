@@ -29,7 +29,6 @@
 					 <if test="cardId != null and cardId != '' ">
 						<![CDATA[ and bci.card_id = #{cardId} ]]>
 					 </if>
-					 order by ci.card_activate_date desc
 					<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
