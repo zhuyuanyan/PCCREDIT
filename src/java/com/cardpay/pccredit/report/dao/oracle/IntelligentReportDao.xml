@@ -78,8 +78,8 @@
 		on b.id=c.customer_id
 	</select>
 	
-	<select id="findIntelligentAccountReport" resultMap="AccountResultMap2">
-		select 
+	<select id="findIntelligentAccountReportAll" resultMap="AccountResultMap2">
+	    select 
 		CARD_NUMBER,
 		1 as is_new_customer,
 		PRINCIPAL_OVERDRAFT,
@@ -87,6 +87,31 @@
 		TOTAL_AMOUNT_OVERDRAFT,
 		RECENT_LOWEST_BILL
 		from customer_account_information
+	</select>
+	
+	<select id="findIntelligentAccountReport" resultMap="AccountResultMap2"
+	    parameterType="com.cardpay.pccredit.report.filter.UserDefFilter">
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					select 
+					CARD_NUMBER,
+					1 as is_new_customer,
+					PRINCIPAL_OVERDRAFT,
+					INTEREST_RECEIVABLE,
+					TOTAL_AMOUNT_OVERDRAFT,
+					RECENT_LOWEST_BILL
+					from customer_account_information
+		
+					<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findIntelligentAccountReportCount" resultType="int">
+	    select count(1) as count from customer_account_information
 	</select>
 	
 	<select id="findPostLoanManagementData" resultMap="DataResultMap">
