@@ -25,9 +25,9 @@ public class ActiveCardService {
 	private ActiveCardDao activeCardComdao;
 	
 	public QueryResult<ActiveCard> findActiveCard(CustomerInforFilter filter) {
-		QueryResult<ActiveCard> datas = activeCardComdao.findActiveCard(filter);
+		List<ActiveCard> datas = activeCardComdao.findActiveCard(filter);
 		int size = activeCardComdao.findActiveCardCount(filter);
-		QueryResult<ActiveCard> qs = new QueryResult<ActiveCard>(size, datas.getItems());
+		QueryResult<ActiveCard> qs = new QueryResult<ActiveCard>(size, datas);
 		return qs;
 	}
 	

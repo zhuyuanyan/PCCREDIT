@@ -12,4 +12,42 @@
 		<result property="expire_date" column="expire_date" />
 	</resultMap>
 	
+	<select id="findActiveCard" resultMap="ResultMap"
+	    parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					select ci.customer_id as customerid,bci.chinese_name as chinesename,ci.id as cardid,
+					ci.card_number as cardnumber,ci.card_activate_date as cardactivatedate,
+					ci.expire_date as expiredate from card_information ci 
+					left join basic_customer_information bci on 
+					ci.customer_id = bci.id 
+					where ci.CARD_ACTIVATE_DATE is not null 
+					<if test="chineseName != null and chineseName != '' ">
+						<![CDATA[ and bci.chinese_name like '%'||#{chineseName}||'%' ]]>
+					 </if>
+					 <if test="cardId != null and cardId != '' ">
+						<![CDATA[ and bci.card_id = #{cardId} ]]>
+					 </if>
+					<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findActiveCardCount" resultType="int"
+		parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
+	    select count(1) as COUNT from card_information ci 
+	    left join basic_customer_information bci on 
+	    ci.customer_id = bci.id 
+	    where ci.CARD_ACTIVATE_DATE is not null 
+	    <if test="chineseName != null and chineseName != '' ">
+			<![CDATA[ and bci.chinese_name like '%'||#{chineseName}||'%' ]]>
+		 </if>
+		 <if test="cardId != null and cardId != '' ">
+			<![CDATA[ and bci.card_id = #{cardId} ]]>
+		 </if>
+	</select>
+	
 </mapper>
