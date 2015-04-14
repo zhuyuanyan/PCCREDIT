@@ -19,11 +19,14 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.report.filter.StatisticalFilter;
+import com.cardpay.pccredit.report.filter.UserDefFilter;
+import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.report.model.IntelligentAccountReport;
 import com.cardpay.pccredit.report.model.IntelligentAccountReport2;
@@ -33,6 +36,7 @@ import com.cardpay.pccredit.report.model.QuailManaRejectMonitor;
 import com.cardpay.pccredit.report.service.IntelligentReportService;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.database.dao.business.BusinessFilter;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
@@ -77,19 +81,14 @@ public class IntelligentReportController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/report/intelligentaccountreport/browse.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView AccountBrowse(HttpServletRequest request) {
+	public AbstractModelAndView AccountBrowse(@ModelAttribute UserDefFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
 		JRadModelAndView mv = new JRadModelAndView("/report/intelligentreport/intelligentaccountreport_browse", request);
-//		List<IntelligentAccountReport> result = intelligentReportService.findIntelligentAccountReport();
-		List<IntelligentAccountReport2> result =intelligentReportService.findIntelligentAccountReport();
-		mv.addObject("result", result);
-		return mv;
-		
-		/*QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
-		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
-
+		QueryResult<IntelligentAccountReport2> result =intelligentReportService.findIntelligentAccountReport(filter);
+		JRadPagedQueryResult<IntelligentAccountReport2> pagedResult = new JRadPagedQueryResult<IntelligentAccountReport2>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("filter", filter);
-		return mv;*/
+		return mv;
 	}
 	/**
 	 * 贷后管理数据
@@ -119,7 +118,7 @@ public class IntelligentReportController extends BaseController {
 	@RequestMapping(value = "/report/intelligentaccountreport/export.page", method = { RequestMethod.GET })
 	public void export(HttpServletRequest request,HttpServletResponse response) {
 		JRadModelAndView mv = new JRadModelAndView("/report/intelligentreport/intelligentaccountreport_browse", request);
-		List<IntelligentAccountReport2> result = intelligentReportService.findIntelligentAccountReport();
+		List<IntelligentAccountReport2> result = intelligentReportService.findIntelligentAccountReportAll();
 		create(result, response);
 	}
 	
