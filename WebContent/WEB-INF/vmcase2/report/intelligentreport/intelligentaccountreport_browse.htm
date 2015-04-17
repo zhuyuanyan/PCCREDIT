@@ -1,4 +1,7 @@
 #parse ("common/iframe_page_header.htm")
+<script type="text/javascript">
+	var userDef = 0;
+</script>
 <body>
 	<div class="content_main">
 		<div class="contentinner">
@@ -8,37 +11,74 @@
 	
 			<div class="inquiry">
 			<div class="search_tag"></div>
-		        <div class="search">
-		          <form id="submitForm">
-		             <ul>
-		              <li>
-		              <li class="search_button">
-		                <input id="id_export_button" type="button" value="导出excel" class="search_button_inquiry"
-		                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
-		              </li>
-		            </ul> 
-		          </form>
-		        </div>
-			
 			
 				<div class="search_tag">自定义表头</div>
-				<form id="submitForm" action="${contextPath}/intopieces/intopiecesrecieve/recieve.page">
-				<input type="hidden" value="$!result.filter.chineseName" name="user_def_chk_value" />
+				<form id="submitForm" action="browse.page" method="GET">
+				#if(!$result.filter.userDef)
+					#set ($userDef = 255)
+				#else
+					#set ($userDef = $result.filter.userDef)
+				#end
+				<input type="hidden" id="userDef" name="userDef" value="$userDef" />
 		        <div class="search">
 			        <table>
 					<tr>
 						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="1" checked disabled />卡号</td>
-						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="2" checked />是否新增客户</td>
-						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="4" checked />账户透支本金</td>
-						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="8" checked />应付利息</td>
-						<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="16" checked />账户透支余额</td>
+						<script type="text/javascript">
+							userDef = parseInt($userDef);
+							if(parseInt(userDef&2) != 0){
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="2" checked />是否新增客户</td>');
+							}else{
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="2" />是否新增客户</td>');
+							}
+							
+							if(parseInt(userDef&4) != 0){
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="4" checked />账户透支本金</td>');
+							}else{
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="4" />账户透支本金</td>');
+							}
+							
+							if(parseInt(userDef&8) != 0){
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="8" checked />应付利息</td>');
+							}else{
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="8" />应付利息</td>');
+							}
+							
+							if(parseInt(userDef&16) != 0){
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="16" checked />账户透支余额</td>');
+							}else{
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="16" />账户透支余额</td>');
+							}
+						</script>
+					
+						<td> <input id="id_user_def_button" type="button" value="确定" class="search_button_inquiry"
+		                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" /></td>
 					</tr>					
 					<tr>
-						<td><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="32" checked />上期账单最小还款金额</td>
-						<td><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="64" checked />本期还款日应还金额</td>
-						<td><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="128" checked />本期还款日应还的最低还款金额</td>
+						<script type="text/javascript">
+							if(parseInt(userDef&32) != 0){
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="32" checked />上期账单最小还款金额</td>');
+							}else{
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="32" />上期账单最小还款金额</td>');
+							}
+							
+							if(parseInt(userDef&64) != 0){
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="64" checked />本期还款日应还金额</td>');
+							}else{
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="64" />本期还款日应还金额</td>');
+							}
+							
+							if(parseInt(userDef&128) != 0){
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="128" checked />本期还款日应还的最低还款金额</td>');
+							}else{
+								document.write('<td width="20%"><input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="128" />本期还款日应还的最低还款金额</td>');
+							}
+							
+						</script>
 						<td><!-- <input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="256" checked />全额还款户数 --></td>
 						<td><!-- <input type="checkbox" name="user_def_chk" onclick="user_def_chk_clk(this.value)" value="512" checked />最低还款户数 --></td>
+						<td><input id="id_export_button" type="button" value="导出excel" class="search_button_inquiry"
+		                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" /></td>
 					</tr>
 				</table>
 		        </div>
@@ -81,7 +121,7 @@
 							<col width="140" />
 							<col width="140" />
 						</colgroup>
-						#foreach ($account in $result)
+						#foreach ($account in $result.items)
 						<tr id="$!account.id" >
 							<td nowrap="nowrap">$!account.card_number</td>
 							<td nowrap="nowrap">否</td>
@@ -110,6 +150,7 @@
 
 	
 	$(document).ready(function() {
+		
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
 		opsObj.createUrl = "${modulePath}/create.page";
@@ -119,31 +160,61 @@
 		opsObj.exportUrl = "export.page";
 		prepareOperations(opsObj);
 		
+		//筛选后跳转
+		$("#id_user_def_button").click(function() {
+           	//重新
+           	var submitForm = opsObj.formObj[0];
+            if (submitForm) {
+                submitForm.submit();
+            }
+        });
+		
+		//显示隐藏表头
+		//var index = Math.log(userDef) / Math.log(2);
+		for(var m=2,n=1;m<=128;m=m*2,n++){
+			if(parseInt(userDef&m) != 0){
+				var tab = document.getElementById('user_def_head');
+				var trs = tab.rows;
+		        for(var i = 0, len = trs.length; i < len; i++){
+		            var cell = trs[i].cells[n];
+		            cell.style.display = '';
+		        }
+		        tab = document.getElementById('user_def_content');
+				trs = tab.rows;
+		        for(var i = 0, len = trs.length; i < len; i++){
+		            var cell = trs[i].cells[n];
+		            cell.style.display = '';
+		        }
+			}
+			else{
+				var tab = document.getElementById('user_def_head');
+				var trs = tab.rows;
+		        for(var i = 0, len = trs.length; i < len; i++){
+		            var cell = trs[i].cells[n];
+		            cell.style.display = 'none';
+		        }
+		        tab = document.getElementById('user_def_content');
+				trs = tab.rows;
+		        for(var i = 0, len = trs.length; i < len; i++){
+		            var cell = trs[i].cells[n];
+		            cell.style.display = 'none';
+		        }
+			}
+		}
+		
 	});
 	
 	//自定义表头
 	function user_def_chk_clk(val){
-		var index = Math.log(val) / Math.log(2);
-		var tab = document.getElementById('user_def_head');
-		var trs = tab.rows;
-        for(var i = 0, len = trs.length; i < len; i++){
-            var cell = trs[i].cells[index];
-            if(cell.style.display == 'none'){
-                cell.style.display = '';
-            }else{
-                cell.style.display = 'none';
-            }
-        }
-        tab = document.getElementById('user_def_content');
-		trs = tab.rows;
-        for(var i = 0, len = trs.length; i < len; i++){
-            var cell = trs[i].cells[index];
-            if(cell.style.display == 'none'){
-                cell.style.display = '';
-            }else{
-                cell.style.display = 'none';
-            }
-        }
+        
+		//获取选中框的值
+		var chk_val = 0;
+		$("input:checkbox:checked").each(function(){
+			chk_val += parseInt($(this).val(),10);
+		});
+		$("#userDef").val(chk_val);
     }
+	
+	</script>
 </script>
 #parse ("common/iframe_page_footer.htm")

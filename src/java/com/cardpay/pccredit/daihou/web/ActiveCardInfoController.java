@@ -79,6 +79,7 @@ public class ActiveCardInfoController extends BaseController {
 		JRadPagedQueryResult<ActiveCard> pagedResult = new JRadPagedQueryResult<ActiveCard>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/riskcontrol/activecard/activecard_browse",request);
 		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("filter", filter);
 		return mv;
 	}
 	
