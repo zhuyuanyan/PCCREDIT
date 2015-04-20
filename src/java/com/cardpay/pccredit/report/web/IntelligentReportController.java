@@ -118,6 +118,7 @@ public class IntelligentReportController extends BaseController {
 	@RequestMapping(value = "/report/intelligentaccountreport/export.page", method = { RequestMethod.GET })
 	public void export(HttpServletRequest request,HttpServletResponse response) {
 		JRadModelAndView mv = new JRadModelAndView("/report/intelligentreport/intelligentaccountreport_browse", request);
+		
 		List<IntelligentAccountReport2> result = intelligentReportService.findIntelligentAccountReportAll();
 		create(result, response);
 	}

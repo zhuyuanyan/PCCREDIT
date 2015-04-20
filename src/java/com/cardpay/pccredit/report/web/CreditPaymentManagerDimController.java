@@ -80,6 +80,9 @@ public class CreditPaymentManagerDimController extends BaseController {
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
 		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
 		List<CreditPayment> list = creditPaymentService.getManagerCreditPayment(filter);
 
 		JRadModelAndView mv = new JRadModelAndView("/report/creditpayment/creditpayment_manager_browse", request);
@@ -115,6 +118,9 @@ public class CreditPaymentManagerDimController extends BaseController {
 		}
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
+		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
 		}
 		List<CreditPayment> list = creditPaymentService.getManagerCreditPayment(filter);
 

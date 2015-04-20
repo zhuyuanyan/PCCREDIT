@@ -64,6 +64,7 @@ public class ManaProceMonitorController extends BaseController {
 		List<manaProceMonitor> result = proceMonitorService.getProceMonitorStatistical(filter);
 		JRadModelAndView mv = new JRadModelAndView("/report/cardbussiness/manager_business_monitoring_browse", request);
 		mv.addObject(PAGED_RESULT, result);
+		mv.addObject("filter", filter);
 
 		return mv;
 	}

@@ -345,11 +345,11 @@
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
         <property name="cronExpression">
-            <value>0 30 22 * * ?</value>
+            <value>0 00 20 * * ?</value>
         </property>
     </bean>
     
-    <!-- 每日晚上11点制卡发送至服务器 start -->
+    <!-- 每日晚上5点制卡发送至服务器 start -->
     <bean id="makeCardJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 调用的类 -->
         <property name="targetObject">
@@ -367,7 +367,7 @@
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
         <property name="cronExpression">
-            <value>0 0 22 * * ?</value>
+            <value>0 0 17 * * ?</value>
         </property>
     </bean>
     

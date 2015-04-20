@@ -17,6 +17,9 @@ public class StatisticalFilter extends BaseQueryFilter {
 	// 产品Id
 	private String productId;
 	
+	//选择机构
+	private String orgId;
+	
 	public Date getBasicDate() {
 		return basicDate;
 	}
@@ -40,4 +43,13 @@ public class StatisticalFilter extends BaseQueryFilter {
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
+
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+	
 }

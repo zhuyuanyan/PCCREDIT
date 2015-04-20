@@ -60,7 +60,9 @@ public class QuailBankProceReturnController extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute StatisticalFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
-
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
 		List<QuailBankReturnMonitor> result = proceMonitorService.getQuailBankReturnMonitorStatistical(filter);
 		JRadModelAndView mv = new JRadModelAndView("/report/cardquality/bank_quality_return_browse", request);
 		mv.addObject(PAGED_RESULT, result);
@@ -80,7 +82,9 @@ public class QuailBankProceReturnController extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public void export(@ModelAttribute StatisticalFilter filter, HttpServletRequest request,HttpServletResponse response) {
 		filter.setRequest(request);
-
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
 		List<QuailBankReturnMonitor> result = proceMonitorService.getQuailBankReturnMonitorStatistical(filter);
 		create(result, response,filter);
 	}
