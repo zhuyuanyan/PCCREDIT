@@ -79,6 +79,9 @@ public class CardStatisticalManagerDimensionController extends BaseController {
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
 		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
 		List<CardStatistical> list = cardStatisticalService.getManagerCardStatistical(filter);
 
 		JRadModelAndView mv = new JRadModelAndView("/report/cardstatistical/cardstatistical_manager_browse", request);
@@ -105,6 +108,9 @@ public class CardStatisticalManagerDimensionController extends BaseController {
 		}
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
+		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
 		}
 		List<CardStatistical> list = cardStatisticalService.getManagerCardStatistical(filter);
 		create(list, response,filter);

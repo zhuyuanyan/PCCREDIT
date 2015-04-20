@@ -204,7 +204,7 @@ function stopPropagation(selector, eventName) {
 function prepareOperations(opsObj) {
     // prepareListCheckboxs();
     initClickEvent();
-
+    opsObj.formObj.action="";
     if (opsObj.createUrl) {
         $("#id_create_button").click(function() {
             var url = opsObj.createUrl;
@@ -351,6 +351,7 @@ function prepareOperations(opsObj) {
             if (submitForm) {
                 submitForm.action = opsObj.exportUrl;
                 submitForm.submit();
+                submitForm.action="";
             }
         });
     }

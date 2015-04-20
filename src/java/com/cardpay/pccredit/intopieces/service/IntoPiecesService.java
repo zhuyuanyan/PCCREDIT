@@ -2037,12 +2037,12 @@ public class IntoPiecesService {
 				list.get(i).setIfSend("1");
 				commonDao.updateObject(list.get(i));
 			}
-			//生成文件名
-			Calendar cal=Calendar.getInstance();
-	        cal.add(Calendar.DATE,1);
-	        Date date=cal.getTime();
+			//生成文件名(当天时间)
+//			Calendar cal=Calendar.getInstance();
+//	        cal.add(Calendar.DATE,1);
+//	        Date date=cal.getTime();
 			DateFormat format2 = new SimpleDateFormat("yyyyMMdd");
-			String nowDate  = format2.format(date);
+			String nowDate  = format2.format(new Date());
 			String fileName = CustomerInforConstant.BANK_ID+"-APPLN-";
 			fileName=fileName+nowDate;
 			/*生成的接口数据上传到ftp文件上*/
@@ -2083,6 +2083,8 @@ public class IntoPiecesService {
 		XM_APPLN_TJINFO tjinfo = tjinfo_Dao.findByCustomerId(customerId);
 		//申请额度
 		XM_APPLN_SQED sqed = sqed_Dao.findByCustomerId(customerId);
+		//获取柜员号
+		String useId = intoPiecesDao.getManagerId(customerInfor.getCardId());
 		String uuid19 = NumberContext.getUUid(19);
 		for(int i=0;i<applicationDataImportList.size();i++){
 			ApplicationDataImport applicationDataImport = applicationDataImportList.get(i);
@@ -2975,7 +2977,9 @@ public class IntoPiecesService {
 			    case 208:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 209:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 210:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 211:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 211:
+			    	//柜员号
+			    	content = UploadFileTool.getContent(content,useId,length);break;
 			    case 212:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 213:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 214:content = UploadFileTool.getContent(content,sb.toString(),length);break;
@@ -3085,7 +3089,9 @@ public class IntoPiecesService {
 			    case 308:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 309:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 310:content = UploadFileTool.getContent(content,sb.toString(),length);break;
-			    case 311:content = UploadFileTool.getContent(content,sb.toString(),length);break;
+			    case 311:
+			    	//柜员号
+			    	content = UploadFileTool.getContent(content,useId,length);break;
 			    case 312:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 313:content = UploadFileTool.getContent(content,sb.toString(),length);break;
 			    case 314:content = UploadFileTool.getContent(content,sb.toString(),length);break;

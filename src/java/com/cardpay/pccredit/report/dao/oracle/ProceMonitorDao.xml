@@ -64,7 +64,11 @@ SELECT
         U . ID AS userid,
         r.*
       FROM
-        (select SU.id,SU.DISPLAY_NAME from ACCOUNT_MANAGER_PARAMETER amp,SYS_USER SU where AMP.USER_ID = SU.ID)u
+        (select SU.id,SU.DISPLAY_NAME from SYS_USER SU where SU.USER_TYPE='1'
+        <if test="orgId!=null and orgId!=''">
+           and SU.id in (select user_id from sys_dept_user where dept_id in (select id from sys_depertment where org_id=#{orgId}))
+       </if>
+        )u
       LEFT JOIN (
         SELECT
           c.*, b.USER_ID
@@ -72,8 +76,9 @@ SELECT
           CUSTOMER_APPLICATION_INFO c,
           BASIC_CUSTOMER_INFORMATION b
         WHERE
-          c.CUSTOMER_ID = b. ID
+          c.CUSTOMER_ID = b. ID  
       ) r ON r.USER_ID = U . ID
+
       ORDER BY
         U . ID
     ) c,
@@ -137,6 +142,9 @@ SELECT
 				and SU.id = SDU.USER_ID
 				and SDU.DEPT_ID = SD.ID 
 				and SD.ORG_ID = SO.ID
+				<if test="orgId!=null and orgId!=''">
+                  and SD.org_id=#{orgId}
+                 </if>
 				)u
       LEFT JOIN (
         SELECT
