@@ -66,18 +66,32 @@ public class Constant {
 	
 	
 	/*FTP链接配置*/
-	public static String FTPIP = "11.23.11.43";
+	public static String FTPIP = "33.1.49.1";
 	
 	public static String FTPPORT = "21";
 	
-	public static String FTPUSERNAME = "root";
+	public static String FTPUSERNAME = "ftpxm";
 	
-	public static String FTPPASSWORD = "abc,123";
+	public static String FTPPASSWORD = "fil@xm123";
 	
-	public static String FTPPATH = "/var/ftp/tmp";
+	public static String FTPPATH = "/xm_request/";
+	
+	/*ftp下载到本地的临时文件	 */
+	public static String FTPTODOWN="/var/ftp/makecard/";
 	
 	//系统默认产品
 	public static String DEFAULT_TYPE = "1";
 	//进件接收标志
 	public static String recieve_type = "1";
+	
+	public static String APP_STATE_1="已申请";
+	public static String APP_STATE_2="未申请";
+	public static String APP_STATE_3="退回";
+	
+	public static String APP_STATE_END="end";
+	
+	//制卡返回结果
+	public static String CARD_RETURN_TYPE1="成功";
+	public static String CARD_RETURN_TYPE2="资料不全";
+	public static String CARD_RETURN_TYPE3="格式错误";
 }

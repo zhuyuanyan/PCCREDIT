@@ -25,6 +25,17 @@ public class StatisticalTableCommDao {
 		return commonDao.queryBySql(sql, null);
 	}
 	
+	//不良
+	public List<HashMap<String, Object>> getManagerStatisticalDataBuLiang(){
+		String sql = " select bci.user_id as MANAGERID, ci.product_id as PRODUCTID, " +
+				" nvl(sum(t.principal_overdraft), 0) as PRINCIPALOVERDRAFT, nvl(sum(t.total_amount_overdraft), 0) as TOTALAMOUNTOVERDRAFT" + 
+				" from (select * from customer_account_information where CARD_NUMBER in (select ACCOUNT_ID from NPLS_INFORMATION)) t " +
+				" left join card_information ci " + 
+				" on t.customer_id = ci.customer_id left join basic_customer_information bci " + 
+				" on ci.customer_id = bci.id group by bci.user_id, ci.product_id ";
+		return commonDao.queryBySql(sql, null);
+	}
+	
 	public List<HashMap<String, Object>> getManagerAverageDailyOverdraft(int year, String managerId){
 		String sql = " select nvl(sum(t.principal_overdraft), 0) as PRINCIPALOVERDRAFT, " +
 				" nvl(sum(t.total_amount_overdraft), 0) as TOTALAMOUNTOVERDRAFT " +
@@ -50,6 +61,19 @@ public class StatisticalTableCommDao {
 		List<StatisticalTable> list = commonDao.queryBySql(StatisticalTable.class, sql, params);
 		if(list != null && list.size() > 0){
 			return list.get(0);
+		} else {
+			return null;
+		}
+	}
+	
+	//查询当天
+	public List<StatisticalTable> getStatisticalTable(String createDateStr){
+		String sql = "select * from statistical_table where to_char(created_date, 'yyyy-MM-dd') = #{createDateStr}";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("createDateStr", createDateStr);
+		List<StatisticalTable> list = commonDao.queryBySql(StatisticalTable.class, sql, params);
+		if(list != null && list.size() > 0){
+			return list;
 		} else {
 			return null;
 		}

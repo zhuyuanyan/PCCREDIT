@@ -13,7 +13,7 @@
               <li>
                 <span>客户名称：<input type="text" name="customerName" value="$!result.filter.customerName" /></span>
               </li>
-              <li>
+              <li style="display: none;">
                 <span>创建方式：
                 	<select id="createMethod" name="createMethod">
 	                   <option value="">请选择...</option>
@@ -21,7 +21,7 @@
                   	</select>
                   </span>
               </li>
-              <li>
+              <li style="display: none;">
                 <span>核销类型：
                 	<select id="verificationType" name="verificationType">
 	                   <option value="">请选择...</option>
@@ -29,7 +29,7 @@
                   	</select>
                   </span>
               </li>
-              <li>
+              <li style="display: none;">
                 <span>审核状态：
                 	<select id="reviewResults" name="reviewResults">
 	                   <option value="">请选择...</option>
@@ -50,18 +50,28 @@
             <colgroup>
               <col width="5%" />
               <col width="15%" />
+              <!-- <col width="15%" /> -->
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <!--  
               <col width="15%" />
               <col width="15%" />
-              <col width="15%" />
+              -->
               <col />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">创建方式</th>
-              <th nowrap="nowrap">核销类型</th>
+              <!-- <th nowrap="nowrap">核销类型</th> -->
+              <th nowrap="nowrap">进入逾期记录的金额</th>
+              <th nowrap="nowrap">进入逾期记录的利息</th>
+              <th nowrap="nowrap">五级分类理由</th>
+              <!-- 
               <th nowrap="nowrap">审核状态</th>
               <th nowrap="nowrap">操作</th>
+              -->
             </tr>
           </table>
         </div>
@@ -70,18 +80,27 @@
             <colgroup>
               <col width="5%" />
               <col width="15%" />
+              <!-- <col width="15%" /> -->
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <!-- 
               <col width="15%" />
               <col width="15%" />
-              <col width="15%" />
+              -->
               <col />
             </colgroup>
             #foreach ($nplsInfo in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!nplsInfo.id"
-                  #if ($!request.getParameter("recordId") == $!nplsInfo.id) checked="checked" #end /></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!nplsInfo.customerId"
+                  #if ($!request.getParameter("recordId") == $!nplsInfo.customerId) checked="checked" #end /></td>
               <td nowrap="nowrap">$!nplsInfo.customerName</td>
               <td nowrap="nowrap">#dictVal("CreateMethod", $!nplsInfo.createMethod)</td>
-              <td nowrap="nowrap">#dictVal("VERIFICATIONTYPE", $!nplsInfo.verificationType)</td>
+              <!-- <td nowrap="nowrap">#dictVal("VERIFICATIONTYPE", $!nplsInfo.verificationType)</td> -->
+              <td nowrap="nowrap">$!nplsInfo.overdueBalanceIn</td>
+              <td nowrap="nowrap">$!nplsInfo.overdueIntIn</td>
+              <td nowrap="nowrap">$!nplsInfo.levelFiveReason</td>
+              <!--  
               <td nowrap="nowrap">#dictVal("ReviewResults", $!nplsInfo.reviewResults)</td>
               <td nowrap="nowrap">
                #if($!nplsInfo.reviewResults == "new")
@@ -92,6 +111,7 @@
 			  	#end
 			  </td>
 			  <input type="hidden" id="$!{nplsInfo.id}_reviewResults" value="$!nplsInfo.reviewResults">
+			  -->
             </tr>
             #end
           </table>
@@ -99,10 +119,13 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
+         <!--  
          #btnpriv("create")<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">#i18n("button.create")</a>#end
          #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>#end
          #btnpriv("delete")<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">#i18n("button.delete")</a>#end
          #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
+         -->
+         <a id="id_cuishou_button" class="btn_g" href="javascript:void(0);" title="催收记录">催收记录</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -181,6 +204,21 @@
 	              Dialog.message("请选择一行");
 	          }
 	      });
+	      
+	      $("#id_cuishou_button").click(function() {
+				if ($(".checkbox :checked").length == 1) {
+					var rowId = getCurrentRowId();
+					var url = "${modulePath}/create_collection.json?customer_id=" + rowId;
+					
+					$.get(url, "", function(data, textStatus, jqXhr) {
+		   	            if (data.success) {
+		   	            	window.location.href= contextPath + "/riskcontrol/riskcustomercollection/display.page?id="+data.collectionPlanId ;
+		   	            }
+		   	          });
+				}else {
+	                Dialog.message("请选择一行");
+	            } 
+		    });
 	});
 	
 	function confirm(rowid){
@@ -236,5 +274,7 @@
                     });
                 });
 	}
+	
+	
 </script>
 #parse ("common/iframe_page_footer.htm")

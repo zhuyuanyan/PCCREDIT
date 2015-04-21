@@ -1,8 +1,11 @@
 package com.cardpay.pccredit.riskControl.web;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,10 @@ import com.cardpay.pccredit.customer.web.CustomerAccountInfoForm;
 import com.cardpay.pccredit.riskControl.constant.RiskConstants;
 import com.cardpay.pccredit.riskControl.filter.NplsInfomationFilter;
 import com.cardpay.pccredit.riskControl.model.NplsInfomation;
+import com.cardpay.pccredit.riskControl.model.RiskCustomerCollectionPlan;
 import com.cardpay.pccredit.riskControl.service.NplsInfomationService;
+import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -50,6 +56,9 @@ public class NplsInfomationController extends BaseController {
 	
 	@Autowired
 	private CustomerAccountInfoService customerAccountInfoService;
+	
+	@Autowired
+	private RiskCustomerCollectionService riskCustomerCollectionService;
 	
 	/**
 	 * 浏览页面
@@ -277,4 +286,35 @@ public class NplsInfomationController extends BaseController {
 		return mv;
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "create_collection.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap create_collection(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customer_id = request.getParameter("customer_id");
+				IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+				String collectionPlanId = "";
+				//查找催收计划 无则添加一条
+				List<RiskCustomerCollectionPlanForm> collectionPlan_ls = riskCustomerCollectionService.findRiskCollectionPlansByCustomerId(customer_id);
+				if(collectionPlan_ls == null || collectionPlan_ls.size() == 0){
+					RiskCustomerCollectionPlan riskCustomerCollectionPlan = new RiskCustomerCollectionPlan();
+					riskCustomerCollectionPlan.setCustomerId(customer_id);
+					riskCustomerCollectionPlan.setCreatedBy(user.getId());
+					collectionPlanId = riskCustomerCollectionService.insertRiskCustomerCollectionPlan(riskCustomerCollectionPlan);
+				}
+				else{
+					collectionPlanId = collectionPlan_ls.get(0).getId();
+				}
+				returnMap.put("collectionPlanId",collectionPlanId);
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
+	}
 }

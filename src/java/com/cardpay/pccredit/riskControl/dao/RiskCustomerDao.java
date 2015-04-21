@@ -52,5 +52,10 @@ public interface RiskCustomerDao {
 	 */
 	public List<RiskCustomer> findRiskCustomerBycustomerId(@Param("customerId")String customerId);
 	
-
+	/**
+	 * 通过cardId查询风险客户
+	 * @param cardId
+	 * @return
+	 */
+	public int findRiskByCardId(@Param("cardId")String cardId);
 }

@@ -183,4 +183,10 @@
 			and collection_promise_date between to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
 		]]>
 	</select>
+	
+	<select id="findRiskCollectionPlansByCustomerId" resultMap="CollectionFormResultMap">
+		SELECT * FROM
+		COLLECTION_PLAN c
+		where c.customer_id = #{customer_id}
+	</select>
 </mapper>

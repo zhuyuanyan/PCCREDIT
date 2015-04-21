@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.cardpay.pccredit.customer.filter.CustomerMaintenanceLogFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerMaintenanceLog;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -138,5 +139,11 @@ public class CustomerInforCommDao {
 		List<VideoAccessories> list = commonDao.queryBySql(VideoAccessories.class, "select * from video_accessories t where t.customer_id='"+customerId+"'", null);
 		return list;
 	}
-
+/**
+ * 通过客户id查询申请表
+ */
+	public List<CustomerApplicationInfo> ifProcess(String customerId){
+		String sql = "select * from customer_application_info where CUSTOMER_ID='"+customerId+"'";
+		return commonDao.queryBySql(CustomerApplicationInfo.class, sql, null);
+	}
 }

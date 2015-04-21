@@ -64,7 +64,7 @@
             </colgroup>
            #foreach ($wait in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
               <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>

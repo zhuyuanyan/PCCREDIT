@@ -61,6 +61,4 @@ public class SystemComDao {
 		return commonDao.queryBySqlInPagination(SystemUser.class, sql, params,
 				filter.getStart(), filter.getLimit());
 	}
-	
-
 }

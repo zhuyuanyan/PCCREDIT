@@ -75,8 +75,8 @@
             </colgroup>
             #foreach ($sample in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!sample.id"
-                  #if ($!request.getParameter("recordId") == $sample.id) checked="checked" #end /></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!sample.customerId"
+                  #if ($!request.getParameter("recordId") == $sample.customerId) checked="checked" #end /></td>
               <td nowrap="nowrap">$!sample.chineseName</td>
               <td nowrap="nowrap">$!sample.productName</td>
               <td nowrap="nowrap">$!sample.numberDaysOverdue</td>
@@ -92,7 +92,8 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #btnpriv("collectiontransfer")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="催收移交">催收移交</a>#end
+          <!-- #btnpriv("collectiontransfer")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="催收移交">催收移交</a>#end -->
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="催收记录">催收记录</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -107,13 +108,23 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		opsObj.createUrl = "${modulePath}/create.page";
-		opsObj.displayUrl = "${modulePath}/display.page";
-		opsObj.changeUrl = "${modulePath}/change.page";
-		opsObj.deleteUrl = "${modulePath}/delete.json";
-		opsObj.browseUrl = "${modulePath}/browse.page";
-		opsObj.exportUrl = "${modulePath}/export.page";
-
+		
+		$("#id_create_button").click(function() {
+			
+			if ($(".checkbox :checked").length == 1) {
+				var rowId = getCurrentRowId();
+				var url = "${modulePath}/create_collection.json?customer_id=" + rowId;
+				alert(url)
+				$.get(url, "", function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	window.location.href= contextPath + "/riskcontrol/riskcustomercollection/display.page?id="+data.collectionPlanId ;
+	   	            }
+	   	          });
+			}else {
+                Dialog.message("请选择一行");
+            } 
+	    });
+		
 		prepareOperations(opsObj);
 		
 	});

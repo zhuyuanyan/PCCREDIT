@@ -13,7 +13,7 @@
         <div class="search">
           <form id="submitForm">
             <ul>
-              <li>
+              <li style="display:none;">
                 <span>产品：<select id="productId" name="productId">
 	                   <option value="">请选择...</option>
 	                   #foreach($!product in $!result.items)
@@ -30,9 +30,14 @@
               <li>
                 <span>报表日期：<input type="text" name="reportDate" value='$!date.format("yyyy-MM-dd",$!filter.reportDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
-              
+              <li>
+                <span>选择机构：<select name="orgId"  >#dict("Organizations", $!filter.orgId)</select>
+              </span>
+              </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+                <input id="id_export_button" type="button" value="导出excel" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
               </li>
             </ul>
@@ -193,7 +198,7 @@
 		opsObj.changeUrl = "${modulePath}/change.page";
 		opsObj.displayUrl = "${modulePath}/display.page";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-
+		opsObj.exportUrl = "${modulePath}/export.page";
 		prepareOperations(opsObj);
 		
 	});

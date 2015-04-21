@@ -3,39 +3,25 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">客户经理“灵活金”透支情况统计（单位：万元）</div>
+        <div class="title">支行（拒绝）“灵活金”业务/普通信用卡进件质量监测报表统计</div>
       </div>
       
       <div class="inquiry">
 <!-----------搜索------------------------------------------->  
   
         <div class="search_tag"></div>
-  <!--       <div class="search">
+        <div class="search">
           <form id="submitForm">
-            <ul>
+             <ul>
               <li>
-                <span>产品：<select id="productId" name="productId">
-	                   <option value="">请选择...</option>
-	                   #foreach($!product in $!result.items)
-							<option value="$!product.id" #if($!product.id== $!filter.productId) selected #end>
-								$!product.productName
-							</option>
-						#end
-	                </select>
-				</span>
+                <span>选择机构：<select name="orgId"  >#dict("Organizations", "")</select>
+              </span>
               </li>
-              <li>
-                <span>基准日期：<input type="text" name="basicDate" value='$!date.format("yyyy-MM-dd",$!filter.basicDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
-              </li>
-              <li>
-                <span>报表日期：<input type="text" name="reportDate" value='$!date.format("yyyy-MM-dd",$!filter.reportDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
-              </li>
-              
               <li class="search_button">
-                <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
+                <input id="id_export_button" type="button" value="导出excel" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
               </li>
-            </ul>
+            </ul> 
           </form>
         </div>
         -->
@@ -98,7 +84,7 @@
 		opsObj.changeUrl = "${modulePath}/change.page";
 		opsObj.displayUrl = "${modulePath}/display.page";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-
+		opsObj.exportUrl = "${modulePath}/export.page";
 		prepareOperations(opsObj);
 	});
 </script>

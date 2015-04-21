@@ -204,7 +204,7 @@ function stopPropagation(selector, eventName) {
 function prepareOperations(opsObj) {
     // prepareListCheckboxs();
     initClickEvent();
-
+    opsObj.formObj.action="";
     if (opsObj.createUrl) {
         $("#id_create_button").click(function() {
             var url = opsObj.createUrl;
@@ -351,6 +351,7 @@ function prepareOperations(opsObj) {
             if (submitForm) {
                 submitForm.action = opsObj.exportUrl;
                 submitForm.submit();
+                submitForm.action="";
             }
         });
     }
@@ -461,6 +462,19 @@ function _calendar(){
 
 function _calendarFormat(format){
 	_args=arguments[0]||{ format:'yyyyMMdd',btnBar:false };
+	 var thisEvent = window.event;
+     if (thisEvent == undefined) {
+         var caller = arguments.callee.caller;
+         while (caller.caller != null) { caller = caller.caller; }
+         thisEvent = caller.arguments[0];
+     }
+    var thisObj=thisEvent.target||thisEvent.srcElement;
+	$(thisObj).calendar(_args);
+	$(thisObj).removeAttr("on"+thisEvent.type);
+}
+
+function __calendarFormat(format){
+	_args=arguments[0]||{ format:'MMyy',btnBar:false };
 	 var thisEvent = window.event;
      if (thisEvent == undefined) {
          var caller = arguments.callee.caller;

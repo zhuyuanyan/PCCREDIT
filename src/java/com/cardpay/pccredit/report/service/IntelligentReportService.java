@@ -9,10 +9,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.web.AmountAdjustmentForm;
 import com.cardpay.pccredit.report.dao.IntelligentReportDao;
+import com.cardpay.pccredit.report.filter.UserDefFilter;
 import com.cardpay.pccredit.report.model.IntelligentAccountReport;
+import com.cardpay.pccredit.report.model.IntelligentAccountReport2;
 import com.cardpay.pccredit.report.model.IntelligentCustomerReport;
 import com.cardpay.pccredit.report.model.PostLoanManagementData;
+import com.wicresoft.jrad.base.database.dao.business.BusinessFilter;
+import com.wicresoft.jrad.base.database.model.QueryResult;
 
 /**
  * @author shaoming
@@ -30,8 +35,9 @@ public class IntelligentReportService {
 
 		return intelligentReportDao.findIntelligentCustomerReport();		
 	}
-	/*客户信息智能报表*/
-	public List<IntelligentAccountReport> findIntelligentAccountReport(){
+	
+	/*客户信息智能报表-分页*/
+	public QueryResult<IntelligentAccountReport2> findIntelligentAccountReport(UserDefFilter filter){
 		Calendar cal = Calendar.getInstance();
 		int month = cal.get(Calendar.MONTH)+1;
 		int year = cal.get(Calendar.YEAR);
@@ -41,8 +47,27 @@ public class IntelligentReportService {
 			lastMonth = 12;
 			lastYear -= 1; 
 		}
-		return intelligentReportDao.findIntelligentAccountReport(year,month,lastYear,lastMonth);		
+		
+		List<IntelligentAccountReport2> ls = intelligentReportDao.findIntelligentAccountReport(filter);
+		int size = intelligentReportDao.findIntelligentAccountReportCount();
+		QueryResult<IntelligentAccountReport2> qs = new QueryResult<IntelligentAccountReport2>(size, ls);
+		return qs;
 	}
+	
+	/*客户信息智能报表-全部*/
+	public List<IntelligentAccountReport2> findIntelligentAccountReportAll(){
+		Calendar cal = Calendar.getInstance();
+		int month = cal.get(Calendar.MONTH)+1;
+		int year = cal.get(Calendar.YEAR);
+		int lastMonth = cal.get((Calendar.MONTH));
+		int lastYear = cal.get(Calendar.YEAR);
+		if(lastMonth==0){
+			lastMonth = 12;
+			lastYear -= 1; 
+		}
+		return intelligentReportDao.findIntelligentAccountReportAll(year,month,lastYear,lastMonth);	
+	}
+	
 	/*贷后管理数据*/
 	public PostLoanManagementData findPostLoanManagementData(){
 

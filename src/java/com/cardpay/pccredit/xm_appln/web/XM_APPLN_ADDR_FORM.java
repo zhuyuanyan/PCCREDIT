@@ -58,6 +58,15 @@ public class XM_APPLN_ADDR_FORM extends BaseForm {
 	private String osea_f4;
 	private String state_c4;
 	private String postcode4;
+	
+	//
+	private String mail_to;
+	public String getMail_to() {
+		return mail_to;
+	}
+	public void setMail_to(String mail_to) {
+		this.mail_to = mail_to;
+	}
 	public String getCustomer_id() {
 		return customer_id;
 	}

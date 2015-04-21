@@ -3,6 +3,7 @@ package com.cardpay.pccredit.xm_appln.dao;
 import java.util.List;
 
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SPED;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_YWXX;
 import com.wicresoft.util.annotation.Mapper;
 /**
  * 
@@ -18,4 +19,5 @@ public interface XM_APPLN_SPED_Dao {
 	 */
 	public XM_APPLN_SPED findByCurrentStatus(String currentStatus);
 	public List<XM_APPLN_SPED> findByApplicationID(String applicationId);
+	public XM_APPLN_SPED findByCustomerId(String customer_id);
 }

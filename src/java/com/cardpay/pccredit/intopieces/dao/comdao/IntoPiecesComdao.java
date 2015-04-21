@@ -13,8 +13,10 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.model.CardCur;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesCardQueryFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
 import com.cardpay.pccredit.intopieces.model.ApplicationDataImport;
@@ -26,6 +28,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
@@ -53,7 +56,7 @@ public class IntoPiecesComdao {
 		String status = filter.getStatus();
 		StringBuffer sql = null;
 		sql = new StringBuffer(
-				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.status,t.serial_number from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
 		if (StringUtils.trimToNull(cardId) != null
 				|| StringUtils.trimToNull(chineseName) != null) {
 			if (StringUtils.trimToNull(cardId) != null
@@ -210,9 +213,16 @@ public class IntoPiecesComdao {
 	public QueryResult<IntoPieces> findintoApplayPiecesByFilter(
 			IntoPiecesFilter filter) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
-		String sql = "select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and t.product_id=p.id and t.status='approved' order by t.id desc";
+		String sql = "select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and t.product_id=p.id  order by t.id desc";
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql, params,
 				filter.getStart(), filter.getLimit());
+	}
+	/* 查询进件信息count */
+	public int findintoApplayPiecesCountByFilter(
+			IntoPiecesFilter filter) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		String sql = "select t.id,t.customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and t.product_id=p.id order by t.id desc";
+		return commonDao.queryBySql(sql, params).size();
 	}
 
 	/* 查询进价信息 */
@@ -428,7 +438,7 @@ public class IntoPiecesComdao {
 	 */
 	public List<ApproveHistoryForm> findApproveHistoryByDataId(String id,
 			String dataType) {
-		String sql = "select s.status_name, t.examine_result, su.display_name, t.examine_amount, t.start_examine_time "
+		String sql = "select s.status_name, t.examine_result, su.display_name, su.id,t.examine_amount, t.start_examine_time "
 				+ " from wf_status_queue_record t left join wf_status_info s on t.current_status = s.id "
 				+ " left join wf_process_record pr on t.current_process = pr.id";
 		if (dataType.equals("application")) {
@@ -490,5 +500,24 @@ public class IntoPiecesComdao {
 		} else {
 			return null;
 		}
+	}
+	
+	public List<IntoPiecesCardQuery> getRetrunMakeData(IntoPiecesCardQueryFilter cardQueryFilter) {
+		String sql = "select * from xm_appln_card_return where uuid19=#{uuid19}";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("uuid19", cardQueryFilter.getUuid19());
+
+		return commonDao.queryBySql(IntoPiecesCardQuery.class, sql, params);
+	}
+	
+	//根据身份证号查询卡号
+	public List<CardCur> getCardNbrByCardId(String cardId) {
+		String sql = "select card_nbr as cardNbr,custr_nbr as custrNbr from pccredit1.s_xyk_card_cur where custr_nbr=#{cardId}";
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("cardId", cardId);
+
+		return commonDao.queryBySql(CardCur.class, sql, params);
 	}
 }

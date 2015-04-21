@@ -1,7 +1,9 @@
 package com.cardpay.pccredit.report.service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +17,7 @@ import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
 import com.cardpay.pccredit.report.dao.StatisticalTableDao;
 import com.cardpay.pccredit.report.dao.comdao.StatisticalTableCommDao;
 import com.cardpay.pccredit.report.model.StatisticalTable;
+import com.cardpay.pccredit.report.util.DateUtils;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.util.date.DateHelper;
 
@@ -54,7 +57,13 @@ public class StatisticalTableScheduleService {
 		int yearDay = calendar.get(Calendar.DAY_OF_YEAR);
 		try {
 			//统计客户经理 发卡数、激活卡数、激活总额度、到卡数、授信总额度
-			statisticalTableDao.statisticalTableInfo();
+			//获取前一天
+			String fmt = "yyyy-MM-dd";
+			SimpleDateFormat sdf = new SimpleDateFormat(fmt);
+			Date date = new Date();
+			String dateStr = sdf.format(date);
+			//statisticalTableDao.statisticalTableInfo(DateUtils.getSpecifiedDayBefore(dateStr));
+			statisticalTableDao.statisticalTableInfo(dateStr);
 			//透支本金额度(单位：分) 透支总额度(单位：分) 日均透支本金(单位：分) 日均透支总额度(单位：分)
 			List<HashMap<String, Object>> list = statisticalTableCommDao.getManagerStatisticalData();
 			for (Iterator<HashMap<String, Object>> iterator = list.iterator(); iterator.hasNext();) {
@@ -63,7 +72,21 @@ public class StatisticalTableScheduleService {
 				String productId = (String) map.get("PRODUCTID");
 				BigDecimal principalOverdraft = (BigDecimal) map.get("PRINCIPALOVERDRAFT");
 				BigDecimal totalAmountOverdraft = (BigDecimal) map.get("TOTALAMOUNTOVERDRAFT");
+				BigDecimal averagePrincipalOverdraft = principalOverdraft.divide(new BigDecimal(yearDay),2);
+				BigDecimal averageTotalAmountOverdraft = totalAmountOverdraft.divide(new BigDecimal(yearDay),2);
 				if(StringUtils.isNotEmpty(managerId)){
+					StatisticalTable statisticalTable = statisticalTableCommDao.getStatisticalTable(dateStr, managerId, productId);
+					if(statisticalTable != null){
+						statisticalTable.setOverdraftPrincipal(principalOverdraft.longValue() + "");
+						statisticalTable.setOverdraftAmount(totalAmountOverdraft.longValue() + "");
+						statisticalTable.setOverdraftPrincipalAverage(averagePrincipalOverdraft.longValue() + "");
+						statisticalTable.setOverdraftAmountAverage(averageTotalAmountOverdraft.longValue() + "");
+						statisticalTable.setBadOverdraftPrincipal("0");
+						statisticalTable.setRateOfPrincipal("00.00%");
+						commonDao.updateObject(statisticalTable);
+					}
+				}
+				/*if(StringUtils.isNotEmpty(managerId)){
 					StatisticalTable statisticalTable = statisticalTableCommDao.getStatisticalTable(createDateStr, managerId, productId);
 					if(statisticalTable != null){
 						statisticalTable.setOverdraftPrincipal(principalOverdraft.longValue() + "");
@@ -80,6 +103,24 @@ public class StatisticalTableScheduleService {
 							statisticalTable.setOverdraftAmountAverage(averageTotalAmountOverdraft.longValue() + "");
 							commonDao.updateObject(statisticalTable);
 						}
+					}
+				}*/
+			}
+			//不良透支本金余额
+			List<HashMap<String, Object>> list2 = statisticalTableCommDao.getManagerStatisticalDataBuLiang();
+			for (Iterator<HashMap<String, Object>> iterator = list2.iterator(); iterator.hasNext();) {
+				HashMap<String, Object> map = (HashMap<String, Object>) iterator.next();
+				String managerId = (String) map.get("MANAGERID");
+				String productId = (String) map.get("PRODUCTID");
+				BigDecimal principalOverdraft = (BigDecimal) map.get("PRINCIPALOVERDRAFT");//不良透支本金
+				if(StringUtils.isNotEmpty(managerId)){
+					StatisticalTable statisticalTable = statisticalTableCommDao.getStatisticalTable(dateStr, managerId, productId);
+					if(statisticalTable != null){
+						statisticalTable.setBadOverdraftPrincipal(principalOverdraft.longValue() + "");
+						//不良率
+						BigDecimal tzbj = new BigDecimal(statisticalTable.getOverdraftPrincipal());//透支本金
+						statisticalTable.setRateOfPrincipal(principalOverdraft.divide(tzbj,2).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP)+"%");//两位小数
+						commonDao.updateObject(statisticalTable);
 					}
 				}
 			}

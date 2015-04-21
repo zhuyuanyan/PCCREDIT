@@ -2,6 +2,7 @@ package com.cardpay.pccredit.common;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +12,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +22,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.struts.chain.contexts.ServletActionContext;
+import org.aspectj.weaver.patterns.ArgsAnnotationPointcut;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import sun.net.ftp.FtpClient;
 
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.product.model.AddressAccessories;
@@ -188,9 +195,12 @@ public class UploadFileTool {
 
 	/* 拼接字符串导出报文格式 */
 	public static StringBuffer getContent(StringBuffer allContent,
-			String appendContent, int length) {
+			String appendContent, int length)
+			throws UnsupportedEncodingException {
 		StringBuffer sb = new StringBuffer();
 		if (appendContent != null) {
+			appendContent = new String(appendContent.getBytes("GBK"),
+					"ISO8859_1");
 			if (appendContent.length() == length) {
 				sb.append(appendContent);
 			} else if (appendContent.length() < length) {
@@ -242,6 +252,7 @@ public class UploadFileTool {
 			ftp.connect(url, port);
 			ftp.login(username, password);
 			reply = ftp.getReplyCode();
+			System.out.println(reply);
 			if (!FTPReply.isPositiveCompletion(reply)) {
 				ftp.disconnect();
 			}
@@ -250,7 +261,15 @@ public class UploadFileTool {
 			ftp.storeFile(new String(fileName.getBytes("GBK"), "iso-8859-1"),
 					input);
 			input.close();
+//			FTPFile[] files = ftp.listFiles();
+//			System.out.println(ftp.listFiles().length);
+//			for (FTPFile file : files) {
+//				if (file.isFile()) {
+//					System.out.println(file.getName());
+//				}
+//			}
 			ftp.logout();
+			System.out.println("文件上传结束");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -290,8 +309,9 @@ public class UploadFileTool {
 		map.put("old", path + fileName);
 		return map;
 	}
-	//读取本地图片
-	public void showPicture(HttpServletResponse response,String filePath){
+
+	// 读取本地图片
+	public void showPicture(HttpServletResponse response, String filePath) {
 		FileInputStream is;
 		try {
 			is = new FileInputStream(filePath);
@@ -310,22 +330,72 @@ public class UploadFileTool {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-}
+	}
+
 	/**
 	 * 测试
+	 * 
 	 * @param fileName
 	 * @param content
+	 * @throws IOException
 	 */
-	public static void create(String fileName,String content){
-		File f=new File("f:\\"+fileName);  
-		try  {
-			FileWriter fw=new FileWriter(f);
-			fw.write(content);
-			fw.close();
-		}catch(IOException e)  {
+	public static void create(String fileName, String content)
+			throws IOException {
+
+		// File f = new File("d://"+fileName);
+		File f = new File(File.separator + "ftp" + File.separator + fileName);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(f), "GBK"));
+		content = new String(content.getBytes("ISO8859_1"), "GBK");
+		content += "\n";
+		writer.write(content);
+		writer.close();
+
+	}
+
+	public static void main(String[] args) {
+		StringBuffer contentBuffer = new StringBuffer();
+		contentBuffer.append("ceshi");
+		FTPClient ftpClient = new FTPClient();
+		String fileName = "20141414";
+		try {
+
+			InputStream is = null;
+
+			is = new ByteArrayInputStream(contentBuffer.toString().getBytes());
+
+			ftpClient.connect(Constant.FTPIP);
+
+			ftpClient.login(Constant.FTPUSERNAME, Constant.FTPPASSWORD);
+			System.out.println(ftpClient.getReplyCode());
+
+//			ftpClient.changeWorkingDirectory(Constant.FTPPATH);
+
+			FTPFile[] files = ftpClient.listFiles();
+			System.out.println(ftpClient.listFiles().length);
+			for (FTPFile file : files) {
+				if (file.isFile()) {
+					System.out.println(file.getName());
+			}
+			}
+			ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+
+			ftpClient.storeFile(new String(fileName.getBytes("GBK"),
+					"iso-8859-1"), is);
+
+			is.close();
+
+		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if (ftpClient.isConnected()) {
+				try {
+					ftpClient.disconnect();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
-	
 
 }

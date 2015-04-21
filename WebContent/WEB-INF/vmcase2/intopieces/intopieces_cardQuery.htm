@@ -1,0 +1,159 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/js/intopieces/intopieces.js" charset="utf-8"></script>
+<script type="text/javascript">
+</script>
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">进件查询</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">进件查询</div>
+        <div class="search">
+          <form id="queryForm" action="${contextPath}/intopieces/applycardquery/browse.page">
+          <ul>
+       		  <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+               <li>
+                <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              <li class="search_button">
+                <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
+              </li>
+          </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+             <col width="5%" />
+             <col width="10%" />
+              <col width="20%" />
+              <col width="20%"/>
+              <col width="15%"/>
+              <col width="10%" />
+
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">制卡结果</th>
+              <th nowrap="nowrap">审批人</th>
+              <th nowrap="nowrap">处理结果</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+               <col width="10%" />
+              <col width="20%" />
+              <col width="20%"/>
+              <col width="15%"/>
+              <col width="10%" />
+            </colgroup>
+           #foreach ($wait in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.applicationId@$!wait.resultType@$!wait.id@$!wait.sendBack"/></td>
+              <td nowrap="nowrap">$!wait.chineseName</td>
+              <td nowrap="nowrap">$!wait.cardId</td>
+              <td nowrap="nowrap">$!wait.resultText</td>
+              <td nowrap="nowrap">$!wait.approveName</td>
+              #if($!wait.sendBack=='1')
+			  <td nowrap="nowrap">已退回</td>
+			  #elseif($!wait.resultType=='00')
+			  <td nowrap="nowrap">无需处理</td>
+			  #else
+			  <td nowrap="nowrap">待处理</td>
+			  #end
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        <a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="退回">退回</a>
+        <a id="id_upload_button_1" class="btn_g" href="javascript:void(0);" title="上传影像资料">上传影像资料</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.exportUrl = "${modulePath}/export.page";
+		opsObj.createUrl1 = "${contextPath}/intopieces/applycardquery/returnToLuru.page";
+		opsObj.uploadUrl1 = "${contextPath}/customer/basiccustomerinforUpdate/create_yxzl.page";
+		prepareOperations(opsObj);
+		
+		
+		
+		if (opsObj.createUrl1) {
+	        
+	        $("#id_create_button_1").click(function() {
+				if ($(".checkbox :checked").length == 1) {
+					$("input[name='checkbox']:checked").each(function() {
+	            		rowid = $(this).val().split("@")[1];
+	            		aid = $(this).val().split("@")[0];
+	            		uuid = $(this).val().split("@")[2];
+	            		sendBack = $(this).val().split("@")[3];
+	        		});
+	            	if(rowid!="10"){
+	            		Dialog.message("无法退回该进件!");
+	            		return;
+	            	}else if(sendBack=="1"){
+            			Dialog.message("此进件已退回!");
+            			return;
+	            	}
+						$.post("${contextPath}/intopieces/applycardquery/returnToLuru.page", {applicationId:aid,id:uuid},
+			            function(data, textStatus, jqXhr) {
+			                if (data.success) {
+			                    window.location.reload(true);
+			                } else {
+			                    //Dialog.message(data.message);
+			                }
+			            });
+				}
+		    });
+	    }
+		if (opsObj.uploadUrl1) {
+			$("#id_upload_button_1").click(function() {
+				if ($(".checkbox :checked").length == 1) {
+					$("input[name='checkbox']:checked").each(function() {
+	            		rowid = $(this).val().split("@")[1];
+	            		aid = $(this).val().split("@")[0];
+	            		uuid = $(this).val().split("@")[2];
+	            		sendBack = $(this).val().split("@")[3];
+	        		});
+	            	if(rowid=="00"){
+	            		window.location.href = opsObj.uploadUrl1+"?id="+aid;
+	            	}else{
+	            		Dialog.message("只有成功进件才能上传影像资料!");
+	            		return;
+	            	}
+				}
+		    });
+		}
+	});
+	
+	
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -21,6 +21,7 @@ public class XM_APPLN_ZHSX extends BusinessModel {
 
 	private static final long serialVersionUID = 1L;
 
+	private String customer_id;
 	private String current_process;
 	private String before_status;
 	private String current_status;
@@ -36,6 +37,12 @@ public class XM_APPLN_ZHSX extends BusinessModel {
 	
 	public String getCurrent_process() {
 		return current_process;
+	}
+	public String getCustomer_id() {
+		return customer_id;
+	}
+	public void setCustomer_id(String customer_id) {
+		this.customer_id = customer_id;
 	}
 	public void setCurrent_process(String current_process) {
 		this.current_process = current_process;

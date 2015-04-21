@@ -532,13 +532,13 @@ function importData(url) {
 	$("input[name='checkbox']:checked").each(function() {
 		id = $(this).val();
 		$(this).parent().parent().find("td").each(function(i) {
-			if (i == 6) {
+		/*	if (i == 6) {
 				if ($.trim($(this).html()) != '审批结束') {
 					Dialog.message("只有审批结束的数据才可以导出数据!");
 					flag = false;
 					return false;
 				}
-			}
+			}*/
 		});
 	});
 	if(id==null){

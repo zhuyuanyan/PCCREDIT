@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.pbccrcReport.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -16,6 +18,7 @@ import com.cardpay.pccredit.pbccrcReport.util.PbocFileReader;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerMainManager;
+import com.cardpay.pccredit.customer.model.XmZxLogin;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.CustomerMainManagerService;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -64,28 +67,6 @@ public class CustomerZXController extends BaseController {
 	private RhzxService rhzxService;
 	
 	/**
-	 * 浏览页面
-	 * 
-	 * @param filter
-	 * @param request
-	 * @return
-	 */
-
-	@ResponseBody
-	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView browse(@ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
-        filter.setRequest(request);
-        IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		filter.setUserId(user.getId());
-		QueryResult<CustomerInfor> result = customerInforService.findCustomerInforByFilter(filter);
-		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
-		JRadModelAndView mv = new JRadModelAndView("/customer/customerzx/customerzx_browse",request);
-		mv.addObject(PAGED_RESULT, pagedResult);
-
-		return mv;
-	}
-	/**
 	 * 设置征信查询条件
 	 */
 	@ResponseBody
@@ -116,13 +97,20 @@ public class CustomerZXController extends BaseController {
 			String QueryReason = request.getParameter("QueryReason");
 			String QueryType = request.getParameter("QueryType");
 			String Vertype = request.getParameter("Vertype");
+			String orgId = request.getParameter("orgId");
 			
 			CustomerInfor customer = customerInforService.findCustomerInforById(customerId);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			
+			//通过机构号获取查询帐号和密码
+			List<XmZxLogin> list = customerInforService.getLoginByOrg(orgId);
+			String userid = list.get(0).getUserName();
+			String passwd = list.get(0).getPassWord();
+			
 			logger.info("人行征信查询---查询用户:"+user.getId()+",客户:"+customer.getChineseName());
 			PbccrcReport pbccrcReport = new PbccrcReport();
 			String fileFullPath = pbccrcReport.manuProcessPbocCreditInfo(customer.getChineseName(), customer.getCardType(), customer.getCardId(),
-					QueryReason,QueryType,Vertype);
+					QueryReason,QueryType,Vertype,userid,passwd);
 			if(fileFullPath != null){
 				//解析htm文件抓取内容并存入数据库
 				this.rhzxService.insertOrUpdateZX(customerId, fileFullPath);

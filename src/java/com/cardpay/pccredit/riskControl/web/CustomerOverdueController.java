@@ -1,6 +1,10 @@
 package com.cardpay.pccredit.riskControl.web;
 
+import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +18,9 @@ import com.cardpay.pccredit.customer.filter.CustomerOverdueFilter;
 import com.cardpay.pccredit.divisional.constant.DivisionalProgressEnum;
 import com.cardpay.pccredit.divisional.constant.DivisionalTypeEnum;
 import com.cardpay.pccredit.divisional.service.DivisionalService;
+import com.cardpay.pccredit.riskControl.model.RiskCustomerCollectionPlan;
 import com.cardpay.pccredit.riskControl.service.CustomerOverdueService;
+import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
 import com.cardpay.pccredit.sample2.model.Sample2;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -23,7 +29,9 @@ import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -48,6 +56,9 @@ public class CustomerOverdueController extends BaseController {
 	
 	@Autowired
 	private DivisionalService divisionalService;
+	
+	@Autowired
+	private RiskCustomerCollectionService riskCustomerCollectionService;
 	
 	/**
 	 * 浏览页面
@@ -89,4 +100,36 @@ public class CustomerOverdueController extends BaseController {
 
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "create_collection.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap create_collection(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String customer_id = request.getParameter("customer_id");
+				IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+				String collectionPlanId = "";
+				//查找催收计划 无则添加一条
+				List<RiskCustomerCollectionPlanForm> collectionPlan_ls = riskCustomerCollectionService.findRiskCollectionPlansByCustomerId(customer_id);
+				if(collectionPlan_ls == null || collectionPlan_ls.size() == 0){
+					RiskCustomerCollectionPlan riskCustomerCollectionPlan = new RiskCustomerCollectionPlan();
+					riskCustomerCollectionPlan.setCustomerId(customer_id);
+					riskCustomerCollectionPlan.setCreatedBy(user.getId());
+					collectionPlanId = riskCustomerCollectionService.insertRiskCustomerCollectionPlan(riskCustomerCollectionPlan);
+				}
+				else{
+					collectionPlanId = collectionPlan_ls.get(0).getId();
+				}
+				returnMap.put("collectionPlanId",collectionPlanId);
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			}catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
+	}
+	
 }

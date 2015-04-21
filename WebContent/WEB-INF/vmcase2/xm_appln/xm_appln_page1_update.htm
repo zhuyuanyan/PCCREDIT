@@ -22,6 +22,13 @@
 					<td>
 						<input type="text" class="text mast" id="card_id" name="card_id" value="$!xM_APPLN_JCZL.card_id" maxlength=32 onchange="changeBg(this)"/>
 					</td>
+					
+					<td class="label" style="width:12%">所属支行<font color="#ff0000">*</font></td>
+					<td>
+						<select id="race_code" name="belong_bank">
+							#dict("BELONG_BANK","$!xM_APPLN_JCZL.belong_bank")
+						</select>
+					</td>
 				</tr>
 			</table>
 		</div><!--/content-->
@@ -58,7 +65,7 @@
 					<td>
 						<input type="text" class="text" placeholder="YYYYMMDD" name="dob_input" value="$!xM_APPLN_JCZL.dob_input" maxlength="8" onmouseover="_calendarFormat()"/>
 					</td>
-					<td class="label">家庭电话</td>
+					<td class="label">家庭电话<font color="#ff0000">*</font></td>
 					<td>
 						<input type="text" class="text" name="home_phone" value="$!xM_APPLN_JCZL.home_phone" maxlength="17"/>
 					</td>
@@ -188,7 +195,9 @@
 				<tr>
 					<td class="label">行业类别</td>
 					<td>
-						<input type="text" class="text" name="occ_code" value="$!xM_APPLN_JCZL.occ_code" maxlength="4"/>
+						<select name="int_taxcod">
+							#dict("industry_type","$!xM_APPLN_JCZL.occ_code")
+						</select>
 					</td>
 					<td class="label">职务</td>
 					<td>
@@ -563,7 +572,6 @@
 	    	}
 	       
 	      }
-	
   </script>
 </body>
 #parse ("common/iframe_page_footer.htm")

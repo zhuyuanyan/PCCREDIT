@@ -1,7 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cardpay.pccredit.intopieces.dao.IntoPiecesDao" >
+    <resultMap id="cardQueryResultMap" type="com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="bank_id" property="bankId" jdbcType="VARCHAR" />
+    <result column="approve_card_id" property="approveCardId" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="VARCHAR" />
+    <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="result_type" property="resultType" jdbcType="VARCHAR" />
+    <result column="result_text" property="resultText" jdbcType="VARCHAR" />
+    <result column="approve_id" property="approveId" jdbcType="VARCHAR" />
+    <result column="approve_name" property="approveName" jdbcType="VARCHAR" />
+    <result column="chinese_name" property="chineseName" jdbcType="VARCHAR" />
+    <result column="application_id" property="applicationId" jdbcType="VARCHAR" />
+    <result column="send_back" property="sendBack" jdbcType="VARCHAR" />
+  </resultMap>
   <select id="checkValue" resultType="int">
   select count(1) from account_manager_parameter a, manager_customer_type c   where  a.level_information = c.level_id  and  a.user_id=#{userId} and c.customer_type =#{valueType} 
   </select>
+  
+    <select id="cardQuery" resultMap="cardQueryResultMap">
+  select s.* from xm_appln_card_return s where approve_id =#{approveId} 
+  <if test="chineseName!=null ">
+		<![CDATA[ and s.chinese_name like '%'||#{chineseName}||'%' ]]>
+  </if>
+  <if test="cardId!=null and cardId!=''">
+		and s.card_id=#{cardId}
+	</if>
+	ORDER BY
+			CASE
+		WHEN RESULT_TYPE='10' THEN
+			0
+		WHEN RESULT_TYPE is null THEN
+			1
+		ELSE
+			2
+		END
+  </select>
+  <select id="cardQueryCount" resultType="int">
+  select count(*) from xm_appln_card_return s where approve_id =#{approveId} 
+  <if test="chineseName!=null ">
+		<![CDATA[ and s.chinese_name like '%'||#{chineseName}||'%' ]]>
+  </if>
+  <if test="cardId!=null and cardId!=''">
+	and s.card_id=#{cardId}
+	</if>
+	ORDER BY
+			CASE
+		WHEN RESULT_TYPE='10' THEN
+			0
+		WHEN RESULT_TYPE is null THEN
+			1
+		ELSE
+			2
+		END
+  </select>
+  <select id="nowCount" resultType="int">
+  select count(*) from (select * from xm_appln_card_return where to_char(approve_date,'yyyymmdd')=#{approveDate})
+ 
+  </select>
+  
+      <select id="getResult" resultMap="cardQueryResultMap">
+  select s.* from xm_appln_card_return s where if_send=#{ifSend}
+   </select>
+    <select id="getManagerId" resultMap="String">
+  select MGR_NO from pccredit1.XM_ACC_CREDIT where CERT_CODE=#{cardId}
+   </select>
 </mapper>

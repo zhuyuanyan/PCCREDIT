@@ -1,0 +1,127 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">激活卡客户</div>
+      </div>
+      <div class="inquiry">
+      <!-----------搜索------------------------------------------->  
+  
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+              </li>
+              <li>
+                <span>证件类型：
+                	<select id="type" name="cardType">
+	                   <option value="">请选择...</option>
+	                   #dict("CARDTYPE", $!result.filter.cardType)
+                  	</select>
+                  </span>
+              </li>
+              <li>
+                <span>证件号码：<input type="text" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%"/>
+              <col width="20%"/>
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名</th>
+              <th nowrap="nowrap">产品</th>
+              <th nowrap="nowrap">卡号</th>
+              <th nowrap="nowrap">激活日期</th>
+              <th nowrap="nowrap">到期日</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+               <col width="5%" />
+               <col width="15%" />
+               <col width="20%" />
+               <col width="20%" />
+               <col width="20%" />
+               <col width="20%" />
+            </colgroup>
+            #foreach ($sample in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!sample.customer_id"
+                  #if ($!request.getParameter("recordId") == $sample.id) checked="checked" #end /></td>
+              <td nowrap="nowrap">$!sample.chinesename</td>
+              <td nowrap="nowrap">$!sample.product</td>
+              <td nowrap="nowrap">$!sample.cardnumber</td>
+              <td nowrap="nowrap">$!sample.cardactivatedate</td>
+              <td nowrap="nowrap">$!sample.expiredate</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="催收记录">催收记录</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		
+		$("#id_create_button").click(function() {
+			var url = "${modulePath}/create_collection.json?customer_id=" + "4028b2fa4ac37795014ac381c2dc005f";
+			
+			$.get(url, "", function(data, textStatus, jqXhr) {
+   	            if (data.success) {
+   	            	window.location.href= contextPath + "/riskcontrol/riskcustomercollection/display.page?id="+data.collectionPlanId ;
+   	            }
+   	          });
+			
+			/* if ($(".checkbox :checked").length == 1) {
+				var rowId = getCurrentRowId();
+				var url = "${modulePath}/create_collection.json?customerId=" + "4028b2fa4ac37795014ac381c2dc005f";
+				
+				$.get(url, null, function(data, textStatus, jqXhr) {
+	   	            if (data.success) {
+	   	            	window.location.href= contextPath + "/customer/maintenance/display.page?id="+data.collectionPlanId ;
+	   	            }
+	   	          });
+			}else {
+                Dialog.message("请选择一行");
+            } */
+	    });
+		
+		prepareOperations(opsObj);
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

@@ -1,5 +1,22 @@
 #parse ("common/iframe_page_header.htm")
 #parse ("common/customerInfor.htm")
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+	<script type="text/javascript" src="jquery-1.js"></script>
+	<style type="text/css">
+		.dialog{position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background:rgba(229,229,229,0.5);display:none;}
+		.dialog .dialog-box{width:400px;background:#ffffff;border:1px solid #e5e5e5;border-radius:10px;margin:0 auto;margin-top:200px;padding:3px;}
+		.dialog .dialog-box .top{height:35px;background:url(${contextPath}/images/xm_appln/box_head_bg.png) repeat-x;line-height:35px;font-size:14px;padding-left:15px;font-weight:bold;}
+		.dialog .dialog-box .top span{display:inline-block;width:35px;height:35px;background:url(${contextPath}/images/xm_appln/box_delete_nor.png);float:right;}
+		.dialog .dialog-box .top span:hover{background:url(${contextPath}/images/xm_appln/box_delete_hov.png);}
+		.dialog .dialog-box .content{font-size:12px;color:#323232;padding-left:20px;}
+		.dialog .dialog-box .bottom{border-top:1px solid #dddddd;height:45px;text-align:center;line-height:45px;}
+		.dialog .dialog-box .bottom .btn{width:70px;height:26px;margin:0 5px;background:url(/images/xm_appln/icon_button_qx_normal.png) repeat-x;border:1px solid #818181;border-radius:5px;}
+		.dialog .dialog-box .bottom .btn:hover{background:url(${contextPath}/images/xm_appln/icon_button_qx_hover.png) repeat-x;}
+		.dialog .dialog-box .bottom .btn-submit{background:url("${contextPath}/images/xm_appln/icon_button_normal.png") repeat-x;border:1px solid #2e84bb;}
+		.dialog .dialog-box .bottom .btn-submit:hover{background:url("${contextPath}/images/xm_appln/icon_button_hover.png") repeat-x;}
+	</style>
+</head>
 <body>
   <div class="content_main">
     <div class="contentinner">
@@ -64,7 +81,7 @@
             </colgroup>
            #foreach ($wait in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.processId@"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.applicationId@"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
               <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>
@@ -80,11 +97,40 @@
 
           </table>
         </div>
+        <div class="dialog">
+					<form id="checkForm" class="dialog-box" action="${contextPath}/intopieces/intopiecesrecieve/checkDo.json">
+						<input type="hidden" name="applicationId" id="applicationId" value="" />
+						<div class="top">
+							三性检测 <span onclick="$('.dialog').hide();"></span>
+						</div>
+						<div class="content">
+							<p>
+								真实性:<font color="red">*</font> <label><input
+									type="radio" name="reality" value="1" checked />通过</label> <label><input
+									type="radio" name="reality" value="2" />不通过</label>
+							</p>
+							<p>
+								完整性:<font color="red">*</font> <label><input
+									type="radio" name="complete" value="1" checked />通过</label> <label><input
+									type="radio" name="complete" value="2" />不通过</label>
+							</p>
+							<p>
+								规范性:<font color="red">*</font> <label><input
+									type="radio" name="standard" value="1" checked />通过</label> <label><input
+									type="radio" name="standard" value="2" />不通过</label>
+							</p>
+						</div>
+						<div class="bottom">
+							<input id="id_in_button" type="button" class="btn btn-submit" value="通过" /> <input
+								id="id_out_button" type="button" class="btn btn-submit" value="退回" />
+						</div>
+					</form>
+				</div>
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-         <a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="接收">接收</a>
-         <a id="id_check_button" class="btn_g" href="javascript:void(0);" title="三性检测">三性检测</a>
+         <a id="id_apply_button" class="btn_g" href="javascript:void(0);" onclick="$('.dialog').show();" title="接收">接收</a>
+         <!-- <a id="id_check_button" class="btn_g" href="javascript:void(0);" title="三性检测">三性检测</a> -->
          <a id="id_create_button_2" class="btn_g" href="javascript:void(0);" title="客户授信评估">客户授信评估</a>
 		<!-- <a class="btn_g" href="javascript:void(0);" onclick="javascript :history.back(-1)">返回</a> -->
         </div>
@@ -101,13 +147,14 @@
 	window.top.currentWindow.setLayout(layout);
 
 	$(document).ready(function() {
-		
+		$('.dialog').hide();
 		$("#id_apply_button").click(function() {
 			var id = null;
 			$("input[name='checkbox']:checked").each(function() {
 				id = $(this).val().split("@")[0];
 			});
-			if(id!=null){
+			$("#applicationId").val(id);
+			/* if(id!=null){
 				$.post("${contextPath}/intopieces/intopiecesrecieve/recieveOver.json", {id:id},
 	            function(data, textStatus, jqXhr) {
 	                if (data.success) {
@@ -118,13 +165,13 @@
 	            });
 			}else{
 				Dialog.message("请选择要接收的进件!");
-			}
+			} */
       });
 		
-		$("#id_check_button").click(function() {
+		/* $("#id_check_button").click(function() {
 			var url="${contextPath}/intopieces/intopiecesrecieve/check.page";
 			window.location.href = url;
-      });
+      }); */
 		
 		
 		$("#id_create_button_2").click(function() {
@@ -136,6 +183,31 @@
                 Dialog.message("请选择一行");
             }
         });
+		
+		//通过
+		$("#id_in_button").click(function() {
+			$('.dialog').hide();
+			#set ($formName = "'#checkForm'")
+			var formjson = $($formName).serialize();
+			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	Dialog.message("保存成功!");	
+	            	window.location.reload(true);
+	            }
+	          });
+		});
+		//退回
+		$("#id_out_button").click(function() {
+			$('.dialog').hide();
+			#set ($formName = "'#checkForm'")
+			var formjson = $($formName).serialize();
+			 $.get("${contextPath}/intopieces/intopiecesrecieve/checkDoNot.json", formjson, function(data, textStatus, jqXhr) {
+	            if (data.success) {
+	            	Dialog.message("保存成功!");	
+	            	window.location.reload(true);
+	            }
+	          });
+		})
 		
 	});
 	

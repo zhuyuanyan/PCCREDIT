@@ -53,6 +53,10 @@ public class NplsInfomationForm extends BaseForm{
 	
 	private String cardNumber;
 	
+	private String overdueBalanceIn;
+	private String overdueIntIn;
+	private String levelFiveReason;
+	
 	public String getCustomerId() {
 		return customerId;
 	}
@@ -205,4 +209,29 @@ public class NplsInfomationForm extends BaseForm{
 		this.cardNumber = cardNumber;
 	}
 
+	public String getOverdueBalanceIn() {
+		return overdueBalanceIn;
+	}
+
+	public void setOverdueBalanceIn(String overdueBalanceIn) {
+		this.overdueBalanceIn = overdueBalanceIn;
+	}
+
+	public String getOverdueIntIn() {
+		return overdueIntIn;
+	}
+
+	public void setOverdueIntIn(String overdueIntIn) {
+		this.overdueIntIn = overdueIntIn;
+	}
+
+	public String getLevelFiveReason() {
+		return levelFiveReason;
+	}
+
+	public void setLevelFiveReason(String levelFiveReason) {
+		this.levelFiveReason = levelFiveReason;
+	}
+
+	
 }

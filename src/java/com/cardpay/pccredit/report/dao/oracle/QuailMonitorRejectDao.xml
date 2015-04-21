@@ -41,6 +41,9 @@ FROM
 				WHERE
 					c.CUSTOMER_ID = b. ID
 				AND U . ID = b.USER_ID
+				<if test="orgId!=null and orgId!=''">
+                     and b.usr.id in (select user_id from sys_dept_user where dept_id in (select id from sys_depertment where org_id=#{orgId}))
+                 </if>
 				GROUP BY
 					U . ID
 			) cf
@@ -94,7 +97,8 @@ ROWNUM AS rowindex FROM (
 			FROM
 				sys_department dd
 			INNER JOIN SYS_DEPT_USER du ON dd. ID = DU.DEPT_ID
-		) ddu ON OO."ID" = DDU.ORG_ID
+		) ddu ON OO."ID" = DDU.ORG_ID 
+
 		INNER JOIN (
 			SELECT
 				kk.*

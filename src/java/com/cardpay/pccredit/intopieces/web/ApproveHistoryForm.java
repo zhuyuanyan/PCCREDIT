@@ -12,6 +12,8 @@ public class ApproveHistoryForm extends BaseModel{
 	
 	private String displayName;
 	
+	private String userId;
+	
 	private String examineAmount;
 	
 	private Date startExamineTime;
@@ -54,6 +56,14 @@ public class ApproveHistoryForm extends BaseModel{
 
 	public void setStartExamineTime(Date startExamineTime) {
 		this.startExamineTime = startExamineTime;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 }

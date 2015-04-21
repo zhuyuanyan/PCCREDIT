@@ -37,9 +37,13 @@ import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
+import com.cardpay.pccredit.customer.model.XmZxLogin;
+import com.cardpay.pccredit.customer.web.CustomerInforForm;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
+import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
+import com.cardpay.pccredit.intopieces.filter.CustomerApplicationInfoFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
@@ -89,6 +93,9 @@ public class CustomerInforService {
 	
 	@Autowired
 	private ProcessService processService;
+	
+	@Autowired
+	private IntoPiecesComdao intoPiecesComdao;
 	
 	/**
 	 * 得到该客户经理下的客户数量
@@ -164,6 +171,37 @@ public class CustomerInforService {
 		}
 		
 //		return commonDao.findObjectsByFilter(CustomerInfor.class, filter);
+	}
+	
+	
+	/**
+	 * 申请页面查询
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<CustomerInfor> findCustomerInforAndAppByFilter(CustomerInforFilter filter) {
+		try {
+			HashMap<String,Object> params = new HashMap<String,Object>();
+			StringBuffer sql = new StringBuffer();
+			sql.append("select * from  basic_customer_information");
+			if(filter.getCardType()!=null){
+				sql.append(" and a.card_type  ='"+filter.getCardType()+"'");
+			}
+			if(filter.getChineseName()!=null){
+				sql.append(" and a.chinese_name like '%"+filter.getChineseName()+"%'");
+			}
+			if(filter.getCardId()!=null){
+				sql.append(" and a.card_id like '%"+filter.getCardId()+"%'");
+			}
+			QueryResult<CustomerInfor> result =commonDao.queryBySqlInPagination(CustomerInfor.class, sql.toString(), params,
+					filter.getStart(), filter.getLimit());
+
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 	
 	/**
@@ -1394,4 +1432,37 @@ public class CustomerInforService {
 		return customerinforcommDao.findCustomerVideoAccessoriesByCustomerId(customerId);
 	}
 
+	/**
+	 * 查询客户是否已有进件流程
+	 */
+	public Boolean ifProcess(String customerId){
+		CustomerApplicationInfoFilter info = new CustomerApplicationInfoFilter();
+		info.setCustomerId(customerId);
+		List<CustomerApplicationInfo> listApplicationInfo = customerinforcommDao.ifProcess(customerId);
+		if(listApplicationInfo.size()>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	/**
+	 * 通过机构号查找征信帐号
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<XmZxLogin> getLoginByOrg(String id) {
+		
+		String sql="select user_name,pass_word from xm_zx_login where org_id='"+id+"'";
+		System.out.println(commonDao);
+		List<XmZxLogin> list = commonDao.queryBySql(XmZxLogin.class, sql,null );
+			return list;
+	}
+	/**
+	 * 通过applicationid查找实体
+	 */
+	public CustomerApplicationInfo getModelByAppId(String applicationId){
+		return intoPiecesComdao.findCustomerApplicationInfoByApplicationId(applicationId);
+	}
 }

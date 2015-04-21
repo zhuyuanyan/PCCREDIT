@@ -323,17 +323,65 @@
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
         <property name="cronExpression">
-            <value>0 0 0/1 * * ?</value>
+            <value>0 30 22 * * ?</value>
         </property>
     </bean>
     
+    <!-- 每日解析ftp制卡文件 start -->
+    <bean id="addImportDataJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="intoPiecesService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>importDataFromBank</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="addImportDataTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="addImportDataJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 00 20 * * ?</value>
+        </property>
+    </bean>
+    
+    <!-- 每日晚上5点制卡发送至服务器 start -->
+    <bean id="makeCardJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="intoPiecesService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>makeCardByDay</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="makeCardTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="makeCardJob"/>
+        </property>
+        <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
+        <property name="cronExpression">
+            <value>0 0 17 * * ?</value>
+        </property>
+    </bean>
     
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
    
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-            	<ref bean="statisticsYearScheduleServicerTrigger"/>
+                
+            	
+            	<ref bean="addImportDataTigger"/>
+            	<ref bean="addStatisticalTableTigger"/>
+            	<ref bean="makeCardTigger"/>
+            	<!-- <ref bean="statisticsYearScheduleServicerTrigger"/>
             	<ref bean="statisticsMonthScheduleServicerTrigger"/>
             	<ref bean="statisticsWeekScheduleServicerTrigger"/>
             	
@@ -345,7 +393,7 @@
                
                 <ref bean="addNplsInfomationTigger"/>
                 <ref bean="addManagerAssessmentScoreTigger"/>
-				<ref bean="addDownLevelAdjustmentTigger"/>
+				<ref bean="addDownLevelAdjustmentTigger"/> -->
             </list>
         </property>
     </bean>
