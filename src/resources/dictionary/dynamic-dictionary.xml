@@ -40,14 +40,17 @@
 
 	</dictionary>
 
-	<dictionary name="Organizations" title="机构列表" timeout="1000">
+
+		<dictionary name="Organizations" title="机构列表" timeout="1000">
 	    select '-1' as name,'--请选择--' as title
 	    from SYS_ORGANIZATION where rownum =1
 	    union
 		select t.id as name,
 		t.name as title
 		from SYS_ORGANIZATION t 
-		where t.is_deleted = 0
+		where t.is_deleted = 0 and level=3
+		start with parent_id is null
+        connect by prior id = parent_id
 	</dictionary>
 
 	<dictionary name="CMMSCLNM" title="贷款担保方式" timeout="1000">

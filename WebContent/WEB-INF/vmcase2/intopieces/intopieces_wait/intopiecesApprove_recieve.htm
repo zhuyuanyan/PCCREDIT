@@ -129,7 +129,7 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-         <a id="id_apply_button" class="btn_g" href="javascript:void(0);" onclick="$('.dialog').show();" title="接收">接收</a>
+         <a id="id_apply_button" class="btn_g" href="javascript:void(0);"  title="接收">接收</a>
          <!-- <a id="id_check_button" class="btn_g" href="javascript:void(0);" title="三性检测">三性检测</a> -->
          <a id="id_create_button_2" class="btn_g" href="javascript:void(0);" title="客户授信评估">客户授信评估</a>
 		<!-- <a class="btn_g" href="javascript:void(0);" onclick="javascript :history.back(-1)">返回</a> -->
@@ -149,11 +149,16 @@
 	$(document).ready(function() {
 		$('.dialog').hide();
 		$("#id_apply_button").click(function() {
+			if ($(".checkbox :checked").length != 1) {
+				Dialog.message("请选择要接收的进件!");
+				return;
+			}
 			var id = null;
 			$("input[name='checkbox']:checked").each(function() {
 				id = $(this).val().split("@")[0];
 			});
 			$("#applicationId").val(id);
+			$('.dialog').show();
 			/* if(id!=null){
 				$.post("${contextPath}/intopieces/intopiecesrecieve/recieveOver.json", {id:id},
 	            function(data, textStatus, jqXhr) {
