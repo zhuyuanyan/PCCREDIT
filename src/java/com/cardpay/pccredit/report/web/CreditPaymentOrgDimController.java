@@ -80,6 +80,9 @@ public class CreditPaymentOrgDimController extends BaseController {
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
 		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
 		List<CreditPayment> list = creditPaymentService.getOrgCreditPayment(filter);
 
 		JRadModelAndView mv = new JRadModelAndView("/report/creditpayment/creditpayment_org_browse", request);
@@ -116,6 +119,9 @@ public class CreditPaymentOrgDimController extends BaseController {
 		}
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
+		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
 		}
 		List<CreditPayment> list = creditPaymentService.getOrgCreditPayment(filter);
 		create(list, response,filter);

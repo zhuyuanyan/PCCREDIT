@@ -79,6 +79,9 @@ public class AcctStatisticalManagerDimController extends BaseController {
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
 		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
 		List<AcctStatistical> list = acctStatisticalService.getManagerAcctStatistical(filter);
 
 		JRadModelAndView mv = new JRadModelAndView("/report/acctstatistical/acctstatistical_manager_browse", request);
@@ -106,6 +109,9 @@ public class AcctStatisticalManagerDimController extends BaseController {
 		}
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
+		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
 		}
 		List<AcctStatistical> list = acctStatisticalService.getManagerAcctStatistical(filter);
 		create(list, response,filter);

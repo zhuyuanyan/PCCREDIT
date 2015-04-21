@@ -63,4 +63,7 @@
       <select id="getResult" resultMap="cardQueryResultMap">
   select s.* from xm_appln_card_return s where if_send=#{ifSend}
    </select>
+    <select id="getManagerId" resultMap="String">
+  select MGR_NO from pccredit1.XM_ACC_CREDIT where CERT_CODE=#{cardId}
+   </select>
 </mapper>

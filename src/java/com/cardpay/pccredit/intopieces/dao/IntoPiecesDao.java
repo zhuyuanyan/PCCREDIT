@@ -22,4 +22,7 @@ public interface IntoPiecesDao {
 	
 	//获得未发送至服务器数据
 	List<IntoPiecesCardQuery> getResult(IntoPiecesCardQueryFilter filter);
+	
+	//根据身份证获取客户经理柜员号
+	String getManagerId(String cardId);
 }
