@@ -66,6 +66,7 @@ public class QuailBankProceReturnController extends BaseController {
 		List<QuailBankReturnMonitor> result = proceMonitorService.getQuailBankReturnMonitorStatistical(filter);
 		JRadModelAndView mv = new JRadModelAndView("/report/cardquality/bank_quality_return_browse", request);
 		mv.addObject(PAGED_RESULT, result);
+		mv.addObject("filter", filter);
 
 		return mv;
 	}

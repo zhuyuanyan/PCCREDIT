@@ -19,4 +19,6 @@ public class UserDefFilter extends BaseQueryFilter {
 	public void setUserDef(String userDef) {
 		this.userDef = userDef;
 	}
+
+	
 }
