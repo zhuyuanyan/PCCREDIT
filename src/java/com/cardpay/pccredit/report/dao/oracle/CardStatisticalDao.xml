@@ -75,14 +75,15 @@
                                        decode(connect_by_isleaf, 1, 'Y', 'N') is_leaf
                                   from SYS_ORGANIZATION org
                                  where is_deleted = 0 /*未删除*/
-                                   and level = 3 /*只查支行*/
+                                   and level = 3 /*只查支行*/ 
+                                   <if test="orgId!=null and orgId!=''">
+	                               and id=#{orgId} 
+	                              </if>
                                  start with parent_id is null
                                 connect by prior id = parent_id) sys_org
                          inner join sys_department sys_dep
                             on sys_org.id = sys_dep.org_id
-                            <if test="orgId!=null and orgId!=''">
-	                               and sys_dep.org_id=#{orgId}
-	                              </if>
+                            
                          inner join sys_dept_user sys_dept_usr
                             on sys_dep.id = sys_dept_usr.dept_id
                          inner join sys_user usr

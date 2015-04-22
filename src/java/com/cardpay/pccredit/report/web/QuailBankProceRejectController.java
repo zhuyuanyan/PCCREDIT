@@ -68,6 +68,7 @@ public class QuailBankProceRejectController extends BaseController {
 		List<QuailBankRejectMonitor> result = proceMonitorService.getQuailBankRejectMonitorStatistical(filter);
 		JRadModelAndView mv = new JRadModelAndView("/report/cardquality/bank_quality_reject_browse", request);
 		mv.addObject(PAGED_RESULT, result);
+		mv.addObject("filter", filter);
 
 		return mv;
 	}

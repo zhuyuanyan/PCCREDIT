@@ -83,6 +83,9 @@ public class IntelligentReportController extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView AccountBrowse(@ModelAttribute UserDefFilter filter,HttpServletRequest request) {
 		filter.setRequest(request);
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
 		JRadModelAndView mv = new JRadModelAndView("/report/intelligentreport/intelligentaccountreport_browse", request);
 		QueryResult<IntelligentAccountReport2> result =intelligentReportService.findIntelligentAccountReport(filter);
 		JRadPagedQueryResult<IntelligentAccountReport2> pagedResult = new JRadPagedQueryResult<IntelligentAccountReport2>(filter, result);
@@ -116,10 +119,12 @@ public class IntelligentReportController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/report/intelligentaccountreport/export.page", method = { RequestMethod.GET })
-	public void export(HttpServletRequest request,HttpServletResponse response) {
+	public void export(@ModelAttribute UserDefFilter filter,HttpServletRequest request,HttpServletResponse response) {
 		JRadModelAndView mv = new JRadModelAndView("/report/intelligentreport/intelligentaccountreport_browse", request);
-		
-		List<IntelligentAccountReport2> result = intelligentReportService.findIntelligentAccountReportAll();
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
+		List<IntelligentAccountReport2> result = intelligentReportService.findIntelligentAccountReportAll(filter);
 		create(result, response);
 	}
 	
