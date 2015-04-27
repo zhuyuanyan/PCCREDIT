@@ -20,8 +20,11 @@
 					select ci.customer_id as customerid,bci.chinese_name as chinesename,ci.id as cardid,
 					ci.card_number as cardnumber,ci.card_activate_date as cardactivatedate,
 					ci.expire_date as expiredate from card_information ci 
-					left join basic_customer_information bci on 
+					inner join basic_customer_information bci on 
 					ci.customer_id = bci.id 
+					<if test="userType != null and userType == 1 ">
+						AND bci.user_id = #{userId} 
+					</if>
 					where ci.CARD_ACTIVATE_DATE is not null 
 					<if test="chineseName != null and chineseName != '' ">
 						<![CDATA[ and bci.chinese_name like '%'||#{chineseName}||'%' ]]>
@@ -39,8 +42,11 @@
 	<select id="findActiveCardCount" resultType="int"
 		parameterType="com.cardpay.pccredit.customer.filter.CustomerInforFilter">
 	    select count(1) as COUNT from card_information ci 
-	    left join basic_customer_information bci on 
-	    ci.customer_id = bci.id 
+	    inner join basic_customer_information bci on 
+		ci.customer_id = bci.id 
+		<if test="userType != null and userType == 1 ">
+			AND bci.user_id = #{userId} 
+		</if>
 	    where ci.CARD_ACTIVATE_DATE is not null 
 	    <if test="chineseName != null and chineseName != '' ">
 			<![CDATA[ and bci.chinese_name like '%'||#{chineseName}||'%' ]]>
