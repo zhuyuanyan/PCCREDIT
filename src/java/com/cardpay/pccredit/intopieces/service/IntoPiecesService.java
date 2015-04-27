@@ -1526,7 +1526,7 @@ public class IntoPiecesService {
 		//生成文件名
 		DateFormat format2 = new SimpleDateFormat("yyyyMMdd");
 		String nowDate  = format2.format(new Date());
-		String fileName = CustomerInforConstant.BANK_ID+"-APPLN-";
+		String fileName = CustomerInforConstant.BANK_ID+"-APPLN-"+"000001-";
 		String nowCount = intoPiecesDao.nowCount(nowDate)+1+"";
 		for(int i=6;i>nowCount.length();i--){
 			fileName+="0";
@@ -2043,7 +2043,7 @@ public class IntoPiecesService {
 //	        Date date=cal.getTime();
 			DateFormat format2 = new SimpleDateFormat("yyyyMMdd");
 			String nowDate  = format2.format(new Date());
-			String fileName = CustomerInforConstant.BANK_ID+"-APPLN-";
+			String fileName = CustomerInforConstant.BANK_ID+"-APPLN-"+"000001-";
 			fileName=fileName+nowDate;
 			/*生成的接口数据上传到ftp文件上*/
 //			UploadFileTool.create(fileName,content.toString());

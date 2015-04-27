@@ -98,26 +98,20 @@
 		opsObj.browseUrl = "${modulePath}/browse.page";
 		
 		$("#id_create_button").click(function() {
-			var url = "${modulePath}/create_collection.json?customer_id=" + "4028b2fa4ac37795014ac381c2dc005f";
+			
+			
+			if ($(".checkbox :checked").length == 1) {
+				var rowId = getCurrentRowId();
+				var url = "${modulePath}/create_collection.json?customer_id=" + rowId;
 			
 			$.get(url, "", function(data, textStatus, jqXhr) {
    	            if (data.success) {
    	            	window.location.href= contextPath + "/riskcontrol/riskcustomercollection/display.page?id="+data.collectionPlanId ;
    	            }
    	          });
-			
-			/* if ($(".checkbox :checked").length == 1) {
-				var rowId = getCurrentRowId();
-				var url = "${modulePath}/create_collection.json?customerId=" + "4028b2fa4ac37795014ac381c2dc005f";
-				
-				$.get(url, null, function(data, textStatus, jqXhr) {
-	   	            if (data.success) {
-	   	            	window.location.href= contextPath + "/customer/maintenance/display.page?id="+data.collectionPlanId ;
-	   	            }
-	   	          });
 			}else {
                 Dialog.message("请选择一行");
-            } */
+            } 
 	    });
 		
 		prepareOperations(opsObj);

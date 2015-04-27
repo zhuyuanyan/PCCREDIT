@@ -114,7 +114,6 @@
 			if ($(".checkbox :checked").length == 1) {
 				var rowId = getCurrentRowId();
 				var url = "${modulePath}/create_collection.json?customer_id=" + rowId;
-				alert(url)
 				$.get(url, "", function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
 	   	            	window.location.href= contextPath + "/riskcontrol/riskcustomercollection/display.page?id="+data.collectionPlanId ;

@@ -42,8 +42,11 @@
 							cai.OVERDUE_TIME,
 							cai.CARD_NUMBER
 					 FROM  npls_information npls
-					 LEFT JOIN basic_customer_information c
+					 inner JOIN basic_customer_information c
 					    ON c.id = npls.customer_id
+					 <if test="userType != null and userType == 1 ">
+						AND c.user_id = #{userId} 
+					 </if>
 					 LEFT JOIN customer_account_information cai
 					 	ON cai.id = npls.account_id
 					 WHERE 1=1
@@ -62,7 +65,7 @@
 					 <if test="verificationStatus != null and verificationStatus != '' ">
 						AND npls.VERIFICATION_STATUS = #{verificationStatus}
 					 </if>
-					 order by npls.created_time desc
+					 
  			<![CDATA[		
 					) ROW_
 				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -74,8 +77,11 @@
 		parameterType="com.cardpay.pccredit.riskControl.filter.NplsInfomationFilter">
 		SELECT count(*)
 		  FROM  npls_information npls
-		 LEFT JOIN basic_customer_information c
+		 inner JOIN basic_customer_information c
 		    ON c.id = npls.customer_id
+		 <if test="userType != null and userType == 1 ">
+			AND c.user_id = #{userId} 
+		 </if>
 		  WHERE 1=1
 		 <if test="customerName != null and customerName != '' ">
 			<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
