@@ -186,7 +186,36 @@ public class IntoPiecesService {
 		}
 		return qs;
 	}
-	
+	/*
+	 * 查询配偶进件信息
+	 */
+	public QueryResult<IntoPieces> findPOintoPiecesByFilter(
+			IntoPiecesFilter filter) {
+		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findPOintoPiecesByFilter(filter);
+		int sum = intoPiecesComdao.findintoPiecesByFilterCount(filter);
+		QueryResult<IntoPieces> qs = new QueryResult<IntoPieces>(sum, queryResult.getItems());
+		List<IntoPieces> intoPieces = qs.getItems();
+		for(IntoPieces pieces : intoPieces){
+			if(pieces.getStatus()==null){
+				pieces.setNodeName("未提交申请");
+			}
+			else{
+				if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
+					pieces.setNodeName("未提交申请");
+				} else if(pieces.getStatus().equals(Constant.APPROVE_INTOPICES)){
+					String nodeName = intoPiecesComdao.findAprroveProgress(pieces.getId());
+					if(StringUtils.isNotEmpty(nodeName)){
+						pieces.setNodeName(nodeName);
+					} else {
+						pieces.setNodeName("不在审批中");
+					}
+				} else {
+					pieces.setNodeName("审批结束");
+				}
+			}
+		}
+		return qs;
+	}
 	
 	/* 经理岗查询进件信息 */
 	/*

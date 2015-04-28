@@ -63,6 +63,17 @@
 				<td><input type="text"  id="examineAmount"  name="examineAmount"  value="$format.formatNumber($!customerApplicationProcess.examineAmount, 2, 100)" ></td>            
             <!-- #end -->
             </tr>
+            <tr>
+				<td><label>配偶姓名</label></td>
+				<td>
+					<input type="text" class="text" name="spu_name" id="spu_name" value="$!xM_APPLN_POZL.name" maxlength="30" readonly="readonly"/>
+				</td>
+				<td><label>配偶证件号码</label></td>
+				<td style="width:500px;">
+					<input type="text" class="text" name="spu_custr_nbr" id="spu_custr_nbr" value="$!xM_APPLN_POZL.custr_nbr" maxlength="18" readonly="readonly"/>
+					<input type="button" value="检测" onclick="checkCard()"/>
+				</td>
+			</tr>
           </table>
 
    
@@ -117,11 +128,12 @@
         </div>
       <div class="submit">
         <input id="id_save_button" type="button" value="提交" class="current" />
-         #if($!nodeAuditOperationType == "entering")
+     <!--     #if($!nodeAuditOperationType == "entering")
         	<input id="id_maintain_button" type="button" value="进件维护" class="current" onclick="maintain();"  />
          #else
          	<input id="display_maintain_button" type="button" value="进件查看" class="current" onclick="maintains();"  />
-         #end
+         #end -->
+         <input id="id_change_button" type="button" value="进件查看" class="current" />
         <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
       </div>  
 
@@ -134,6 +146,10 @@ window.top.currentWindow.setLayout(layout);
 #set ($formName = "'#id_modules_form'")
 $(document).ready(function() {	
 	
+	$("#id_change_button").click(function() {
+		window.location.href = "${contextPath}/xm_appln/changewh_xm_appln_zhongshen.page?customerId=$!customerId&applicationId=$!applicationId";
+	})
+	
 	$("#id_save_button").click(function() {
 		if($("#applicationStatus").val()=='REJECTAPPROVE'){
 			var blacklist = $("#blacklist").val();
@@ -142,7 +158,10 @@ $(document).ready(function() {
 				Dialog.message("请选择进入黑名单或者风险名单!");
 				return ;
 			}
-	}
+		}else if($("#applicationStatus").val()=='0'){
+			Dialog.message("请选择审批结果!");
+			return;
+		}
 		
 		
 		if("$objection" == "true"){
@@ -202,6 +221,13 @@ function maintains(){
       }
 		
 }
+//配偶身份信息检测
+	function checkCard(){
+		var card = $("#spu_custr_nbr").val();
+		var url = "${contextPath}/customer/basiccustomerinfor/intopiecesspouse.page?cardId="+card;
+		Dialog.table(url, "查询", "get", null, 800, 240);
+		
+	}
  
 </script>
 </html>

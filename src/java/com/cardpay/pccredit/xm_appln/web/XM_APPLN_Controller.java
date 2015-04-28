@@ -233,6 +233,25 @@ public class XM_APPLN_Controller extends BaseController {
 		return mv;
 	}
 	
+	//终审跳转到iframe（查看）
+	@ResponseBody
+	@RequestMapping(value = "changewh_xm_appln_zhongshen.page")
+	@JRadOperation(JRadOperation.MAINTENANCE)
+	public AbstractModelAndView changewh_xm_appln_zhongshen(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/iframe", request);
+		
+		String customerInforId = RequestHelper.getStringValue(request, "customerId");
+		String appId = RequestHelper.getStringValue(request, "applicationId");
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+			mv.addObject("customerInfor", customerInfor);
+			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appId", appId);
+			mv.addObject("type", "read");
+		}
+		return mv;
+	}
+	
 	//iframe跳转到第page1
 	@ResponseBody
 	@RequestMapping(value = "xm_appln_page1_update.page")

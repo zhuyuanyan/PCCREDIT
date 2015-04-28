@@ -520,4 +520,20 @@ public class IntoPiecesComdao {
 
 		return commonDao.queryBySql(CardCur.class, sql, params);
 	}
+	
+	/* 查询配偶信息 */
+	public QueryResult<IntoPieces> findPOintoPiecesByFilter(
+			IntoPiecesFilter filter) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		String cardId = filter.getCardId();
+		StringBuffer sql = null;
+		sql = new StringBuffer(
+				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.status,t.serial_number from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		sql.append(" and b.card_id = '"+cardId+"'");
+
+
+		sql.append(" order by t.id asc");
+		return commonDao.queryBySqlInPagination(IntoPieces.class,
+				sql.toString(), params, filter.getStart(), filter.getLimit());
+	}
 }

@@ -15,16 +15,15 @@
               <col width="5%" />
               <col width="15%" />
               <col width="15%"/>
-              <col width="20%"/>
+              <col width="10%"/>
               <col width="15%"/>
-              <col width="15%"/>
+              <col width="10%"/>
               <col />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">证件号码</th>
-              <th nowrap="nowrap">产品名称</th>
               <th nowrap="nowrap">申请额度</th>
               <th nowrap="nowrap">状态</th>
               <th nowrap="nowrap">进度</th>
@@ -37,9 +36,9 @@
               <col width="5%" />
               <col width="15%" />
               <col width="15%"/>
-              <col width="20%"/>
+              <col width="10%"/>
               <col width="15%"/>
-              <col width="15%"/>
+              <col width="10%"/>
               <col />
             </colgroup>
             #foreach ($intoPieces in $result.items)
@@ -47,7 +46,6 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!{intoPieces.id}_$!{intoPieces.customerId}"/></td>
               <td nowrap="nowrap">$!intoPieces.chineseName</td>
               <td nowrap="nowrap">$!intoPieces.cardId</td>
-              <td nowrap="nowrap">$!intoPieces.productName</td>
               <td nowrap="nowrap">$format.formatNumber($!intoPieces.applyQuota, 2, 100)</td>
               <td nowrap="nowrap">
 	              #if($!intoPieces.status=='audit')已申请  
@@ -66,8 +64,6 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          <!-- #btnpriv("display")<a class="btn_g" href="javascript:void(0);" title="查看" onclick="viewIntoPices('view')">查看</a>#end -->
-		  <!-- <a class="btn_g" href="javascript:void(0);" onclick="javascript :history.back(-1)">返回</a> -->
         </div>
         <div class="clear"></div>
       </div>
@@ -90,19 +86,6 @@
 		prepareOperations(opsObj);
 		
 	});
-	
-	function viewIntoPicesApproveHistory(ifHideUser){
-		var id = null;
-		$("input[name='checkbox']:checked").each(function() {
-			id = $(this).val().split("_")[0];
-		});
-		if(id!=null){
-			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id="+id+"&ifHideUser="+ifHideUser+"&dataType=application";
-			Dialog.table(url, "查看审批历史", "get", null, 800, 340);
-		}else{
-			Dialog.message("请选择要被查看的进件!");
-		}
-	}
 	
 </script>
 #parse ("common/iframe_page_footer.htm")

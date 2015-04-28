@@ -14,12 +14,16 @@
 	<div class="fixed">
 		<h1>客户维护信息</h1>
 		<div class="buttons"><!--按钮组放置区域-->
+		#if( $type=='read')
+		<input type="button" value="返回" class="button" onclick="javascript:history.back();"/>
+		#else
 			<input id="tabContent2_save" type="button" value="保存基本信息" class="button"/>
 			<input id="tabContent0_save" type="button" value="保存申请录入" class="button"/>
 			<input id="tabContent1_save" type="button" value="保存地址录入" class="button"/>
 			<input id="tabContent4_save" type="button" value="保存授信评估" class="button"/>
 			<input id="tabContent5_save" type="button" value="保存行内评分" class="button"/>
 			<input id="tabContent3_save" type="button" value="申请提交" class="button"/>
+		#end
 		</div>
 	</div>
 

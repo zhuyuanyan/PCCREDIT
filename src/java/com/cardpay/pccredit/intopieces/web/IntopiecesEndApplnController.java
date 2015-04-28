@@ -52,6 +52,8 @@ import com.cardpay.pccredit.system.model.SystemConfiguration;
 import com.cardpay.pccredit.system.service.NodeAuditService;
 import com.cardpay.pccredit.system.service.SystemConfigurationService;
 import com.cardpay.pccredit.system.web.NodeAuditForm;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_POZL;
+import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
 import com.cardpay.workflow.service.ProcessService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -109,6 +111,8 @@ public class IntopiecesEndApplnController extends BaseController {
 	
 	@Autowired
 	private CustomerApplicationProcessService customerApplicationProcessService;
+	@Autowired
+	private XM_APPLN_Service xm_APPLN_Service;
 
 	/**
 	 * 终审浏览页面
@@ -157,6 +161,8 @@ public class IntopiecesEndApplnController extends BaseController {
 			if(ss.length > 3){
 				applyQuota = ss[3];
 			}
+			//获取配偶信息
+			XM_APPLN_POZL pozl = xm_APPLN_Service.findXM_APPLN_POZLByCustomerId(customerId);
 			CustomerInfor ci = customerInforService.findCustomerInforById(customerId);
 			CustomerApplicationIntopieceWaitForm customerApplicationProcess = customerApplicationIntopieceWaitService.findCustomerApplicationProcessBySerialNumber(serialNumber);
 			
@@ -185,6 +191,7 @@ public class IntopiecesEndApplnController extends BaseController {
 			mv.addObject("serialNumber", serialNumber);
 			mv.addObject("user", user);
 			mv.addObject("ci", ci);
+			mv.addObject("xM_APPLN_POZL", pozl);
 			mv.addObject("customerApplicationProcess", customerApplicationProcess);
 		}else{
 			String serialNumberJump = request.getParameter("serialNumber");
