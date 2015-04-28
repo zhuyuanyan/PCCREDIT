@@ -367,7 +367,7 @@
         </property>
         <!-- cron表达式 每月1号1点执行 0 0 1 1 * ? -->
         <property name="cronExpression">
-            <value>0 0 17 * * ?</value>
+            <value>0 50 16 * * ?</value>
         </property>
     </bean>
     

@@ -82,6 +82,11 @@ public class NplsinfomationInfoController extends BaseController {
 	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute NplsInfomationFilter filter,HttpServletRequest request) {
+		//设置当前查询用户
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+        filter.setUserId(user.getId());
+        filter.setUserType(user.getUserType());//如果是客户经理，则查看自己的客户
+        
         filter.setRequest(request);
 		QueryResult<NplsInfomationForm> result = nplsInfomationService.findNplsInfomationByFilter(filter);
 		JRadPagedQueryResult<NplsInfomationForm> pagedResult = new JRadPagedQueryResult<NplsInfomationForm>(filter, result);

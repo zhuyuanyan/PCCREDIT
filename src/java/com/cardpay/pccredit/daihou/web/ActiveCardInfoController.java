@@ -75,6 +75,8 @@ public class ActiveCardInfoController extends BaseController {
         filter.setRequest(request);
         IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		filter.setUserId(user.getId());
+		filter.setUserType(user.getUserType());
+		
 		QueryResult<ActiveCard> result = activeCardService.findActiveCard(filter);
 		JRadPagedQueryResult<ActiveCard> pagedResult = new JRadPagedQueryResult<ActiveCard>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/riskcontrol/activecard/activecard_browse",request);

@@ -26,6 +26,10 @@ public class NplsInfomationFilter extends BaseQueryFilter{
 	//核心核销状态
 	private String verificationStatus;
 
+	//登陆userid
+	private String userId;
+	private int userType;//是否客户经理标记 1客户经理
+	
 	public String getCustomerName() {
 		return customerName;
 	}
@@ -73,6 +77,21 @@ public class NplsInfomationFilter extends BaseQueryFilter{
 	public void setVerificationStatus(String verificationStatus) {
 		this.verificationStatus = verificationStatus;
 	}
-	
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public int getUserType() {
+		return userType;
+	}
+
+	public void setUserType(int userType) {
+		this.userType = userType;
+	}
 	
 }
