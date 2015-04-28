@@ -159,15 +159,12 @@ public class CustomerInforController extends BaseController{
 	 */
 	@ResponseBody
 	@RequestMapping(value = "intopiecesspouse.page", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView intopiecesspouse(@ModelAttribute IntoPiecesFilter filter,
 			HttpServletRequest request) {
 		String cardId = request.getParameter("cardId");
 		filter.setCardId(cardId);
 		filter.setRequest(request);
-		String userId ="-1";
-		filter.setUserId(userId);
-		QueryResult<IntoPieces> result = intoPiecesService.findintoPiecesByFilter(filter);
+		QueryResult<IntoPieces> result = intoPiecesService.findPOintoPiecesByFilter(filter);
 		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
 				filter, result);
 
