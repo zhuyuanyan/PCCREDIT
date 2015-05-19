@@ -87,6 +87,12 @@ public class AcctStatistical extends BusinessModel{
 	
 	// 不良率(净增数据)
 	private String addBadRate;
+	
+	//一级支行
+	private String orgName;
+	
+	//二级支行
+	private String orgParentName;
 
 	public String getRowIndex() {
 		return rowIndex;
@@ -303,4 +309,21 @@ public class AcctStatistical extends BusinessModel{
 	public void setAddBadRate(String addBadRate) {
 		this.addBadRate = addBadRate;
 	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public String getOrgParentName() {
+		return orgParentName;
+	}
+
+	public void setOrgParentName(String orgParentName) {
+		this.orgParentName = orgParentName;
+	}
+	
 }

@@ -130,6 +130,7 @@
          #else
          	<input id="display_maintain_button" type="button" value="进件查看" class="current" onclick="maintains();"  />
          #end -->
+         <input id="id_change_button" type="button" value="进件查看" class="current" />
         <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
       </div>  
 
@@ -142,7 +143,9 @@ window.top.currentWindow.setLayout(layout);
 #set ($formName = "'#id_module_form'")
 #validator($formName)
 $(document).ready(function() {	
-
+	$("#id_change_button").click(function() {
+		window.location.href = "${contextPath}/xm_appln/changewh_xm_appln_zhongshen.page?customerId=$!customerId&applicationId=$!applicationId";
+	})
 	
 	$("#id_save_button").click(function() {
 		if($("#applicationStatus").val()=='REJECTAPPROVE'){

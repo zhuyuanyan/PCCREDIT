@@ -210,6 +210,12 @@ public class AcctStatisticalManagerDimController extends BaseController {
       cell = row.createCell((short) 26);  
       cell.setCellValue("不良率变动");  
       cell.setCellStyle(style);  
+      cell = row.createCell((short) 27);  
+      cell.setCellValue("二级支行");  
+      cell.setCellStyle(style);  
+      cell = row.createCell((short) 28);  
+      cell.setCellValue("一级支行");  
+      cell.setCellStyle(style);  
       DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
       for (int i = 0; i < list.size(); i++)  
         {  
@@ -242,6 +248,8 @@ public class AcctStatisticalManagerDimController extends BaseController {
             row.createCell((short) 24).setCellValue((Double) Double.parseDouble(list.get(i).getAddOverdraftAmountAvg()==null?"0":list.get(i).getAddOverdraftAmountAvg())); 
             row.createCell((short) 25).setCellValue((Double) Double.parseDouble(list.get(i).getAddBadOverdraftPrincipal()==null?"0":list.get(i).getAddBadOverdraftPrincipal())); 
             row.createCell((short) 26).setCellValue((Double) Double.parseDouble(list.get(i).getAddBadRate()==null?"0":list.get(i).getAddBadRate())+"%"); 
+            row.createCell((short) 27).setCellValue((String) list.get(i).getOrgName()); 
+            row.createCell((short) 28).setCellValue((String) list.get(i).getOrgParentName()); 
         }
       String fileName = "客户经理“灵活金”透支情况统计";
       try {

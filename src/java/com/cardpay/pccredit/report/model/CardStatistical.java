@@ -46,6 +46,10 @@ public class CardStatistical extends BusinessModel{
 	private String addNoActivateCardNumber;
 	
 	private String addActiveRate;
+	
+	private String orgName;//二级支行
+	
+	private String orgParentName;//一级支行
 
 	public String getbSendCardNumber() {
 		return bSendCardNumber;
@@ -190,4 +194,21 @@ public class CardStatistical extends BusinessModel{
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public String getOrgParentName() {
+		return orgParentName;
+	}
+
+	public void setOrgParentName(String orgParentName) {
+		this.orgParentName = orgParentName;
+	}
+	
 }

@@ -67,11 +67,14 @@
               <col width="140"/>
               <col width="140"/>
               <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
             </colgroup>
             <tr class="title" align="center">
               <th nowrap="nowrap">序号</th>
               <th nowrap="nowrap">客户经理</th>
-              
+              <th nowrap="nowrap">二级支行</th>
+              <th nowrap="nowrap">一级支行</th>
               <th nowrap="nowrap">基准日期</th>
               <th nowrap="nowrap">发卡数</th>
               <th nowrap="nowrap">到卡数</th>
@@ -116,12 +119,16 @@
               <col width="140"/>
               <col width="140"/>
               <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
               <col width="110"/>
             </colgroup>
             #foreach ($cardStatistical in $list)
             	<tr id="$!cardStatistical.id">
 	              <td nowrap="nowrap">$!cardStatistical.rowIndex</td>
 	              <td nowrap="nowrap">$!cardStatistical.name</td>
+	              <td nowrap="nowrap">$!cardStatistical.orgName</td>
+	              <td nowrap="nowrap">$!cardStatistical.orgParentName</td>
 	              <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!filter.basicDate)</td>
 	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.bSendCardNumber)</td>
 	              <td nowrap="nowrap">$format.formatNumber(2, $!cardStatistical.bAcceptCardNumber)</td>
