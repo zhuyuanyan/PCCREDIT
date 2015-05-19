@@ -121,7 +121,7 @@ public class CardStatisticalManagerDimensionController extends BaseController {
 			// 第一步，创建一个webbook，对应一个Excel文件  
 	       HSSFWorkbook wb = new HSSFWorkbook();  
 	       // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
-	      HSSFSheet sheet = wb.createSheet("浏览“灵活金”发卡进展情况统计表");  
+	      HSSFSheet sheet = wb.createSheet("浏览“灵活金”发卡情况统计");  
 	       // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
 	      HSSFRow row = sheet.createRow((int) 0);  
 	       // 第四步，创建单元格，并设置值表头 设置表头居中  
@@ -182,6 +182,12 @@ public class CardStatisticalManagerDimensionController extends BaseController {
 	      cell = row.createCell((short) 17);  
 	      cell.setCellValue("激活率变动");  
 	      cell.setCellStyle(style);  
+	      cell = row.createCell((short) 18);  
+	      cell.setCellValue("二级支行");  
+	      cell.setCellStyle(style);  
+	      cell = row.createCell((short) 19);  
+	      cell.setCellValue("一级支行");  
+	      cell.setCellStyle(style);  
 	      DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	      for (int i = 0; i < list.size(); i++)  
 	        {  
@@ -209,8 +215,10 @@ public class CardStatisticalManagerDimensionController extends BaseController {
 	            }else{
 	            	row.createCell((short) 17).setCellValue((Double) Double.parseDouble(list.get(i).getAddActiveRate())+"%"); 
 	            }
+	            row.createCell((short) 18).setCellValue((String) list.get(i).getOrgName()); 
+	            row.createCell((short) 19).setCellValue((String) list.get(i).getOrgParentName()); 
 	        }
-	      String fileName = "客户经理“灵活金”发卡进展情况统计表";
+	      String fileName = "客户经理“灵活金”发卡情况统计";
 	      try {
 	    	  response.setHeader("Content-Disposition",
 	                 "attachment;filename="+new String(fileName.getBytes("gbk"),"iso8859-1")+".xls");
