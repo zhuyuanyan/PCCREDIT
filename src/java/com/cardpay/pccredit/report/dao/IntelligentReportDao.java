@@ -28,7 +28,7 @@ public interface IntelligentReportDao {
 	
 	List<IntelligentAccountReport2> findIntelligentAccountReportAll(UserDefFilter filter);
 	List<IntelligentAccountReport2> findIntelligentAccountReport(UserDefFilter filter);
-	int findIntelligentAccountReportCount();
+	int findIntelligentAccountReportCount(UserDefFilter filter);
 
 	PostLoanManagementData findPostLoanManagementData();
 }

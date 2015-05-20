@@ -133,7 +133,7 @@ public void create(List<IntelligentAccountReport2> list,HttpServletResponse resp
 		// 第一步，创建一个webbook，对应一个Excel文件  
        HSSFWorkbook wb = new HSSFWorkbook();  
        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
-      HSSFSheet sheet = wb.createSheet("智能报表");  
+      HSSFSheet sheet = wb.createSheet("客户账户智能报表");  
        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
       HSSFRow row = sheet.createRow((int) 0);  
        // 第四步，创建单元格，并设置值表头 设置表头居中  
@@ -170,7 +170,7 @@ public void create(List<IntelligentAccountReport2> list,HttpServletResponse resp
             row.createCell((short) 4).setCellValue((Double) Double.parseDouble(list.get(i).getTotal_amount_overdraft()==null?"0":list.get(i).getTotal_amount_overdraft())); 
             row.createCell((short) 5).setCellValue((Double) Double.parseDouble(list.get(i).getRecent_lowest_bill()==null?"0":list.get(i).getRecent_lowest_bill())); 
         }
-      String fileName = "智能报表";
+      String fileName = "客户账户智能报表";
       try {
     	  response.setHeader("Content-Disposition",
                  "attachment;filename="+new String(fileName.getBytes("gbk"),"iso8859-1")+".xls");
