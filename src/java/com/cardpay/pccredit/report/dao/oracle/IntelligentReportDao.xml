@@ -122,8 +122,15 @@
 					]]>
 	</select>
 	
-	<select id="findIntelligentAccountReportCount" resultType="int">
-	    select count(1) as count from customer_account_information
+	<select id="findIntelligentAccountReportCount" resultType="int"
+	parameterType="com.cardpay.pccredit.report.filter.UserDefFilter">
+	    select count(1) as count from customer_account_information a
+	    <if test="orgId!=null and orgId!=''">
+					,BASIC_CUSTOMER_INFORMATION b
+					where a.CUSTOMER_ID=b."ID" 
+					
+					and b.user_id in (select user_id from sys_dept_user where dept_id in (select id from sys_department where org_id=#{orgId}))
+					</if>
 	</select>
 	
 	<select id="findPostLoanManagementData" resultMap="DataResultMap">
