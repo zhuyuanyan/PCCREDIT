@@ -66,7 +66,7 @@ public class Constant {
 	
 	
 	/*FTP链接配置*/
-	public static String FTPIP = "33.1.49.1";
+	public static String FTPIP = "10.0.21.91";
 	
 	public static String FTPPORT = "21";
 	
