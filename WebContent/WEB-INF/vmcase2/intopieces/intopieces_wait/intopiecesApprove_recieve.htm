@@ -196,8 +196,9 @@
 			var formjson = $($formName).serialize();
 			 $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	            if (data.success) {
-	            	Dialog.message("保存成功!");	
-	            	window.location.reload(true);
+	            	window.top.Dialog.message("保存成功!");	
+	            	var url = "${contextPath}/intopieces/intopiecesrecieve/recieve.page";
+	            	window.location.href=url
 	            }
 	          });
 		});
@@ -208,8 +209,9 @@
 			var formjson = $($formName).serialize();
 			 $.get("${contextPath}/intopieces/intopiecesrecieve/checkDoNot.json", formjson, function(data, textStatus, jqXhr) {
 	            if (data.success) {
-	            	Dialog.message("保存成功!");	
-	            	window.location.reload(true);
+	            	window.top.Dialog.message("保存成功!");
+	            	var url = "${contextPath}/intopieces/intopiecesrecieve/recieve.page";
+	            	window.location.href=url
 	            }
 	          });
 		})

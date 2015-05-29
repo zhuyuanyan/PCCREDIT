@@ -178,6 +178,7 @@ $(document).ready(function() {
           var formjson = $($formName).serialize();
           $.get("${contextPath}/intopieces/applyintopiecewait/update.json", formjson, function(data, textStatus, jqXhr) {
             if (data.success) {
+            	window.top.Dialog.message("提交成功");
             	window.location.href=contextPath+"/intopieces/applyintopiecewait/browse.page";
             }
           });

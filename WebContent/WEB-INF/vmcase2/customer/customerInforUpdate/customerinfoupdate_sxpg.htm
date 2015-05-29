@@ -12,6 +12,7 @@ b{color:#366fb2;}
 			
 			<form id="id_module_form">
                 <input type="hidden" name="customerId" value="${customerId}">
+                <input type="hidden" name="type" id="type" value="${type}">
 				<input type="hidden" id="customerCreidtEvaluationId" name="customerCreidtEvaluationId" value="$!customerCreidtEvaluation.id"/>
 				<div class="form-bd" id="formsId" style="min-width:800px;">
 			  	<table class="form-bd-info" >
@@ -90,7 +91,7 @@ b{color:#366fb2;}
 						</tr>
 						<tr>
                         	<td><label>额度上限：</label></td>
-                			<td><b><input name="credit_limit_1" value="$!customerCreidtEvaluation.creditLimit" id="selfEDSX" ></input>万</b></td>
+                			<td><b><input name="credit_limit_1" type="text" value="$!customerCreidtEvaluation.creditLimit" id="selfEDSX" ></input>万</b></td>
 							<td></td>
                 			<td></td>
 						</tr>
@@ -148,7 +149,7 @@ b{color:#366fb2;}
 						</tr>
 						<tr>
                         	<td><label>额度上限：</label></td>
-                			<td><b><input name="credit_limit_2" value="$!customerCreidtEvaluation.creditLimit" id="familyEDSX" ></input>万</b></td>
+                			<td><b><input name="credit_limit_2" type="text" value="$!customerCreidtEvaluation.creditLimit" id="familyEDSX" ></input>万</b></td>
 							<td></td>
                 			<td></td>
 						</tr>
@@ -296,7 +297,7 @@ b{color:#366fb2;}
 						</tr>						                     
                         <tr>
 							<td><label>额度上限：</label></td>
-							<td><b><input name="credit_limit_4" value="$!customerCreidtEvaluation.creditLimit" id="wfyckEdsx" ></input>万</b></td>								
+							<td><b><input name="credit_limit_4" type="text" value="$!customerCreidtEvaluation.creditLimit" id="wfyckEdsx" ></input>万</b></td>								
 							<td></td>
 						</tr>
 						</table>
@@ -327,7 +328,7 @@ b{color:#366fb2;}
 						</tr>                       						                     
                         <tr>
 							<td><label>额度上限：</label></td>
-							<td><b><input name="credit_limit_5" value="$!customerCreidtEvaluation.creditLimit" id="wfygjEdsx" ></input>万</b></td>															
+							<td><b><input name="credit_limit_5" type="text" value="$!customerCreidtEvaluation.creditLimit" id="wfygjEdsx" ></input>万</b></td>															
 							<td></td>
 						</tr>
 						</table> 
@@ -409,7 +410,7 @@ b{color:#366fb2;}
 						</tr>						
 						<tr>
 							<td><label>额度上限：</label></td>
-                			<td><b><input name="credit_limit_6" value="$!customerCreidtEvaluation.creditLimit" id="EDSX" ></input>万</b></td>
+                			<td><b><input name="credit_limit_6" type="text" value="$!customerCreidtEvaluation.creditLimit" id="EDSX" ></input>万</b></td>
                             <td></td>
 							<td></td>
 						</tr>
@@ -492,7 +493,7 @@ b{color:#366fb2;}
 						</tr> 												
 						<tr>
 							<td><label>额度上限：</label></td>
-                			<td><b><input name="credit_limit_7" value="$!customerCreidtEvaluation.creditLimit" id="EDSX_1" ></input>万</b></td>
+                			<td><b><input name="credit_limit_7" type="text" value="$!customerCreidtEvaluation.creditLimit" id="EDSX_1" ></input>万</b></td>
                             <td></td>
 							<td></td>
 						</tr>
@@ -643,7 +644,13 @@ document.write(os.options["select='selected'"].value);
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	$(document).ready(function() {	
+	$(document).ready(function() {
+		if($("#type").val() == "read"){
+			$("input[type='text']").attr("disabled",true);
+			$("input[type='radio']").attr("disabled",true);
+			$("input[type='checkbox']").attr("disabled",true);
+			$("select").attr("disabled",true);
+		}
 	     $("#id_save_button").click(function() {
 		    
 			  if( $("#customerCreidtEvaluationId").attr("value") == "")	{
@@ -651,7 +658,7 @@ document.write(os.options["select='selected'"].value);
 	     	    $.get("${contextPath}/customer/basiccustomerinforUpdate/insertsxpg.json", formjson, function(data, textStatus, jqXhr) {
 		            if (data.success) {
 		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
-		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}") ;
+		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}");
 		              #end
 		            }
 		          });}	
@@ -660,15 +667,11 @@ document.write(os.options["select='selected'"].value);
 	     	    $.get("${contextPath}/customer/basiccustomerinforUpdate/updatesxpg.json", formjson, function(data, textStatus, jqXhr) {
 		            if (data.success) {
 		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
-		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}") ;
+		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}");
 		              #end
 		            }
 		          });
-	     	    }
-	     	    	
-	     	    
-	     	    
-	     	    
+	     	    }   
 	       });
 
 	});
@@ -679,23 +682,39 @@ document.write(os.options["select='selected'"].value);
 	function onSave(){
    	 if( $("#customerCreidtEvaluationId").attr("value") == "")	{
 			  var formjson = $($formName).serialize();
+			  //Dialog.confirm("确定提交吗？", "提示",
+			  //function() {
+			  //$.ajax({
+				//	url : "${contextPath}/customer/basiccustomerinforUpdate/insertsxpg.json",
+				//	type : "get",
+				//	data : formjson,
+				//	success : function(data) {
+				//		if (data.success) {
+				//			window.top.Dialog.message(data.message);	
+				//			 window.laocation.href = "${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}";
+				//		}
+				//		else{
+				//			window.top.Dialog.message("系统出现异常,请联系管理员");
+				 //   	}
+				//	}
+				//});
+			 // });
 	     	    $.get("${contextPath}/customer/basiccustomerinforUpdate/insertsxpg.json", formjson, function(data, textStatus, jqXhr) {
 		            if (data.success) {
-		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
-		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}") ;
-		              #end
+		            	window.top.Dialog.message("保存成功!");
+	  	            	var url = "${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}";
+	   	            	window.location.href = url;
 		            }
-		          });}	
+	     	   });}
 	     	    else{
 	     	    	var formjson = $($formName).serialize();
 	     	    $.get("${contextPath}/customer/basiccustomerinforUpdate/updatesxpg.json", formjson, function(data, textStatus, jqXhr) {
 		            if (data.success) {
-		              #if ($request.getParameter('callBackUrl').indexOf('?') != -1)
-		            	  navigateTo("${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}") ;
-		              #end
-		            }
-		          });
-	     	    }
+		            	window.top.Dialog.message("保存成功!");
+	  	            	var url = "${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}";
+	   	            	window.location.href = url;
+		        }
+	     	   });}
     }
 	function YFZY_JZC(){//有房客户-自有
 		var jzc=0;

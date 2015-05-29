@@ -97,15 +97,26 @@
 			if ($(".checkbox :checked").length == 1) {
 				var rowId = getCurrentRowId();
 				if(rowId!=null){
-					$.post("${modulePath}/xm_appln_page0_apply.page", {id:rowId},
-		            function(data, textStatus, jqXhr) {
-		                if (data.success) {
-		                    window.location.reload(true);
-		                } else {
-		                    //Dialog.message(data.message);
-		                }
-		            });
-				}
+					Dialog.confirm("确定提交吗？", "提示",
+							function() {
+						 		$.ajax({
+									url : "${modulePath}/xm_appln_page0_apply.json?id="+rowId,
+									type : "get",
+									success : function(data) {
+										if (data.success) {
+											window.top.Dialog.message(data.message);	
+						            		var url = "${modulePath}approve.page";
+						            		//alert(url);
+						            		window.location.href=url ;
+											//window.location.reload(true);
+										}
+										else{
+											window.top.Dialog.message("系统出现异常,请联系管理员");
+								    	}
+									}
+							}); 
+		                	});
+					}
 			}else{
 				Dialog.message("请选择要申请的客户!");
 			}

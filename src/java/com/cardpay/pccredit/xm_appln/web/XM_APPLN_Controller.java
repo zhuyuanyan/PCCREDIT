@@ -259,6 +259,7 @@ public class XM_APPLN_Controller extends BaseController {
 	public AbstractModelAndView changewh_xm_appln_page1_update(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page1_update", request);
 		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String appid = RequestHelper.getStringValue(request, "appId");
 		if (StringUtils.isNotEmpty(customerInforId)) {
 			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
 			//查找xm_appln相关信息
@@ -290,6 +291,7 @@ public class XM_APPLN_Controller extends BaseController {
 			
 			mv.addObject("customerInfor", customerInfor);
 			mv.addObject("customerId", customerInfor.getId());
+			mv.addObject("appid",appid);
 		}
 		return mv;
 	}
