@@ -184,7 +184,7 @@ public class IntoPiecesCardQueryControl extends BaseController {
 	
 	//制卡退回到录入
 	@ResponseBody
-	@RequestMapping(value = "returnToLuru.page")
+	@RequestMapping(value = "returnToLuru.json")
 	public JRadReturnMap returnToLuru( HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {

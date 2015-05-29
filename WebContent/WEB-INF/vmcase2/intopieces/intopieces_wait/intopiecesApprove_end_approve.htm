@@ -180,6 +180,7 @@ $(document).ready(function() {
           var formjson = $($formName).serialize();
           $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
             if (data.success) {
+            	window.top.Dialog.message("提交成功");
             	window.location.href=contextPath+"/intopieces/applyintopieceend/browse.page";
             }
           });

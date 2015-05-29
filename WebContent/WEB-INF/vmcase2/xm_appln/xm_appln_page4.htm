@@ -698,8 +698,8 @@ form {
 				$('.dialog').hide();
 				  $.get($($formName).attr("action"), "fuheUser="+$("#users").val(), function(data, textStatus, jqXhr) {
    	            if(data.success) {
-   	            	Dialog.message("保存成功!");
-   	            	parent.location.href = "${contextPath}/intopieces/intopiecesluru/luru.page"; 
+   	            	window.top.Dialog.message("保存成功!");
+   	            	window.location.href = "${contextPath}/xm_appln/xm_appln_page4.page?id=${customerId}&appId=${appId}"; 
    	            }
    	          });  
 			});
@@ -718,8 +718,8 @@ form {
 		                	}else{
 		                		$.get($($formName).attr("action"), "fuheUser="+$("#users").val(), function(data, textStatus, jqXhr) {
 			           	            if(data.success) {
-			           	            	Dialog.message("保存成功!");
-			           	            	parent.location.href = "${contextPath}/intopieces/intopiecesfuhe/fuhe.page"; 
+			           	            	window.top.Dialog.message("保存成功!");
+			           	            	parent.location.href = "${contextPath}/xm_appln/xm_appln_page4.page?id=${customerId}&appId=${appId}"; //${contextPath}/intopieces/intopiecesfuhe/fuhe.page
 			           	            }
 			           	          }); 
 		                	}

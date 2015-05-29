@@ -215,15 +215,17 @@ public class IntoPiecesfuheControl extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "refuse.page")
+	@RequestMapping(value = "refuse.json")
 	public JRadReturnMap refuse(@ModelAttribute XmApplnSxjcForm filter, HttpServletRequest request)  {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		String appId = request.getParameter("appId");
 		try {
 			intoPiecesService.refuse(appId,request);
 			returnMap.addGlobalMessage("退回成功");
+			returnMap.put("message", "退回成功");
 		} catch (Exception e) {
 			returnMap.addGlobalMessage("退回失败");
+			returnMap.put("message", "退回失败");
 			e.printStackTrace();
 		}
 		return returnMap;

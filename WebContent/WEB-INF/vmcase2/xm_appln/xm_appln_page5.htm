@@ -216,8 +216,9 @@
 	  	          var formjson = $($formName).serialize();
 	  	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	  	            if (data.success) {
-	  	            	Dialog.message("保存成功!");
-	  	            	window.location.reload();
+	  	            	window.top.Dialog.message("保存成功!");
+	  	            	var url = "${contextPath}/xm_appln/xm_appln_page5.page?id=${customerId}";
+	   	            	window.location.href = url;
 	  	            }
 	  	          });
 	  	        }
