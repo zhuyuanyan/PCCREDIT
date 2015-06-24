@@ -106,4 +106,6 @@ public @interface JRadOperation {
 	public static final long FEEDBACK = 549755813888L;
 	
 	public static final long RHZX = 1099511627776L;
+	
+	public static final long IDCHECK = 2199023255552L;
 }

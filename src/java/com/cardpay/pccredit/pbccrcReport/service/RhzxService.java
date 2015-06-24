@@ -38,6 +38,7 @@ import com.cardpay.pccredit.pbccrcReport.model.RH_XYTS_INFO;
 import com.cardpay.pccredit.pbccrcReport.model.RH_YH_INFO;
 import com.cardpay.pccredit.pbccrcReport.model.RH_YQ_INFO;
 import com.cardpay.pccredit.pbccrcReport.model.RH_ZY_INFO;
+import com.cardpay.pccredit.pbccrcReport.model.ZX_QUERY_RECORD;
 import com.cardpay.pccredit.pbccrcReport.util.DateUtil;
 import com.cardpay.pccredit.pbccrcReport.util.RegEX;
 import com.cardpay.pccredit.sample2.filter.Sample2Filter;
@@ -1061,6 +1062,15 @@ public class RhzxService {
 	 */
 	public QueryResult<Sample2> findSample2sByFilter(Sample2Filter filter) {
 		return commonDao.findObjectsByFilter(Sample2.class, filter);
+	}
+	
+	/**
+	 * 插入征信查询记录信息
+	 * @param zx_query_record
+	 * @return
+	 */
+	public void insertZX_QUERY_RECORD(ZX_QUERY_RECORD zxQueryRecord){
+		commonDao.insertObject(zxQueryRecord);
 	}
 
 }

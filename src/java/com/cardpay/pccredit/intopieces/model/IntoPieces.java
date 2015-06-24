@@ -14,6 +14,7 @@ public class IntoPieces  extends BusinessModel {
     private String cardId;//证件号码
     private String cardType;//证件号码
     private String applyQuota;//申请额度
+    private String actualQuote;//实际额度
     private String status;//申请额度
     private String statusName;
     
@@ -92,6 +93,12 @@ public class IntoPieces  extends BusinessModel {
 	}
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
+	}
+	public String getActualQuote() {
+		return actualQuote;
+	}
+	public void setActualQuote(String actualQuote) {
+		this.actualQuote = actualQuote;
 	}
 
 }

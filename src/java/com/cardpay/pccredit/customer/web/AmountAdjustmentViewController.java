@@ -14,12 +14,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.customer.filter.AmountAdjustmentFilter;
 import com.cardpay.pccredit.customer.service.AmountAdjustmentService;
+import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 /**
@@ -36,6 +43,8 @@ public class AmountAdjustmentViewController extends BaseController{
 	
 	@Autowired
 	private AmountAdjustmentService amountAdjustmentService;
+	@Autowired
+	private IntoPiecesService intoPiecesService ;
 
 	/**
 	 * 浏览调额信息信息页面
@@ -53,6 +62,35 @@ public class AmountAdjustmentViewController extends BaseController{
 		JRadPagedQueryResult<AmountAdjustmentForm> pagedResult = new JRadPagedQueryResult<AmountAdjustmentForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/customer/amountadjustmentview/amountadjustmentview_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	/**
+	 * 浏览额度信息页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "limitMgr.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView search(@ModelAttribute IntoPiecesFilter filter,
+			HttpServletRequest request) {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		QueryResult<IntoPieces> result=null;
+		String userId = user.getId();
+		filter.setUserId(userId);
+		filter.setStatus(Constant.SUCCESS_INTOPICES);
+		result = intoPiecesService.findMakeCardSuccessByFilter(filter);
+		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
+				filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView(
+				"/customer/amountadjustmentview/limitmanagerview_browse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+
 		return mv;
 	}
 	

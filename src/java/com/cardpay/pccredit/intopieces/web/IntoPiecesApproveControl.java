@@ -129,6 +129,8 @@ public class IntoPiecesApproveControl extends BaseController {
 			if (returnMap.isSuccess()) {
 				try {
 					String customerId = request.getParameter("id");
+					//进件方式
+					String intopiecesType = request.getParameter("intopiecesType");
 					//先判断是否已有流程
 					Boolean processBoolean = customerInforservice.ifProcess(customerId);
 					if(processBoolean){
@@ -138,7 +140,7 @@ public class IntoPiecesApproveControl extends BaseController {
 					}
 					else{
 						//设置流程开始
-						xM_APPLN_Service.saveApply(customerId);
+						xM_APPLN_Service.saveApply(customerId,intopiecesType);
 						
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.addGlobalMessage(CREATE_SUCCESS);

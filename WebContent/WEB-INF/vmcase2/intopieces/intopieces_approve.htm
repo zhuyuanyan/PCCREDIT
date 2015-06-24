@@ -75,6 +75,15 @@
       </div>
     </div>
   </div>
+   <div id="inputApplyInpDialog" title="选择客户进件方式" style="display: none; resize: none; z-index: 2000">
+      <form id="inputApplyForm">
+        <div class="forms">
+        	客户进件方式:<select id="intopiecesType" name="intopiecesType">
+                    #dict("ApplyIntopiecesType", $!intopiecesType)
+                  </select><br>
+        </div>
+      </form>
+  </div>
 </body>
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
@@ -93,33 +102,32 @@
 		opsObj.browseUrl = "${modulePath}/browse.page";
 		opsObj.exportUrl = "${modulePath}/export.page";
 		
-		$("#id_apply_button").click(function() {
-			if ($(".checkbox :checked").length == 1) {
-				var rowId = getCurrentRowId();
-				if(rowId!=null){
-					Dialog.confirm("确定提交吗？", "提示",
-							function() {
-						 		$.ajax({
-									url : "${modulePath}/xm_appln_page0_apply.json?id="+rowId,
-									type : "get",
-									success : function(data) {
-										if (data.success) {
-											window.top.Dialog.message(data.message);	
-						            		var url = "${modulePath}approve.page";
-						            		//alert(url);
-						            		window.location.href=url ;
-											//window.location.reload(true);
-										}
-										else{
-											window.top.Dialog.message("系统出现异常,请联系管理员");
-								    	}
-									}
-							}); 
-		                	});
-					}
-			}else{
-				Dialog.message("请选择要申请的客户!");
-			}
+			$("#id_apply_button").click(function() {
+	          if ($(".checkbox :checked").length == 1) {
+	        	  var rowId = getCurrentRowId();
+				  if(rowId!=null){
+	      		  	Dialog.form("#inputApplyForm", "进件方式", function(){
+	      				var intopiecesType = window.top.$("#intopiecesType").val();
+	      				$.post("${modulePath}xm_appln_page0_apply.json", {
+	      				  	id: rowId,
+	      				  	intopiecesType:intopiecesType
+	                  	},
+	                  	function(data, textStatus, jqXhr) {
+	                      if (data.success) {
+	                    	  window.top.Dialog.message(data.message);
+	                    	  var url = "${modulePath}approve.page";
+	                          window.location.href = url;
+	                      } else {
+	                          //Dialog.message(data.message);
+	                      }
+	                  });
+	      			window.top.$("#form_diaog").dialog("close");
+	      		}, null, 400, 200);
+	          } else {
+	              Dialog.message("请选择要申请的客户!");
+	          }
+	          }
+	      //});
 	    });
 		
 		$("#id_edit_button").click(function() {

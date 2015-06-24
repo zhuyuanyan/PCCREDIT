@@ -105,7 +105,9 @@
 					    ON pa.id = t.product_id
 					  LEFT JOIN amount_adjustment_process pr
 					    ON pr.amount_adjustment_id = t.id
-					 WHERE pr.delay_audit_user =#{auditUser}
+					 LEFT JOIN NODE_AUDIT_USER nu
+              			ON pr.next_node_id = nu.node_id
+           			WHERE nu.user_id =#{auditUser}
 					 <if test="customerName != null and customerName != '' ">
 						<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
 					 </if>
@@ -133,7 +135,9 @@
 		    ON pa.id = t.product_id
 		  LEFT JOIN amount_adjustment_process pr
 		    ON pr.amount_adjustment_id = t.id
-		 WHERE  pr.delay_audit_user =#{auditUser}
+		    LEFT JOIN NODE_AUDIT_USER nu
+              ON pr.next_node_id = nu.node_id
+           WHERE nu.user_id=#{auditUser}
 		 <if test="customerName != null and customerName != '' ">
 			<![CDATA[ and c.CHINESE_NAME like '%'||#{customerName}||'%']]>
 		 </if>
