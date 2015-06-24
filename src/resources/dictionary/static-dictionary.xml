@@ -661,5 +661,26 @@
 		<item name="有限责任公司－其他有限责任公司" title="有限责任公司－其他有限责任公司" />
 	    
 	</dictionary>
+	<dictionary name="ApplyIntopiecesType" title="进件类型">
+		<item name="散件" title="散件" />
+		<item name="专案" title="专案" />
+		<item name="商圈" title="商圈" />
+		<item name="团办" title="团办" />
+	</dictionary>
+	
+	<dictionary name="IdCheckQueryType" title="身份核查业务类型">
+		<item name="01" title="银行账户业务" />
+		<item name="02" title="信贷及征信业务" />
+		<item name="03" title="支付结算业务" />
+		<item name="04" title="反洗钱业务" />
+		<item name="05" title="其他业务" />
+	</dictionary>
+	
+	<dictionary name="IdCheckQueryTrait" title="身份核查业务特征">
+		<item name="01" title="一次性业务" />
+		<item name="02" title="新开户" />
+		<item name="03" title="跨境" />
+		<item name="04" title="其它" />
+	</dictionary>
 	<!-- xm_appln 数据字典结束 -->
 </dictionaries>

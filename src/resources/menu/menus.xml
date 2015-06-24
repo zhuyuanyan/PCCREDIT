@@ -31,6 +31,8 @@
 			<menu id="040020" name="adjustmentquota" title="客户调额生成" url="/customer/adjustmentquota/browse.page" img="" operations="amountadjustment|browse"/>
 			<menu id="040021" name="amountadjustment" title="客户调额待审核" url="/customer/amountadjustment/browse.page" img="" operations="approve|applyapprove|browse"/>
 			<menu id="040022" name="amountadjustmentview" title="客户调额查看" url="/customer/amountadjustmentview/browse.page" img="" operations="browse"/>
+			<menu id="040023" name="customerLimitMgr" title="客户额度管理" url="/customer/amountadjustmentview/limitMgr.page" img="" operations="browse"/>
+			<menu id="040024" name="generaltemporaryquota" title="普卡临时额度评估列表" url="/customer/temporaryquota/browse.page" img="" operations="browse"/>
 		</menu>
 		<menu id="050000" name="divisional" title="分案管理" operations=""> 
 			<menu id="050010" name="customerallot" title="客户主管分配" url="/divisional/customerallot/browse.page" img="" operations="distribution|browse"/>
@@ -111,6 +113,8 @@
 			<menu id="100120" name="cardqualityrejectbank" title="（拒绝）“灵活金”/普通信用卡业务进件质量监测报表统计（一级支行/二级支行维度） " url="/report/cardqualityrejectbank/browse.page" img="" operations="browse"/>
 		    <menu id="100130" name="workQuality" title="辅助岗位人员工作质量检测报告 " url="/report/workQuality/browse.page" img="" operations="browse"/>
 			<menu id="100113" name="reviewriskcontrol" title="评审岗位人员风控状况统计 " url="/report/reviewriskcontrol/browse.page" img="" operations="browse"/>
+			<menu id="100140" name="zxorgidquery" title="机构征信查询统计 " url="/report/customerzxquery/browse.page" img="" operations="browse"/>
+			<menu id="100150" name="zxmanagementquery" title="客户经理征信查询统计 " url="/report/customerzxquery/mgrbrowse.page" img="" operations="browse"/>
 		</menu>
 		
 		<menu id="110000" name="daihou" title="贷后管理" url="" img="images/icon_sys.gif" operations="">

@@ -1,0 +1,166 @@
+#parse ("common/iframe_page_header.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户额度调整</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+ <div class="search_tag">#i18n("label.browse.filter")</div>
+     <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
+                </span>
+              </li>
+              <li>
+                 <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+             <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <!--<col width="10%" />-->
+              <col width="10%" />
+              <col width="10%" />
+              <col />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">产品名称</th>
+              <!--<th nowrap="nowrap">审核状态</th>-->
+              <th nowrap="nowrap">实际额度</th>
+              <th nowrap="nowrap">申请额度</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="15%" />
+              <col width="10%" />
+              <!--<col width="10%" />-->
+              <col width="10%" />
+              <col width="10%" />
+              <col />
+            </colgroup>
+             #foreach ($wait in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.actualQuote@$!wait.serialNumber"/></td>
+              <td nowrap="nowrap">$!wait.chineseName</td>
+              <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>
+              <td nowrap="nowrap">$!wait.cardId</td>
+              <td nowrap="nowrap">$!wait.productName</td>
+              <!--<td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>  -->
+               <td nowrap="nowrap">$format.formatNumber($!wait.actualQuote, 2, 100)</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        	<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="调额" >调额</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="inputAccountDialog" title="填写调整后金额" style="display: none; resize: none; z-index: 2000">
+      <form id="inputAccountForm">
+        <div class="forms">
+        	调额类型:<select id="adjustType" name="adjustType">
+                    #dict("QuotaAdjustType", $!adjustType)
+                  </select><br>
+           	调整后额度:<input id="adjustmentAccount" type="text" value="">
+        </div>
+      </form>
+  </div>
+  
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	url = "${modulePath}/browse.page";
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/limitMgr.page";
+		prepareOperations(opsObj);
+		$("#id_change_button").click(function() {
+	          if ($(".checkbox :checked").length == 1) {
+	        	  var rowid = null;
+	        	  var actualAmount = null;
+	        	  $("input[name='checkbox']:checked").each(function() {
+	            		rowid = $(this).val().split("@")[0];
+	            		actualAmount = ($(this).val().split("@")[4])/100;
+	        		});
+	              $("#adjustmentAccount").val("");
+	      		  Dialog.form("#inputAccountForm", "调整金额", function(){
+	      			var adjustmentAccount = window.top.$("#adjustmentAccount").val();
+	      			var adjustmentType = window.top.$("#adjustType").val();
+	      			var tel = /^[0-9]+\.?[0-9]{0,2}$/;
+	      			if(adjustmentAccount == "" || adjustmentAccount.length == 0 || !tel.test(adjustmentAccount)){
+	      				Dialog.message("请填正确写调整后金额，最多保留两位小数。");
+	      				return;
+	      			}
+	      			if(adjustmentType == "up"){
+	      				if(Number(adjustmentAccount) <= Number(actualAmount)){
+	      					Dialog.message("额度升额,调整金额必须大于实际额度。");
+	      					return;
+	      				}
+	      			} else {
+	      				if(Number(adjustmentAccount) >= Number(actualAmount)){
+	      					Dialog.message("额度降额,调整金额必须小于实际额度。");
+	      					return;
+	      				}
+	      			}
+	      			$.post(contextPath+"/customer/adjustmentquota/adjustmentAccount.json", {
+	                      appId: rowid,
+	                      adjustmentAccount:adjustmentAccount,
+	                      adjustmentType:adjustmentType
+	                  },
+	                  function(data, textStatus, jqXhr) {
+	                      if (data.success) {
+	                    	  window.top.Dialog.message(data.message);
+	                    	  var url = "${modulePath}/limitMgr.page";
+	                          window.location.href = url;
+	                      } else {
+	                          //Dialog.message(data.message);
+	                      }
+	                  });
+	      			window.top.$("#form_diaog").dialog("close");
+	      		}, null, 400, 200);
+	          } else {
+	              Dialog.message("请选择一行");
+	          }
+	      });
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

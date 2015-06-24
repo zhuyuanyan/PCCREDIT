@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.customer.filter.CustomerMaintenanceLogFilter;
+import com.cardpay.pccredit.customer.model.AmountAdjustment;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerMaintenanceLog;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
@@ -145,5 +146,13 @@ public class CustomerInforCommDao {
 	public List<CustomerApplicationInfo> ifProcess(String customerId){
 		String sql = "select * from customer_application_info where CUSTOMER_ID='"+customerId+"'";
 		return commonDao.queryBySql(CustomerApplicationInfo.class, sql, null);
+	}
+	
+	/**
+	 * 通过客户id查询额度申请表
+	 */
+	public List<AmountAdjustment> ifApply(String customerId){
+		String sql = "select * from amount_adjustment where CUSTOMER_ID='"+customerId+"' and APPROVAL='Audit'";
+		return commonDao.queryBySql(AmountAdjustment.class, sql, null);
 	}
 }

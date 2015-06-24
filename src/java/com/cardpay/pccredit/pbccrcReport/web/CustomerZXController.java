@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.pbccrcReport.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.pbccrcReport.model.ZX_QUERY_RECORD;
 import com.cardpay.pccredit.pbccrcReport.service.RhzxService;
 import com.cardpay.pccredit.pbccrcReport.util.PbccrcReport;
 import com.cardpay.pccredit.pbccrcReport.util.PbocFileReader;
@@ -102,10 +105,23 @@ public class CustomerZXController extends BaseController {
 			CustomerInfor customer = customerInforService.findCustomerInforById(customerId);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			
-			//通过机构号获取查询帐号和密码
-			List<XmZxLogin> list = customerInforService.getLoginByOrg(orgId);
-			String userid = list.get(0).getUserName();
-			String passwd = list.get(0).getPassWord();
+			//通过机构号获取查询帐号和密码，修改为查询所有的查询账户和密码，随机获取一组
+			List<XmZxLogin> list = customerInforService.getLoginByOrg("1");
+			//生成list之内的一个随机数
+			int k = (int)(Math.random()*(list.size()));
+			System.out.println(k);
+			String userid = list.get(k).getUserName();
+			String passwd = list.get(k).getPassWord();
+			
+			//新增征信查询记录
+			ZX_QUERY_RECORD zxqr = new ZX_QUERY_RECORD();
+			zxqr.setCustomer_id(customer.getId());
+			zxqr.setOrg_id(user.getOrganization().getId());
+			zxqr.setUser_id(user.getLogin());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			Date now = new Date();
+			zxqr.setCreate_datetime(sdf.format(now));
+			this.rhzxService.insertZX_QUERY_RECORD(zxqr);
 			
 			logger.info("人行征信查询---查询用户:"+user.getId()+",客户:"+customer.getChineseName());
 			PbccrcReport pbccrcReport = new PbccrcReport();

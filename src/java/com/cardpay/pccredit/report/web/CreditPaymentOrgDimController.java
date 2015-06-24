@@ -131,64 +131,7 @@ public class CreditPaymentOrgDimController extends BaseController {
 	
 public void create(List<CreditPayment> list,HttpServletResponse response,StatisticalFilter filter){
 		
-//		// 第一步，创建一个webbook，对应一个Excel文件  
-//       HSSFWorkbook wb = new HSSFWorkbook();  
-//       // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
-//      HSSFSheet sheet = wb.createSheet("客户经理“灵活金”透支情况统计");  
-//       // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
-//      HSSFRow row = sheet.createRow((int) 0);  
-//       // 第四步，创建单元格，并设置值表头 设置表头居中  
-//       HSSFCellStyle style = wb.createCellStyle();  
-//        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式  
-//
-//       HSSFCell cell = row.createCell((short) 0);  
-//       cell.setCellValue("二级支行");  
-//       cell.setCellStyle(style);  
-//     cell = row.createCell((short) 1);  
-//       cell.setCellValue("基准日期");  
-//       cell.setCellStyle(style);  
-//      cell = row.createCell((short) 2);  
-//       cell.setCellValue("透支本金余额");  
-//      cell.setCellStyle(style);  
-//       cell = row.createCell((short) 3);  
-//      cell.setCellValue("透支总余额");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 4);  
-//      cell.setCellValue("报表日期");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 5);  
-//      cell.setCellValue("透支本金余额");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 6);  
-//      cell.setCellValue("透支总余额");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 7);  
-//      cell.setCellValue("透支本金余额净增");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 8);  
-//      cell.setCellValue("透支余额净增");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 9);  
-//      cell.setCellValue("有偿还本金的卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 10);  
-//      cell.setCellValue("还款金额");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 11);  
-//      cell.setCellValue("有增加透支本金的卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 12);  
-//      cell.setCellValue("额度提取金额");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 13);  
-//      cell.setCellValue("透支本金不变的卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 14);  
-//      cell.setCellValue("所属二级支行");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 15);  
-//      cell.setCellValue("所属一级支行");  
-//      cell.setCellStyle(style);  
+  
 		HSSFWorkbook wb = new HSSFWorkbook();  
 		HSSFSheet sheet = wb.createSheet("支行“灵活金”用信还款情况统计"); 
 		
