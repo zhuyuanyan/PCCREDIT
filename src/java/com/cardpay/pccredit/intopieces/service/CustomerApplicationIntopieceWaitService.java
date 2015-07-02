@@ -200,7 +200,7 @@ public class CustomerApplicationIntopieceWaitService {
 				List<ApproveHistoryForm> historyForms = intoPiecesService.findApplicationDataImport(applicationId, "application");
 				for(int i=0;i<historyForms.size();i++){
 					String statusName = historyForms.get(i).getStatusName();
-					if(statusName.equals("审批")){
+					if(statusName.equals("评审")){
 						cardQuery.setApproveId(historyForms.get(i).getId());
 						cardQuery.setApproveName(historyForms.get(i).getDisplayName());
 					}

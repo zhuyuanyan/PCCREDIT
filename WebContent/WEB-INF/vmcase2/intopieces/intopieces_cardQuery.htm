@@ -123,14 +123,28 @@
             			Dialog.message("此进件已退回!");
             			return;
 	            	}
-						$.post("${contextPath}/intopieces/applycardquery/returnToLuru.page", {applicationId:aid,id:uuid},
-			            function(data, textStatus, jqXhr) {
-			                if (data.success) {
-			                    window.location.reload(true);
-			                } else {
+	            	$.ajax({
+						url : "${contextPath}/intopieces/applycardquery/returnToLuru.page?applicationId="+rowId + "&id=" + uuid,
+						type : "get",
+						success : function(data) {
+							if (data.success) {
+								window.top.Dialog.message(data.message);	
+			            		var url = "${contextPath}/intopieces/applycardquery/browse.page";
+								window.location.href = url;
+							}
+							else{
+								window.top.Dialog.message(data.message);
+					    	}
+						}
+						}); 
+						//$.post("${contextPath}/intopieces/applycardquery/returnToLuru.page", {applicationId:aid,id:uuid},
+			            //function(data, textStatus, jqXhr) {
+			              //  if (data.success) {
+			              //      window.location.reload(true);
+			             //   } else {
 			                    //Dialog.message(data.message);
-			                }
-			            });
+			             //   }
+			           // });
 				}
 		    });
 	    }

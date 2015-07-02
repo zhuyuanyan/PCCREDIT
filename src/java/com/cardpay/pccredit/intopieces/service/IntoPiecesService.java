@@ -186,6 +186,40 @@ public class IntoPiecesService {
 		}
 		return qs;
 	}
+	/* 查询额度信息 */
+	/*
+	 * TODO 1.添加注释 2.SQL写进DAO层
+	 */
+	public QueryResult<IntoPieces> findMakeCardSuccessByFilter(
+			IntoPiecesFilter filter) {
+		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findMakeCardSuccessByFilter(filter);
+		int sum = intoPiecesComdao.findMakeCardSuccessByFilterCount(filter);
+		QueryResult<IntoPieces> qs = new QueryResult<IntoPieces>(sum, queryResult.getItems());
+		List<IntoPieces> intoPieces = qs.getItems();
+		for(IntoPieces pieces : intoPieces){
+			if(pieces.getStatus()==null){
+				pieces.setNodeName("未提交申请");
+			}
+			else{
+				if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
+					pieces.setNodeName("未提交申请");
+				} else if(pieces.getStatus().equals(Constant.APPROVE_INTOPICES)){
+					String nodeName = intoPiecesComdao.findAprroveProgress(pieces.getId());
+					if(StringUtils.isNotEmpty(nodeName)){
+						pieces.setNodeName(nodeName);
+					} else {
+						pieces.setNodeName("不在审批中");
+					}
+				} else if(pieces.getStatus().equals(Constant.APPROVED_INTOPICES)) {
+					pieces.setNodeName("进件成功");
+				
+				} else {
+					pieces.setNodeName("审批结束");
+				}
+			}
+		}
+		return qs;
+	}
 	/*
 	 * 查询配偶进件信息
 	 */
@@ -1910,8 +1944,8 @@ public class IntoPiecesService {
 				IntoPiecesCardQuery card = list.get(0);
 				try {
 					//流程自动下一步
-//					if(resultType.equals("00")){
-////					customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
+					if(resultType.equals("00")){
+						customerApplicationIntopieceWaitService.stepToNextNode(card.getApplicationId());
 //						//制卡成功后，保存至makecard表
 //						List<CardCur> curList = intoPiecesComdao.getCardNbrByCardId(cardId);
 //						System.out.println(curList.size());
@@ -1930,7 +1964,7 @@ public class IntoPiecesService {
 //							makeCard.setCardNumber(cardId);
 //							commonDao.insertObject(makeCard);
 //						}
-//					}
+					}
 					//更新制卡数据
 					card.setMakeCardId(makeCardId);
 					card.setResultType(resultType);

@@ -1,0 +1,87 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户身份核查信息</div>
+      </div>
+ <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm" action="${modulePath}/checkPivi.page" method="POST">
+          <input type="hidden" name="customerId" value="$!customerInfor.id">
+          <div style="clear:both">
+           	<ul>
+              <li class="idcheck_li">
+                <span>客户名称：
+                <input type="text" name="chineseName" value="$!customerInfor.chineseName" disabled/></span>
+              </li>
+              <li class="idcheck_li">
+                <span>证件类型：
+                	<select id="type" name="certype" disabled>
+	                   #dict("CERTYPE", $null)
+                  	</select>
+                  </span>
+              </li>
+              <li class="idcheck_li">
+                <span>证件号码：
+                <input type="text" name="cardId" value="$!customerInfor.cardId" disabled/></span>
+              </li>
+            </ul>
+            <ul>
+              <li class="idcheck_li">
+                <span>业务类型：
+                	<select id="IdCheckQueryType" name="IdCheckQueryType">
+	                   #dict("IdCheckQueryType",$null)
+                  	</select>
+                  </span>
+              </li>
+              
+              <li class="idcheck_li">
+                <span>业务特征：
+                	<select id="QueryType" name="QueryType" hidden="true">
+	                   #dict("QueryType",$null)
+                  	</select>
+                	<select id="IdCheckQueryTrait" name="IdCheckQueryTrait">
+	                   #dict("IdCheckQueryTrait",$null)
+                  	</select>
+                  </span>
+              </li>
+            </ul>
+            <!--<ul><li class="rhzx_li">
+                <span>机构号：
+                <input type="text" name="orgId" id="orgId" value="" /></span>
+              </li>
+             </ul>  -->
+            </div>
+            <div style="clear:both;">
+            	<input type="button" id="id_browse_button"  value="查询" class="search_button_inquiry"  onclick="check()"
+                  		title="查询" style="height: 26px; line-height: 24px;margin-right: 220px;float: right;"/>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	
+	function check(){
+		//var orgId = $("#orgId").val();
+		//if(orgId==''){
+		//	Dialog.message("请输入机构号");
+		//	return;
+		//}else{
+			$("#submitForm").submit();
+		//}
+	}
+</script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

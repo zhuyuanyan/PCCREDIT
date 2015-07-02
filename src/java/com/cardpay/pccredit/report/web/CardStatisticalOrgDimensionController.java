@@ -129,69 +129,6 @@ public class CardStatisticalOrgDimensionController extends BaseController {
 	
 	public void create(List<CardStatistical> list,HttpServletResponse response,StatisticalFilter filter){
 		
-//		// 第一步，创建一个webbook，对应一个Excel文件  
-//       HSSFWorkbook wb = new HSSFWorkbook();  
-//       // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
-//      HSSFSheet sheet = wb.createSheet("浏览“灵活金”发卡进展情况统计表");  
-//       // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
-//      HSSFRow row = sheet.createRow((int) 0);  
-//       // 第四步，创建单元格，并设置值表头 设置表头居中  
-//       HSSFCellStyle style = wb.createCellStyle();  
-//        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式  
-//
-//       HSSFCell cell = row.createCell((short) 0);  
-//       cell.setCellValue("二级支行");  
-//       cell.setCellStyle(style);  
-//     cell = row.createCell((short) 1);  
-//       cell.setCellValue("基准日期");  
-//       cell.setCellStyle(style);  
-//      cell = row.createCell((short) 2);  
-//       cell.setCellValue("发卡数");  
-//      cell.setCellStyle(style);  
-//       cell = row.createCell((short) 3);  
-//      cell.setCellValue("到卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 4);  
-//      cell.setCellValue("激活卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 5);  
-//      cell.setCellValue("未激活卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 6);  
-//      cell.setCellValue("激活率");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 7);  
-//      cell.setCellValue("发卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 8);  
-//      cell.setCellValue("报表日期");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 9);  
-//      cell.setCellValue("到卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 10);  
-//      cell.setCellValue("激活卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 11);  
-//      cell.setCellValue("未激活卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 12);  
-//      cell.setCellValue("激活率");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 13);  
-//      cell.setCellValue("发卡净增");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 14);  
-//      cell.setCellValue("到卡净增数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 15);  
-//      cell.setCellValue("激活卡净增数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 16);  
-//      cell.setCellValue("未激活净增卡数");  
-//      cell.setCellStyle(style);  
-//      cell = row.createCell((short) 17);  
-//      cell.setCellValue("激活率变动");  
 		HSSFWorkbook wb = new HSSFWorkbook();  
 		HSSFSheet sheet = wb.createSheet("浏览“灵活金”发卡进展情况统计表"); 
   

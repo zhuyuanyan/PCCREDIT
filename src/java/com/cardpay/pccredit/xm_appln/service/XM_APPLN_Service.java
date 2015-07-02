@@ -681,11 +681,12 @@ public class XM_APPLN_Service {
 	 * 提交申请，开始流程
 	 * @param customer_id
 	 */
-	public void saveApply(String customer_id){
+	public void saveApply(String customer_id, String intopiecesType){
 		//设置申请
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
 		//customerApplicationInfo.setStatus(status);
 		customerApplicationInfo.setId(IDGenerator.generateID());
+		customerApplicationInfo.setIntopiecesType(intopiecesType);
 		XM_APPLN_SQED xM_APPLN_SQED = findXM_APPLN_SQEDByCustomerId(customer_id);
 		if(xM_APPLN_SQED==null||xM_APPLN_SQED.getCrdlmt_req()==null||xM_APPLN_SQED.getCrdlmt_req().equals("")){
 			customerApplicationInfo.setApplyQuota("0");//设置额度

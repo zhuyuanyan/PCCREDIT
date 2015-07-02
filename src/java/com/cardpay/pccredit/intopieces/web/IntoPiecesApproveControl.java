@@ -123,24 +123,28 @@ public class IntoPiecesApproveControl extends BaseController {
 	 * @return
 	 */
 		@ResponseBody
-		@RequestMapping(value = "xm_appln_page0_apply.page")
+		@RequestMapping(value = "xm_appln_page0_apply.json")
 		public JRadReturnMap xm_appln_page0_apply(@ModelAttribute CustomerInforFilter customerInforFilter, HttpServletRequest request) {
 			JRadReturnMap returnMap = new JRadReturnMap();
 			if (returnMap.isSuccess()) {
 				try {
 					String customerId = request.getParameter("id");
+					//进件方式
+					String intopiecesType = request.getParameter("intopiecesType");
 					//先判断是否已有流程
 					Boolean processBoolean = customerInforservice.ifProcess(customerId);
 					if(processBoolean){
 						returnMap.addGlobalMessage("此客户正在申请进件，无法再次申请!");
 						returnMap.put(RECORD_ID, customerId);
+						returnMap.put("message","此客户正在申请进件，无法再次申请!");
 					}
 					else{
 						//设置流程开始
-						xM_APPLN_Service.saveApply(customerId);
+						xM_APPLN_Service.saveApply(customerId,intopiecesType);
 						
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.addGlobalMessage(CREATE_SUCCESS);
+						returnMap.put("message","申请成功");
 					}
 				}catch (Exception e) {
 					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);

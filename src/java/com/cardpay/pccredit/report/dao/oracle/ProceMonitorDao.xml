@@ -65,8 +65,8 @@ SELECT
         r.*
       FROM
         (select SU.id,SU.DISPLAY_NAME from SYS_USER SU where SU.USER_TYPE='1'
-        <if test="orgId!=null and orgId!=''">
-           and SU.id in (select user_id from sys_dept_user where dept_id in (select id from sys_depertment where org_id=#{orgId}))
+       <if test="orgId!=null and orgId!=''">
+           and SU.id in (select user_id from sys_dept_user where dept_id in (select id from sys_department where org_id=#{orgId}))
        </if>
         )u
       LEFT JOIN (

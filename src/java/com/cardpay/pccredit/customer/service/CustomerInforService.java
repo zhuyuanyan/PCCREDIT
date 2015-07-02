@@ -1452,9 +1452,9 @@ public class CustomerInforService {
 	 * @param id
 	 * @return
 	 */
-	public List<XmZxLogin> getLoginByOrg(String id) {
-		
-		String sql="select user_name,pass_word from xm_zx_login where org_id='"+id+"'";
+	public List<XmZxLogin> getLoginByOrg(String xmType) {
+		//where org_id='"+id+"'"
+		String sql="select user_name,pass_word from xm_zx_login where xm_type='"+ xmType+"'";
 		System.out.println(commonDao);
 		List<XmZxLogin> list = commonDao.queryBySql(XmZxLogin.class, sql,null );
 			return list;
