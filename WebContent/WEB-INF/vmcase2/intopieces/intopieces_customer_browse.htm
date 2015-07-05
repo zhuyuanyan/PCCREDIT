@@ -81,7 +81,10 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-        
+         #btnpriv("viewpieces")<a class="btn_g" href="javascript:void(0);" title="查看进件相关申请信息" 
+onclick="viewPiecesInfo();">查看进件信息</a>#end
+		#btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>#end
+		
 		</div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -142,7 +145,8 @@
 	function viewIntoPicesApproveHistory(ifHideUser){
 		var id = null;
 		$("input[name='checkbox']:checked").each(function() {
-			id = $(this).val().split("_")[0];
+			id = $(this).val().split("@")[0];
+			
 		});
 		if(id!=null){
 			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id="+id+"&ifHideUser="+ifHideUser+"&dataType=application";
@@ -151,7 +155,21 @@
 			Dialog.message("请选择要被查看的进件!");
 		}
 	}
-
-	
+	<!--查看进件信息 added nihc 20150705 begin -->
+	function viewPiecesInfo(){
+		var id = null;
+		var customerId = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("@")[0];
+			customerId = $(this).val().split("@")[1];
+		});
+		if(id!=null){
+			window.location.href = 
+				"${contextPath}/xm_appln/changewh_xm_appln_zhongshen.page?customerId="+customerId+"&applicationId="+id;
+		}else{
+			Dialog.message("请选择要查看的进件!");
+		}
+	}
+	<!--查看进件信息 added nihc 20150705 end -->
 </script>
 #parse ("common/iframe_page_footer.htm")
