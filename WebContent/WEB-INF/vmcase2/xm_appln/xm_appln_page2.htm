@@ -768,7 +768,11 @@
 					</td>
 					<td class="label">调查人姓名</td>
 					<td>
-						<span name="aval_name">$!xM_APPLN_DCSC.aval_name</span>
+						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.aval_name || $xM_APPLN_DCSC.aval_name=='')
+						<input type="text" class="text" name="aval_name" value="" maxlength="6"/>
+						#else
+						<input type="text" class="text" name="aval_name" value="$!xM_APPLN_DCSC.aval_name" maxlength="6"/>
+						#end
 					</td>
 				</tr>
 				<tr>
@@ -777,26 +781,35 @@
 						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.achk_nbr || $xM_APPLN_DCSC.achk_nbr=='')
 						<input type="text" class="text" name="achk_nbr" value="0" maxlength="6"/>
 						#else
-						<input type="text" class="text" name="achk_nbr" value="$!xM_APPLN_DCSC.achk_nbr" maxlength="6"/>
+						<input type="text" class="text" name="achk_nbr" value="$!xM_APPLN_DCSC.achk_nbr"  maxlength="6"/>
 						#end
 					</td>
 					<td class="label">审核人姓名</td>
+					
 					<td>
-						<span name="achk_name">$!xM_APPLN_DCSC.achk_name</span>
+						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.achk_name || $xM_APPLN_DCSC.achk_name=='')
+						<input type="text" class="text" name="achk_name" value=""  maxlength="6"/>
+						#else
+						<input type="text" class="text" name="achk_name" value="$!xM_APPLN_DCSC.achk_name"  maxlength="6"/>
+						#end
 					</td>
 				</tr>
 				<tr>
 					<td class="label">审批人工号<font color="#ff0000">*</font></td>
 					<td>
 						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.adec_nbr || $xM_APPLN_DCSC.adec_nbr=='')
-						<input type="text" class="text" name="adec_nbr" value="0" maxlength="6"/>
+						<input type="text" class="text" name="adec_nbr" value="0"  maxlength="6"/>
 						#else
-						<input type="text" class="text" name="adec_nbr" value="$!xM_APPLN_DCSC.adec_nbr" maxlength="6"/>
+						<input type="text" class="text" name="adec_nbr" value="$!xM_APPLN_DCSC.adec_nbr"  maxlength="6"/>
 						#end
 					</td>
 					<td class="label">审批人姓名</td>
 					<td>
-						<span name="adec_name">$!xM_APPLN_DCSC.adec_name</span>
+						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.adec_name || $xM_APPLN_DCSC.adec_name=='')
+						<input type="text" class="text" name="adec_name" value=""  maxlength="6"/>
+						#else
+						<input type="text" class="text" name="adec_name" value="$!xM_APPLN_DCSC.adec_name"  maxlength="6"/>
+						#end
 					</td>
 				</tr>
 			</table>

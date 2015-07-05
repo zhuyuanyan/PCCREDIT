@@ -65,6 +65,7 @@ public class JRadOperationHelper {
 		opsStr2Long.put(JRadOperation.SUBTURNOTHER, "subturnother");
 		opsStr2Long.put(JRadOperation.FEEDBACK, "feedback");
 		opsStr2Long.put(JRadOperation.RHZX, "rhzx");
+		opsStr2Long.put(JRadOperation.VIEWPIECES, "viewpieces");//查看进件申请资料 added by nihc 20150705
 		
 		
 		for (Entry<Long, String> entry : opsStr2Long.entrySet()) {

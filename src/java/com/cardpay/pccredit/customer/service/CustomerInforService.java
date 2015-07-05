@@ -151,16 +151,17 @@ public class CustomerInforService {
 			HashMap<String,Object> params = new HashMap<String,Object>();
 			StringBuffer sql = new StringBuffer();
 			sql.append("select * from  basic_customer_information where user_id in "+users);
-			if(filter.getCardType()!=null){
+			//modified by nihc 20150702 begin 
+			if(StringUtils.isNotBlank(filter.getCardType())){
 				sql.append(" and card_type  ='"+filter.getCardType()+"'");
 			}
-			if(filter.getChineseName()!=null){
+			if(StringUtils.isNotBlank(filter.getChineseName())){
 				sql.append(" and chinese_name like '%"+filter.getChineseName()+"%'");
 			}
-			if(filter.getCardId()!=null){
+			if(StringUtils.isNotBlank(filter.getCardId())){
 				sql.append(" and card_id like '%"+filter.getCardId()+"%'");
 			}
-
+			//modified by nihc 20150702 end
 			QueryResult<CustomerInfor> result = commonDao.queryBySqlInPagination(CustomerInfor.class, sql.toString(), params,
 					filter.getStart(), filter.getLimit());
 

@@ -30,7 +30,7 @@
             <td><label>证件类型</label></td>
             <td>
            <select name="cardType"  disabled="disabled">
-               #customerInfo($request.getAttribute("cardTypeList"),$!{ci.cardType})
+           #dict("RACE_CODE",$!ci.cardType)              
                </select>
             </tr>
 
@@ -85,7 +85,7 @@
             <tr>
             <td><label>审批结果</label></td> 
             <td>
-            <select id="applicationStatus" name="applicationStatus" onchange="checkStatus();">
+            <select id="applicationStatus" name="applicationStatus" onchange="checkStatus()">
 				<option value='0'>请选择..</option>
 				#dict("approveOperationNormalStatus", '')
 			</select>
@@ -98,7 +98,7 @@
             <td><label>进入黑名单</label></td> 
             <td>
             <select id="blacklist" name="blacklist" disabled="disabled">
-				<option value='-1'>请选择..</option>
+				<option value='-1'>请选择..</option>				
 				#dict("blacklist", '')
 			</select>
             </td>
@@ -148,6 +148,7 @@ $(document).ready(function() {
 	})
 	
 	$("#id_save_button").click(function() {
+		
 		if($("#applicationStatus").val()=='REJECTAPPROVE'){
 			var blacklist = $("#blacklist").val();
 			var risklist = $("#risklist").val();
