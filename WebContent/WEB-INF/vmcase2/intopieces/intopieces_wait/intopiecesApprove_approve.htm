@@ -85,7 +85,7 @@
             <tr>
             <td><label>审批结果</label></td> 
             <td>
-            <select id="applicationStatus" name="applicationStatus" onchange="checkStatus()">
+            <select id="applicationStatus" name="applicationStatus"  onchange="checkStatus();">
 				<option value='0'>请选择..</option>
 				#dict("approveOperationNormalStatus", '')
 			</select>
@@ -141,7 +141,7 @@
 var layout=new TableLayout(2);	
 window.top.currentWindow.setLayout(layout);
 #set ($formName = "'#id_module_form'")
-#validator($formName)
+
 $(document).ready(function() {	
 	$("#id_change_button").click(function() {
 		window.location.href = "${contextPath}/xm_appln/changewh_xm_appln_zhongshen.page?customerId=$!customerId&applicationId=$!applicationId";
@@ -152,17 +152,20 @@ $(document).ready(function() {
 		if($("#applicationStatus").val()=='REJECTAPPROVE'){
 			var blacklist = $("#blacklist").val();
 			var risklist = $("#risklist").val();
+			//alert(blacklist);
+			//alert(risklist);
 			if((blacklist=='-1'&&risklist=='-1')||(blacklist!='-1'&&risklist!='-1')){
-				Dialog.message("请选择进入黑名单或者风险名单!");
+				Dialog.message("请选择进入黑名单或者风险名单（二选一）!");
 				return ;
 			}
 		}else if($("#applicationStatus").val()=='0'){
 			Dialog.message("请选择审批结果!");
 			return;
+		}else if($("#applicationStatus").val()=='APPROVE' && $("#examineAmount").val()==''){
+			Dialog.message("请填写审核金额!");
+			return ;
 		}
-		
-		
-		if("$objection" == "true"){
+	if("$objection" == "true"){
 			var oldExamineAmount = $("#oldExamineAmount").val();
 			var examineAmount = $("#examineAmount").val();
 			if(Number(oldExamineAmount) != Number(examineAmount)){
@@ -196,30 +199,32 @@ function maintains(){
 	 $("#display_intopieces_form").submit();
 }
 
-/*
-* 改变筛选表
-*/
- function checkStatus() {
- 	  $("#blacklist").replaceWith("<select id='blacklist' name='blacklist' disabled><option value='-1'>请选择..</option>   #dict('blacklist','')   </select>"); 
-  	  $("#risklist").replaceWith("<select id='risklist' name='risklist' disabled><option value='-1'>请选择..</option><option value='1'>进入风险名单</option> </select>"); 
+
+</script>
+<script type="text/javascript">
+//改变筛选表
+
+function checkStatus() {
+	  $("#blacklist").replaceWith("<select id='blacklist' name='blacklist' disabled><option value='-1'>请选择..</option>   #dict('blacklist','')   </select>"); 
+ 	  $("#risklist").replaceWith("<select id='risklist' name='risklist' disabled><option value='-1'>请选择..</option><option value='1'>进入风险名单</option> </select>"); 
 
 		var applicationStatus = $("#formsId select[name='applicationStatus'] option:selected").val();
 		  switch (applicationStatus) {
-          case ("APPROVE"):
-        		$('#reason').replaceWith("<textarea readonly='readonly' class='w200' rows='3'  id='reason'  name='reason'></textarea>"); 
-              break;
-          case ("RETURNAPPROVE"):
-        	  $("#reason").replaceWith("<select id='reason' name='reason'><option value='0'>请选择..</option>   #dict('APPRETURESION','')   </select>"); 
-              break;
-          case ("REJECTAPPROVE"):
-        	  $('#reason').replaceWith("<textarea class='w200' rows='3'  id='reason'  name='reason'></textarea>"); 
-          	  $("#blacklist").replaceWith("<select id='blacklist' name='blacklist'><option value='-1'>请选择..</option>   #dict('blacklist','')   </select>"); 
-          	  $("#risklist").replaceWith("<select id='risklist' name='risklist'><option value='-1'>请选择..</option><option value='1'>进入风险名单</option> </select>"); 
-          
-              break;
-          default:
-            
-      }
+         case ("APPROVE"):
+       		$('#reason').replaceWith("<textarea readonly='readonly' class='w200' rows='3'  id='reason'  name='reason'></textarea>"); 
+             break;
+         case ("RETURNAPPROVE"):
+       	  $("#reason").replaceWith("<select id='reason' name='reason'><option value='0'>请选择..</option>   #dict('APPRETURESION','')   </select>"); 
+             break;
+         case ("REJECTAPPROVE"):
+       	  $('#reason').replaceWith("<textarea class='w200' rows='3'  id='reason'  name='reason'></textarea>"); 
+         	  $("#blacklist").replaceWith("<select id='blacklist' name='blacklist'><option value='-1'>请选择..</option>   #dict('blacklist','')   </select>"); 
+         	  $("#risklist").replaceWith("<select id='risklist' name='risklist'><option value='-1'>请选择..</option><option value='1'>进入风险名单</option> </select>"); 
+         
+             break;
+         default:
+           
+     }
 		
 }
 	//配偶身份信息检测
