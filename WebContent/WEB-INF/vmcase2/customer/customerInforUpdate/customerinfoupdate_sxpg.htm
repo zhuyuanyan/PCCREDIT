@@ -531,7 +531,8 @@ b{color:#366fb2;}
 			</div> -->
 		</div>
 	</div>
-	<script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_sxpg.js'></script>
+	
+	
 	<script>
 //担保人有房、无房选择
 
@@ -602,12 +603,12 @@ function change_2(){
 			 }
 	 }
 </script>
-	
+<script src='${contextPath}/js/customerInforUpdate/customerinfoupdate_sxpg.js'></script>	
 <script>
 //担保人有房、无房选择
 var os = document.getElementById("assure");
 //document.write(os.options[0].value);
-document.write(os.options["select='selected'"].value);
+//document.write(os.options["select='selected'"].value);
  function assure(){
 	 var oAssure = document.getElementById("assure");
 	 alert(oAssure.value);
@@ -627,7 +628,8 @@ document.write(os.options["select='selected'"].value);
  function change(){
 	var oModel = document.getElementById("Model");
 	var oOptions = oModel.getElementsByTagName("option");
-	var oTables = document.getElementsByClassName("table-bd");
+	//var oTables = document.getElementsByClassName("table-bd");
+	var oTables =$(".table-bd");
 	//document.write(oTables.length);
 	//document.write(oOptions.length);
 	for( var i=1;i<oOptions.length;i++){

@@ -52,7 +52,15 @@ public class XM_APPLN_JBZL_FORM extends BaseForm {
 	public String cune_cr;
 	public String secur_nbr;
 	public String belong_bank; 
-	
+	/*分机号 added by nihc 20150706 begin*/
+	public String extension;
+	public String getExtension() {
+		return extension;
+	}
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+	/*分机号 added by nihc 20150706 end*/
 	//xm_appln_khfw
 	public String mail_code;
 	public String work_calls;
@@ -560,6 +568,7 @@ public class XM_APPLN_JBZL_FORM extends BaseForm {
 		obj.setYr_in_comp(yr_in_comp);
 		obj.setYr_there(yr_there);
 		obj.setBelong_bank(belong_bank);
+		obj.setExtension(extension);
 		obj.setCreatedBy(userId);
 		return obj;
 	}
