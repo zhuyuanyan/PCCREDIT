@@ -102,7 +102,7 @@
 			<tr>					
 				<td class="label">分行建议额度(万)<font color="#ff0000">*</font></td>
 				<td>
-					#if(!$xM_APPLN_DCSC || !$$!xM_APPLN_TJINFO.brnchcrlmt || $$!xM_APPLN_TJINFO.brnchcrlmt=='')
+					#if(!$xM_APPLN_TJINFO || !$$!xM_APPLN_TJINFO.brnchcrlmt || $$!xM_APPLN_TJINFO.brnchcrlmt=='')
 					<input type="text" class="text" name="brnchcrlmt" value="0" maxlength="3">
 					#else
 					<input type="text" class="text" name="brnchcrlmt" value="$!xM_APPLN_TJINFO.brnchcrlmt" maxlength="3">

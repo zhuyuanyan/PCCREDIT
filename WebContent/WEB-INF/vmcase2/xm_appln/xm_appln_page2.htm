@@ -62,7 +62,8 @@
 					</td>
 					<td class="label">公司名称</td>
 					<td>
-						<span name="busn_name">$!xM_APPLN.busn_name</span>
+						<input type="text" class="text" name="busn_name" value="$!xM_APPLN.busn_name"  maxlength="100"/>
+						
 					</td>
 				</tr>
 				<tr>
@@ -80,7 +81,7 @@
 					</td>
 					<td class="label">分行名称</td>
 					<td>
-						<span name="brch_name">$!xM_APPLN.brch_name</span>
+					<input type="text" class="text" name="brch_name" value="$!xM_APPLN.brch_name" maxlength="100"/>
 					</td>
 				</tr>
 				<tr>
@@ -265,17 +266,17 @@
 							</td>
 							<td class="label">需要PIN密信?</td>
 							<td>
-								<input type="checkbox" name="pin_reqd1" value="1" #if($!xM_APPLN_KPMX_ls.get(0).pin_reqd == '1') checked #end/>
+								<input type="checkbox" name="pin_reqd1" value="1" #if(!$!xM_APPLN_KPMX_ls||!$!xM_APPLN_KPMX_ls.get(0).pin_reqd||$!xM_APPLN_KPMX_ls.get(0).pin_reqd == '1') checked #end/>
 							</td>
 						</tr>						
 						<tr>
 							<td class="label">开通短信通知?</td>
 							<td>
-								<input type="checkbox" name="sms_yn1" value="1" #if($!xM_APPLN_KPMX_ls.get(0).sms_yn == '1') checked #end/>
+								<input type="checkbox" name="sms_yn1" value="1" #if(!$!xM_APPLN_KPMX_ls||!$!xM_APPLN_KPMX_ls.get(0).sms_yn||$!xM_APPLN_KPMX_ls.get(0).sms_yn == '1') checked #end/>
 							</td>
 							<td class="label">消费需要密码?</td>
 							<td>
-								<input type="checkbox" name="pin_chk1" value="1" #if($!xM_APPLN_KPMX_ls.get(0).pin_chk == '1') checked #end/>
+								<input type="checkbox" name="pin_chk1" value="1" #if(!$!xM_APPLN_KPMX_ls.get(0)||!$!xM_APPLN_KPMX_ls.get(0).pin_chk || $!xM_APPLN_KPMX_ls.get(0).pin_chk == '1' ) checked #end/>
 							</td>
 						</tr>
 						<tr>

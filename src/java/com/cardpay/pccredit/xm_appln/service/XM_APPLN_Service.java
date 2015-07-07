@@ -295,7 +295,10 @@ public class XM_APPLN_Service {
 		
 		XM_APPLN xM_APPLN = xM_APPLN_Dao.findByCustomerId(xM_APPLN_TJINFO.getCustomer_id());
 		xM_APPLN.setMail_to(xM_APPLN_ADDR_FORM.getMail_to());
-		
+		/*added by nihc 20150706 保存家庭电话、公司电话 begin*/
+		XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_ADDR_FORM.createXM_APPLN_JCZL(user.getId());
+		insertOrUpdateXM_APPLN_JCZL(xM_APPLN_JCZL);
+		/*added by nihc 20150706 end */
 		insertOrUpdateXM_APPLN_TJINFO(xM_APPLN_TJINFO);
 		insertOrUpdateXM_APPLN_ADDR(xM_APPLN_ADDR);
 		

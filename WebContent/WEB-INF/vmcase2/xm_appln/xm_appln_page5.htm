@@ -42,6 +42,7 @@
 					<td class="label">个体工商户及小微企业主登记注册类型</td>
 					<td>
 						<select name="reg_type">
+							 <option  value="">请选择</option>
 							#dict("reg_type","$!xM_APPLN_HNPF.reg_type")
 						</select>
 					</td>
@@ -70,6 +71,7 @@
 					<td class="label">主要收入来源</td>
 					<td>
 						<select name="income_src">
+							 <option  value="">请选择</option>
 							#dict("INCOME_SRC_2","$!xM_APPLN_HNPF.income_src")
 						</select>
 					</td>
@@ -104,21 +106,22 @@
 				<tr>
 					<td class="label">专案项目</td>
 					<td>
-						<select name="prj">
-							<option></option>
-						</select>
+						<input type="text" class="text" name="prj" value="$!xM_APPLN_HNPF.prj" maxlength="32"/>
+
 					</td>
 				</tr>
 				<tr>
 					<td class="label">行业投向1</td>
 					<td colspan="3">
 						<select id="std_gb_level_1" name="std_gb_level_1" onchange="change_level_1(this.value);">
+							 <option  value="">请选择</option>
 							#dict("STD_GB_LEVEL_1","$!xM_APPLN_HNPF.std_gb_level_1")
 						</select>
 					</td>
 					<td class="label">行业投向2</td>
 					<td colspan="3">
 						<select id="std_gb_level_2" name="std_gb_level_2" onchange="change_level_2(this.value);">
+							 <option  value="">请选择</option>
 							#dict("STD_GB_LEVEL_2","$!xM_APPLN_HNPF.std_gb_level_2")
 						</select>
 					</td>
@@ -127,12 +130,14 @@
 					<td class="label">行业投向3</td>
 					<td colspan="3">
 						<select id="std_gb_level_3" name="std_gb_level_3" onchange="change_level_3(this.value);">
+							 <option  value="">请选择</option>
 							#dict("STD_GB_LEVEL_3","$!xM_APPLN_HNPF.std_gb_level_3")
 						</select>
 					</td>
 					<td class="label">行业投向4</td>
 					<td colspan="3">
 						<select id="std_gb_level_4" name="std_gb_level_4">
+							 <option  value="">请选择</option>
 							#dict("STD_GB_LEVEL_4","$!xM_APPLN_HNPF.std_gb_level_4")
 						</select>
 					</td>
@@ -172,6 +177,7 @@
 		
 		function change_level_1(objval){
 			$("#std_gb_level_2").empty();
+			$("#std_gb_level_2").append(new Option('请选择',''));
 			$.each(array2,function(n,opt) { 
 				if(opt.val().split("_")[0] == objval.split("_")[1]){
 					$("#std_gb_level_2").append(opt);
@@ -183,6 +189,7 @@
 		}
 		function change_level_2(objval){
 			$("#std_gb_level_3").empty();
+			$("#std_gb_level_3").append(new Option('请选择',''));
 			$.each(array3,function(n,opt) {  
 				if(opt.val().split("_")[0] == objval.split("_")[1]){
 					$("#std_gb_level_3").append(opt);
@@ -194,6 +201,7 @@
 		}
 		function change_level_3(objval){
 			$("#std_gb_level_4").empty();
+			$("#std_gb_level_4").append(new Option('请选择',''));
 			$.each(array4,function(n,opt) {  
 				if(opt.val().split("_")[0] == objval.split("_")[1]){
 					$("#std_gb_level_4").append(opt);
