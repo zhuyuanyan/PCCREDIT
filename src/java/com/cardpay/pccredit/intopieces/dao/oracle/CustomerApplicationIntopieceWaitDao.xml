@@ -83,6 +83,9 @@
 		<if test="chineseName!=null ">
 			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
+		<if test="nextNodeName!=null and nextNodeName!=''">
+			and N.NODE_NAME=#{nextNodeName}
+		</if>
 		
 	</select>
 	
@@ -119,7 +122,9 @@
 		<if test="chineseName!=null ">
 			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
-		
+		<if test="nextNodeName!=null and nextNodeName!=''">
+			and N.NODE_NAME=#{nextNodeName}
+		</if>
 		)
 	</select>
 	
