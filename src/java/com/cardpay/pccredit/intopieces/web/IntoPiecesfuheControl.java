@@ -162,20 +162,20 @@ public class IntoPiecesfuheControl extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "fuhe.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView browse(@ModelAttribute IntoPiecesFilter filter,
+	public AbstractModelAndView browse(@ModelAttribute CustomerApplicationProcessFilter filter,
 			HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		QueryResult<IntoPieces> result=null;
 		String userId = user.getId();
-		filter.setUserId(userId);
-//		result = intoPiecesService.findintoPiecesByFilter(filter);
-//		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
-//				filter, result);
-
+		filter.setLoginId(userId);
+		filter.setIsReceive("NO");
+		filter.setIfRecieved(Constant.recieve_type);
+		filter.setFuheUser(userId);
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView(
 				"/intopieces/intopieces_fuhe", request);
-		mv.addObject(PAGED_RESULT, null);
+		mv.addObject(PAGED_RESULT, pagedResult);
 
 		return mv;
 	}

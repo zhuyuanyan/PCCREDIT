@@ -5,7 +5,7 @@
 		<menu id="030000" name="intopieces" title="进件管理" url="" img="images/icon_sys.gif" operations="">
 		    <menu id="030001" name="intopiecesapprove" title="申请进件" url="/intopieces/intopiecesapprove/approve.page" img="" operations="browse"></menu>
 		    <menu id="030002" name="intopiecesreceive" title="接收进件" url="/intopieces/intopiecesrecieve/recieve.page" img="" operations="browse"></menu>
-			<menu id="030003" name="intopiecessearch" title="查询进件" url="/intopieces/intopiecessearch/search.page" img="" operations="browse"></menu>
+			<menu id="030003" name="intopiecessearch" title="查询进件" url="/intopieces/intopiecessearch/search.page" img="" operations="browse|viewpieces"></menu>
 			<menu id="030004" name="intopiecesluru" title="录入进件" url="/intopieces/intopiecesluru/luru.page" img="" operations="browse"></menu>
 			<menu id="030005" name="intopiecesfuhe" title="复核进件" url="/intopieces/intopiecesfuhe/fuhe.page" img="" operations="browse"></menu>
 			<!-- <menu id="030020" name="applyintopieces" title="申请审批进件" url="/intopieces/applyintopieces/browse.page" img="" operations="create|change|delete|display|browse"></menu> -->

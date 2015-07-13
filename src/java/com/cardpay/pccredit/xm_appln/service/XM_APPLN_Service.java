@@ -77,9 +77,12 @@ import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.modules.privilege.model.User;
+import com.wicresoft.util.spring.Beans;
 
 /**
  * 
@@ -167,7 +170,7 @@ public class XM_APPLN_Service {
 //			customerinfor.setCardType("CST0000000000A");//身份证
 			customerinfor.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());//身份证
 			customerinfor.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());//身份证
-			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("1")?"Male":"Female");
+			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("M")?"Male":"Female");//MODIFIED BY NIHC 20150701
 			customerId = customerInforService.insertCustomerInfor(customerinfor);
 		}else{
 			CustomerInfor customerinfor = customerInforService.findCustomerInforById(customerId);
@@ -178,7 +181,7 @@ public class XM_APPLN_Service {
 //			customerinfor.setCardType("CST0000000000A");//身份证
 			customerinfor.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());//身份证
 			customerinfor.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());//身份证
-			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("1")?"Male":"Female");
+			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("M")?"Male":"Female");//modified by nihc 20150702
 			customerinfor.setModifiedBy(user.getId());
 			customerinfor.setModifiedTime(new Date());
 			customerInforService.updateCustomerInfor(customerinfor);
@@ -224,7 +227,19 @@ public class XM_APPLN_Service {
 			customerinfor.setSex(xM_APPLN_JBZL_FORM.getGender().equals("1")?"Male":"Female");
 			customerId = customerInforService.insertCustomerInfor(customerinfor);
 		}*/
-		
+		/*modified by nihc 20150702 同步更新basic_customer_information begin*/
+		CustomerInfor customerinfor = customerInforService.findCustomerInforById(customerId);
+		customerinfor.setChineseName(xM_APPLN_JBZL_FORM.getSurname());
+		customerinfor.setPinyinenglishName(Cn2Spell.converterToSpell(xM_APPLN_JBZL_FORM.getSurname()));
+		customerinfor.setNationality("NTC00000000156");//中国
+		customerinfor.setTelephone(xM_APPLN_JBZL_FORM.getMo_phone());
+		customerinfor.setCardType(xM_APPLN_JBZL_FORM.getRace_code());//身份证
+		customerinfor.setCardId(xM_APPLN_JBZL_FORM.getCard_id());//身份证
+		customerinfor.setSex(xM_APPLN_JBZL_FORM.getGender().equals("M")?"Male":"Female");//modified by nihc 20150702
+		customerinfor.setModifiedBy(user.getId());
+		customerinfor.setModifiedTime(new Date());
+		customerInforService.updateCustomerInfor(customerinfor);
+		/*modified by nihc 20150702 end*/
 		//CustomerInfor customerinfor = xM_APPLN_JBZL_FORM.createModel(XM_APPLN_JBZL_FORM.class);
 		XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_JBZL_FORM.createXM_APPLN_JCZL(customerId,user.getId());
 		XM_APPLN_KHFW xM_APPLN_KHFW = xM_APPLN_JBZL_FORM.createXM_APPLN_KHFW(customerId,user.getId());
@@ -280,7 +295,10 @@ public class XM_APPLN_Service {
 		
 		XM_APPLN xM_APPLN = xM_APPLN_Dao.findByCustomerId(xM_APPLN_TJINFO.getCustomer_id());
 		xM_APPLN.setMail_to(xM_APPLN_ADDR_FORM.getMail_to());
-		
+		/*added by nihc 20150706 保存家庭电话、公司电话 begin*/
+		XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_ADDR_FORM.createXM_APPLN_JCZL(user.getId());
+		insertOrUpdateXM_APPLN_JCZL(xM_APPLN_JCZL);
+		/*added by nihc 20150706 end */
 		insertOrUpdateXM_APPLN_TJINFO(xM_APPLN_TJINFO);
 		insertOrUpdateXM_APPLN_ADDR(xM_APPLN_ADDR);
 		
@@ -701,7 +719,9 @@ public class XM_APPLN_Service {
 		filter.setDefault_type(Constant.DEFAULT_TYPE);
 		ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
 		customerApplicationInfo.setProductId(productAttribute.getId());
-				
+		//modified by nihc 20150702 begin
+		customerApplicationInfo.setCreatedTime(new Date());
+		//modified by nihc 20150702 end
 		commonDao.insertObject(customerApplicationInfo);
 		
 		

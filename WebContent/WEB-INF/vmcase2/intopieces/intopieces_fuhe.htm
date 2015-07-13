@@ -6,12 +6,12 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">进件查询</div>
+        <div class="title">进件复核</div>
       </div>
       <div class="inquiry">
-       <div class="search_tag">进件查询</div>
+       <div class="search_tag">进件复核</div>
         <div class="search">
-          <form id="queryForm" action="${contextPath}/intopieces/intopiecesfuhe/queryResult.page">
+          <form id="queryForm" action="${contextPath}/intopieces/intopiecesfuhe/queryResult.page" onkeydown="javascript:if(event.keyCode==13) this.submit();">
           <ul>
        		  <li>
                 <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
@@ -63,7 +63,7 @@
               <col width="13%"/>
             </colgroup>
            #foreach ($wait in $result.items)
-            <tr>
+            <tr ondblclick=" javascrip:$('#id_create_button_1').click();">
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.applicationId@$!wait.applyQuota"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>

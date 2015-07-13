@@ -83,9 +83,10 @@
 		<if test="chineseName!=null ">
 			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
-		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
-			and U.card_id is null
+		<if test="nextNodeName!=null and nextNodeName!=''">
+			and N.NODE_NAME=#{nextNodeName}
 		</if>
+		
 	</select>
 	
 	<select id="findCustomerApplicationIntopieceWaitCountForm"
@@ -121,8 +122,8 @@
 		<if test="chineseName!=null ">
 			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
-		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
-			and U.card_id is null
+		<if test="nextNodeName!=null and nextNodeName!=''">
+			and N.NODE_NAME=#{nextNodeName}
 		</if>
 		)
 	</select>
@@ -163,9 +164,7 @@
 		<if test="chineseName!=null ">
 			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
-		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
-			and U.card_id is null
-		</if>
+		
 		<if test="fuheUser!=null and fuheUser!=''">
 			and A.fuhe_user=#{fuheUser}
 		</if>
@@ -205,9 +204,7 @@
 		<if test="chineseName!=null ">
 			<![CDATA[ and U.chinese_name like '%'||#{chineseName}||'%' ]]>
 		</if>
-		<if test="(cardId==null and chineseName==null) or (cardId=='' and chineseName=='')">
-			and U.card_id is null
-		</if>
+		
 		<if test="fuheUser!=null and fuheUser!=''">
 			and A.fuhe_user=#{fuheUser}
 		</if>)

@@ -57,7 +57,17 @@ public class XM_APPLN_JCZL extends BusinessModel {
 	private String cune_cr;
 	private String secur_nbr;
 	private String belong_bank;
+	/*added by nihc 20150706 begin 分机号*/
+	private String extension;
 	
+	
+	public String getExtension() {
+		return extension;
+	}
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+	/*added by nihc 20150706 end 分机号*/
 	public String getBelong_bank() {
 		return belong_bank;
 	}

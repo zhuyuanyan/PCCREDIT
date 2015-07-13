@@ -23,6 +23,7 @@
 		<result property="tele" column="TELE" />
 		<result property="net" column="NET" />
 		<result property="phone" column="PHONE" />
+		<result property="createdBy" column="CREATED_BY" />
 	</resultMap>
 
 	<select id="findByCustomerId" resultMap="ResultMap"
