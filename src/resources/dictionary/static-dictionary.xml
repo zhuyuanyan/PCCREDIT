@@ -478,9 +478,11 @@
 	</dictionary>
 	
 	<dictionary name="CDESPMTD" title="递送方式">
-	    <item name="LT" title="信件寄送" />
-		<item name="EM" title="电子邮件寄送" />
-		<item name="NO" title="不寄送账单" />
+	    <item name="COLL" title="到收件网点领取" />
+		<item name="COUR" title="快递给持卡人" />
+		<item name="HOLD" title="因信用方面原因重新发卡暂不递送" />
+		<item name="OSEA" title="暂不递送-持卡人在境外" />
+		<item name="POST" title="寄往指定地址" />
 	</dictionary>
 	
 	<dictionary name="COURIERF" title="递送费用">
