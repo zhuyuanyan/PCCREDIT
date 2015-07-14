@@ -95,6 +95,7 @@
 				<td class="label">推荐方式</td>
 				<td colspan="3">
 					<select name="intr_recom" style="width:270px">
+						<option  value="">请选择</option>
 						#dict("INTR_RECOM","$!xM_APPLN_TJINFO.intr_recom")
 					</select>
 				</td>
@@ -242,7 +243,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="text" class="text" name="addr2_l2" maxlength="30">
+						<input type="text" class="text" name="addr2_l2"  value="$!xM_APPLN_ADDR.addr2_l2" maxlength="30">
 					</td>
 					<td class="label">境外?</td>
 					<td colspan="3">

@@ -109,6 +109,7 @@ public class LoginController implements JRadConstants {
 			else {
 				IUser user = authResult.getUser();
 				loginManager.login(user, request);
+				request.getSession().setMaxInactiveInterval(300);//added by nihc 20150710 session超时 
 				signInMsg = i18nHelper.getMessage("system.auth.success");
 			}
 

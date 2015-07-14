@@ -63,7 +63,7 @@
               <col width="13%"/>
             </colgroup>
            #foreach ($wait in $result.items)
-            <tr>
+            <tr ondblclick=" javascrip:$('#id_create_button_1').click();">
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.applicationId@$!wait.applyQuota"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
