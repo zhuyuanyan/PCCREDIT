@@ -31,6 +31,16 @@ public class CustomerApplicationProcessFilter extends BusinessFilter {
 	private String chineseName;
 	private String ifRecieved;//是否已接收
 	private String fuheUser;
+	/*added by nihc 节点中文名 */
+	private String nextNodeName;
+	public String getNextNodeName() {
+		return nextNodeName;
+	}
+
+	public void setNextNodeName(String nextNodeName) {
+		this.nextNodeName = nextNodeName;
+	}
+
 	public String getLoginId() {
 		return loginId;
 	}

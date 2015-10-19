@@ -536,4 +536,129 @@ public class IntoPiecesComdao {
 		return commonDao.queryBySqlInPagination(IntoPieces.class,
 				sql.toString(), params, filter.getStart(), filter.getLimit());
 	}
+	
+	/* 查询制卡成功信息 */
+	public QueryResult<IntoPieces> findMakeCardSuccessByFilter(
+			IntoPiecesFilter filter) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		String id = filter.getId();
+		String chineseName = filter.getChineseName();
+		String productName = filter.getProductName();
+		String userId = filter.getUserId();
+		String cardId = filter.getCardId();
+		String status = filter.getStatus();
+		System.out.println("status=" + status);
+		StringBuffer sql = null;
+		sql = new StringBuffer(
+				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.actual_quote,t.status,t.serial_number from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		sql.append(" and b.user_id = '" + userId +"'");
+		if (StringUtils.trimToNull(cardId) != null
+				|| StringUtils.trimToNull(chineseName) != null
+				|| StringUtils.trimToNull(status) != null) {
+			if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) != null
+					&& StringUtils.trimToNull(status) != null) {
+				sql.append(" and (b.card_id like '%" + cardId
+						+ "%' or b.chinese_name like '%" + chineseName + "%' )"
+								+ " and t.status = '" + status +"'");
+			} else if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) == null
+					&& StringUtils.trimToNull(status) == null) {
+				params.put("cardId", cardId);
+				sql.append(" and b.card_id like '%'||#{cardId}||'%' ");
+			} else if (StringUtils.trimToNull(cardId) == null
+					&& StringUtils.trimToNull(chineseName) != null
+					&& StringUtils.trimToNull(status) == null) {
+				params.put("chineseName", chineseName);
+				sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' ");
+			}else if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) != null
+					&& StringUtils.trimToNull(status) == null) {
+				sql.append(" and (b.card_id like '%" + cardId
+						+ "%' or b.chinese_name like '%" + chineseName + "%' )");
+			}else if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) == null
+					&& StringUtils.trimToNull(status) != null) {
+				params.put("cardId", cardId);
+				sql.append(" and b.card_id like '%'||#{cardId}||'%' and t.status = '" + status + "'" );	
+			}
+			else if (StringUtils.trimToNull(cardId) == null
+					&& StringUtils.trimToNull(chineseName) != null
+					&& StringUtils.trimToNull(status) != null) {
+				params.put("chineseName", chineseName);
+				sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' and t.status = '" + status +"'" );	
+			}
+			else if (StringUtils.trimToNull(cardId) == null
+					&& StringUtils.trimToNull(chineseName) == null
+					&& StringUtils.trimToNull(status) != null) {
+				params.put("chineseName", chineseName);
+				sql.append(" and t.status = '" + status + "'");	
+			}
+		}
+		System.out.println("sql=" + sql);
+		return commonDao.queryBySqlInPagination(IntoPieces.class,
+				sql.toString(), params, filter.getStart(), filter.getLimit());
+	}
+	/* 查询制卡成功信息 */
+	public int findMakeCardSuccessByFilterCount(
+			IntoPiecesFilter filter) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		String id = filter.getId();
+		String chineseName = filter.getChineseName();
+		String productName = filter.getProductName();
+		String userId = filter.getUserId();
+		String cardId = filter.getCardId();
+		String status = filter.getStatus();
+		StringBuffer sql = null;
+		sql = new StringBuffer(
+				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.actual_quote,t.status,t.serial_number from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		sql.append(" and b.user_id = '" + userId +"'");
+		if (StringUtils.trimToNull(cardId) != null
+				|| StringUtils.trimToNull(chineseName) != null
+				|| StringUtils.trimToNull(status) != null) {
+			if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) != null
+					&& StringUtils.trimToNull(status) != null) {
+				sql.append(" and (b.card_id like '%" + cardId
+						+ "%' or b.chinese_name like '%" + chineseName + "%' )"
+								+ " and t.status = '" + status +"'");
+			} else if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) == null
+					&& StringUtils.trimToNull(status) == null) {
+				params.put("cardId", cardId);
+				sql.append(" and b.card_id like '%'||#{cardId}||'%' ");
+			} else if (StringUtils.trimToNull(cardId) == null
+					&& StringUtils.trimToNull(chineseName) != null
+					&& StringUtils.trimToNull(status) == null) {
+				params.put("chineseName", chineseName);
+				sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' ");
+			}else if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) != null
+					&& StringUtils.trimToNull(status) == null) {
+				sql.append(" and (b.card_id like '%" + cardId
+						+ "%' or b.chinese_name like '%" + chineseName + "%' )");
+			}else if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) == null
+					&& StringUtils.trimToNull(status) != null) {
+				params.put("cardId", cardId);
+				sql.append(" and b.card_id like '%'||#{cardId}||'%' and t.status = '" + status + "'" );	
+			}
+			else if (StringUtils.trimToNull(cardId) == null
+					&& StringUtils.trimToNull(chineseName) != null
+					&& StringUtils.trimToNull(status) != null) {
+				params.put("chineseName", chineseName);
+				sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' and t.status = '" + status +"'" );	
+			}
+			else if (StringUtils.trimToNull(cardId) == null
+					&& StringUtils.trimToNull(chineseName) == null
+					&& StringUtils.trimToNull(status) != null) {
+				params.put("chineseName", chineseName);
+				sql.append(" and t.status = '" + status + "'");	
+			}
+		}
+
+		sql.append(" order by t.id asc");
+		return commonDao.queryBySql(IntoPieces.class, sql.toString(), params)
+				.size();
+	}
 }

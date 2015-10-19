@@ -90,6 +90,7 @@
 	          var formjson = $($formName).serialize();
 	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	            if (data.success) {
+	               window.top.Dialog.message("修改成功");
 	               navigateTo("${contextPath}/system/nodeaudit/browse.page?recordId=" + data.recordId + "&productId=$!productId&nodeType=$!nodeType");
 	            }
 	          });

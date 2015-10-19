@@ -32,7 +32,6 @@ public class IntelligentReportService {
 	
 	/*客户信息智能报表*/
 	public List<IntelligentCustomerReport> findIntelligentCustomerReport(){
-
 		return intelligentReportDao.findIntelligentCustomerReport();		
 	}
 	
@@ -49,7 +48,7 @@ public class IntelligentReportService {
 		}
 		
 		List<IntelligentAccountReport2> ls = intelligentReportDao.findIntelligentAccountReport(filter);
-		int size = intelligentReportDao.findIntelligentAccountReportCount();
+		int size = intelligentReportDao.findIntelligentAccountReportCount(filter);
 		QueryResult<IntelligentAccountReport2> qs = new QueryResult<IntelligentAccountReport2>(size, ls);
 		return qs;
 	}

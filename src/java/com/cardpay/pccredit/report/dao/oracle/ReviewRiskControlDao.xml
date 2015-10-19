@@ -28,8 +28,10 @@
 		          from wf_status_queue_record wsqr
 		         inner join sys_user usr
 		            on wsqr.examine_user = usr.id
-		         inner join node_audit node_audit
-		            on wsqr.current_status = node_audit.id
+		         inner join wf_status_info wsi
+                on wsqr.current_status = wsi.id
+             inner join node_audit node_audit
+                on wsi.status_code = node_audit.id
 		           and node_audit.type = 'approved'
 		           and node_audit.seq_no in (1, 3)
 		           and node_audit.node_type = 'Product'
@@ -51,8 +53,10 @@
 		               from wf_status_queue_record wsqr
 		              inner join sys_user usr
 		                 on wsqr.examine_user = usr.id
-		              inner join node_audit node_audit
-		                 on wsqr.current_status = node_audit.id
+		              inner join wf_status_info wsi
+                on wsqr.current_status = wsi.id
+             inner join node_audit node_audit
+                on wsi.status_code = node_audit.id
 		                and node_audit.node_type = 'Product'
 		                and node_audit.product_id=#{productId}
 		               left join customer_application_process cap

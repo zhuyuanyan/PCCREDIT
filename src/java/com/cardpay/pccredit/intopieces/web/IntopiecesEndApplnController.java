@@ -131,6 +131,7 @@ public class IntopiecesEndApplnController extends BaseController {
 		String loginId = user.getId();
 		filter.setLoginId(loginId);
 		filter.setIsReceive("NO");
+		filter.setNextNodeName("终审");
 		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceWaitForm(filter);
 		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_wait/intopiecesApprove_end_browse", request);

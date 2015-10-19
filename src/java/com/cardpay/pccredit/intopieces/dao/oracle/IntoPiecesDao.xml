@@ -20,7 +20,7 @@
   </select>
   
     <select id="cardQuery" resultMap="cardQueryResultMap">
-  select s.* from xm_appln_card_return s where approve_id =#{approveId} 
+  select s.* from xm_appln_card_return s where 1=1
   <if test="chineseName!=null ">
 		<![CDATA[ and s.chinese_name like '%'||#{chineseName}||'%' ]]>
   </if>

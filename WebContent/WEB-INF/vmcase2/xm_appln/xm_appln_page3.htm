@@ -95,6 +95,7 @@
 				<td class="label">推荐方式</td>
 				<td colspan="3">
 					<select name="intr_recom" style="width:270px">
+						<option  value="">请选择</option>
 						#dict("INTR_RECOM","$!xM_APPLN_TJINFO.intr_recom")
 					</select>
 				</td>
@@ -102,7 +103,7 @@
 			<tr>					
 				<td class="label">分行建议额度(万)<font color="#ff0000">*</font></td>
 				<td>
-					#if(!$xM_APPLN_DCSC || !$$!xM_APPLN_TJINFO.brnchcrlmt || $$!xM_APPLN_TJINFO.brnchcrlmt=='')
+					#if(!$xM_APPLN_TJINFO || !$$!xM_APPLN_TJINFO.brnchcrlmt || $$!xM_APPLN_TJINFO.brnchcrlmt=='')
 					<input type="text" class="text" name="brnchcrlmt" value="0" maxlength="3">
 					#else
 					<input type="text" class="text" name="brnchcrlmt" value="$!xM_APPLN_TJINFO.brnchcrlmt" maxlength="3">
@@ -242,7 +243,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="text" class="text" name="addr2_l2" maxlength="30">
+						<input type="text" class="text" name="addr2_l2"  value="$!xM_APPLN_ADDR.addr2_l2" maxlength="30">
 					</td>
 					<td class="label">境外?</td>
 					<td colspan="3">
@@ -378,8 +379,9 @@
 	          //判断是否填写家庭地址
 	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	            if (data.success) {
-	            	Dialog.message("保存成功!");
-	            	window.location.reload();
+	            	window.top.Dialog.message("保存成功!");
+	            	var url = "${contextPath}/xm_appln/xm_appln_page3.page?id=${customerId}";
+	            	window.location.href = url;
 	            }
 	          });
 	        }

@@ -4,7 +4,7 @@
   <div class="content_main">
     <div class="contentinner">
       	<div class="place">
-      		<div class="title">审批进件</div>
+      		<div class="title">终审进件</div>
       	</div>
  
         <div id="topDiv" >
@@ -32,7 +32,7 @@
             <td><input type="text"  value="$!ci.chineseName" disabled="disabled"  ></td>
             <td><label>证件类型</label></td>
             <td>
-           <select   isabled="disabled">
+           <select   disabled="disabled">
                #dict("RACE_CODE",$!{ci.cardType})
                </select>
             </tr>
@@ -40,7 +40,7 @@
             <tr >
             <td><label>证件号码</label></td>
             <td>
-            <input type="text"  value="$!ci.cardId"   isabled="disabled">
+            <input type="text"  value="$!ci.cardId"   disabled="disabled">
             </td>
             <td><label>地址</label></td>
             <td>
@@ -134,7 +134,7 @@
          	<input id="display_maintain_button" type="button" value="进件查看" class="current" onclick="maintains();"  />
          #end -->
          <input id="id_change_button" type="button" value="进件查看" class="current" />
-        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.cancel')" class="current" />
       </div>  
 
     </div>
@@ -155,12 +155,15 @@ $(document).ready(function() {
 			var blacklist = $("#blacklist").val();
 			var risklist = $("#risklist").val();
 			if((blacklist=='-1'&&risklist=='-1')||(blacklist!='-1'&&risklist!='-1')){
-				Dialog.message("请选择进入黑名单或者风险名单!");
+				Dialog.message("请选择进入黑名单或者风险名单（二选一）!");
 				return ;
 			}
 		}else if($("#applicationStatus").val()=='0'){
 			Dialog.message("请选择审批结果!");
 			return;
+		}else if($("#applicationStatus").val()=='APPROVE' && $("#examineAmount").val()==''){
+			Dialog.message("请填写审核金额!");
+			return ;
 		}
 		
 		
@@ -180,6 +183,7 @@ $(document).ready(function() {
           var formjson = $($formName).serialize();
           $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
             if (data.success) {
+            	window.top.Dialog.message("提交成功");
             	window.location.href=contextPath+"/intopieces/applyintopieceend/browse.page";
             }
           });
@@ -195,6 +199,10 @@ function maintains(){
 	 $("#display_intopieces_form").submit();
 }
 
+
+ 
+</script>
+<script type="text/javascript">
 /*
 * 改变筛选表
 */
@@ -228,6 +236,5 @@ function maintains(){
 		Dialog.table(url, "查询", "get", null, 800, 240);
 		
 	}
- 
 </script>
 </html>

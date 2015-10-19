@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.CustomerZXQueryDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.ZXQueryForOrg">
+		<result property="rowIndex" column="row_index" />
+		<result property="orgName" column="name" />
+		<result property="count" column="count" />
+	</resultMap>
+	<select id="getZXQueryforOrg" resultMap="ResultMap"
+		parameterType="com.cardpay.pccredit.report.filter.ZXQueryFilter">
+			select a.*,so.name as name, rownum row_index 
+			from (select  zq.org_id as orgid,
+              count(zq.org_id) as count
+       		from zx_query_record zq
+       		where zq.create_datetime between #{basicDate} and #{reportDate}
+         	group by zq.org_id
+            ) a
+            left join sys_organization so
+            on a.orgid = so.id
+             <if test="orgId!=null and orgId!=''">
+             	where a.orgid = #{orgId}
+             </if>
+	</select>
+	<select id="getzxqueryrecordformgr" resultMap="ResultMap"
+		parameterType="com.cardpay.pccredit.report.filter.ZXQueryFilter">
+			select  a.*,su.display_name as name, rownum row_index 
+			from (select  zq.user_id as userid,
+              count(zq.org_id) as count
+       		from zx_query_record zq
+            where zq.create_datetime between #{basicDate} and #{reportDate}
+            <if test="orgId!=null and orgId!=''">
+            	and  zq.org_id = #{orgId}
+            </if>
+         	group by zq.user_id
+         	) a
+         	left join Sys_User su
+         	on a.userid = su.login
+	</select>
+</mapper>

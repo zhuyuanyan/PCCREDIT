@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="fixed">
-		<h1>客户维护信息</h1>
+		<h1>申请信息</h1>
 		<div class="buttons"><!--按钮组放置区域-->
 		#if( $type=='read')
 		<input type="button" value="返回" class="button" onclick="javascript:history.back();"/>
@@ -38,7 +38,7 @@
 	<div class="TabContent" id="Content1">
 		<!--*************************************主卡*****************************************-->
 		<div class="tabContent selectTab" id="tabContent2">			
-			<iframe id="tabContent2_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page1_update.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+			<iframe id="tabContent2_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page1_update.page?id=${customerId}&appId=${appId}" marginheight="0" marginwidth="0" height="420px"></iframe>
 		</div>
 		<div class="tabContent" id="tabContent0">			
 			<iframe id="tabContent0_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page2.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
@@ -47,7 +47,7 @@
 			<iframe id="tabContent1_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page3.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
 		</div>
 		<div class="tabContent" id="tabContent4">
-			<iframe id="tabContent4_frame" frameborder="0" width="100%;" src="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+			<iframe id="tabContent4_frame" frameborder="0" width="100%;" src="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}&type=${type}" marginheight="0" marginwidth="0" height="420px"></iframe>
 		</div>
 		<div class="tabContent" id="tabContent5">
 			<iframe id="tabContent5_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page5.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>

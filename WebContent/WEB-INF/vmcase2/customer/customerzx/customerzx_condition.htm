@@ -37,26 +37,23 @@
                   	</select>
                   </span>
               </li>
+              
               <li class="rhzx_li">
                 <span>查询类型：
-                	<select id="QueryType" name="QueryType">
+                	<select id="QueryType" name="QueryType" hidden="true">
 	                   #dict("QueryType",$null)
                   	</select>
-                  </span>
-              </li>
-              <li class="rhzx_li">
-                <span>查询类型：
                 	<select id="Vertype" name="Vertype">
 	                   #dict("Vertype",$null)
                   	</select>
                   </span>
               </li>
             </ul>
-            <ul><li class="rhzx_li">
+            <!--<ul><li class="rhzx_li">
                 <span>机构号：
                 <input type="text" name="orgId" id="orgId" value="" /></span>
               </li>
-             </ul>
+             </ul>  -->
             </div>
             <div style="clear:both;">
             	<input type="button" id="id_browse_button"  value="查询" class="search_button_inquiry"  onclick="check()"
@@ -77,13 +74,13 @@
 	
 	
 	function check(){
-		var orgId = $("#orgId").val();
-		if(orgId==''){
-			Dialog.message("请输入机构号");
-			return;
-		}else{
+		//var orgId = $("#orgId").val();
+		//if(orgId==''){
+		//	Dialog.message("请输入机构号");
+		//	return;
+		//}else{
 			$("#submitForm").submit();
-		}
+		//}
 	}
 </script>
    <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>

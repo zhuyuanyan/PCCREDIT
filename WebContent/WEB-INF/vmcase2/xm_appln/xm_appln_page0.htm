@@ -165,7 +165,7 @@
 	   	         $($formName).attr("action",contextPath+"/xm_appln/xm_appln_page0_update.json")
 	   	          $.post($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 	   	            if (data.success) {
-	   	            	Dialog.message("保存成功!");
+	   	            	window.top.Dialog.message("保存成功!");
 	   	            	window.location.href= contextPath + "/xm_appln/browse.page" ;
 	   	            }
 	   	          });
@@ -228,6 +228,16 @@
 	
 	function checkCardId(){
 		document.getElementById("checkIds").style.display='block';
+		if ($($formName).valid()) {
+ 	          var formjson = $($formName).serialize();
+ 	         //$($formName).attr("action",contextPath+"/xm_appln/xm_appln_page0_update.json")
+ 	          $.post(contextPath+"/customer/customerIdCheck/checkPivi.json", formjson, function(data, textStatus, jqXhr) {
+ 	            if (data.success) {
+ 	            	window.top.Dialog.message(data.checkresult);
+ 	            	
+ 	            }
+ 	          });
+ 	        }
 	}
 	function checkCard1(){
 		var card_id = $("#card_id").val();

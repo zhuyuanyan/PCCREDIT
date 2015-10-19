@@ -88,8 +88,8 @@
 	        </form>
         </div>
         <div class="submit">
-	       <input id="id_save_button" type="button" value="提交" class="current" />
-	       <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+	       <input id="id_save_button" type="button" href="javascript:void(0);" value="提交" class="current" />
+	       <!--<input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />  -->
         </div>  
     </div>
   </div>
@@ -100,7 +100,7 @@
 	#set ($formName = "'#id_module_form'")
 	#validator($formName)
 	$(document).ready(function() {	
-		#parse("common/part_create.js")
+		#parse("common/part_create.js");
 	});
 /*
 * 改变筛选表

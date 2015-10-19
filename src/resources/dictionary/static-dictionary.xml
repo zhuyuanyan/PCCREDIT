@@ -478,9 +478,11 @@
 	</dictionary>
 	
 	<dictionary name="CDESPMTD" title="递送方式">
-	    <item name="LT" title="信件寄送" />
-		<item name="EM" title="电子邮件寄送" />
-		<item name="NO" title="不寄送账单" />
+	    <item name="COLL" title="到收件网点领取" />
+		<item name="COUR" title="快递给持卡人" />
+		<item name="HOLD" title="因信用方面原因重新发卡暂不递送" />
+		<item name="OSEA" title="暂不递送-持卡人在境外" />
+		<item name="POST" title="寄往指定地址" />
 	</dictionary>
 	
 	<dictionary name="COURIERF" title="递送费用">
@@ -595,7 +597,38 @@
 	</dictionary>
 	
 	<dictionary name="INTR_RECOM" title="推荐方式">
-	    <item name="未设置" title="" />
+	    <item name="01" title="均未核实"/>
+		<item name="11" title="确认工作"/>
+		<item name="12" title="亲见申请人"/>
+		<item name="13" title="确认申请人家庭状况"/>
+		<item name="14" title="亲见身份证原件"/>
+		<item name="15" title="亲见申请人签名"/>
+		<item name="21" title="亲见申请人、确认工作"/>
+		<item name="22" title="确认申请人家庭状况、确认工作"/>
+		<item name="23" title="确认申请人家庭状况、亲见申请人"/>
+		<item name="24" title="亲见身份证原件、确认工作"/>
+		<item name="25" title="亲见身份证原件、亲见申请人"/>
+		<item name="26" title="亲见身份证原件、确认申请人家庭状况"/>
+		<item name="27" title="亲见申请人签名、确认工作"/>
+		<item name="28" title="亲见申请人签名、亲见申请人"/>
+		<item name="29" title="亲见申请人签名、亲见身份证原件"/>
+		<item name="210" title="亲见申请人签名、确认申请人家庭状况"/>
+		<item name="31" title="确认申请人家庭状况、亲见申请人、确认工作"/>
+		<item name="32" title="亲见身份证原件、亲见申请人、确认工作"/>
+		<item name="33" title="亲见身份证原件、确认申请人家庭状况、确认工作"/>
+		<item name="34" title="亲见身份证原件、确认申请人家庭状况、亲见申请人"/>
+		<item name="35" title="亲见申请人签名、亲见申请人、确认工作"/>
+		<item name="36" title="亲见申请人签名、确认申请人家庭状况、确认工作"/>
+		<item name="37" title="亲见申请人签名、确认申请人家庭状况、亲见申请人"/>
+		<item name="38" title="亲见申请人签名、亲见身份证原件、确认工作"/>
+		<item name="39" title="亲见申请人签名、亲见身份证原件、亲见申请人"/>
+		<item name="310" title="亲见申请人签名、亲见身份证原件、确认申请人家庭状况"/>
+		<item name="41" title="亲见身份证原件、确认申请人家庭状况、亲见申请人、确认工作"/>
+		<item name="42" title="亲见申请人签名、确认申请人家庭状况、亲见申请人、确认工作"/>
+		<item name="43" title="亲见申请人签名、亲见身份证原件、亲见申请人、确认工作"/>
+		<item name="44" title="亲见申请人签名、亲见身份证原件、确认申请人家庭状况、确认工作"/>
+		<item name="45" title="亲见申请人签名、亲见身份证原件、确认申请人家庭状况、亲见申请人"/>
+		<item name="51" title="全部核实"/>
 	</dictionary>
 	
 	<dictionary name="BELONG_BANK" title="所属支行">
@@ -660,6 +693,27 @@
 		<item name="有限责任公司－国有独资责任公司" title="有限责任公司－国有独资责任公司" />
 		<item name="有限责任公司－其他有限责任公司" title="有限责任公司－其他有限责任公司" />
 	    
+	</dictionary>
+	<dictionary name="ApplyIntopiecesType" title="进件类型">
+		<item name="散件" title="散件" />
+		<item name="专案" title="专案" />
+		<item name="商圈" title="商圈" />
+		<item name="团办" title="团办" />
+	</dictionary>
+	
+	<dictionary name="IdCheckQueryType" title="身份核查业务类型">
+		<item name="01" title="银行账户业务" />
+		<item name="02" title="信贷及征信业务" />
+		<item name="03" title="支付结算业务" />
+		<item name="04" title="反洗钱业务" />
+		<item name="05" title="其他业务" />
+	</dictionary>
+	
+	<dictionary name="IdCheckQueryTrait" title="身份核查业务特征">
+		<item name="01" title="一次性业务" />
+		<item name="02" title="新开户" />
+		<item name="03" title="跨境" />
+		<item name="04" title="其它" />
 	</dictionary>
 	<!-- xm_appln 数据字典结束 -->
 </dictionaries>

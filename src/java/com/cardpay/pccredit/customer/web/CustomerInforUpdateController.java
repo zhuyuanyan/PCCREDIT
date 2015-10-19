@@ -869,12 +869,14 @@ public class CustomerInforUpdateController extends BaseController {
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView create_sxpg(HttpServletRequest request) { 
 		String customerId = request.getParameter("id");
+		String type = request.getParameter("type");
 		CustomerInfor customer = customerInforService.findCustomerInforById(customerId);
 		CustomerCreditEvaluation customerCreidtEvaluation = customerCreditEvaluationService.findCustomerCreidtEvaluationByCustomerId(customerId);
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInforUpdate/customerinfoupdate_sxpg", request);
 		mv.addObject("customerId", customerId);
 		mv.addObject("customer", customer);
 		mv.addObject("customerCreidtEvaluation", customerCreidtEvaluation);
+		mv.addObject("type", type);
 		return mv;
 	}
 	
@@ -1485,7 +1487,7 @@ public class CustomerInforUpdateController extends BaseController {
 				return WebRequestHelper.processException(e);
 			}
 		}
-
+		returnMap.put("message", "修改成功");
 		return returnMap;
 	}
 
