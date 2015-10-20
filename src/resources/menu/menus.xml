@@ -3,7 +3,7 @@
 	<menu id="000000" name="" title="所有资源" url="" img="" operations="" >
 		<menu id="010000" name="home" title="系统首页" url="/home.page" img="images/icon_4.png" operations=""/>
 		<menu id="030000" name="intopieces" title="进件管理" url="" img="images/icon_sys.gif" operations="">
-		    <menu id="030001" name="intopiecesapprove" title="申请进件" url="/intopieces/intopiecesapprove/approve.page" img="" operations="browse"></menu>
+		    <menu id="030001" name="intopiecesapprove" title="申请进件" url="/intopieces/intopiecesapprove/browseProduct.page" img="" operations="browse"></menu>
 		    <menu id="030002" name="intopiecesreceive" title="接收进件" url="/intopieces/intopiecesrecieve/recieve.page" img="" operations="browse"></menu>
 			<menu id="030003" name="intopiecessearch" title="查询进件" url="/intopieces/intopiecessearch/search.page" img="" operations="browse|viewpieces"></menu>
 			<menu id="030004" name="intopiecesluru" title="录入进件" url="/intopieces/intopiecesluru/luru.page" img="" operations="browse"></menu>

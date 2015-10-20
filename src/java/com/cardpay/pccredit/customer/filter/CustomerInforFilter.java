@@ -37,6 +37,15 @@ public class CustomerInforFilter extends BaseQueryFilter{
 	private String userId;
 	private int userType;//用户类型 1表示客户经理
 	
+	private String productId;//产品id
+	
+	
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 	public String getUserId() {
 		return userId;
 	}
