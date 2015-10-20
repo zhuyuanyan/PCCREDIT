@@ -699,7 +699,11 @@ public class XM_APPLN_Service {
 	 * 提交申请，开始流程
 	 * @param customer_id
 	 */
-	public void saveApply(String customer_id, String intopiecesType){
+	public void saveApply(String customer_id,
+						  String intopiecesType,
+						  String ApplyIntopiecesSpareType,
+						  String custType,
+						  String applyQuota){
 		//设置申请
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
 		//customerApplicationInfo.setStatus(status);
@@ -713,6 +717,7 @@ public class XM_APPLN_Service {
 		if(customerApplicationInfo.getApplyQuota()!=null){
 			customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
 		}
+		
 		customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
 		//查找默认产品
 		ProductFilter filter = new ProductFilter();
@@ -722,6 +727,13 @@ public class XM_APPLN_Service {
 		//modified by nihc 20150702 begin
 		customerApplicationInfo.setCreatedTime(new Date());
 		//modified by nihc 20150702 end
+		
+		//modified by songchen 20151019 begin
+		customerApplicationInfo.setIntopiecesSpareType(ApplyIntopiecesSpareType);
+		customerApplicationInfo.setCustType(custType);
+		customerApplicationInfo.setApplyQuota(applyQuota);
+		//modified by songchen 20151019 end
+		
 		commonDao.insertObject(customerApplicationInfo);
 		
 		

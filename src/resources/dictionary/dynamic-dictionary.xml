@@ -355,6 +355,15 @@ AND A.IS_DELETED = '0'
 		Dict_Type = '客户资质'
 	</dictionary>
 	
+	<dictionary name="CUST_TYPE_LIST" title="客户类型" timeout="10000">
+		select
+		Type_code as name,Type_name as title
+		from Dict
+		where 1=1
+		and
+		Dict_Type = '客户类型'
+	</dictionary>
+	
 	<dictionary name="KHJLPGNFLB" title="客户评估年份" timeout="10000">
 		select distinct to_char(data_year) as name,to_char(data_year)||'年' as title
     	from manager_assessment_score

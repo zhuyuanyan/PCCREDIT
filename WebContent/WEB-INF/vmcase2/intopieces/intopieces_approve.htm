@@ -10,6 +10,7 @@
         <div class="search_tag">#i18n("label.browse.filter")</div>
         <div class="search">
           <form id="submitForm" onkeydown="javascript:if(event.keyCode==13) $('#id_browse_button').click();">
+          <input type="hidden" name="productId" id="productId" value="$!result.filter.productId" />
             <ul>
               <li>
                 <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
@@ -32,14 +33,14 @@
               <col width="20%" />
               <col width="20%" />
               <col width="25%" />
-              <col width="30%" />
+              <!-- <col width="30%" /> -->
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">中文姓名</th>
               <th nowrap="nowrap">证件类型</th>
               <th nowrap="nowrap">证件号码</th>
-              <th nowrap="nowrap">状态</th>
+              <!-- <th nowrap="nowrap">状态</th> -->
             </tr>
           </table>
         </div>
@@ -50,7 +51,7 @@
               <col width="20%" />
               <col width="20%" />
               <col width="25%" />
-              <col width="30%" />
+             <!--  <col width="30%" /> -->
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
@@ -59,7 +60,7 @@
               <td nowrap="nowrap">$!customer.chineseName</td>
               <td nowrap="nowrap">#dictVal("RACE_CODE",$!customer.cardType)</td>
               <td nowrap="nowrap">$!customer.cardId</td>
-              <td nowrap="nowrap">$!customer.processId</td>
+            <!--   <td nowrap="nowrap">$!customer.processId</td> -->
             </tr>
             #end
           </table>
@@ -69,6 +70,7 @@
         <div class="controlbtn">
 			 #btnpriv("browse")<a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="申请">申请</a>#end 
 			<a id="id_edit_button" class="btn_g" href="javascript:void(0);" title="修改">修改</a>
+			<a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -78,9 +80,24 @@
    <div id="inputApplyInpDialog" title="选择客户进件方式" style="display: none; resize: none; z-index: 2000">
       <form id="inputApplyForm">
         <div class="forms">
-        	客户进件方式:<select id="intopiecesType" name="intopiecesType">
-                    #dict("ApplyIntopiecesType", $!intopiecesType)
-                  </select><br>
+        <table style="text-align:left">
+        	<tr>
+	            <td><label>进件类型:</label></td>
+	        	<td width="20%"><select id="intopiecesType" name="intopiecesType">#dict("ApplyIntopiecesType", $!intopiecesType)</select></td>
+ 	            <td><label>散件类型:</label></td>
+ 	            <td width="40%"><select id="ApplyIntopiecesSpareType" name="ApplyIntopiecesSpareType">#dict("ApplyIntopiecesSpareType", $!intopiecesSpareType)</select></td>
+           </tr>
+            
+            <tr>
+	            <td><label>客户类型 :</label></td>
+	            <td width="20%"><select id="custType" name="custType">#dict("custType", $!custType)</select></td>
+            </tr>
+            
+            <tr>
+	            <td><label>申请额度：</label></td>
+	            <td width="20%"><input type="text" id="applyQuota" name="applyQuota"  /></td>	 
+            </tr>
+         </table>
         </div>
       </form>
   </div>
@@ -99,7 +116,7 @@
 		opsObj.displayUrl = "${contextPath}/customer/basiccustomerinfor/displayclone.page?applicationId = '1000'";
 		opsObj.changeUrl = "${modulePath}/change.page";
 		opsObj.deleteUrl = "${modulePath}/delete.json";
-		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.browseUrl = "${modulePath}/browseCustomer.page";
 		opsObj.exportUrl = "${modulePath}/export.page";
 		
 			$("#id_apply_button").click(function() {
@@ -108,9 +125,17 @@
 				  if(rowId!=null){
 	      		  	Dialog.form("#inputApplyForm", "进件方式", function(){
 	      				var intopiecesType = window.top.$("#intopiecesType").val();
+	      				var applyQuota = window.top.$("#applyQuota").val();
+	      				var custType = window.top.$("#custType").val();
+	      				var ApplyIntopiecesSpareType = window.top.$("#ApplyIntopiecesSpareType").val();
+	      				//资格检查
+	      				//风险名单检测
 	      				$.post("${modulePath}xm_appln_page0_apply.json", {
 	      				  	id: rowId,
-	      				  	intopiecesType:intopiecesType
+	      				  	intopiecesType:intopiecesType,
+	      				    applyQuota:applyQuota,
+	      				    ApplyIntopiecesSpareType:ApplyIntopiecesSpareType,
+	      				    custType:custType
 	                  	},
 	                  	function(data, textStatus, jqXhr) {
 	                      if (data.success) {
@@ -122,7 +147,7 @@
 	                      }
 	                  });
 	      			window.top.$("#form_diaog").dialog("close");
-	      		}, null, 400, 200);
+	      		}, null, 500, 300);
 	          } else {
 	              Dialog.message("请选择要申请的客户!");
 	          }
