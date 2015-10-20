@@ -24,6 +24,10 @@ import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.dictionary.DictionaryManager;
+import com.wicresoft.jrad.modules.dictionary.model.Dictionary;
+import com.wicresoft.jrad.modules.dictionary.model.DictionaryItem;
+import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
 
@@ -77,8 +81,11 @@ public class AccountManagerParameterController extends BaseController {
 	@RequestMapping(value = "create.page")
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView create(HttpServletRequest request) {
-
+		DictionaryManager dictMgr = Beans.get(DictionaryManager.class);
 		JRadModelAndView mv = new JRadModelAndView("manager/account_manager/manager_create", request);
+		Dictionary customerTypeDictionary = dictMgr.getDictionaryByName("CUST_TYPE_LIST");
+		List<DictionaryItem> customerTypeDictItems = customerTypeDictionary.getItems();
+		mv.addObject("customerTypeDictItems",customerTypeDictItems);
 
 		return mv;
 	}
@@ -217,10 +224,32 @@ public class AccountManagerParameterController extends BaseController {
 				mv.addObject("displayName", displayName);
 			}
 		}
+		
+		
+		DictionaryManager dictMgr = Beans.get(DictionaryManager.class);
+		Dictionary customerTypeDictionary = dictMgr.getDictionaryByName("CUST_TYPE_LIST");
+		List<DictionaryItem> customerTypeDictItems = customerTypeDictionary.getItems();
+		mv.addObject("customerTypeDictItems",customerTypeDictItems);
 
 		if (StringUtils.isNotEmpty(managerId)) {
 			AccountManagerParameter accountManagerParameter = accountManagerParameterService.findAccountManagerParameterById(managerId);
 			mv.addObject("accountManagerParameter", accountManagerParameter);
+			//客戶類型value
+			String[] custTypeArray = accountManagerParameter.getCustTypeList().split(",");
+			//客戶類型key
+			String  customerTypeCode ="";
+			for(int i =0;i<custTypeArray.length;i++){
+				for (DictionaryItem dictItem : customerTypeDictItems) {
+					if (dictItem.getTitle().equals(custTypeArray[i])) {
+						customerTypeCode += dictItem.getName()+ ",";
+					}
+				}
+			}
+			if(customerTypeCode !=""){
+				customerTypeCode =	customerTypeCode.substring(0, customerTypeCode.length() - 1);
+			}
+			mv.addObject("customerTypeCode", customerTypeCode);
+			
 		}
 		return mv;
 	}
