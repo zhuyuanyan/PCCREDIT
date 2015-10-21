@@ -1,0 +1,52 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+<div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">商圈信息</div>
+      </div>
+		<form id="id_module_form">
+			<div class="forms" id="formsId">
+			<input type="hidden" name="sqId" value="$!xmNewSq.id">
+			<!--*************************************************************专案信息*************************************************************-->
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>商圈信息</caption>
+					<colgroup>
+						<col width="15%">
+						<col width="35%">
+						<col width="15%">
+						<col width="35%">
+					</colgroup>
+					<tr>
+						<td class="table-label">客户类型：<font color="#ff0000">*</font></td>
+						<td><input class="rinpsty" type="text" id="customerType" name="customerType" value="$!xmNewSq.customerType" title=""  readonly="readonly"/></td>
+						<td class="table-label">客户经理级别：<font color="#ff0000">*</font></td>
+						<td><input class="rinpsty" type="text" id="customerLevel" name="customerLevel" value="$!xmNewSq.customerLevel" title=""  readonly="readonly"/></td>		
+					</tr>
+					<tr>
+						<td class="table-label">最高额度：<font color="#ff0000">*</font></td>
+						<td><input type="text" name="ed" value="$!xmNewSq.ed" readonly/></td>	
+					</tr>
+				</table>	
+			</div>
+			<div class="submit">
+		        <input type="button" value="返回" class="current" onclick="javascript:history.back();"/>
+	      	</div>
+		</form>	
+	</div>
+  </div>
+
+	<script type="text/javascript">			
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	
+	#set ($formName = "'#id_module_form'")
+	#parse ("product/za_validation.js")
+	
+	$(document).ready(function() {	
+		
+	});
+	</script>	
+</body>
+</html>
+

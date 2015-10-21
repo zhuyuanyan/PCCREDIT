@@ -1,0 +1,177 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+<div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">商圈信息</div>
+      </div>
+		<form id="id_module_form">
+			<div class="forms" id="formsId">
+			<input type="hidden" name="sqId" value="$!xmNewSq.id">
+			<!--*************************************************************专案信息*************************************************************-->
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>商圈信息</caption>
+					<colgroup>
+						<col width="15%">
+						<col width="35%">
+						<col width="15%">
+						<col width="35%">
+					</colgroup>
+					<tr>
+						<td class="table-label">客户类型：<font color="#ff0000">*</font></td>
+						<td><input class="rinpsty" type="text" id="customerType" name="customerType" value="$!xmNewSq.customerType" title="" onclick="selectCustomerType(this)" readonly="readonly"/> <input type="hidden" id="customerTypeCode" name="customerTypeCode" value="$!xmNewSq.customerTypeCode" /></td>
+						<td class="table-label">客户经理级别：<font color="#ff0000">*</font></td>
+						<td><input class="rinpsty" type="text" id="customerLevel" name="customerLevel" value="$!xmNewSq.customerLevel" title="" onclick="selectCustomerLevel(this)" readonly="readonly"/> <input type="hidden" id="customerLevelCode" name="customerLevelCode" value="$!xmNewSq.customerLevelCode" /></td>		
+					</tr>
+					<tr>
+						<td class="table-label">最高额度：<font color="#ff0000">*</font></td>
+						<td><input type="text" name="ed" value="$!xmNewSq.ed"/></td>	
+					</tr>
+				</table>	
+			</div>
+			<div class="submit">
+		      	<input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+		        <input type="button" value="返回" class="current" onclick="javascript:history.back();"/>
+	      	</div>
+		</form>	
+	</div>
+  </div>
+  <div id="customerTypeDialog" title="选择客户类型" style="display: none; resize: none; z-index: 2000">
+      <form id="customerTypeForm">
+        <div class="forms">
+          <table id="customerTypetable" style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+			<colgroup>
+			   
+				<col width="20%" />
+				<col width="60%" />
+				<col width="20%" />
+			
+			</colgroup>
+		    #foreach($customerType in $!customerTypeDictItems)
+		    <tr>
+		    <td>&nbsp;</td>
+              <td><input type="checkbox" name="customerType" value="${customerType.name}_${customerType.title}"/>${customerType.title}</td>
+              <td>&nbsp;</td>
+              </tr>
+              #end
+			</table>
+        </div>
+      </form>
+  </div>
+    <div id="customerTypeDialog" title="选择客户经理级别" style="display: none; resize: none; z-index: 2000">
+      <form id="customerLevelForm">
+        <div class="forms">
+          <table id="customerLeveltable" style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+			<colgroup>
+			   
+				<col width="20%" />
+				<col width="60%" />
+				<col width="20%" />
+			
+			</colgroup>
+		    #foreach($customerLevel in $!customerLevelDictItems)
+		    <tr>
+		    <td>&nbsp;</td>
+              <td><input type="checkbox" name="customerLevel" value="${customerLevel.name}_${customerLevel.title}"/>${customerLevel.title}</td>
+              <td>&nbsp;</td>
+              </tr>
+              #end
+			</table>
+        </div>
+      </form>
+  </div>
+	<script type="text/javascript">			
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	
+	#set ($formName = "'#id_module_form'")
+	#parse ("product/za_validation.js")
+	
+	$(document).ready(function() {	
+		//保存
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+				var url = "${contextPath}/product/zainformation/pass.json";
+				$.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							window.location.href = "${contextPath}/product/zainformation/approveBrowse.page";
+						}
+						else{
+							topWin.Dialog.message("保存失败！");
+					    }
+						submitFlag = 0;
+					}
+				});
+			}else{
+				submitFlag = 0;
+			}
+		});
+		
+		$("#id_back_button").click(function() {
+			var url = "${contextPath}/intopieces/intopiecesapprove/approve.page";
+            parent.location.href = url;
+		})
+		
+	});
+	function selectCustomerType(obj){
+		
+	     Dialog.formPosition("#customerTypeForm", "选择客户类型", function(){
+				var customerType = "";
+				var customerTypeCode = "";
+				window.top.$("#customerTypetable input[name='customerType']:checkbox").each(function(){
+					if ($(this).attr("checked")){
+		    			var arrs =  $(this).val().split("_");
+		    			customerTypeCode += arrs[0] + ","; 
+		    			customerType += arrs[1] + ",";
+		    		}
+				});
+				if(customerTypeCode.length > 0){
+					customerType = customerType.substring(0, customerType.length - 1);
+					customerTypeCode = customerTypeCode.substring(0, customerTypeCode.length - 1);
+				}
+				$(obj).val(customerType);
+				$(obj).attr("title",customerType)
+				$(obj).next().val(customerTypeCode);
+				return true;
+			}, null, 400, 140, 450,300);
+
+		}
+		
+	function selectCustomerLevel(obj){
+		
+	    Dialog.formPosition("#customerLevelForm", "选择客户经理级别", function(){
+				var customerLevel = "";
+				var customerLevelCode = "";
+				window.top.$("#customerLeveltable input[name='customerLevel']:checkbox").each(function(){
+					if ($(this).attr("checked")){
+		    			var arrs =  $(this).val().split("_");
+		    			customerLevelCode += arrs[0] + ","; 
+		    			customerLevel += arrs[1] + ",";
+		    		}
+				});
+				if(customerLevelCode.length > 0){
+					customerLevel = customerLevel.substring(0, customerLevel.length - 1);
+					customerLevelCode = customerLevelCode.substring(0, customerLevelCode.length - 1);
+				}
+				$(obj).val(customerLevel);
+				$(obj).attr("title",customerLevel)
+				$(obj).next().val(customerLevelCode);
+				return true;
+			}, null, 400, 140, 450,300);
+
+		}
+	</script>	
+</body>
+</html>
+
