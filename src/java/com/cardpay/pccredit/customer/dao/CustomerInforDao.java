@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
@@ -188,4 +189,8 @@ public interface CustomerInforDao {
 	public void deleteCloneDimensionalModelCredit(@Param("customerId") String customerId, @Param("applicationId") String applicationId);
 	
 	public void deleteCloneCustomerVideoAccessories(@Param("customerId") String customerId, @Param("applicationId") String applicationId);
+	
+	public List<CustomerInfor> findCustomerInforByFilterAndProductId(CustomerInforFilter filter);
+	
+	public int  findCustomerInforCountByFilterAndProductId(CustomerInforFilter filter);
 }

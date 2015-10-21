@@ -37,6 +37,14 @@
               <td><label for="basePay">底薪:</label></td>
               <td><input class="rinpsty" type="text" id="basePay" name="basePay" value=""  /></td>
             </tr>
+            
+             <tr>
+              <td><label for="applyQuato">可申请额度:</label></td>
+              <td><input class="rinpsty" type="text" id="applyQuatoLimit" name="applyQuatoLimit" value=""/></td>
+              <td><label for="custType">客户类型:</label></td>
+              <td><input class="rinpsty" type="text" id="custTypeList" name="custTypeList" value="" title=""  readonly="readonly" onclick="selectCustomerType(this)"/> 
+                  <input type="hidden" id="customerTypeCode" name="customerTypeCode" value="" /></td>
+             </tr>
           </table>
         
         </div>
@@ -47,14 +55,108 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript">
-	var layout=new FormsLayout("formsId");	
-	window.top.currentWindow.setLayout(layout);
-	#set ($formName = "'#id_module_form'")
-	#validator($formName)
-	$(document).ready(function() {	
-		#parse("common/part_create.js")
-	});
+  
+     <div id="customerTypeDialog" title="选择客户类型" style="display: none; resize: none; z-index: 2000">
+      <form id="customerTypeForm">
+        <div class="forms">
+          <table id="customerTypetable" style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
+			<colgroup>
+			   
+				<col width="20%" />
+				<col width="60%" />
+				<col width="20%" />
+			
+			</colgroup>
+		    #foreach($customerType in $!customerTypeDictItems)
+		    <tr>
+		    <td>&nbsp;</td>
+              <td><input type="checkbox" name="customerType" value="${customerType.name}_${customerType.title}"/>${customerType.title}</td>
+              <td>&nbsp;</td>
+              </tr>
+              #end
+			</table>
+        </div>
+      </form>
+  </div>
+  
+    <script type="text/javascript">
+    	var layout = new TableLayout(2);
+		window.top.currentWindow.setLayout(layout);
+	    #set ($formName = "'#id_module_form'")
+		#validator($formName)
 	</script>
+	
+	<script type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	//选择客户类型
+	function selectCustomerType(obj){
+		//设置默认的用户id
+		var customerTypeCode = $(obj).next().val();
+		if(customerTypeCode != null && customerTypeCode != "" && customerTypeCode.length > 0){
+			$("#customerTypetable input[name='customerType']:checkbox").each(function(){
+				if(customerTypeCode.indexOf($(this).val().split("_")[0]) >= 0){
+					$(this).attr("checked", "checked");
+				} else {
+					$(this).removeAttr("checked");
+				}
+			});			
+		}
+        Dialog.formPosition("#customerTypeForm", "选择客户类型", function(){
+			var customerType = "";
+			var customerTypeCode = "";
+			window.top.$("#customerTypetable input[name='customerType']:checkbox").each(function(){
+				if ($(this).attr("checked")){
+	    			var arrs =  $(this).val().split("_");
+	    			customerTypeCode += arrs[0] + ","; 
+	    			customerType += arrs[1] + ",";
+	    		}
+			});
+			if(customerTypeCode.length > 0){
+				customerType = customerType.substring(0, customerType.length - 1);
+				customerTypeCode = customerTypeCode.substring(0, customerTypeCode.length - 1);
+			}
+			$(obj).val(customerType);
+			$(obj).attr("title",customerType)
+			$(obj).next().val(customerTypeCode);
+			return true;
+		}, null, 400, 140, 450,300);
+
+	  }
+	
+	//save
+	var submitFlag =0;
+	$("#id_save_button").click(function() {
+		if(submitFlag == 1){
+			alert("请勿重复提交!")
+			return;
+		}
+		submitFlag = 1;
+		if ($($formName).valid()) {
+			var formjson = $($formName).serialize();
+   	        var url = "${modulePath}/insert.json";
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						//topWin.Dialog.message("保存成功！");
+						window.location.href= contextPath+"/manager/managercreate//browse.page" ;
+					}
+					else{
+						topWin.Dialog.message(data.message);
+				    }
+					submitFlag = 0;
+				}
+			});
+				
+		}else{
+			submitFlag = 0;
+		}
+    });
+	</script>
+	
+	
 </body>
 #parse ("common/iframe_page_footer.htm")

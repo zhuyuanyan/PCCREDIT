@@ -1466,4 +1466,15 @@ public class CustomerInforService {
 	public CustomerApplicationInfo getModelByAppId(String applicationId){
 		return intoPiecesComdao.findCustomerApplicationInfoByApplicationId(applicationId);
 	}
+	
+	
+	//查询未办理过该产品的客户
+	public QueryResult<CustomerInfor> findCustomerInforByFilterAndProductId(CustomerInforFilter filter) {
+		List<CustomerInfor> ls = customerInforDao.findCustomerInforByFilterAndProductId(filter);
+		int size = customerInforDao.findCustomerInforCountByFilterAndProductId(filter);
+		QueryResult<CustomerInfor> qr = new QueryResult<CustomerInfor>(size,ls);
+		return qr;
+	}
+	
+	
 }

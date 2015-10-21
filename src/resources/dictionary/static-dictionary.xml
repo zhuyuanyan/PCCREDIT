@@ -698,7 +698,23 @@
 		<item name="散件" title="散件" />
 		<item name="专案" title="专案" />
 		<item name="商圈" title="商圈" />
-		<item name="团办" title="团办" />
+		<item name="存量" title="存量" />
+		<!-- <item name="团办" title="团办" /> -->
+	</dictionary>
+	
+	<dictionary name="ApplyIntopiecesSpareType" title="散件类型">
+		<item name="本地户籍无房（一般客户/我行流水或股金）" title="本地户籍无房（一般客户/我行流水或股金）" />
+		<item name="本地户籍有房（独有产权/非独有产权）" title="本地户籍有房（独有产权/非独有产权）" />
+		<item name="担保进件（外地户籍/本地户籍，担保人有商品房/本地户籍，担保人无商品房（农户））" title="担保进件（外地户籍/本地户籍，担保人有商品房/本地户籍，担保人无商品房（农户））" />
+		<item name="优质行业" title="优质行业" />
+		<item name="其他" title="其他" />		
+	</dictionary>
+	
+	<dictionary name="custType" title="客户类型">
+		<item name="新增客户" title="新增客户" />
+		<item name="存量到期转化" title="存量到期转化" />
+		<item name="被调减额度普卡转化" title="被调减额度普卡转化" />
+		<item name="其它存量贷款配套" title="其它存量贷款配套" />
 	</dictionary>
 	
 	<dictionary name="IdCheckQueryType" title="身份核查业务类型">

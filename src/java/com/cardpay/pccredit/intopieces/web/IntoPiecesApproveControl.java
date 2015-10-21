@@ -4,6 +4,9 @@ package com.cardpay.pccredit.intopieces.web;
 import javax.servlet.http.HttpServletRequest;
 
 
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,12 +26,15 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.product.filter.ProductFilter;
+import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.system.service.NodeAuditService;
 import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
 import com.cardpay.workflow.service.ProcessService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
+import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -131,21 +137,26 @@ public class IntoPiecesApproveControl extends BaseController {
 					String customerId = request.getParameter("id");
 					//进件方式
 					String intopiecesType = request.getParameter("intopiecesType");
+					String applyQuota = request.getParameter("applyQuota");
+					String ApplyIntopiecesSpareType = request.getParameter("ApplyIntopiecesSpareType");
+					String custType = request.getParameter("custType");
+					
+   				 
 					//先判断是否已有流程
 					Boolean processBoolean = customerInforservice.ifProcess(customerId);
 					if(processBoolean){
 						returnMap.addGlobalMessage("此客户正在申请进件，无法再次申请!");
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.put("message","此客户正在申请进件，无法再次申请!");
-					}
-					else{
+					}else{
 						//设置流程开始
-						xM_APPLN_Service.saveApply(customerId,intopiecesType);
+						xM_APPLN_Service.saveApply(customerId,intopiecesType,ApplyIntopiecesSpareType,custType,applyQuota);
 						
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.addGlobalMessage(CREATE_SUCCESS);
 						returnMap.put("message","申请成功");
 					}
+					
 				}catch (Exception e) {
 					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
 					returnMap.put(JRadConstants.SUCCESS, false);
@@ -157,6 +168,54 @@ public class IntoPiecesApproveControl extends BaseController {
 			}
 			return returnMap;
 		}
+
+//======================================20151019================================//
+		/**
+		 * 选择产品
+		 */
+		@ResponseBody
+		@RequestMapping(value = "browseProduct.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView browseProduct(@ModelAttribute ProductFilter filter, HttpServletRequest request) {
+			filter.setRequest(request);
+			QueryResult<ProductAttribute> result = productService.findProductsByFilter(filter);
+			JRadPagedQueryResult<ProductAttribute> pagedResult = new JRadPagedQueryResult<ProductAttribute>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/product_browse", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
+		}
+		
+		/**
+		 * 选择客户
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "browseCustomer.page", method = { RequestMethod.GET })
+		public AbstractModelAndView browseCustomer(@ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
+	        filter.setRequest(request);
+	        IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			filter.setUserId(user.getId());
+			QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilterAndProductId(filter);
+			JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_approve",request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
+		}
+		
+		
+		/**
+		 * 资格检查
+		 * a)	额度检查，若额度超出客户经理可申请额度，则将停止进件。
+		 * b)	客户类型检查，若客户类型不符合客户经理可进件类型，则将停止进件。
+		 */
+		 
+		/**
+		 * 风险名单检测
+		 * a) 系统将检查客户是否属于风险名单客户，若属于风险名单，则将对客户经理进行提示，告知该客户属于风险名单，客户经理可选择继续进件或者停止进件
+		 */
+		
 		
 
 }
