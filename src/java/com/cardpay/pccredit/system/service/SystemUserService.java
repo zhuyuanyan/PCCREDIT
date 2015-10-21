@@ -51,4 +51,7 @@ public class SystemUserService {
 		return systemComDao.findSystemUserByFilter(filter);
 	}
 	
+	public QueryResult<SystemUser> findSystemUserByFilterAndUserType(SystemUserFilter filter,String userType) {
+		return systemComDao.findSystemUserByFilterAndUserType(filter,userType);
+	}
 }
