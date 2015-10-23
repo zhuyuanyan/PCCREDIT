@@ -193,4 +193,7 @@ public interface CustomerInforDao {
 	public List<CustomerInfor> findCustomerInforByFilterAndProductId(CustomerInforFilter filter);
 	
 	public int  findCustomerInforCountByFilterAndProductId(CustomerInforFilter filter);
+	
+	
+	public int findCustomerOriginaCountList(CustomerInforFilter filter);
 }

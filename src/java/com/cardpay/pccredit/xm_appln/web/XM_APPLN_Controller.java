@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.common.Cn2Spell;
 import com.cardpay.pccredit.common.ConnUtils;
+import com.cardpay.pccredit.common.IdCardValidate;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
@@ -130,6 +131,9 @@ public class XM_APPLN_Controller extends BaseController {
 	@Autowired
 	private RiskCustomerService riskCustomerService;
 	
+	@Autowired
+	private CustomerInforService customerInforService;
+	
 	
 	/**
 	 * 浏览页面
@@ -180,6 +184,25 @@ public class XM_APPLN_Controller extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
+				//身份证号码验证
+				String msg = IdCardValidate.IDCardValidate(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());
+				if(msg !="" && msg != null){
+					returnMap.put(JRadConstants.MESSAGE, msg);
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return returnMap;
+				}
+				//同一类型证件号码不得重复
+				CustomerInforFilter customerInforFilter = new CustomerInforFilter();
+				customerInforFilter.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());
+				customerInforFilter.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());
+				int i = customerInforService.findCustomerOriginaCountList(customerInforFilter);
+				if(i!=0){
+					returnMap.put(JRadConstants.MESSAGE, "证件号码已存在");
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return returnMap;
+				}
+				
+				
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				String customerId = request.getParameter("customer_id");
 				customerId = xM_APPLN_Service.insertOrUpdateXM_APPLN_NEW_CUSTOMER(xM_APPLN_NEW_CUSTOMER_FORM,user);

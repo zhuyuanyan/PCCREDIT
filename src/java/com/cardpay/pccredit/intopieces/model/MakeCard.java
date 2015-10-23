@@ -16,6 +16,24 @@ public class MakeCard extends BusinessModel {
 	private String cardOrganization;
 	private String cardOrganizationStatus;
 	private String cardCustomerStatus;
+	
+	private String signStatus;//卡片签收状态
+	
+	private String cardStatus;//卡片领取状态
+	
+	
+	public String getCardStatus() {
+		return cardStatus;
+	}
+	public void setCardStatus(String cardStatus) {
+		this.cardStatus = cardStatus;
+	}
+	public String getSignStatus() {
+		return signStatus;
+	}
+	public void setSignStatus(String signStatus) {
+		this.signStatus = signStatus;
+	}
 	public String getCustomerName() {
 		return customerName;
 	}

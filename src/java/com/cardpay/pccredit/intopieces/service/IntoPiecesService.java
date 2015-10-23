@@ -34,6 +34,7 @@ import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.model.CardCur;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.model.MaintenanceAction;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.divisional.constant.DivisionalProgressEnum;
 import com.cardpay.pccredit.divisional.constant.DivisionalTypeEnum;
@@ -3201,5 +3202,16 @@ public class IntoPiecesService {
 		}
 		content.append("\n");
 		return content;
+	}
+	
+	
+	public boolean updateCardSignStatus( MakeCardFilter cardFilter){
+		int i = intoPiecesDao.updateCardSignStatus(cardFilter);
+		return i>0?true:false;
+	}
+	
+	public boolean updateCardStatus( MakeCardFilter cardFilter){
+		int i = intoPiecesDao.updateCardStatus(cardFilter);
+		return i>0?true:false;
 	}
 }

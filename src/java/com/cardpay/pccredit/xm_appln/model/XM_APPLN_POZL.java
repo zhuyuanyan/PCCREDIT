@@ -30,6 +30,15 @@ public class XM_APPLN_POZL extends BusinessModel {
 	private String income_ann;
 	private String name;
 	private String telno;
+	
+	private String spu_card_type;
+	
+	public String getSpu_card_type() {
+		return spu_card_type;
+	}
+	public void setSpu_card_type(String spu_card_type) {
+		this.spu_card_type = spu_card_type;
+	}
 	public String getCustomer_id() {
 		return customer_id;
 	}
