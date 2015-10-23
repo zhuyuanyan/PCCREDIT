@@ -240,8 +240,11 @@ public class IntoPiecesComdao {
 			sql.append(" and card_organization=" + "'"
 					+ StringUtils.trim(filter.getCardOrganization()) + "'");
 		}
-		return commonDao.queryBySqlInPagination(MakeCard.class, sql.toString(),
-				params, filter.getStart(), filter.getLimit());
+		
+		if (filter != null&& StringUtils.trimToNull(filter.getSignStatus()) != null) {
+			sql.append(" and SIGN_STATUS=" + "'"+ StringUtils.trim(filter.getSignStatus()) + "'");
+		}
+		return commonDao.queryBySqlInPagination(MakeCard.class, sql.toString(),params, filter.getStart(), filter.getLimit());
 	}
 
 	/* 客户查询用户名模糊匹配 */

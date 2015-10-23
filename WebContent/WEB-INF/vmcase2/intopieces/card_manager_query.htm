@@ -4,12 +4,12 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">卡片登记</div>
+        <div class="title">卡片流转查询</div>
       </div>
       <div class="inquiry">
-       <div class="search_tag">卡片登记</div>
+       <div class="search_tag">卡片流转查询</div>
         <div class="search">
-          <form id="submitForm" action="${contextPath}/intopieces/carcenter/queryCard.page">
+          <form id="submitForm" action="${contextPath}/intopieces/orgnization/managerGetCard.page">
           <ul>
               <li>
                 <span>卡号：<input type="text" name="cardNumber"  maxlength="30" /></span>
@@ -28,19 +28,17 @@
               <col width="10%" />
               <col width="20%" />
               <col width="20%"/>
-<!--               <col width="20%"/>
-              <col width="15%"/> -->
               <col width="15%"/>
               <col width="10%"/>
+              <col width="15%"/>
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">证件号码</th>
               <th nowrap="nowrap">卡号</th>
-           <!--    <th nowrap="nowrap">下发到机构的状态</th>
-              <th nowrap="nowrap">下发到客户的状态</th> -->
               <th nowrap="nowrap">卡片签收状态</th>
+              <th nowrap="nowrap">卡片领取状态</th>
               <th nowrap="nowrap">创建时间</th>
             </tr>
           </table>
@@ -52,10 +50,9 @@
               <col width="10%" />
               <col width="20%" />
               <col width="20%"/>
-         <!--      <col width="20%"/>
-              <col width="15%"/> -->
               <col width="15%"/>
               <col width="10%"/>
+              <col width="15%"/>
             </colgroup>
             #foreach ($card in $result.items)
             <tr>
@@ -64,8 +61,7 @@
               <td nowrap="nowrap">$!card.customerIdentity</td>
               <td nowrap="nowrap">$!card.cardNumber</td>
               <td nowrap="nowrap">#if($!card.signStatus=='0')未签收 #elseif($!card.signStatus=='1')已签收 #end</td>
-            <!--   <td nowrap="nowrap">#if($!card.cardOrganizationStatus=='0')未下发  #elseif($!card.cardOrganizationStatus=='1')已下发 #end</td>
-              <td nowrap="nowrap">#if($!card.cardCustomerStatus=='0')未下发  #elseif($!card.cardCustomerStatus=='1')已下发 #end</td> -->
+              <td nowrap="nowrap">#if($!card.cardStatus=='0')未领取 #elseif($!card.cardStatus=='1')已领取 #end</td>
               <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss ',$!card.createdTime)</td>
             </tr>
             #end
@@ -74,9 +70,8 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #btnpriv("create")<a class="btn_g" href="javascript:void(0);" title="登记" onclick="javascritp:self.location.href='${contextPath}/intopieces/carcenter/insertCard.page'">登记</a>#end
-<!--           #btnpriv("issuedorg")<a class="btn_g" href="javascript:void(0);" title="下发到机构" onclick="issuedCard('${contextPath}/intopieces/carcenter/organizationIssuedCard.json?flag=false','${contextPath}/intopieces/carcenter/queryCard.page')">下发到机构</a>#end
- -->          #btnpriv("display")<a class="btn_g" href="javascript:void(0);" title="查看" onclick="viewCard('${contextPath}/intopieces/carcenter/viewCard.page')">查看</a>#end
+<!--           #btnpriv("issuedcustomer")<a class="btn_g" href="javascript:void(0);" title="下发到客户" onclick="issuedCard('${contextPath}/intopieces/orgnization/organizationIssuedCard.json?flag=true','${contextPath}/intopieces/orgnization/managerQueryCard.page','true')">下发到客户</a>#end
+<!--           #btnpriv("display")<a class="btn_g" href="javascript:void(0);" title="查看" onclick="viewCard('${contextPath}/intopieces/orgnization/viewCard.page')">查看</a>#end-->
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -87,17 +82,13 @@
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
-
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		opsObj.createUrl = "${modulePath}/create.page";
-		opsObj.displayUrl = "${modulePath}/display.page";
-		opsObj.changeUrl = "${modulePath}/change.page";
-		opsObj.deleteUrl = "${modulePath}/delete.json";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-		opsObj.exportUrl = "${modulePath}/export.page";
 		prepareOperations(opsObj);
+		
 	});
+	
 </script>
 #parse ("common/iframe_page_footer.htm")
