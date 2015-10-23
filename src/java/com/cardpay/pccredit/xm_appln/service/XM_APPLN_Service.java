@@ -171,6 +171,8 @@ public class XM_APPLN_Service {
 			customerinfor.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());//身份证
 			customerinfor.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());//身份证
 			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("M")?"Male":"Female");//MODIFIED BY NIHC 20150701
+			
+			
 			customerId = customerInforService.insertCustomerInfor(customerinfor);
 		}else{
 			CustomerInfor customerinfor = customerInforService.findCustomerInforById(customerId);

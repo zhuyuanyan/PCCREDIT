@@ -31,6 +31,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.cardpay.pccredit.common.IdCardValidate;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.XmZxLogin;
@@ -120,6 +121,22 @@ public class CustomerPICheckController extends BaseController{
 			String IdCheckQueryTrait = "01";//request.getParameter("IdCheckQueryTrait");//业务特征
 			String msgNo ="0001";
 			String transCode = "0001";
+			
+			//身份证号码验证
+			String msg = IdCardValidate.IDCardValidate(identityNo);
+			if(msg !="" && msg != null){
+				returnMap.put("checkresult", msg);
+				return returnMap;
+			}
+			//同一类型证件号码不得重复
+			CustomerInforFilter customerInforFilter = new CustomerInforFilter();
+			customerInforFilter.setCardId(identityNo);
+			customerInforFilter.setCardType(identityType);
+			int i = customerInforService.findCustomerOriginaCountList(customerInforFilter);
+			if(i!=0){
+				returnMap.put("checkresult", "证件号码已存在!");
+				return returnMap;
+			}
 			
 			//判断用户证件类型是否是身份证，不是则不用核查
 			if(!identityType.equals("01")){

@@ -1476,5 +1476,9 @@ public class CustomerInforService {
 		return qr;
 	}
 	
+	public int findCustomerOriginaCountList(CustomerInforFilter filter){
+		return customerInforDao.findCustomerOriginaCountList(filter);
+	}
+	
 	
 }

@@ -306,6 +306,18 @@
 		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId}
 		)
 	</select>
-
+	
+	
+	<select id="findCustomerOriginaCountList" resultType="int">
+		select count(0) 
+		from BASIC_CUSTOMER_INFORMATION T1 
+		where 1 = 1
+		<if test="cardType != null and cardType != '' ">
+			AND card_type=#{cardType}
+		</if>
+		<if test="cardId != null and cardId != '' ">
+			AND card_id=#{cardId}
+		</if>
+	</select>
 
 </mapper>
