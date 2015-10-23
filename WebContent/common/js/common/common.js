@@ -1,3 +1,13 @@
+topWin = (function(p,c){
+	while(p!=c){
+		c=p;
+		p=p.parent;
+	}
+	return c;
+})(window.parent,window);
+
+var submitFlag = 0;
+
 _post = $.post;
 _get = $.get;
 _flag = new Object;

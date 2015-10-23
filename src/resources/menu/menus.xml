@@ -44,6 +44,9 @@
 			<menu id="060010" name="productinformation" title="产品信息" url="/product/productinformation/browse.page" img="" operations="create|change|display|browse|confignodeintopieces|confignodeamountadjustment"/>
 			<menu id="060020" name="productpublic" title="产品发布（卡中心）" url="/product/productpublic/browse.page" img="" operations="approvepass|published|browse"/>
 			<menu id="060030" name="productfilter" title="产品筛选准入规则配置" url="/product/productfilter/browse.page" img="" operations="create|delete|browse"/>
+			<menu id="060040" name="createSq" title="商圈申请" url="/product/zainformation/browse.page" img="" operations="create|delete|browse"/>
+			<menu id="060050" name="approveSq" title="商圈审批" url="/product/zainformation/approveBrowse.page" img="" operations="create|delete|browse"/>
+			<menu id="060060" name="searchSq" title="商圈查询" url="/product/zainformation/search.page" img="" operations="create|delete|browse"/>
 		</menu>
 		<menu id="070000" name="manager" title="客户经理管理" url="" img="images/icon_sys.gif" operations="">
 		    <menu id="070001" name="managercreate" title="客户经理参数配置" url="/manager/managercreate/browse.page" img="" operations="create|change|delete|display|browse"/>
@@ -135,6 +138,7 @@
 			<menu id="1030900" name="dict" title="数据字典" url="/system/dict/browse.page" img="" operations="create|delete|browse|change" />
 			<menu id="1031000" name="parameter" title="系统参数配置" url="/system/parameter/browse.page" img="" operations="change|browse" />
 <!-- 			<menu id="1030900" name="group" title="用户组管理" url="/system/group/browse.page" img="" operations="display|browse|export" /> -->
+			<menu id="1031100" name="charge" title="负责人管理" url="/system/charge/browse.page" img="" operations="create|change|delete|display|browse" />
 		</menu>
 		
 	</menu>
