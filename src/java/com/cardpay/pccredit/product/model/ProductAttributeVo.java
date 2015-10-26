@@ -10,8 +10,7 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
  * 
  * @version $Id:$
  */
-@ModelParam(table = "product_attribute")
-public class ProductAttribute extends BusinessModel {
+public class ProductAttributeVo extends BusinessModel {
 
 	private static final long serialVersionUID = 1L;
 	private String productName;
@@ -31,6 +30,28 @@ public class ProductAttribute extends BusinessModel {
 	private String pictureName;
 	private String seqno;
 	private String default_type;
+	
+	private String appId;
+    private String countNum;
+    
+    
+	
+
+	public String getCountNum() {
+		return countNum;
+	}
+
+	public void setCountNum(String countNum) {
+		this.countNum = countNum;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
 	public String getPictureName() {
 		return pictureName;

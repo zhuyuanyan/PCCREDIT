@@ -261,6 +261,9 @@ public class XM_APPLN_Service {
 		return customerId;
 	}
 	
+	
+	
+	
 	/**
 	 * 插入数据
 	 * @param 申请信息
