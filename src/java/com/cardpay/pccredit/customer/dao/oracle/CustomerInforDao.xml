@@ -306,6 +306,59 @@
 		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId}
 		)
 	</select>
-
+	
+	
+	<select id="findCustomerOriginaCountList" resultType="int">
+		select count(0) 
+		from BASIC_CUSTOMER_INFORMATION T1 
+		where 1 = 1
+		<if test="cardType != null and cardType != '' ">
+			AND card_type=#{cardType}
+		</if>
+		<if test="cardId != null and cardId != '' ">
+			AND card_id=#{cardId}
+		</if>
+	</select>
+	
+	
+	
+	<select id="findIntoProdByFilter" resultType="com.cardpay.pccredit.product.model.ProductAttributeVo">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+			  select p.product_name as productName,p.id,t.id as appId,rownum+6 as countNum
+			  from customer_application_info t, 
+			  	   product_attribute p
+			  where t.PRODUCT_ID = p.id
+				<if test="custId != null and custId != '' ">
+					<!-- AND customer_id = #{custId} -->
+					and t.customer_id = '8b978bab4c55124e014c5512c7271aef'
+				</if>
+				
+				<if test="appId != null and appId != '' ">
+					AND t.id = #{appId}
+				</if>
+				
+				<if test="productId != null and productId != '' ">
+					AND p.id = #{productId}
+				</if>
+				
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findIntoProdCountByFilter" resultType="int">
+		 select count(*)
+	     from customer_application_info t, product_attribute p
+		 where t.PRODUCT_ID = p.id
+		 <if test="custId != null and custId != '' ">
+			<!-- AND customer_id = #{custId} -->
+				and customer_id = '8b978bab4c55124e014c5512c7271aef'
+		 </if>
+	</select>
 
 </mapper>

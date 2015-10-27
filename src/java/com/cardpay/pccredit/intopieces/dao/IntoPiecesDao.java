@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesCardQueryFilter;
+import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPiecesCardQuery;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.util.annotation.Mapper;
@@ -25,4 +26,9 @@ public interface IntoPiecesDao {
 	
 	//根据身份证获取客户经理柜员号
 	String getManagerId(String cardId);
+	
+	
+	public int updateCardSignStatus(MakeCardFilter cardFilter);
+	
+	public int updateCardStatus(MakeCardFilter cardFilter);
 }
