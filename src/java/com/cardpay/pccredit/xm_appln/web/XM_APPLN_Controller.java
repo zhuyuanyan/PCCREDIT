@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.common.Cn2Spell;
 import com.cardpay.pccredit.common.ConnUtils;
+import com.cardpay.pccredit.common.IdCardValidate;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
@@ -39,6 +40,8 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
+import com.cardpay.pccredit.product.model.ProductAttribute;
+import com.cardpay.pccredit.product.model.ProductAttributeVo;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerService;
@@ -130,6 +133,9 @@ public class XM_APPLN_Controller extends BaseController {
 	@Autowired
 	private RiskCustomerService riskCustomerService;
 	
+	@Autowired
+	private CustomerInforService customerInforService;
+	
 	
 	/**
 	 * 浏览页面
@@ -180,6 +186,25 @@ public class XM_APPLN_Controller extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
+				//身份证号码验证
+				String msg = IdCardValidate.IDCardValidate(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());
+				if(msg !="" && msg != null){
+					returnMap.put(JRadConstants.MESSAGE, msg);
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return returnMap;
+				}
+				//同一类型证件号码不得重复
+				CustomerInforFilter customerInforFilter = new CustomerInforFilter();
+				customerInforFilter.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());
+				customerInforFilter.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());
+				int i = customerInforService.findCustomerOriginaCountList(customerInforFilter);
+				if(i!=0){
+					returnMap.put(JRadConstants.MESSAGE, "证件号码已存在");
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return returnMap;
+				}
+				
+				
 				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				String customerId = request.getParameter("customer_id");
 				customerId = xM_APPLN_Service.insertOrUpdateXM_APPLN_NEW_CUSTOMER(xM_APPLN_NEW_CUSTOMER_FORM,user);
@@ -206,6 +231,12 @@ public class XM_APPLN_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/xm_appln/iframe", request);
 		
 		String customerInforId = RequestHelper.getStringValue(request, ID);
+		//TODO查询客户进件产品信息
+		CustomerInforFilter customerInforFilter = new CustomerInforFilter();
+		customerInforFilter.setCustId(customerInforId);
+		QueryResult<ProductAttributeVo> result = customerInforservice.findIntoProdByFilter(customerInforFilter);
+		//JRadPagedQueryResult<ProductAttribute> pagedResult = new JRadPagedQueryResult<ProductAttribute>(customerInforFilter, result);
+		
 		String appId = RequestHelper.getStringValue(request, "aid");
 		if (StringUtils.isNotEmpty(customerInforId)) {
 			CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
@@ -213,6 +244,7 @@ public class XM_APPLN_Controller extends BaseController {
 			mv.addObject("customerId", customerInfor.getId());
 			mv.addObject("appId", appId);
 		}
+		mv.addObject(PAGED_RESULT, result);
 		return mv;
 	}
 	//复核跳转到iframe_fuhe
@@ -926,6 +958,75 @@ public class XM_APPLN_Controller extends BaseController {
 //		String result = "{D:'1000',L:[{T:'2000000',R:'30000',C:'五级分类'}]}";
 		JSONObject obj = JSONObject.fromObject(result);
 		return obj.toString();
+		}
+	
+	
+	
+	//iframe跳转到第page6
+	//客户基本信息 new
+	@ResponseBody
+	@RequestMapping(value = "xm_appln_page6_update.page")
+	@JRadOperation(JRadOperation.MAINTENANCE)
+	public AbstractModelAndView changewh_xm_appln_page6_update(HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page6_update", request);
+			String customerInforId = RequestHelper.getStringValue(request, ID);
+			String appid = RequestHelper.getStringValue(request, "appId");
+			if (StringUtils.isNotEmpty(customerInforId)) {
+				CustomerInfor customerInfor = customerInforservice.findCustomerInforById(customerInforId);
+				mv.addObject("customerInfor", customerInfor);
+				mv.addObject("customerId", customerInfor.getId());
+				mv.addObject("appid",appid);
+			}
+			return mv;
+	}
+	
+	
+	
+	//iframe跳转到第page7
+	@ResponseBody
+	@RequestMapping(value = "xm_appln_page7.page")
+	@JRadOperation(JRadOperation.MAINTENANCE)
+	public AbstractModelAndView changewh_xm_appln_page7(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/xm_appln/xm_appln_page7", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		String productId = RequestHelper.getStringValue(request, "productId");
+		String appId = RequestHelper.getStringValue(request, "appId");
+		
+		CustomerInforFilter filter = new CustomerInforFilter();
+		filter.setCustId(customerInforId);
+		filter.setProductId(productId);
+		filter.setAppId(appId);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			ProductAttributeVo productAttribute = customerInforservice.findProductMsgById(filter);
+			mv.addObject("productAttribute", productAttribute);
+		}
+		return mv;
+	}
+	
+	
+	//保存page6
+		@ResponseBody
+		@RequestMapping(value = "update_xm_appln_page6.json")
+		@JRadOperation(JRadOperation.CREATE)
+		public JRadReturnMap update_xm_appln_page6(@ModelAttribute XM_APPLN_JBZL_FORM xM_APPLN_JBZL_FORM, HttpServletRequest request) {
+			JRadReturnMap returnMap = new JRadReturnMap();
+			if (returnMap.isSuccess()) {
+				try {
+					User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+					String customerId = request.getParameter("customer_id");
+					customerId = xM_APPLN_Service.insertXM_APPLN_JBZL(customerId,xM_APPLN_JBZL_FORM,user);
+					returnMap.put(RECORD_ID, customerId);
+					returnMap.addGlobalMessage(CREATE_SUCCESS);
+				}catch (Exception e) {
+					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return WebRequestHelper.processException(e);
+				}
+			}else{
+				returnMap.setSuccess(false);
+				returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+			}
+			return returnMap;
 		}
 	
 }

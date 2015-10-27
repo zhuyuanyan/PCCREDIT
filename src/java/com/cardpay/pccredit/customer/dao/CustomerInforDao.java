@@ -8,6 +8,8 @@ import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
+import com.cardpay.pccredit.product.model.ProductAttribute;
+import com.cardpay.pccredit.product.model.ProductAttributeVo;
 import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.util.annotation.Mapper;
 /**
@@ -193,4 +195,11 @@ public interface CustomerInforDao {
 	public List<CustomerInfor> findCustomerInforByFilterAndProductId(CustomerInforFilter filter);
 	
 	public int  findCustomerInforCountByFilterAndProductId(CustomerInforFilter filter);
+	
+	
+	public int findCustomerOriginaCountList(CustomerInforFilter filter);
+	
+	
+	public List<ProductAttributeVo> findIntoProdByFilter(CustomerInforFilter filter);
+	public int  findIntoProdCountByFilter(CustomerInforFilter filter);
 }

@@ -51,8 +51,9 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
-import com.cardpay.pccredit.ipad.model.ProductAttribute;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.product.model.ProductAttribute;
+import com.cardpay.pccredit.product.model.ProductAttributeVo;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
 import com.cardpay.pccredit.system.model.Dict;
@@ -1476,5 +1477,25 @@ public class CustomerInforService {
 		return qr;
 	}
 	
+	public int findCustomerOriginaCountList(CustomerInforFilter filter){
+		return customerInforDao.findCustomerOriginaCountList(filter);
+	}
+	
+	
+	public QueryResult<ProductAttributeVo> findIntoProdByFilter(CustomerInforFilter filter) {
+		List<ProductAttributeVo> ls = customerInforDao.findIntoProdByFilter(filter);
+		int size = customerInforDao.findIntoProdCountByFilter(filter);
+		QueryResult<ProductAttributeVo> qr = new QueryResult<ProductAttributeVo>(size,ls);
+		return qr;
+	}
+	
+	
+	public ProductAttributeVo findProductMsgById(CustomerInforFilter filter) {
+		List<ProductAttributeVo> list = customerInforDao.findIntoProdByFilter(filter);
+		if(list!= null && !list.isEmpty()){
+			return list.get(0);
+		}
+		return null;
+	}
 	
 }

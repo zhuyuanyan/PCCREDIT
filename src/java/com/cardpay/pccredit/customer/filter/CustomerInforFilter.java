@@ -39,7 +39,23 @@ public class CustomerInforFilter extends BaseQueryFilter{
 	
 	private String productId;//产品id
 	
+	private String custId;
 	
+	private String appId;
+	
+	
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getCustId() {
+		return custId;
+	}
+	public void setCustId(String custId) {
+		this.custId = custId;
+	}
 	public String getProductId() {
 		return productId;
 	}
