@@ -42,6 +42,13 @@
               <td><input class="rinpsty" type="text" id="custTypeList" name="custTypeList" value="$!accountManagerParameter.custTypeList"title=""  readonly="readonly" /> 
                   <input type="hidden" id="customerTypeCode" name="customerTypeCode" value="" /></td>
              </tr>
+             <tr>
+              <td><label for="jjzg">进件资格:</label></td>
+              <td><select name="jjzg" id="jjzg" disabled>
+              	<option value="1" #if($!accountManagerParameter.jjzg=='1') selected #end>有</option>
+              	<option value="0" #if($!accountManagerParameter.jjzg!='1') selected #end>无</option>
+              	</select></td>
+             </tr>
           </table>
         
         </div>

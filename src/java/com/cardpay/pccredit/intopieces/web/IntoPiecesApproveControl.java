@@ -1,18 +1,38 @@
 package com.cardpay.pccredit.intopieces.web;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
@@ -23,12 +43,21 @@ import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.model.XmNewSq;
+import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.intopieces.service.XmNewSqService;
+import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
+import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.riskControl.service.RiskCustomerService;
 import com.cardpay.pccredit.system.service.NodeAuditService;
 import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
 import com.cardpay.workflow.service.ProcessService;
@@ -90,6 +119,17 @@ public class IntoPiecesApproveControl extends BaseController {
 	
 	@Autowired
 	private CustomerApplicationProcessService customerApplicationProcessService;
+	
+	@Autowired
+	private XmNewSqService xmNewSqService;
+	
+	@Autowired
+	private AccountManagerParameterService accountManagerParameterService;
+	
+	@Autowired
+	private RiskCustomerService riskCustomerService;
+	@Autowired
+	private AddIntoPiecesService addIntoPiecesService;
 	
 	/**
 	 * 申请页面
@@ -178,10 +218,13 @@ public class IntoPiecesApproveControl extends BaseController {
 		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView browseProduct(@ModelAttribute ProductFilter filter, HttpServletRequest request) {
 			filter.setRequest(request);
-			QueryResult<ProductAttribute> result = productService.findProductsByFilter(filter);
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			QueryResult<ProductAttribute> result = productService.findProducts(filter);
 			JRadPagedQueryResult<ProductAttribute> pagedResult = new JRadPagedQueryResult<ProductAttribute>(filter, result);
-			JRadModelAndView mv = new JRadModelAndView("/intopieces/product_browse", request);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_product_browse", request);
+			Boolean hasJjzg = productService.hasApproveJJ(user.getId());
 			mv.addObject(PAGED_RESULT, pagedResult);
+			mv.addObject("hasJjzg", hasJjzg);
 			return mv;
 		}
 		
@@ -200,22 +243,104 @@ public class IntoPiecesApproveControl extends BaseController {
 			QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilterAndProductId(filter);
 			JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
 			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_approve",request);
+			//获取商圈信息
+			List<XmNewSq> xmNewSq = xmNewSqService.findPassSq();
+			//获取客户经理资格信息
+			List<AccountManagerParameter> parameterList = accountManagerParameterService.getParametersByUserId(user.getId());
+
+			if(parameterList.size()>0){
+				mv.addObject("ed", parameterList.get(0).getApplyQuatoLimit());
+				mv.addObject("typeCode", parameterList.get(0).getCustomerTypeCode());
+			}else{
+				mv.addObject("ed", null);
+				mv.addObject("typeCode", null);
+			}
 			mv.addObject(PAGED_RESULT, pagedResult);
+			mv.addObject("xmNewSq", xmNewSq);
+			mv.addObject("productId", filter.getProductId());
 			return mv;
 		}
 		
-		
-		/**
-		 * 资格检查
-		 * a)	额度检查，若额度超出客户经理可申请额度，则将停止进件。
-		 * b)	客户类型检查，若客户类型不符合客户经理可进件类型，则将停止进件。
-		 */
-		 
 		/**
 		 * 风险名单检测
 		 * a) 系统将检查客户是否属于风险名单客户，若属于风险名单，则将对客户经理进行提示，告知该客户属于风险名单，客户经理可选择继续进件或者停止进件
 		 */
-		
-		
-
+		@ResponseBody
+		@RequestMapping(value = "isInBlacklist.json")
+		public JRadReturnMap isInBlacklist(HttpServletRequest request) {
+			String customerId = request.getParameter(ID);
+			JRadReturnMap returnMap = new JRadReturnMap();
+			
+			if (returnMap.isSuccess()) {
+				try {
+					//判断客户是否风险客户
+					RiskCustomerFilter riskCustomerFilter = new RiskCustomerFilter();
+					riskCustomerFilter.setCustomerId(customerId);
+					Boolean isInList = riskCustomerService.isInBlacklist(riskCustomerFilter);
+					returnMap.put("isInList", isInList);
+				}catch (Exception e) {
+					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return WebRequestHelper.processException(e);
+				}
+			}else{
+				returnMap.setSuccess(false);
+				returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+			}
+			return returnMap;
+		}
+		//导入调查报告页面
+		@ResponseBody
+		@RequestMapping(value = "reportImport.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView reportImport(@ModelAttribute AddIntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer(filter);
+			JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/report_import",request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			mv.addObject("parameters", filter);
+			return mv;
+		}
+		//导入调查报告
+		@ResponseBody
+		@RequestMapping(value = "reportImport.json")
+		public Map<String, Object> reportImport_json(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
+			response.setContentType("text/html;charset=utf-8");
+			Map<String, Object> map = new HashMap<String, Object>();
+			try {
+				if(file==null||file.isEmpty()){
+					map.put(JRadConstants.SUCCESS, false);
+					map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTEMPTY);
+					return map;
+				}
+				String productId = request.getParameter("productId");
+				String customerId = request.getParameter("customerId");
+				addIntoPiecesService.importExcel(file,productId,customerId);
+				map.put(JRadConstants.SUCCESS, true);
+				map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
+				JSONObject obj = JSONObject.fromObject(map);
+				response.getWriter().print(obj.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+				map.put(JRadConstants.SUCCESS, false);
+				map.put(JRadConstants.MESSAGE, "上传失败:"+e.getMessage());
+				JSONObject obj = JSONObject.fromObject(map);
+				response.getWriter().print(obj.toString());
+			}
+			return null;
+		}
+		//行内模型
+		@ResponseBody
+		@RequestMapping(value = "bankModel.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView bankModel(@ModelAttribute AddIntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer(filter);
+			JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/report_model",request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			mv.addObject("parameters", filter);
+			return mv;
+		}
 }

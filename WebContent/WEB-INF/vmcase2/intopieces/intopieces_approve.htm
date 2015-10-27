@@ -77,29 +77,50 @@
       </div>
     </div>
   </div>
+
    <div id="inputApplyInpDialog" title="选择客户进件方式" style="display: none; resize: none; z-index: 2000">
-      <form id="inputApplyForm">
-        <div class="forms">
-        <table style="text-align:left">
-        	<tr>
-	            <td><label>进件类型:</label></td>
-	        	<td width="20%"><select id="intopiecesType" name="intopiecesType">#dict("ApplyIntopiecesType", $!intopiecesType)</select></td>
- 	            <td><label>散件类型:</label></td>
- 	            <td width="40%"><select id="ApplyIntopiecesSpareType" name="ApplyIntopiecesSpareType">#dict("ApplyIntopiecesSpareType", $!intopiecesSpareType)</select></td>
-           </tr>
-            
-            <tr>
-	            <td><label>客户类型 :</label></td>
-	            <td width="20%"><select id="custType" name="custType">#dict("custType", $!custType)</select></td>
-            </tr>
-            
-            <tr>
-	            <td><label>申请额度：</label></td>
-	            <td width="20%"><input type="text" id="applyQuota" name="applyQuota"  /></td>	 
-            </tr>
-         </table>
-        </div>
-      </form>
+    <div class="inquiry_list">
+      <form name="inputApplyForm" id="inputApplyForm">
+        <table id="inputApplyForm" style="border: 1px solid #dcdcdc;margin-bottom: 10px;width:600px;">
+          <colgroup>
+            <col width="10%">
+            <col width="40%">
+            <col width="40%">
+            <col width="10%">
+          </colgroup>
+          <tr style="height:40px">
+          	<td>&nbsp;</td>
+            <td>进件类型:</td>
+            <td><select id="intopiecesType" name="intopiecesType" onchange="changeSjType(this.value)">#dict("ApplyIntopiecesType", $!intopiecesType)</select></td>
+         	<td>&nbsp;</td>
+          </tr>
+         <tr style="height:40px">
+            <td>&nbsp;</td>
+            <td>散件类型:</td>
+            <td id="type_1" ><select id="ApplyIntopiecesSpareType_1" name="ApplyIntopiecesSpareType_1">#dict("SJ_TYPE_LIST", "")</select></td>
+            <td id="type_2"><select id="ApplyIntopiecesSpareType_2" name="ApplyIntopiecesSpareType_2">
+            					#foreach($obj in $xmNewSq)
+            						<option value="$!obj.id">$!obj.sqName</option>
+            					#end
+							</select>
+			</td>
+          	<td>&nbsp;</td>
+          </tr>
+          <tr style="height:40px">
+          	<td>&nbsp;</td>
+            <td>客户类型:</td>
+            <td><select id="custType" name="custType">#dict("KHLX", "")</select></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr style="height:40px">
+            <td>&nbsp;</td>
+            <td>申请额度(元):</td>
+            <td><input type="text" id="applyQuota" name="applyQuota"  /></td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+    </form>
+    </div>
   </div>
 </body>
 <script language="javascript" type="text/javascript">
@@ -107,6 +128,7 @@
 	window.top.currentWindow.setLayout(layout);
 
 	$(document).ready(function() {
+		document.getElementById("type_2").style.display="none";
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
 		//改为xm_appln版本
@@ -121,33 +143,98 @@
 		
 			$("#id_apply_button").click(function() {
 	          if ($(".checkbox :checked").length == 1) {
+	        	  var productId = "$!productId";
 	        	  var rowId = getCurrentRowId();
+	        	  var ed = "$!ed";
+	        	  var typeCode = "$!typeCode";
+	        	  if(ed==null||ed==""){
+	        		  Dialog.message("只有客户经理才能申请进件!");
+	        		  return;
+	        	  }
 				  if(rowId!=null){
 	      		  	Dialog.form("#inputApplyForm", "进件方式", function(){
+	      		  		//进件类型
 	      				var intopiecesType = window.top.$("#intopiecesType").val();
+	      		  		//申请额度
 	      				var applyQuota = window.top.$("#applyQuota").val();
+	      		  		//客户类型
 	      				var custType = window.top.$("#custType").val();
-	      				var ApplyIntopiecesSpareType = window.top.$("#ApplyIntopiecesSpareType").val();
-	      				//资格检查
+	      		  		//>散件类型
+	      				var ApplyIntopiecesSpareType_1 = window.top.$("#ApplyIntopiecesSpareType_1").val();
+	      				var ApplyIntopiecesSpareType_2 = window.top.$("#ApplyIntopiecesSpareType_2").val();
+	      				//额度检查
+	      				 if(parseFloat(ed)<parseFloat(applyQuota)){
+	      					Dialog.message("额度超出客户经理可申请额度!");
+	      					return;
+	      				} 
+	      				//客户类型检查
+	      				if(typeCode.indexOf(custType)=="-1"){
+	      					Dialog.message("客户类型不符合客户经理可进件类型!");
+	      					return;
+	      				}
+	      				var isInRisk = false;
 	      				//风险名单检测
-	      				$.post("${modulePath}xm_appln_page0_apply.json", {
-	      				  	id: rowId,
-	      				  	intopiecesType:intopiecesType,
-	      				    applyQuota:applyQuota,
-	      				    ApplyIntopiecesSpareType:ApplyIntopiecesSpareType,
-	      				    custType:custType
-	                  	},
-	                  	function(data, textStatus, jqXhr) {
-	                      if (data.success) {
-	                    	  window.top.Dialog.message(data.message);
-	                    	  var url = "${modulePath}approve.page";
-	                          window.location.href = url;
-	                      } else {
-	                          //Dialog.message(data.message);
-	                      }
-	                  });
-	      			window.top.$("#form_diaog").dialog("close");
-	      		}, null, 500, 300);
+	      				$.ajax({
+								url : "${modulePath}isInBlacklist.json?id="+rowId,
+								type : "get",
+								async: false,
+								success : function(data) {
+									if (data.success) {
+										if(data.isInList){
+											isInRisk = true;
+										}
+									}else{
+										window.top.Dialog.message("系统出现异常,请联系管理员");
+							    	}
+								}
+							});
+	      				if(isInRisk){
+		      				Dialog.confirm("此客户为风险客户，是否继续申请？", "提示",
+								  function() {
+		      						
+		      						window.location.href = "${modulePath}reportImport.page?customerId="+rowId+"&intopiecesType="+intopiecesType
+		      						+"&applyQuota="+applyQuota+"&ApplyIntopiecesSpareType_1="+ApplyIntopiecesSpareType_1+"&ApplyIntopiecesSpareType_2="+ApplyIntopiecesSpareType_2+"&custType="+custType+"&productId="+productId;
+		      						window.top.$("#form_diaog").dialog("close");
+		      						/* $.post("${modulePath}xm_appln_page0_apply.json", {
+				      					  	id: rowId,
+				      					  	intopiecesType:intopiecesType,
+				      					    applyQuota:applyQuota,
+				      					    ApplyIntopiecesSpareType:ApplyIntopiecesSpareType,
+				      					    custType:custType
+				      		      	},
+				      		      	function(data, textStatus, jqXhr) {
+				      		          if (data.success) {
+				      		        	  window.top.Dialog.message(data.message);
+				      		        	  var url = "${modulePath}approve.page";
+				      		              window.location.href = url;
+				      		          } else {
+				      		              //Dialog.message(data.message);
+				      		          }
+				      		      	});
+				      				window.top.$("#form_diaog").dialog("close"); */
+								  });
+	      					
+	      				}else{
+	      					$.post("${modulePath}xm_appln_page0_apply.json", {
+	      					  	id: rowId,
+	      					  	intopiecesType:intopiecesType,
+	      					    applyQuota:applyQuota,
+	      					    ApplyIntopiecesSpareType:ApplyIntopiecesSpareType,
+	      					    custType:custType
+		      		      	},
+		      		      	function(data, textStatus, jqXhr) {
+		      		          if (data.success) {
+		      		        	  window.top.Dialog.message(data.message);
+		      		        	  var url = "${modulePath}approve.page";
+		      		              window.location.href = url;
+		      		          } else {
+		      		              //Dialog.message(data.message);
+		      		          }
+		      		      	});
+		      				window.top.$("#form_diaog").dialog("close");
+	      				}
+	      				
+	      		}, null, 700, 200);
 	          } else {
 	              Dialog.message("请选择要申请的客户!");
 	          }
@@ -170,6 +257,8 @@
 		
 		prepareOperations(opsObj);
 	});
+	
 </script>
+
    <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
 #parse ("common/iframe_page_footer.htm")

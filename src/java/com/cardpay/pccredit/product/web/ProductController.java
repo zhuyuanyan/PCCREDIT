@@ -225,6 +225,8 @@ public class ProductController extends BaseController {
 				String pictureUrl = result.get("url");
 				productAttribute.setPictureUrl(pictureUrl);
 				productAttribute.setPictureName(fileName);
+				//非默认产品
+				productAttribute.setDefault_type("2");
 				String id = productService.insertProduct(productAttribute);
 				String productId = productAttribute.getId();
 				returnMap.put("productId", productId);

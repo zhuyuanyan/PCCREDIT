@@ -517,3 +517,4 @@ var Dialog = function() {
 		}
 	};
 }();
+
