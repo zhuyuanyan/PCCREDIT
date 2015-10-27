@@ -20,10 +20,10 @@
 				  <div class="dvTab">
             <ul class="com-tab">
             <li class="tab activeTab" ><a href="${contextPath}/product/productinformation/change.page?id=${productId}">产品属性</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
+           <!--  <li class="tab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
             <li class="tab"><a href="${contextPath}/product/productinformation/change_cpgz.page?id=${productId}">产品规则</a></li>
             <li class="tab"><a href="${contextPath}/product/productinformation/change_csgz.page?id=${productId}">催收规则</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li> -->
          </ul>
         </div>
 			</div>
@@ -39,6 +39,31 @@
 							<col width="30%" />
 						</colgroup>
 						<tr>
+							<td><label for="name">产品名称:</label></td>
+							<td><input type="text" id="productName" name="productName"
+								value="$!product.productName" /></td>
+							
+							<td><label for="name">额度:</label></td>
+							<td><input type="text" id="ed" name="ed"
+								value="$!product.ed" /></td>
+						</tr>
+						<tr>
+							<td><label for="name">利率(%):</label></td>
+							<td><input type="text" id="lv" name="lv"
+								value="$!product.lv" /></td>
+							
+							<td><label for="name">年费:</label></td>
+							<td><input type="text" id="nf" name="nf"
+								value="$!product.nf" /></td>
+						</tr>
+						<tr>
+							<td><label for="name">卡片到期日:</label></td>
+							<td><input type="text" name="endTime" id="endTime"  value="$!accountInfo.endTime"  onmouseover="_calendar()"/></td>
+							
+							
+						</tr>
+						
+						<!-- <tr>
 							<td><label for="name">产品名称:</label></td>
 							<td><input type="text" id="productName" name="productName"
 								value="$!product.productName" /></td>
@@ -141,8 +166,8 @@
 							<td><label for="name">该产品风险容忍度:</label></td>
 							<td><input type="text" id="productRiskTolerance" name="productRiskTolerance"
 								value="$!product.productRiskTolerance" /></td>
-						</tr>
-						</tr>
+						</tr> -->
+						<tr>
 							<td><label>产品图片：</label></td>
             				<td>
               					 <input type="file" name="file">

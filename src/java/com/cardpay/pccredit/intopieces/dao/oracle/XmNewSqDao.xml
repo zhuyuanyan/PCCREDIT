@@ -38,6 +38,9 @@
 					  <if test="userId != null and userId != '' ">
 						and user_id=#{userId}
 					 </if>
+					 <if test="status != null and status != '' ">
+						and status=#{status}
+					 </if>
 			<![CDATA[
 					) ROW_
 				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 

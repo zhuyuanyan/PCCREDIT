@@ -90,4 +90,13 @@ public class XmNewSqService {
 			return false;
 		}
 	}
+	/*
+	 * 获取通过审批的商圈
+	 */
+	public List<XmNewSq> findPassSq(){
+		XmNewSqFilter filter = new XmNewSqFilter();
+		filter.setStatus(Constant.SQ_APPROVE_TYPE_2);
+		List<XmNewSq> ls = xmNewSqDao.findAllZaByFilter(filter);
+		return ls;
+	}
 }

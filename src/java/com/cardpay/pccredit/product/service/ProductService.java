@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.product.constant.ProductStatusEnum;
 import com.cardpay.pccredit.product.dao.AccessoriesListDao;
 import com.cardpay.pccredit.product.dao.AppendixDictDao;
@@ -133,7 +134,12 @@ public class ProductService {
 	public QueryResult<ProductAttribute> findProductsByFilter(ProductFilter filter) {
 		return commonDao.findObjectsByFilter(ProductAttribute.class, filter);
 	}
-
+	// 查询产品(不包含默认)
+	public QueryResult<ProductAttribute> findProducts(ProductFilter filter) {
+		//查询所有产品（不包含默认）
+		filter.setDefault_type("2");
+		return commonDao.findObjectsByFilter(ProductAttribute.class, filter);
+	}
 	/*
 	 * 根据filter查询已发布产品
 	 */
@@ -466,6 +472,23 @@ public class ProductService {
 			return productDao.findProductsAgencyAssociationCountByOrganizationId(organizationId);
 		}else{
 			return productDao.findProductsCount();
+		}
+	}
+	/*
+	 * 判断是否有进件资格
+	 */
+	public Boolean hasApproveJJ(String userId){
+		String sql = "select * from account_manager_parameter where user_id='"+userId+"'";
+		List<AccountManagerParameter> parameterList = commonDao.queryBySql(AccountManagerParameter.class, sql, null);
+		if(parameterList.size()>0){
+			String jjzg = parameterList.get(0).getJjzg();
+			if(jjzg!="1"){
+				return false;
+			}else{
+				return true;
+			}
+		}else{
+			return false;
 		}
 	}
 }
