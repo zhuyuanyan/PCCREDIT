@@ -15,6 +15,9 @@
 		<result property="createdBy" column="CREATED_BY" />
 		<result property="modifiedTime" column="MODIFIED_TIME" />
 		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="applyQuatoLimit" column="APPLY_QUATO_LIMIT" />
+		<result property="custTypeList" column="CUST_TYPE_LIST" />
+		<result property="customerTypeCode" column="CUSTOMER_TYPE_CODE" />
 	</resultMap>
 
 
