@@ -1,0 +1,98 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<script src="${contextPath}/js/intopieces/intopieces.js"></script>
+ <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" /> 
+<style type="text/css">
+</style>
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				  <div class="dvTab">
+        <ul class="com-tab">
+        	<li class="tab activeTab"><a href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=${parameters.customerId}&intopiecesType=${parameters.intopiecesType}&applyQuota=${parameters.applyQuota}&ApplyIntopiecesSpareType_1=${parameters.ApplyIntopiecesSpareType_1}&ApplyIntopiecesSpareType_2=${parameters.ApplyIntopiecesSpareType_2}&custType=${parameters.custType}&productId=${parameters.productId}">调查报告</a></li>
+            <li class="tab "><a href="${contextPath}/intopieces/intopiecesapprove/bankModel.page??customerId=${parameters.customerId}&intopiecesType=${parameters.intopiecesType}&applyQuota=${parameters.applyQuota}&ApplyIntopiecesSpareType_1=${parameters.ApplyIntopiecesSpareType_1}&ApplyIntopiecesSpareType_2=${parameters.ApplyIntopiecesSpareType_2}&custType=${parameters.custType}&productId=${parameters.productId}">行内模型</a></li>
+         </ul>
+        </div>
+			</div>
+       	<div class="search" style="padding-top:10px">
+          <form id="excelForm" enctype="multipart/form-data" method="post" 
+          	action="${contextPath}/intopieces/intopiecesapprove/reportImport.json?customerId=$!result.filter.customerId&productId=$!result.filter.productId">
+            <div class="form-bd" id="formsId" style="border: 0px; ">
+            <ul>
+              <li style="">
+                <span><b>选择excel文件:</b>&nbsp;&nbsp;<input type="file" id="file" name="file"/></span>
+              </li>
+              
+              <li class="search_button">
+              <input type="button" value="导入" class="search_button_inquiry" style=" line-height: 24px;"
+              	onclick="importCustomer('${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!result.filter.customerId&productId=$!result.filter.productId')"/>
+              </li>
+            </ul>
+            </div>
+          </form>
+        </div>
+      
+          <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">文件名</th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">上传时间</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+               	<col width="10%" />
+              	<col width="30%" />
+              	<col width="20%" />
+              	<col width="20%" />
+              	<col width="20%" />
+            </colgroup>
+            #foreach ($obj in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
+              <td nowrap="nowrap">$!obj.attachment</td>
+              <td nowrap="nowrap">$!obj.customerName</td>
+              <td nowrap="nowrap">$!obj.productName</td>
+              <td nowrap="nowrap">$!obj.createdTime</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        	<a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
+        	<!-- <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a> -->
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+		
+	
+	});
+</script>
+   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+#parse ("common/iframe_page_footer.htm")

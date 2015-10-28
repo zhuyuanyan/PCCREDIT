@@ -29,8 +29,8 @@ public class AccountManagerParameterForm extends BaseForm {
 	private Date modifiedTime;
 	private String applyQuatoLimit;
 	private String custTypeList;
-	
-	
+	private String customerTypeCode;
+	private String jjzg;
 
 	public String getApplyQuatoLimit() {
 		return applyQuatoLimit;
@@ -134,6 +134,22 @@ public class AccountManagerParameterForm extends BaseForm {
 
 	public void setModifiedTime(Date modifiedTime) {
 		this.modifiedTime = modifiedTime;
+	}
+
+	public String getCustomerTypeCode() {
+		return customerTypeCode;
+	}
+
+	public void setCustomerTypeCode(String customerTypeCode) {
+		this.customerTypeCode = customerTypeCode;
+	}
+
+	public String getJjzg() {
+		return jjzg;
+	}
+
+	public void setJjzg(String jjzg) {
+		this.jjzg = jjzg;
 	}
 
 }

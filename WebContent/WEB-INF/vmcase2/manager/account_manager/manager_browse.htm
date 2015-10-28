@@ -24,10 +24,13 @@
           <table>
             <colgroup>
                <col width="5%" />
-              <col width="25%" />
-              <col width="25%" />
-              <col width="25%" />
-              <col  width="20%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="20%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
               
             </colgroup>
             <tr class="title">
@@ -36,6 +39,9 @@
               <th nowrap="nowrap">层级信息</th>
               <th nowrap="nowrap">入职时间</th>
               <th nowrap="nowrap">底薪</th>
+              <th nowrap="nowrap">可申请额度</th>
+              <th nowrap="nowrap">客户类型</th>
+              <th nowrap="nowrap">进件资格</th>
             </tr>
           </table>
         </div>
@@ -43,10 +49,13 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="25%" />
-              <col width="25%" />
-              <col width="25%" />
-              <col  width="20%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="20%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
             </colgroup>
             #foreach ($manager in $result.items)
             <tr>
@@ -56,6 +65,13 @@
                  <td nowrap="nowrap">#dictVal("CUSTOMERMANAGERLEVEL","$!manager.levelInformation")</td>
               <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!manager.entryTime)</td>
               <td nowrap="nowrap">$format.formatNumber($!manager.basePay,2,100)</td>
+              <td nowrap="nowrap">$!manager.applyQuatoLimit</td>
+              <td nowrap="nowrap">$!manager.custTypeList</td>
+              #if($!manager.jjzg=='1')
+              	<td nowrap="nowrap">有</td>
+              #else
+              	<td nowrap="nowrap">无</td>
+              #end
             </tr>
             #end
           </table>
@@ -87,8 +103,129 @@
 		opsObj.deleteUrl = "${modulePath}/delete.json";
 		opsObj.browseUrl = "${modulePath}/browse.page";
 		opsObj.exportUrl = "${modulePath}/export.page";
-
-		prepareOperations(opsObj);
+		//prepareOperations(opsObj);
+		//创建
+		$("#id_create_button").click(function() {
+	            var url = opsObj.createUrl;
+	            if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+	            window.location.href = url;
+	        });
+		//修改
+		 $("#id_change_button").click(function() {
+	         if ($(".checkbox :checked").length == 1) {
+	        	    var rowid = $($(".checkbox :checked")[0]).attr("value");
+	                var url ="";
+	                if(opsObj.changeUrl.indexOf("?")>=0){
+	                	url = opsObj.changeUrl + "&id=" + rowid;
+	                }else{
+	                	url = opsObj.changeUrl + "?id=" + rowid;
+	                }
+	            if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+	            window.location.href = url;
+	         } else {
+	                Dialog.message("请选择一行");
+	         } 
+	        });
+		//删除
+		  $("#id_delete_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+            	var url = opsObj.deleteUrl;
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                Dialog.confirm("确定删除所选行吗？", "提示",
+                function() {
+                	$.ajax({
+        				url : url,
+        				type : "get",
+        				data : "id=" + rowid,//要发送的数据
+        				success : function(data) {
+        					if (data.success) {
+        						topWin.Dialog.message("保存成功！");
+        						window.location.href= contextPath+"/manager/managercreate/browse.page" ;
+        					}
+        					else{
+        						topWin.Dialog.message(data.message);
+        				    }
+        					submitFlag = 0;
+        				}
+        			});
+                 
+                });
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });
+		
+		//查询
+		$("#id_browse_button").click(function() {
+            var url = opsObj.browseUrl;
+            if (opsObj.formObj) {
+                opsObj.formObj.action = opsObj.browseUrl;
+                opsObj.formObj.submit();
+            }
+        });
+		
+		//显示详情
+		 $("#id_display_button").click(function() {
+	         if ($(".checkbox :checked").length == 1) {
+	        	    var rowid = $($(".checkbox :checked")[0]).attr("value");
+	        	    $("#id_display_button").unbind();
+	                var url ="";
+	                if(opsObj.displayUrl.indexOf("?")>=0){
+	                	url = opsObj.displayUrl + "&id=" + rowid;
+	                }else{
+	                	url = opsObj.displayUrl + "?id=" + rowid;
+	                }
+	        	 
+	            if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+	            window.location.href = url;
+	         } else {
+	                Dialog.message("请选择一行");
+	         } 
+	        });
+		
+		
 		
 	});
 </script>
