@@ -231,11 +231,9 @@ public class XM_APPLN_Controller extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/xm_appln/iframe", request);
 		
 		String customerInforId = RequestHelper.getStringValue(request, ID);
-		//TODO查询客户进件产品信息
 		CustomerInforFilter customerInforFilter = new CustomerInforFilter();
 		customerInforFilter.setCustId(customerInforId);
 		QueryResult<ProductAttributeVo> result = customerInforservice.findIntoProdByFilter(customerInforFilter);
-		//JRadPagedQueryResult<ProductAttribute> pagedResult = new JRadPagedQueryResult<ProductAttribute>(customerInforFilter, result);
 		
 		String appId = RequestHelper.getStringValue(request, "aid");
 		if (StringUtils.isNotEmpty(customerInforId)) {

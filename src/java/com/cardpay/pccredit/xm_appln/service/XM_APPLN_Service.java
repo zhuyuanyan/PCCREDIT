@@ -240,6 +240,7 @@ public class XM_APPLN_Service {
 		customerinfor.setSex(xM_APPLN_JBZL_FORM.getGender().equals("M")?"Male":"Female");//modified by nihc 20150702
 		customerinfor.setModifiedBy(user.getId());
 		customerinfor.setModifiedTime(new Date());
+		customerinfor.setMaritalStatus(xM_APPLN_JBZL_FORM.getMar_status());
 		customerInforService.updateCustomerInfor(customerinfor);
 		/*modified by nihc 20150702 end*/
 		//CustomerInfor customerinfor = xM_APPLN_JBZL_FORM.createModel(XM_APPLN_JBZL_FORM.class);
