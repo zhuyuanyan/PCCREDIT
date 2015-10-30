@@ -1,218 +1,581 @@
 #parse ("common/iframe_page_header.htm")
 <script src="${contextPath}/common/js/common/jquery.form.js"></script>
 <script src="${contextPath}/js/intopieces/intopieces.js"></script>
- <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" /> 
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
 <style type="text/css">
 </style>
 <body>
-  <div class="content_main">
-    <div class="contentinner">
-    <div class="tabplace">
-           <ul class="com-tab" >
-            <li class="tab "><a href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=${parameters.customerId}&intopiecesType=${parameters.intopiecesType}&applyQuota=${parameters.applyQuota}&ApplyIntopiecesSpareType_1=${parameters.ApplyIntopiecesSpareType_1}&ApplyIntopiecesSpareType_2=${parameters.ApplyIntopiecesSpareType_2}&custType=${parameters.custType}&productId=${parameters.productId}">调查报告</a></li>
-            <li class="tab activeTab"><a href="${contextPath}/intopieces/intopiecesapprove/bankModel.page??customerId=${parameters.customerId}&intopiecesType=${parameters.intopiecesType}&applyQuota=${parameters.applyQuota}&ApplyIntopiecesSpareType_1=${parameters.ApplyIntopiecesSpareType_1}&ApplyIntopiecesSpareType_2=${parameters.ApplyIntopiecesSpareType_2}&custType=${parameters.custType}&productId=${parameters.productId}">行内模型</a></li>
-         </ul>
-      </div>
-         <div class="forms" id="formsId">
-          	<table class="rule" bordercolor="#CCCCCC" border="1">
-          <caption>有房客户</caption>
-            <colgroup>
-              <col width="10%" />
-              <col width="40%" />
-              <col width="10%" />
-              <col width="40%" />
-            </colgroup>
-            <tr>
-              <td><label for="chineseName">类型:</label></td>
-              <td><select id="house_type" name="house_type" onchange="changeType(this.value)">
-              	<option value="1">房子在本人名下</option>
-              	<option value="2">房子为家庭共有或者配偶独有</option></select>
-              </td>
-              <td colspan="2"></td>
-            </tr>
-            </table>
-       
-        <div id="type_1">
-          	<table class="rule" bordercolor="#CCCCCC" border="1">
-          <caption>资产部分</caption>
-            <colgroup>
-              <col width="10%" />
-              <col width="40%" />
-              <col width="10%" />
-              <col width="40%" />
-            </colgroup>
-            <tr>
-              <td><label for="value_1">房产价值:</label></td>
-              <td><input type="text" id="value_1" name="value_1" value="$!result.value_1" onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_2">车产价值:</label></td>
-              <td><input type="text" id="value_2" name="value_2" value="$!result.value_2" onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-            </tr>
-            <tr>
-              <td><label for="value_3">其他资产:</label></td>
-              <td><input type="text" id="value_3" name="value_13" value="$!result.value_3"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            </table>
-            <table class="rule" bordercolor="#CCCCCC" border="1">
-          <caption>负债部分</caption>
-            <colgroup>
-              <col width="10%" />
-              <col width="40%" />
-              <col width="10%" />
-              <col width="40%" />
-            </colgroup>
-            <tr>
-              <td><label for="value_4">征信贷款剩余金额:</label></td>
-              <td><input type="text" id="value_4" name="value_4" value="$!result.value_4"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_5">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度(取最大值):</label></td>
-              <td><input type="text" id="value_5" name="value_5" value="$!result.value_5"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            <tr>
-              <td><label for="value_6">准贷记卡总授信额度:</label></td>
-              <td><input type="text" id="value_6" name="value_6" value="$!result.value_6"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_7">对外担保金额（*0.5）:</label></td>
-              <td><input type="text" id="value_7" name="value_7" value="$!result.value_7"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            <tr>
-              <td><label for="value_7">或有负债:</label></td>
-              <td><input type="text" id="value_7" name="value_7" value="$!result.value_7"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            </table>
-            <table class="rule" bordercolor="#CCCCCC" border="1">
-          <caption>配偶负债</caption>
-            <colgroup>
-              <col width="10%" />
-              <col width="40%" />
-              <col width="10%" />
-              <col width="40%" />
-            </colgroup>
-            <tr>
-              <td><label for="value_8">征信贷款剩余金额:</label></td>
-              <td><input type="text" id="value_8" name="value_8" value="$!result.value_8"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_9">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度(取最大值):</label></td>
-              <td><input type="text" id="value_9" name="value_9" value="$!result.value_9"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            <tr>
-              <td><label for="value_10">准贷记卡总授信额度:</label></td>
-              <td><input type="text" id="value_10" name="value_10" value="$!result.value_10"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_11">对外担保金额（*0.5）:</label></td>
-              <td><input type="text" id="value_11" name="value_11" value="$!result.value_11"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            <tr>
-              <td><label for="value_12">或有负债:</label></td>
-              <td><input type="text" id="value_12" name="value_12" value="$!result.value_12"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            </table>
-        </div>
-            <table class="rule" bordercolor="#CCCCCC" border="1">
-          <caption>净资产</caption>
-            <colgroup>
-              <col width="10%" />
-              <col width="40%" />
-              <col width="10%" />
-              <col width="40%" />
-            </colgroup>
-            <tr>
-              <td><label for="value_8">净资产:</label></td>
-              <td><input type="text" id="asset_1" name="asset_1" value="$!result.asset_1"  readonly/></td>
-              <td></td>
-              <td></td>
-            </table>
-      </div>
-      <div id="type_2" disabled>
-        	<table class="rule" bordercolor="#CCCCCC" border="1">
-          <caption>资产部分</caption>
-            <colgroup>
-              <col width="10%" />
-              <col width="40%" />
-              <col width="10%" />
-              <col width="40%" />
-            </colgroup>
-            <tr>
-              <td><label for="value_1">房产价值:</label></td>
-              <td><input type="text" id="value_1" name="value_1" value="$!result.value_1" onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_2">车产价值:</label></td>
-              <td><input type="text" id="value_2" name="value_2" value="$!result.value_2" onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-            </tr>
-            <tr>
-              <td><label for="value_3">其他资产:</label></td>
-              <td><input type="text" id="value_3" name="value_13" value="$!result.value_3"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            </table>
-            <table class="rule" bordercolor="#CCCCCC" border="1">
-          <caption>负债部分</caption>
-            <colgroup>
-              <col width="10%" />
-              <col width="40%" />
-              <col width="10%" />
-              <col width="40%" />
-            </colgroup>
-            <tr>
-              <td><label for="value_4">征信贷款剩余金额:</label></td>
-              <td><input type="text" id="value_4" name="value_4" value="$!result.value_4"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_5">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度(取最大值):</label></td>
-              <td><input type="text" id="value_5" name="value_5" value="$!result.value_5"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            <tr>
-              <td><label for="value_6">准贷记卡总授信额度:</label></td>
-              <td><input type="text" id="value_6" name="value_6" value="$!result.value_6"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_7">对外担保金额（*0.5）:</label></td>
-              <td><input type="text" id="value_7" name="value_7" value="$!result.value_7"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            <tr>
-              <td><label for="value_7">或有负债:</label></td>
-              <td><input type="text" id="value_7" name="value_7" value="$!result.value_7"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            </table>
-            <table class="rule" bordercolor="#CCCCCC" border="1">
-          <caption>配偶负债</caption>
-            <colgroup>
-              <col width="10%" />
-              <col width="40%" />
-              <col width="10%" />
-              <col width="40%" />
-            </colgroup>
-            <tr>
-              <td><label for="value_8">征信贷款剩余金额:</label></td>
-              <td><input type="text" id="value_8" name="value_8" value="$!result.value_8"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_9">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度(取最大值):</label></td>
-              <td><input type="text" id="value_9" name="value_9" value="$!result.value_9"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            <tr>
-              <td><label for="value_10">准贷记卡总授信额度:</label></td>
-              <td><input type="text" id="value_10" name="value_10" value="$!result.value_10"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-              <td><label for="value_11">对外担保金额（*0.5）:</label></td>
-              <td><input type="text" id="value_11" name="value_11" value="$!result.value_11"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            <tr>
-              <td><label for="value_12">或有负债:</label></td>
-              <td><input type="text" id="value_12" name="value_12" value="$!result.value_12"  onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))"/></td>
-            </tr>
-            </table>
-        </div>
-            <table class="rule" bordercolor="#CCCCCC" border="1">
-          <caption>净资产</caption>
-            <colgroup>
-              <col width="10%" />
-              <col width="40%" />
-              <col width="10%" />
-              <col width="40%" />
-            </colgroup>
-            <tr>
-              <td><label for="value_8">净资产:</label></td>
-              <td><input type="text" id="asset_1" name="asset_1" value="$!result.asset_1"  readonly/></td>
-              <td></td>
-              <td></td>
-            </table>
-      </div>
-       </div>
-      <div class="pagebar">
-        <div class="controlbtn">
-        	<a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
-        	<!-- <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a> -->
-        </div>
-        <div class="clear"></div>
-      </div>
-    </div>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="tabplace">
+				<ul class="com-tab">
+					<li class="tab "><a
+						href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=${parameters.customerId}&intopiecesType=${parameters.intopiecesType}&applyQuota=${parameters.applyQuota}&ApplyIntopiecesSpareType_1=${parameters.ApplyIntopiecesSpareType_1}&ApplyIntopiecesSpareType_2=${parameters.ApplyIntopiecesSpareType_2}&custType=${parameters.custType}&productId=${parameters.productId}">调查报告</a></li>
+					<li class="tab activeTab"><a
+						href="${contextPath}/intopieces/intopiecesapprove/bankModel.page??customerId=${parameters.customerId}&intopiecesType=${parameters.intopiecesType}&applyQuota=${parameters.applyQuota}&ApplyIntopiecesSpareType_1=${parameters.ApplyIntopiecesSpareType_1}&ApplyIntopiecesSpareType_2=${parameters.ApplyIntopiecesSpareType_2}&custType=${parameters.custType}&productId=${parameters.productId}">行内模型</a></li>
+				</ul>
+			</div>
+			<!--*******************************************************有房客户********************************************************  -->
+			#if(${parameters.ApplyIntopiecesSpareType_1}=='2')
+			<div class="forms" id="type_1">
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>有房客户</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="chineseName">类型:</label></td>
+						<td><select id="house_type" name="house_type"
+							onchange="changeType(this.value)">
+								<option value="1">房子在本人名下</option>
+								<option value="2">房子为家庭共有或者配偶独有</option>
+						</select></td>
+						<td colspan="2"></td>
+					</tr>
+				</table>
+			</div>
+			<div class="forms">
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>资产部分</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_1">房产价值:</label></td>
+						<td><input type="text" id="value_1" name="value_1"
+							value="$!result.value_1"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_2">车产价值:</label></td>
+						<td><input type="text" id="value_2" name="value_2"
+							value="$!result.value_2"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_3">其他资产:</label></td>
+						<td><input type="text" id="value_3" name="value_13"
+							value="$!result.value_3"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>负债部分</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_4">征信贷款剩余金额:</label></td>
+						<td><input type="text" id="value_4" name="value_4"
+							value="$!result.value_4"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_5">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度(取最大值):</label></td>
+						<td><input type="text" id="value_5" name="value_5"
+							value="$!result.value_5"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_6">准贷记卡总授信额度:</label></td>
+						<td><input type="text" id="value_6" name="value_6"
+							value="$!result.value_6"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_7">对外担保金额（*0.5）:</label></td>
+						<td><input type="text" id="value_7" name="value_7"
+							value="$!result.value_7"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_7">或有负债:</label></td>
+						<td><input type="text" id="value_7" name="value_7"
+							value="$!result.value_7"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>配偶负债</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_8">征信贷款剩余金额:</label></td>
+						<td><input type="text" id="value_8" name="value_8"
+							value="$!result.value_8"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_9">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度(取最大值):</label></td>
+						<td><input type="text" id="value_9" name="value_9"
+							value="$!result.value_9"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_10">准贷记卡总授信额度:</label></td>
+						<td><input type="text" id="value_10" name="value_10"
+							value="$!result.value_10"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_11">对外担保金额（*0.5）:</label></td>
+						<td><input type="text" id="value_11" name="value_11"
+							value="$!result.value_11"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_12">或有负债:</label></td>
+						<td><input type="text" id="value_12" name="value_12"
+							value="$!result.value_12"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+			</div>
+			#end
+			#if(${parameters.ApplyIntopiecesSpareType_1}=='1')
+			<!--*******************************************************无房客户********************************************************  -->
+			<div class="forms" id="type_2">
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>无房客户</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+				</table>
+			</div>
+			<div class="forms" id="type_3">
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>散件</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_13">日均流水是否大于一万:</label></td>
+						<td><select id="value_13" name="value_13">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+						<td><label for="value_14">年龄是否为35-50岁:</label></td>
+						<td><select id="value_14" name="value_14">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><label for="value_15">是否岛内，思明区/湖里区:</label></td>
+						<td><select id="value_15" name="value_15">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+						<td><label for="value_16">是否已婚:</label></td>
+						<td><select id="value_16" name="value_16">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><label for="value_17">是否有征信记录:</label></td>
+						<td><select id="value_17" name="value_17">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+						<td><label for="value_18">征信贷记卡使用情况，是否低于70%:</label></td>
+						<td><select id="value_18" name="value_18">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><label for="value_17">是否有征信记录:</label></td>
+						<td><select id="value_17" name="value_17">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+						<td><label for="value_18">征信贷记卡使用情况，是否低于70%:</label></td>
+						<td><select id="value_18" name="value_18">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><label for="value_17">是否有征信记录:</label></td>
+						<td><select id="value_17" name="value_17">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+						<td><label for="value_18">征信贷记卡使用情况，是否低于70%:</label></td>
+						<td><select id="value_18" name="value_18">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><label for="value_19">是否女性:</label></td>
+						<td><select id="value_19" name="value_19">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+						<td><label for="value_20">是否民生行业:</label></td>
+						<td><select id="value_20" name="value_20">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><label for="value_21">是否我行业务品种:</label></td>
+						<td><select id="value_21" name="value_21">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+						<td><label for="value_22">是否在我行有贷款余额:</label></td>
+						<td><select id="value_22" name="value_22">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td><label for="value_23">车产价值是否大于5万:</label></td>
+						<td><select id="value_23" name="value_23">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+						<td><label for="value_24">个体户经营年限是否大于1年:</label></td>
+						<td><select id="value_24" name="value_24">
+								<option value="1">是</option>
+								<option value="2">否</option>
+						</select></td>
+					</tr>
+				</table>
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>在我行有存款</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_25">我行日均流水:</label></td>
+						<td><input type="text" id="value_25" name="value_25"
+							value="$!result.value_25"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>持我行股金</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_26">股金价值:</label></td>
+						<td><input type="text" id="value_26" name="value_26"
+							value="$!result.value_26"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_27">家庭在我行授信余额:</label></td>
+						<td><input type="text" id="value_27" name="value_27"
+							value="$!result.value_27"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+			</div>
+			#end
+			#if(${parameters.ApplyIntopiecesSpareType_1}=='3')
+			<!--*******************************************************担保客户********************************************************  -->
+			<div class="forms" id="type_4">
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>担保客户</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="chineseName">类型:</label></td>
+						<td><select id="house_type" name="house_type"
+							onchange="changeType(this.value)">
+								<option value="1">外地无房客户（担保人必须为厦门本地有房客户）</option>
+								<option value="2">本地客户，担保人有房</option>
+								<option value="3">本地客户，担保人无房</option>
+						</select></td>
+						<td colspan="2"></td>
+					</tr>
+				</table>
+			</div>
+			<div id="type_5" class="forms" >
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>资产</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_1">担保人房产价值:</label></td>
+						<td><input type="text" id="value_28" name="value_28"
+							value="$!result.value_28"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_2">担保人车产价值:</label></td>
+						<td><input type="text" id="value_29" name="value_29"
+							value="$!result.value_29"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_30">担保人其他资产:</label></td>
+						<td><input type="text" id="value_30" name="value_30"
+							value="$!result.value_30"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_31">申请人资产:</label></td>
+						<td><input type="text" id="value_31" name="value_31"
+							value="$!result.value_31"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>担保人负债</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_32">征信贷款剩余金额:</label></td>
+						<td><input type="text" id="value_32" name="value_32"
+							value="$!result.value_32"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_33">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度（取最大值）:</label></td>
+						<td><input type="text" id="value_33" name="value_33"
+							value="$!result.value_33"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_34">准贷记卡总授信额度:</label></td>
+						<td><input type="text" id="value_34" name="value_34"
+							value="$!result.value_34"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_35">对外担保金额（*0.5）:</label></td>
+						<td><input type="text" id="value_35" name="value_35"
+							value="$!result.value_35"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>申请人负债</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_36">征信贷款剩余金额:</label></td>
+						<td><input type="text" id="value_36" name="value_36"
+							value="$!result.value_36"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_37">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度（取最大值）:</label></td>
+						<td><input type="text" id="value_37" name="value_37"
+							value="$!result.value_37"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_38">准贷记卡总授信额度:</label></td>
+						<td><input type="text" id="value_38" name="value_38"
+							value="$!result.value_38"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_39">对外担保金额（*0.5）:</label></td>
+						<td><input type="text" id="value_39" name="value_39"
+							value="$!result.value_39"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+			</div>
+			<div id="type_6" class="forms" >
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>资产</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_1">担保人房产价值:</label></td>
+						<td><input type="text" id="value_28" name="value_28"
+							value="$!result.value_28"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_2">担保人车产价值:</label></td>
+						<td><input type="text" id="value_29" name="value_29"
+							value="$!result.value_29"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_30">担保人其他资产:</label></td>
+						<td><input type="text" id="value_30" name="value_30"
+							value="$!result.value_30"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_31">申请人资产:</label></td>
+						<td><input type="text" id="value_31" name="value_31"
+							value="$!result.value_31"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>担保人负债</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_32">征信贷款剩余金额:</label></td>
+						<td><input type="text" id="value_32" name="value_32"
+							value="$!result.value_32"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_33">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度（取最大值）:</label></td>
+						<td><input type="text" id="value_33" name="value_33"
+							value="$!result.value_33"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_34">准贷记卡总授信额度:</label></td>
+						<td><input type="text" id="value_34" name="value_34"
+							value="$!result.value_34"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_35">对外担保金额（*0.5）:</label></td>
+						<td><input type="text" id="value_35" name="value_35"
+							value="$!result.value_35"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>申请人负债</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_36">征信贷款剩余金额:</label></td>
+						<td><input type="text" id="value_36" name="value_36"
+							value="$!result.value_36"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_37">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度（取最大值）:</label></td>
+						<td><input type="text" id="value_37" name="value_37"
+							value="$!result.value_37"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+					<tr>
+						<td><label for="value_38">准贷记卡总授信额度:</label></td>
+						<td><input type="text" id="value_38" name="value_38"
+							value="$!result.value_38"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td><label for="value_39">对外担保金额（*0.5）:</label></td>
+						<td><input type="text" id="value_39" name="value_39"
+							value="$!result.value_39"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+					</tr>
+				</table>
+			</div>
+			<div id="type_7" class="forms" >
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>担保人数量</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_1">担保人数量:</label></td>
+						<td><input type="text" id="value_28" name="value_28"
+							value="$!result.value_28"
+							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+				</table>
+			</div>
+			#end
+			#if(${parameters.ApplyIntopiecesSpareType_1}=='4')
+			<!--*******************************************************d)	优质行业********************************************************  -->
+			<div class="forms" id="type_8">
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>优质行业</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+				</table>
+			</div>
+			<div class="forms" id="type_9">
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>申请人职位</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_13">申请人职位:</label></td>
+						<td><select id="value_13" name="value_13">
+								<option value="1">一般员工</option>
+								<option value="2">中层领导</option>
+								<option value="3">高层领导</option>
+						</select></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+			#end
+			<div class="forms">
+				<table class="rule" bordercolor="#CCCCCC" border="1">
+					<caption>结论</caption>
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td><label for="value_8">最高总额度:</label></td>
+						<td><input type="text" id="asset_1" name="asset_1"
+							value="$!result.asset_1" readonly /></td>
+						<td></td>
+						<td></td>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="pagebar">
+		<div class="controlbtn">
+			<a id="id_pre_button" class="btn_g" href="javascript:history.back();"
+				title="上一步">上一步</a>
+			<!-- <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a> -->
+		</div>
+		<div class="clear"></div>
+	</div>
 </body>
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
@@ -221,9 +584,8 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		prepareOperations(opsObj);
-		
-	
+
 	});
 </script>
-   <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
+<script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
 #parse ("common/iframe_page_footer.htm")
