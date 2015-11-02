@@ -2,7 +2,7 @@
 {
 font-family: 'Microsoft Yahei',verdana;
 font-size:14px;
-height: 36px;
+height: 60px;
 position: absolute;
 width:98%;
 margin-top:5px;
@@ -11,6 +11,7 @@ margin-top:5px;
 {
 color: rgb(106, 106, 106);
 }
+
 .tab
 {
 list-style-type:none;
@@ -66,4 +67,4 @@ text-decoration:none;
 {
 text-decoration:none;
 }
-.tabplace{ height:34px; line-height:39px; margin:15px 15px 0 13px; }
+.tabplace{line-height:39px; margin:15px 15px 0 13px; }
