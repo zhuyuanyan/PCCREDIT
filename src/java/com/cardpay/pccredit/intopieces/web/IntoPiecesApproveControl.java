@@ -174,11 +174,13 @@ public class IntoPiecesApproveControl extends BaseController {
 			JRadReturnMap returnMap = new JRadReturnMap();
 			if (returnMap.isSuccess()) {
 				try {
-					String customerId = request.getParameter("id");
 					//进件方式
+					String customerId = request.getParameter("customerId");
 					String intopiecesType = request.getParameter("intopiecesType");
 					String applyQuota = request.getParameter("applyQuota");
-					String ApplyIntopiecesSpareType = request.getParameter("ApplyIntopiecesSpareType");
+					String ApplyIntopiecesSpareType_1 = request.getParameter("ApplyIntopiecesSpareType_1");
+					String ApplyIntopiecesSpareType_2 = request.getParameter("ApplyIntopiecesSpareType_2");
+					String productId = request.getParameter("productId");
 					String custType = request.getParameter("custType");
 					
    				 
@@ -190,7 +192,12 @@ public class IntoPiecesApproveControl extends BaseController {
 						returnMap.put("message","此客户正在申请进件，无法再次申请!");
 					}else{
 						//设置流程开始
-						xM_APPLN_Service.saveApply(customerId,intopiecesType,ApplyIntopiecesSpareType,custType,applyQuota);
+						xM_APPLN_Service.saveApply(customerId,
+												   intopiecesType,
+												   ApplyIntopiecesSpareType_1,
+												   custType,
+												   applyQuota,
+												   productId);
 						
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.addGlobalMessage(CREATE_SUCCESS);
@@ -295,11 +302,29 @@ public class IntoPiecesApproveControl extends BaseController {
 		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView reportImport(@ModelAttribute AddIntoPiecesFilter filter,HttpServletRequest request) {
 			filter.setRequest(request);
+			
+			String customerId =request.getParameter("customerId");
+			String intopiecesType =request.getParameter("intopiecesType");
+			String applyQuota =request.getParameter("applyQuota");
+			String ApplyIntopiecesSpareType_1 =request.getParameter("ApplyIntopiecesSpareType_1");
+			String ApplyIntopiecesSpareType_2 =request.getParameter("ApplyIntopiecesSpareType_2");
+			String custType =request.getParameter("custType");
+			String productId =request.getParameter("productId");
+			
 			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer(filter);
 			JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
 			JRadModelAndView mv = new JRadModelAndView("/intopieces/report_import",request);
 			mv.addObject(PAGED_RESULT, pagedResult);
 			mv.addObject("parameters", filter);
+			
+			mv.addObject("customerId", customerId);
+			mv.addObject("intopiecesType", intopiecesType);
+			mv.addObject("applyQuota", applyQuota);
+			mv.addObject("ApplyIntopiecesSpareType_1", ApplyIntopiecesSpareType_1);
+			mv.addObject("ApplyIntopiecesSpareType_2", ApplyIntopiecesSpareType_2);
+			mv.addObject("custType", custType);
+			mv.addObject("productId", productId);
+
 			return mv;
 		}
 		//导入调查报告
