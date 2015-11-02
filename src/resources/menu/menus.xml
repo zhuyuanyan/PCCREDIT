@@ -6,8 +6,8 @@
 		    <menu id="030001" name="intopiecesapprove" title="申请进件" url="/intopieces/intopiecesapprove/browseProduct.page" img="" operations="browse"></menu>
 		    <menu id="030002" name="intopiecesreceive" title="接收进件" url="/intopieces/intopiecesrecieve/recieve.page" img="" operations="browse"></menu>
 			<menu id="030003" name="intopiecessearch" title="查询进件" url="/intopieces/intopiecessearch/search.page" img="" operations="browse|viewpieces"></menu>
-			<menu id="030004" name="intopiecesluru" title="录入进件" url="/intopieces/intopiecesluru/luru.page" img="" operations="browse"></menu>
-			<menu id="030005" name="intopiecesfuhe" title="复核进件" url="/intopieces/intopiecesfuhe/fuhe.page" img="" operations="browse"></menu>
+			<!-- <menu id="030004" name="intopiecesluru" title="录入进件" url="/intopieces/intopiecesluru/luru.page" img="" operations="browse"></menu>
+			<menu id="030005" name="intopiecesfuhe" title="复核进件" url="/intopieces/intopiecesfuhe/fuhe.page" img="" operations="browse"></menu> -->
 			<!-- <menu id="030020" name="applyintopieces" title="申请审批进件" url="/intopieces/applyintopieces/browse.page" img="" operations="create|change|delete|display|browse"></menu> -->
 			<menu id="030020" name="applyintopiecewait" title="评审岗评估" url="/intopieces/applyintopiecewait/browse.page" img="" operations="approve|applyapprove|approvelog|browse"></menu>
 			<menu id="030021" name="applyintopieceEnd" title="终审岗评估" url="/intopieces/applyintopieceend/browse.page" img="" operations="approve|applyapprove|approvelog|browse"></menu>
@@ -71,6 +71,13 @@
 			<menu id="070017" name="information" title="信息员信息列表" url="/manager/information/browse.page" img="" operations="create|change|relevancecustomer|assess|browse"/>
 			<menu id="070018" name="informationmaintenance" title="信息员维护计划列表" url="/manager/informationmaintenance/browse.page" img="" operations="create|change|display|browse"/>
 			
+		</menu>
+		
+		<menu id="071000" name="adjustamount" title="客户调额流程" url="" img="images/icon_sys.gif" operations="">
+			<menu id="071001" name="customerprofilegenerate" title="客户调额生成" url="/customer/te/browse.page" img="" operations="change|display|browse"/>
+			<menu id="071002" name="customertunetobeaudited" title="客户调额待审核" url="/manager/weeklyaccount/browse.page" img="" operations="change|display|browse"/>
+			<menu id="071003" name="customercreditmanagement" title="客户额度管理" url="/manager/weeklyaccount/browse.page" img="" operations="change|display|browse"/>
+			<menu id="071004" name="pukatemplimitassessment" title="普卡临时额度评估" url="/manager/weeklyaccount/browse.page" img="" operations="change|display|browse"/>
 		</menu>
 		
 		<menu id="081000" name="riskcontrol" title="综合风控管理" operations=""> 

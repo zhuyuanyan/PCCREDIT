@@ -240,6 +240,7 @@ public class XM_APPLN_Service {
 		customerinfor.setSex(xM_APPLN_JBZL_FORM.getGender().equals("M")?"Male":"Female");//modified by nihc 20150702
 		customerinfor.setModifiedBy(user.getId());
 		customerinfor.setModifiedTime(new Date());
+		customerinfor.setMaritalStatus(xM_APPLN_JBZL_FORM.getMar_status());
 		customerInforService.updateCustomerInfor(customerinfor);
 		/*modified by nihc 20150702 end*/
 		//CustomerInfor customerinfor = xM_APPLN_JBZL_FORM.createModel(XM_APPLN_JBZL_FORM.class);
@@ -708,7 +709,8 @@ public class XM_APPLN_Service {
 						  String intopiecesType,
 						  String ApplyIntopiecesSpareType,
 						  String custType,
-						  String applyQuota){
+						  String applyQuota,
+						  String productId){
 		//设置申请
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
 		//customerApplicationInfo.setStatus(status);
@@ -728,7 +730,7 @@ public class XM_APPLN_Service {
 		ProductFilter filter = new ProductFilter();
 		filter.setDefault_type(Constant.DEFAULT_TYPE);
 		ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
-		customerApplicationInfo.setProductId(productAttribute.getId());
+		customerApplicationInfo.setProductId(productId);
 		//modified by nihc 20150702 begin
 		customerApplicationInfo.setCreatedTime(new Date());
 		//modified by nihc 20150702 end

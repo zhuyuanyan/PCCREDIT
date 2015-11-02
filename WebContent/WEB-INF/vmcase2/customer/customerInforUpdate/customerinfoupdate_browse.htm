@@ -68,7 +68,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id"
                   #if ($!request.getParameter("recordId") == $customer.id) checked="checked" #end /></td>
               <td nowrap="nowrap">$!customer.chineseName</td>
-              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td>
+                <td nowrap="nowrap">#dictVal("RACE_CODE",$!customer.cardType)</td>
               <td nowrap="nowrap">$!customer.cardId</td>
               <td nowrap="nowrap">$!customer.residentialAddress</td>
               <td nowrap="nowrap">$!customer.telephone</td>

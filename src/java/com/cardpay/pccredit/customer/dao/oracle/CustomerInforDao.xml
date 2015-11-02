@@ -326,13 +326,19 @@
 		SELECT * FROM
 		(SELECT ROW_.*,ROWNUM ROWNUM_
 		FROM (
-			  select p.product_name as productName,p.id,t.id as appId,rownum+6 as countNum
+			  select p.product_name as productName,
+			  		 p.id,t.id as appId,
+			  		 rownum+6 as countNum,
+			  		 p.ed,
+			  		 p.lv,
+			  		 p.nf,
+			  		 to_char(p.end_time,'yyyyMMdd') as endTime
 			  from customer_application_info t, 
 			  	   product_attribute p
 			  where t.PRODUCT_ID = p.id
 				<if test="custId != null and custId != '' ">
-					<!-- AND customer_id = #{custId} -->
-					and t.customer_id = '8b978bab4c55124e014c5512c7271aef'
+					 AND customer_id = #{custId}
+					<!-- and t.customer_id = '8b978bab4c55124e014c5512c7271aef' -->
 				</if>
 				
 				<if test="appId != null and appId != '' ">
@@ -356,8 +362,8 @@
 	     from customer_application_info t, product_attribute p
 		 where t.PRODUCT_ID = p.id
 		 <if test="custId != null and custId != '' ">
-			<!-- AND customer_id = #{custId} -->
-				and customer_id = '8b978bab4c55124e014c5512c7271aef'
+			 AND customer_id = #{custId}
+				<!-- and customer_id = '8b978bab4c55124e014c5512c7271aef' -->
 		 </if>
 	</select>
 

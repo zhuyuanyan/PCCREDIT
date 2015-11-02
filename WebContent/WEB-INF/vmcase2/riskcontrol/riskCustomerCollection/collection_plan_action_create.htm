@@ -7,7 +7,8 @@
         <div class="title">新增催收实施计划</div>
       </div>
       <form id="id_module_form" action="${modulePath}/insertAction.json">
-      <input type="hidden" name="collectionPlanId" value="$!collectionPlanId">
+       <input type="hidden" name="customerId" value="$!customerId">
+       <input type="hidden" name="type" value="$!type">
         <div class="forms" id="formsId">
           <table class="rule">
             <colgroup>
@@ -47,14 +48,7 @@
               #dict("SystemRole","")
               </select></td>
             </tr>
-            <tr hidden="hidden">
-              <td>承诺还款时间:</td>
-              <td><input type="text" id="collectionPromiseDate" name="collectionPromiseDate" disabled="disabled" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/>
-              <td>&nbsp;</td>
-              <td>承诺还款金额:</td>
-              <td><input type="text" id="collectionAmount" name="collectionAmount" disabled="disabled" />
-              </td>
-            </tr>
+          
           </table>
         </div>
       </form>
@@ -68,41 +62,43 @@
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#validator($formName)
-	$(document).ready(function() {	
-		$("#id_save_button").click(function() {
-	        if ($($formName).valid()) {
-	          var formjson = $($formName).serialize();
-	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
-	            if (data.success) {
-	            	var url = "";
-	            	if(data.message == 'continuecollection' || data.message == 'repaymentcommitments'){
-	            		url = "${modulePath}/browse.page?recordId="+data.recordId;
-	            	}else{
-	            		url = "${modulePath}/display.page?id="+data.id+"&recordId="+data.recordId;
-	            	}
-	            	navigateTo(url);
-	            }
-	          });
-	        }
-		});
-	});
-	OpenPromiseDate();
-	function OpenPromiseDate(){
-		var endResult = $("#endResult").val();
-		var collectionPromiseDate = $("#collectionPromiseDate");
-		var collectionAmount = $("#collectionAmount");
-		var tr = collectionPromiseDate.closest("tr");
-		if(endResult == 'repaymentcommitments'){
-			tr.show()
-			collectionPromiseDate.removeAttr("disabled");
-			collectionAmount.removeAttr("disabled")
-		}else{
-			tr.hide();
-			collectionPromiseDate.attr("disabled","true");
-			collectionAmount.attr("disabled","true")
+	
+	//保存
+	 $("#id_save_button").click(function() {
+		if(submitFlag == 1){
+			alert("请勿重复提交!")
+			return;
 		}
-	}
+		submitFlag = 1;
+		if ($($formName).valid()) {
+			var formjson = $($formName).serialize();
+   	        var url =contextPath + "/daihou/nplsinfomationinfo/insert.json?id=$!customerId&type=$!type";
+
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+						if(data.type == "badAssets"){
+							window.location.href= contextPath+"/daihou/nplsinfomationinfo/browse.page";
+						}else if(data.type == "overdue"){
+							window.location.href= contextPath+"/daihou/riskcustomeroverdueinfo/browse.page";
+						}else{
+							window.location.href= contextPath+"/daihou/activecardinfo/browse.page";
+						}
+					}else{
+						topWin.Dialog.message(data.message);
+				    }
+					submitFlag = 0;
+				}
+			});
+				
+		}else{
+			submitFlag = 0;
+		}
+    });
   </script>
 </body>
 #parse ("common/iframe_page_footer.htm")
