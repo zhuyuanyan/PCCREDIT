@@ -9,25 +9,26 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
-				  <div class="dvTab">
-        <ul class="com-tab">
-       <!-- <input type ="text" id ="customerId" value ="$!customerId"/><br>
-       <input type ="text" id ="intopiecesType" value ="$!intopiecesType"/>
-       <input type ="text" id ="applyQuota" value ="$!applyQuota"/>
-       <input type ="text" id ="ApplyIntopiecesSpareType_1" value ="$!ApplyIntopiecesSpareType_1"/>
-       <input type ="text" id ="ApplyIntopiecesSpareType_2" value ="$!ApplyIntopiecesSpareType_2"/>
-       <input type ="text" id ="custType" value ="$!custType"/>
-       <input type ="text" id ="productId" value ="$!productId"/> -->
-       	<li class="tab activeTab"><a href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=${parameters.customerId}&intopiecesType=$!intopiecesType&applyQuota=${parameters.applyQuota}&ApplyIntopiecesSpareType_1=${parameters.ApplyIntopiecesSpareType_1}&ApplyIntopiecesSpareType_2=${parameters.ApplyIntopiecesSpareType_2}&custType=${parameters.custType}&productId=${parameters.productId}">调查报告</a></li>
-        	#if($!intopiecesType == '1')
-            	<li class="tab "><a href="${contextPath}/intopieces/intopiecesapprove/bankModel.page??customerId=${parameters.customerId}&intopiecesType=$!intopiecesType&applyQuota=${parameters.applyQuota}&ApplyIntopiecesSpareType_1=${parameters.ApplyIntopiecesSpareType_1}&ApplyIntopiecesSpareType_2=${parameters.ApplyIntopiecesSpareType_2}&custType=${parameters.custType}&productId=${parameters.productId}">行内模型</a></li>
-         	#end
-         </ul>
-        </div>
+				<div class="dvTab">
+		          <ul class="com-tab">
+		      	  <li class="tab activeTab"><a href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId">调查报告</a></li>
+		        	#if($!intopiecesType == '1')
+		            	<li class="tab "><a href="${contextPath}/intopieces/intopiecesapprove/bankModel.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId&localExeclId=$!localExeclId">行内模型</a></li>
+		         	#end
+		          </ul>
+		        </div>
 			</div>
        	<div class="search" style="padding-top:10px">
           <form id="excelForm" enctype="multipart/form-data" method="post" 
           	action="${contextPath}/intopieces/intopiecesapprove/reportImport.json?customerId=$!result.filter.customerId&productId=$!result.filter.productId">
+           <input type ="hidden" id ="customerId" value ="$!customerId"/>
+	       <input type ="hidden" id ="intopiecesType" value ="$!intopiecesType"/>
+	       <input type ="hidden" id ="applyQuota" value ="$!applyQuota"/>
+	       <input type ="hidden" id ="ApplyIntopiecesSpareType_1" value ="$!ApplyIntopiecesSpareType_1"/>
+	       <input type ="hidden" id ="ApplyIntopiecesSpareType_2" value ="$!ApplyIntopiecesSpareType_2"/>
+	       <input type ="hidden" id ="custType" value ="$!custType"/>
+	       <input type ="hidden" id ="productId" value ="$!productId"/> 
+	       <input type ="hidden" id ="localExeclId" value ="$!localExeclId"/>
             <div class="form-bd" id="formsId" style="border: 0px; ">
             <ul>
               <li style="">
@@ -36,7 +37,7 @@
               
               <li class="search_button">
               <input type="button" value="导入" class="search_button_inquiry" style=" line-height: 24px;"
-              	onclick="importCustomer('${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!result.filter.customerId&productId=$!result.filter.productId&intopiecesType=$!intopiecesType')"/>
+              	onclick="importCustomer('${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!result.filter.customerId&productId=$!result.filter.productId&intopiecesType=$!intopiecesType&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType')"/>
               </li>
             </ul>
             </div>
@@ -86,7 +87,7 @@
         <div class="controlbtn">
         	<a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
         	#if($!intopiecesType != '1')
-            <a id="id_submit_button" onclick="aa()" class="btn_g" href="javascript:void(0);" title="提交进件">提交进件</a>
+            <a id="id_submit_button" onclick="submit()" class="btn_g" href="javascript:void(0);" title="提交进件">提交进件</a>
          	#end
         </div>
         #parse ("common/pagination.htm")
@@ -104,21 +105,19 @@
 	});
 	
 	//提交进件
-	function aa() {
+	function submit() {
+		if($("#localExeclId").val() == ''){
+			alert("请导入调查模板！");
+			return;
+		}
 		if (submitFlag == 1) {
 			alert("请勿重复提交!")
 			return;
 		}
 		submitFlag = 1;
-		var customerId = $("#customerId").val();
-		var intopiecesType = $("#intopiecesType").val();
-		var applyQuota = $("#applyQuota").val();
-		var ApplyIntopiecesSpareType_1 = $("#ApplyIntopiecesSpareType_1").val();
-		var ApplyIntopiecesSpareType_2 = $("#ApplyIntopiecesSpareType_2").val();
-		var custType = $("#custType").val();
-		var productId = $("#productId").val();
 		
 		var url = "${modulePath}/xm_appln_page0_apply.json";
+		
 		$.ajax({
 			url : url,
 			type : "get",
@@ -129,12 +128,13 @@
 				"ApplyIntopiecesSpareType_1" : $("#ApplyIntopiecesSpareType_1").val(),
 				"ApplyIntopiecesSpareType_2" : $("#ApplyIntopiecesSpareType_2").val(),
 				"custType" : $("#custType").val(),
-				"productId" : $("#productId").val()
+				"productId" : $("#productId").val(),
+				"localExeclId" : $("#localExeclId").val()
 			      },
 			success : function(data) {
 				if (data.success) {
 					topWin.Dialog.message("保存成功！");
-					//window.location.href= contextPath+"/customer/maintenance/browse.page" ;
+					window.location.href= contextPath+"/intopieces/intopiecesapprove/browseProduct.page"
 				} else {
 					topWin.Dialog.message(data.message);
 				}

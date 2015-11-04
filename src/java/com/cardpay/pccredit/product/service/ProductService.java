@@ -491,4 +491,8 @@ public class ProductService {
 			return false;
 		}
 	}
+	
+	public void updateLocalExecl(String localExeclId,String appId){
+		productDao.updateLocalExecl(localExeclId, appId);
+	}
 }
