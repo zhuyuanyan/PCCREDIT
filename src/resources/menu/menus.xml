@@ -49,6 +49,7 @@
 			<menu id="060040" name="createSq" title="商圈申请" url="/product/zainformation/browse.page" img="" operations="create|delete|browse"/>
 			<menu id="060050" name="approveSq" title="商圈审批" url="/product/zainformation/approveBrowse.page" img="" operations="create|delete|browse"/>
 			<menu id="060060" name="searchSq" title="商圈查询" url="/product/zainformation/search.page" img="" operations="create|delete|browse"/>
+			<menu id="060070" name="flowSq" title="商圈流程配置" url="/product/zainformation/browseFlow.page" img="" operations="create|change|display|browse|confignodeintopieces|confignodeamountadjustment"/>
 		</menu>
 		<menu id="070000" name="manager" title="客户经理管理" url="" img="images/icon_sys.gif" operations="">
 		    <menu id="070001" name="managercreate" title="客户经理参数配置" url="/manager/managercreate/browse.page" img="" operations="create|change|delete|display|browse"/>
