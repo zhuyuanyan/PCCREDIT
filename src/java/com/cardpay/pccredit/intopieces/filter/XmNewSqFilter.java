@@ -12,6 +12,8 @@ public class XmNewSqFilter extends BaseQueryFilter{
 	private String userId;
 	
 	private String status;
+	
+	private String applnId;
 
 	public String getName() {
 		return name;
@@ -51,6 +53,14 @@ public class XmNewSqFilter extends BaseQueryFilter{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getApplnId() {
+		return applnId;
+	}
+
+	public void setApplnId(String applnId) {
+		this.applnId = applnId;
 	}
 
 }

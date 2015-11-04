@@ -28,10 +28,11 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="35%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
               <col width="20%" />
-              <col width="20%" />
-              <col width="20%" />
+              <col width="15%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -39,6 +40,7 @@
               <th nowrap="nowrap">所属支行</th>
               <th nowrap="nowrap">产品名称</th>
               <th nowrap="nowrap">审批状态</th>
+              <th nowrap="nowrap">审批节点</th>
             </tr>
           </table>
         </div>
@@ -46,24 +48,29 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="35%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
               <col width="20%" />
-              <col width="20%" />
-              <col width="20%" />
+              <col width="15%" />
             </colgroup>
             #foreach ($obj in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id@$!obj.status"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id@$!obj.nodeName@$!obj.infoStatus"/></td>
               <td nowrap="nowrap">$!obj.sqName</td>
               <td nowrap="nowrap">$!obj.orgName</td>
               <td nowrap="nowrap">$!obj.productName</td>
-              #if($!obj.status=='1') 
-              	<td nowrap="nowrap">未审批</td>
-              #elseif($!obj.status=='2') 
-              	<td nowrap="nowrap">审批通过</td>
+              
+              #if($!obj.infoStatus)
+              	#if($!obj.infoStatus=='audit')
+              		<td nowrap="nowrap">已申请</td>
+              	#else
+              		<td nowrap="nowrap">审批结束</td>
+              	#end
               #else
-              	<td nowrap="nowrap">审批不通过</td>
+              	<td nowrap="nowrap">未申请</td>
               #end
+              <td nowrap="nowrap">$!obj.nodeName</td>
             </tr>
             #end
           </table>
@@ -71,10 +78,8 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-        #if($!orgManagerType)
           <a id="id_createApprove_button" class="btn_g" href="javascript:void(0);" >审批</a>
-          <a id="id_change_button" class="btn_g" href="javascript:void(0);" >修改</a>
-        #end
+          <!-- <a id="id_change_button" class="btn_g" href="javascript:void(0);" >修改</a> -->
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -96,29 +101,28 @@
             if ($(".checkbox :checked").length == 1) {
             	var value = $($(".checkbox :checked")[0]).attr("value");
                 var rowid = value.split("@")[0];
-               	var type=value.split("@")[1];
-               	if(type!='1'){
-               		Dialog.message("商圈已审批，无法再次审批!");
-               		return;
-               	}
-               	window.location.href="${modulePath}/createApprove.page?id="+rowid;
+                var nodeName = value.split("@")[1];
+                var status = value.split("@")[2];
+                if(status!='audit'){
+                	Dialog.message("审批结束或已拒绝，无法继续审批!");
+                	return;
+                }
+               	window.location.href="${modulePath}/createApprove.page?id="+rowid+"&nodeName="+nodeName;
             } else {
                 Dialog.message("请选择一行");
             }
         });
-		$("#id_change_button").click(function() {
+		/* $("#id_change_button").click(function() {
             if ($(".checkbox :checked").length == 1) {
             	var value = $($(".checkbox :checked")[0]).attr("value");
                 var rowid = value.split("@")[0];
+                var nodeName = value.split("@")[1];
                	window.location.href="${modulePath}/passChange.page?id="+rowid;
-               	var type=value.split("@")[1];
-               	if(type!='2'){
-               		Dialog.message("商圈未通过审批，无法修改!");
-               	}
+            
             } else {
                 Dialog.message("请选择一行");
             }
-        });
+        }); */
 		
 	});
 </script>

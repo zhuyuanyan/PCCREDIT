@@ -6,6 +6,8 @@ public class CustomerInforConstant {
 	public static final String TRANSFERSUCCESS = "移交成功";
 	public static final String TRANSFERERROR = "移交失败";
 	public static final String CREATEERROR = "创建失败";
+	public static final String APPROVEERROR = "审批失败";
+	public static final String APPROVESUCCESS = "审批成功";
 	public static final String IMPORTEMPTY = "文件为空";
 	public static final String IMPORTSUCCESS = "上传成功";
 	public static final String UPDATEERROR = "修改失败";

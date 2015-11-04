@@ -28,10 +28,11 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="35%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
               <col width="20%" />
-              <col width="20%" />
-              <col width="20%" />
+              <col width="15%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -39,6 +40,7 @@
               <th nowrap="nowrap">所属支行</th>
               <th nowrap="nowrap">产品名称</th>
               <th nowrap="nowrap">审批状态</th>
+              <th nowrap="nowrap">审批节点</th>
             </tr>
           </table>
         </div>
@@ -46,24 +48,29 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="35%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
               <col width="20%" />
-              <col width="20%" />
-              <col width="20%" />
+              <col width="15%" />
             </colgroup>
             #foreach ($obj in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id@$!obj.status"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!obj.sqName</td>
               <td nowrap="nowrap">$!obj.orgName</td>
               <td nowrap="nowrap">$!obj.productName</td>
-              #if($!obj.status=='1') 
-              	<td nowrap="nowrap">未审批</td>
-              #elseif($!obj.status=='2') 
-              	<td nowrap="nowrap">审批通过</td>
+              
+              #if($!obj.infoStatus)
+              	#if($!obj.infoStatus=='audit')
+              		<td nowrap="nowrap">已申请</td>
+              	#else
+              		<td nowrap="nowrap">审批结束</td>
+              	#end
               #else
-              	<td nowrap="nowrap">审批不通过</td>
+              	<td nowrap="nowrap">未申请</td>
               #end
+              <td nowrap="nowrap">$!obj.nodeName</td>
             </tr>
             #end
           </table>
@@ -92,11 +99,7 @@
             if ($(".checkbox :checked").length == 1) {
             	var value = $($(".checkbox :checked")[0]).attr("value");
                 var rowid = value.split("@")[0];
-               	var type=value.split("@")[1];
-               	if(type!='2'){
-               		Dialog.message("无审批信息!");
-               		return;
-               	}
+               	
                	window.location.href="${modulePath}/show.page?id="+rowid;
             } else {
                 Dialog.message("请选择一行");

@@ -7,28 +7,58 @@
       </div>
 		<form id="id_module_form">
 			<div class="forms" id="formsId">
-			<input type="hidden" name="sqId" value="$!xmNewSq.id">
-			<!--*************************************************************专案信息*************************************************************-->
-				<table class="rule" bordercolor="#CCCCCC" border="1">
-					<caption>商圈信息</caption>
-					<colgroup>
-						<col width="15%">
-						<col width="35%">
-						<col width="15%">
-						<col width="35%">
-					</colgroup>
-					<tr>
-						<td class="table-label">客户类型：<font color="#ff0000">*</font></td>
-						<td><input class="rinpsty" type="text" id="customerType" name="customerType" value="$!xmNewSq.customerType" title=""  readonly="readonly"/></td>
-						<td class="table-label">客户经理级别：<font color="#ff0000">*</font></td>
-						<td><input class="rinpsty" type="text" id="customerLevel" name="customerLevel" value="$!xmNewSq.customerLevel" title=""  readonly="readonly"/></td>		
-					</tr>
-					<tr>
-						<td class="table-label">最高额度：<font color="#ff0000">*</font></td>
-						<td><input type="text" name="ed" value="$!xmNewSq.ed" readonly/></td>	
-					</tr>
-				</table>	
-			</div>
+			<!--**************************************************************************************************************************-->
+				#foreach($obj in $!list)
+					#if($obj.resultType=='2')
+					<table class="rule" bordercolor="#CCCCCC" border="1">
+						<caption>${obj.reviewNodeName}审批</caption>
+						<colgroup>
+							<col width="15%">
+							<col width="35%">
+							<col width="15%">
+							<col width="35%">
+						</colgroup>
+						<tr>
+							<td class="table-label">客户类型：<font color="#ff0000">*</font></td>
+							<td><input class="rinpsty" type="text" id="" name="" value="${obj.customerType}" title="" readonly="readonly"/> </td>
+
+							<td class="table-label">客户经理级别：<font color="#ff0000">*</font></td>
+							<td><input class="rinpsty" type="text" value="${obj.customerLevel}" title=""  readonly="readonly"/></td>		
+	
+						</tr>
+						<tr>
+							<td class="table-label">最高额度：<font color="#ff0000">*</font></td>
+							<td><input type="text" value="${obj.ed}" readonly/></td>	
+							<td class="table-label">审批结果：<font color="#ff0000">*</font></td>
+								<td><input type="text" value="通过" readonly/></td>
+						</tr>
+					</table>	
+				#else
+						<table class="rule" bordercolor="#CCCCCC" border="1">
+						<caption>${obj.reviewNodeName}审批</caption>
+						<colgroup>
+							<col width="15%">
+							<col width="35%">
+							<col width="15%">
+							<col width="35%">
+						</colgroup>
+						<tr>
+							<td class="table-label">客户类型：<font color="#ff0000">*</font></td>
+							<td><input class="rinpsty" type="text" id="" name="" value="" title="" readonly="readonly"/> </td>
+
+							<td class="table-label">客户经理级别：<font color="#ff0000">*</font></td>
+							<td><input class="rinpsty" type="text" value="" title=""  readonly="readonly"/></td>		
+	
+						</tr>
+						<tr>
+							<td class="table-label">最高额度：<font color="#ff0000">*</font></td>
+							<td><input type="text" value="" readonly/></td>	
+							<td class="table-label">审批结果：<font color="#ff0000">*</font></td>
+								<td><input type="text" value="拒绝" readonly/></td>
+						</tr>
+					</table>
+					#end
+				#end
 			<div class="submit">
 		        <input type="button" value="返回" class="current" onclick="javascript:history.back();"/>
 	      	</div>

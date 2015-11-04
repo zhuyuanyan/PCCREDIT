@@ -301,4 +301,65 @@ public class ProcessService {
 			//return nextStatusInfo.getStatusCode();
 		}
 	}
+	/**
+	 * 审批,返回下一状态信息(商圈流程)
+	 * @param wfProcessRecordID
+	 * @param exUserID
+	 * @param exResult  必须是ApproveOperationTypeEnum中的类型
+	 * @param exAmount
+	 * @return 
+	 * 	下一流程状态ID; 
+	 * 	ApproveOperationTypeEnum.NORMALEND时为流程正常结束;
+	 * 	ApproveOperationTypeEnum.RETURNAPPROVE时为退回;
+	 * 	ApproveOperationTypeEnum.REJECTAPPROVE时为拒绝;
+	 * 
+	 * @throws SQLException
+	 */
+	public String examineSq(String applicationId,String wfProcessRecordID,String exUserID,String exResult){
+		//查找当前所处流转状态
+		WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, wfProcessRecordID);
+		WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
+		
+		//进入下一流转之前 先更新当前流转
+		wfStatusQueueRecord.setExamineUser(exUserID);
+		wfStatusQueueRecord.setExamineResult(exResult);
+		wfStatusQueueRecord.setStartExamineTime(new Date());
+		commonDao.updateObject(wfStatusQueueRecord);
+		//拒绝
+		if(exResult.equalsIgnoreCase(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
+			wfProcessRecord.setIsClosed("1");
+			commonDao.updateObject(wfProcessRecord);
+			return ApproveOperationTypeEnum.REJECTAPPROVE.toString();
+		} //通过 
+		else {
+			//根据当前审批结果 查找审批结果表 获取下一个审批状态
+			WfStatusResult wfStatusResult = wfStatusResultDao.getNextStatus(wfStatusQueueRecord.getCurrentStatus(), exUserID, exResult);
+			
+			//判断下一个审批批状态是否为结束状态
+			WfStatusInfo wfStatusInfo = commonDao.findObjectById(WfStatusInfo.class, wfStatusResult.getNextStatus());
+			if(wfStatusInfo.getIsClosed().equals("1")){//标示下一状态为结束
+				//将流程记录表标识为结束
+				wfProcessRecord.setIsClosed("1");
+				commonDao.updateObject(wfProcessRecord);
+				return ApproveOperationTypeEnum.NORMALEND.toString();
+			}
+			
+			//流转表新增一条记录
+			String beforeStatus = wfStatusQueueRecord.getCurrentStatus();
+			wfStatusQueueRecord = new WfStatusQueueRecord();
+			wfStatusQueueRecord.setBeforeStatus(beforeStatus);
+			wfStatusQueueRecord.setCurrentProcess(wfProcessRecordID);
+			wfStatusQueueRecord.setCurrentStatus(wfStatusResult.getNextStatus());
+			commonDao.insertObject(wfStatusQueueRecord);
+			
+			//流程表关联到新的流转
+			wfProcessRecord.setWfStatusQueueRecord(wfStatusQueueRecord.getId());
+			commonDao.updateObject(wfProcessRecord);
+			
+			String wfStatusInfoId = wfStatusResult.getNextStatus();
+			WfStatusInfo nextStatusInfo = commonDao.findObjectById(WfStatusInfo.class, wfStatusInfoId);
+			//返回节点的id
+			return nextStatusInfo.getStatusCode();
+		}
+	}
 }
