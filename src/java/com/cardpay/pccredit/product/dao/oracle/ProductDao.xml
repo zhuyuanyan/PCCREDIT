@@ -244,4 +244,8 @@
 		WHERE
 		INSTITUTION = #{organizationId}
 </select>
+
+<update id="updateLocalExecl">
+		update local_excel set APPLICATION_ID = #{appId} where ID = #{localExeclId}
+</update>
 </mapper>

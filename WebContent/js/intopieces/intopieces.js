@@ -563,6 +563,10 @@ function importData(url) {
 }
 
 function importCustomer(reloadUrl){
+	if($("#file").val()==""){
+		Dialog.message("请选择导入文件");
+		return;
+	}
 	$("#excelForm").ajaxSubmit({
 		dataType : 'json',
 		type : "post",
