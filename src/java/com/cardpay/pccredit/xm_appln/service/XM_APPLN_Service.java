@@ -16,6 +16,7 @@ import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -707,10 +708,12 @@ public class XM_APPLN_Service {
 	 */
 	public void saveApply(String customer_id,
 						  String intopiecesType,
-						  String ApplyIntopiecesSpareType,
+						  String IntopiecesSpareType,
 						  String custType,
 						  String applyQuota,
-						  String productId){
+						  String productId,
+						  String localExeclId){
+		
 		//设置申请
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
 		//customerApplicationInfo.setStatus(status);
@@ -736,13 +739,15 @@ public class XM_APPLN_Service {
 		//modified by nihc 20150702 end
 		
 		//modified by songchen 20151019 begin
-		customerApplicationInfo.setIntopiecesSpareType(ApplyIntopiecesSpareType);
+		customerApplicationInfo.setIntopiecesSpareType(IntopiecesSpareType);
 		customerApplicationInfo.setCustType(custType);
 		customerApplicationInfo.setApplyQuota(applyQuota);
 		//modified by songchen 20151019 end
 		
 		commonDao.insertObject(customerApplicationInfo);
 		
+		//绑定appId
+		productService.updateLocalExecl(localExeclId, customerApplicationInfo.getId());
 		
 		//添加申请件流程
 		WfProcessInfo wf=new WfProcessInfo();
