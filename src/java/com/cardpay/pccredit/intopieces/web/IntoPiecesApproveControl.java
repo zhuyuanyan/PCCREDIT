@@ -174,13 +174,21 @@ public class IntoPiecesApproveControl extends BaseController {
 			JRadReturnMap returnMap = new JRadReturnMap();
 			if (returnMap.isSuccess()) {
 				try {
-					String customerId = request.getParameter("id");
 					//进件方式
+					String customerId = request.getParameter("customerId");
 					String intopiecesType = request.getParameter("intopiecesType");
 					String applyQuota = request.getParameter("applyQuota");
-					String ApplyIntopiecesSpareType = request.getParameter("ApplyIntopiecesSpareType");
-					String custType = request.getParameter("custType");
+					String IntopiecesSpareType ="";
+					if("1".equals(intopiecesType)){
+						 IntopiecesSpareType = request.getParameter("ApplyIntopiecesSpareType_1");
+					}else if("2".equals(intopiecesType)||"3".equals(intopiecesType)){
+						 IntopiecesSpareType = request.getParameter("ApplyIntopiecesSpareType_2");	
+					}
 					
+					
+					String productId = request.getParameter("productId");
+					String custType = request.getParameter("custType");
+					String localExeclId = request.getParameter("localExeclId");
    				 
 					//先判断是否已有流程
 					Boolean processBoolean = customerInforservice.ifProcess(customerId);
@@ -190,7 +198,13 @@ public class IntoPiecesApproveControl extends BaseController {
 						returnMap.put("message","此客户正在申请进件，无法再次申请!");
 					}else{
 						//设置流程开始
-						xM_APPLN_Service.saveApply(customerId,intopiecesType,ApplyIntopiecesSpareType,custType,applyQuota);
+						xM_APPLN_Service.saveApply(customerId,
+												   intopiecesType,
+												   IntopiecesSpareType,
+												   custType,
+												   applyQuota,
+												   productId,
+												   localExeclId);
 						
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.addGlobalMessage(CREATE_SUCCESS);
@@ -295,11 +309,35 @@ public class IntoPiecesApproveControl extends BaseController {
 		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView reportImport(@ModelAttribute AddIntoPiecesFilter filter,HttpServletRequest request) {
 			filter.setRequest(request);
+			
+			String customerId =request.getParameter("customerId");
+			String intopiecesType =request.getParameter("intopiecesType");
+			String applyQuota =request.getParameter("applyQuota");
+			String ApplyIntopiecesSpareType_1 =request.getParameter("ApplyIntopiecesSpareType_1");
+			String ApplyIntopiecesSpareType_2 =request.getParameter("ApplyIntopiecesSpareType_2");
+			String custType =request.getParameter("custType");
+			String productId =request.getParameter("productId");
+			
 			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer(filter);
 			JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
+			List<LocalExcelForm> list = pagedResult.getItems();
+			
 			JRadModelAndView mv = new JRadModelAndView("/intopieces/report_import",request);
 			mv.addObject(PAGED_RESULT, pagedResult);
 			mv.addObject("parameters", filter);
+			if(list!=null && list.size()>0){
+				LocalExcelForm excelForm = list.get(0);
+				mv.addObject("localExeclId", excelForm.getId());
+			}
+			
+			mv.addObject("customerId", customerId);
+			mv.addObject("intopiecesType", intopiecesType);
+			mv.addObject("applyQuota", applyQuota);
+			mv.addObject("ApplyIntopiecesSpareType_1", ApplyIntopiecesSpareType_1);
+			mv.addObject("ApplyIntopiecesSpareType_2", ApplyIntopiecesSpareType_2);
+			mv.addObject("custType", custType);
+			mv.addObject("productId", productId);
+			
 			return mv;
 		}
 		//导入调查报告
@@ -341,6 +379,24 @@ public class IntoPiecesApproveControl extends BaseController {
 			JRadModelAndView mv = new JRadModelAndView("/intopieces/report_model",request);
 			mv.addObject(PAGED_RESULT, pagedResult);
 			mv.addObject("parameters", filter);
+			String localExeclId =request.getParameter("localExeclId");
+			mv.addObject("localExeclId", localExeclId);
+			
+			String customerId =request.getParameter("customerId");
+			String intopiecesType =request.getParameter("intopiecesType");
+			String applyQuota =request.getParameter("applyQuota");
+			String ApplyIntopiecesSpareType_1 =request.getParameter("ApplyIntopiecesSpareType_1");
+			String ApplyIntopiecesSpareType_2 =request.getParameter("ApplyIntopiecesSpareType_2");
+			String custType =request.getParameter("custType");
+			String productId =request.getParameter("productId");
+			
+			mv.addObject("customerId", customerId);
+			mv.addObject("intopiecesType", intopiecesType);
+			mv.addObject("applyQuota", applyQuota);
+			mv.addObject("ApplyIntopiecesSpareType_1", ApplyIntopiecesSpareType_1);
+			mv.addObject("ApplyIntopiecesSpareType_2", ApplyIntopiecesSpareType_2);
+			mv.addObject("custType", custType);
+			mv.addObject("productId", productId);
 			return mv;
 		}
 }

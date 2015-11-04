@@ -61,4 +61,7 @@ public interface ProductDao {
 	public List<ProductsAgencyAssociation> findProductsAgencyAssociationByOrganizationIdPage(@Param("organizationId") String organizationId,@Param("page") int currentPage,@Param("limit") int limit);
 	
 	public int findProductsAgencyAssociationCountByOrganizationId(@Param("organizationId") String organizationId);
+	
+	
+	public void updateLocalExecl(@Param("localExeclId")String localExeclId,@Param("appId")String appId);
 }

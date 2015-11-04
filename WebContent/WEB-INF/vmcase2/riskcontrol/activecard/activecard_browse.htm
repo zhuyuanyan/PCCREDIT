@@ -66,7 +66,7 @@
             </colgroup>
             #foreach ($sample in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!sample.customer_id"
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!sample.customerid"
                   #if ($!request.getParameter("recordId") == $sample.id) checked="checked" #end /></td>
               <td nowrap="nowrap">$!sample.chinesename</td>
               <td nowrap="nowrap">$!sample.product</td>
@@ -98,9 +98,15 @@
 		opsObj.browseUrl = "${modulePath}/browse.page";
 		
 		$("#id_create_button").click(function() {
+			    if ($(".checkbox :checked").length == 1) {
+				    var type = "active";
+					var rowid = $("input[name='checkbox']:checked").val();
+					window.location.href= contextPath + "/daihou/nplsinfomationinfo/create.page?id="+rowid+"&type="+type;
+	            }else{
+	            	 Dialog.message("请选择一行");
+	            }
 			
-			
-			if ($(".checkbox :checked").length == 1) {
+			/* if ($(".checkbox :checked").length == 1) {
 				var rowId = getCurrentRowId();
 				var url = "${modulePath}/create_collection.json?customer_id=" + rowId;
 			
@@ -111,7 +117,7 @@
    	          });
 			}else {
                 Dialog.message("请选择一行");
-            } 
+            }  */
 	    });
 		
 		prepareOperations(opsObj);

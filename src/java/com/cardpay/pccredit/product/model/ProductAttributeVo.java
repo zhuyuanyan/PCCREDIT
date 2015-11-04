@@ -34,8 +34,46 @@ public class ProductAttributeVo extends BusinessModel {
 	private String appId;
     private String countNum;
     
+    private String ed;//额度
+    private String lv;//利率
+    private String nf;//年费
+    private String endTime;//到期日
     
+
+
+	public String getEd() {
+		return ed;
+	}
+
+	public void setEd(String ed) {
+		this.ed = ed;
+	}
+
+	public String getLv() {
+		return lv;
+	}
+
+	public void setLv(String lv) {
+		this.lv = lv;
+	}
+
+	public String getNf() {
+		return nf;
+	}
+
+	public void setNf(String nf) {
+		this.nf = nf;
+	}
+
 	
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 
 	public String getCountNum() {
 		return countNum;

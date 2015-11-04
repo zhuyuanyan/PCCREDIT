@@ -19,6 +19,23 @@ public class RiskCustomerCollectionPlansAction extends BusinessModel{
 	private Date collectionStartTime;
 	private Date collectionEndTime;
 	private String whetherImplement;
+	
+	private String customerId;
+	private String customerManagerId;
+	
+	
+	public String getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+	public String getCustomerManagerId() {
+		return customerManagerId;
+	}
+	public void setCustomerManagerId(String customerManagerId) {
+		this.customerManagerId = customerManagerId;
+	}
 	public String getCollectionPlanId() {
 		return collectionPlanId;
 	}
