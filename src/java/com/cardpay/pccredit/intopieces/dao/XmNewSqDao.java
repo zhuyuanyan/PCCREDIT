@@ -13,6 +13,8 @@ public interface XmNewSqDao {
 	public XmNewSq findZaById(@Param("id")String id);
 	public List<XmNewSq> findAllZaByFilter(XmNewSqFilter filter);
 	public int findAllZaCountByFilter(XmNewSqFilter filter);
+	public List<XmNewSq> findApplyZaByFilter(XmNewSqFilter filter);
+	public int findApplyZaByFilterCount(XmNewSqFilter filter);
 	public void deleteZAById(@Param("id")String id);
 //	public List<QzApplnZaReturnMap> findZas();
 }

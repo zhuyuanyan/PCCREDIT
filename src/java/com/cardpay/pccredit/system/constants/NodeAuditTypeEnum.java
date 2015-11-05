@@ -9,5 +9,6 @@ package com.cardpay.pccredit.system.constants;
  */
 public enum NodeAuditTypeEnum {
 	 Product, //产品进件
-	 ProductAmountAdjust; //产品调额
+	 ProductAmountAdjust,//产品调额
+	 sqFlow;//商圈
 }

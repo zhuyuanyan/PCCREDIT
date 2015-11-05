@@ -1,0 +1,91 @@
+#parse ("common/iframe_page_header.htm")
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				 
+			</div>
+			<form id="id_module_form" action="${contextPath}/product/zainformation/insert.json"  method="post">
+				<div class="forms" id="formsId">
+					<table class="rule" border="1" bordercolor="#CCCCCC">
+					<caption>流程信息</caption>
+						<colgroup>
+             			<col width="10%" />
+              			<col width="40%" />
+             			<col width="10%" />
+              			<col width="40%" />
+						</colgroup>
+						<tr>
+							<td><label for="flowName">流程名称:</label></td>
+							<td><input type="text" id="flowName" name="flowName"
+								value="$!product.flowName" /></td>
+							
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><label for="name">备注:</label></td>
+							<td><textarea id="remark" name="remark"></textarea></td>
+							
+							<td></td>
+							<td></td>
+						</tr>
+						
+					</table>
+					
+				</div>
+			</form>
+
+			<div class="submit">
+				<input id="id_save_button" type="button"
+					value="保存" class="current"/> <input
+					type="button" onclick="javascript:history.go(-1);"
+					value="#i18n('button.cancel')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	
+	function mySave() {
+		$('#id_module_form').ajaxSubmit({
+			dataType : 'json',
+			type : "post",
+			success : function(data) {
+				if (data.success) {
+					Dialog.message(data.message,"提示", function() {
+						navigateTo("${contextPath}/product/zainformation/browseFlow.page");
+					 });
+				} else {
+					Dialog.message(data.message);
+					return false;
+				}
+			},
+			error : function(data) {
+				Dialog.closeLoad();
+				Dialog.message("操作失败");
+				return false;
+			}
+		});
+	}
+	
+	
+	
+	var layout=new FormsLayout("formsId");			
+	window.top.currentWindow.setLayout(layout);
+
+
+	 $(document).ready(function() {
+		 $("#id_save_button").click(function() {
+			var flowName=$("#flowName").val();
+			if(flowName==null||flowName==""){
+				 Dialog.message("请输入流程名称");
+				 return;
+			}
+        	mySave();
+        })
+	});  
+	</script>
+</body>
+</html>
