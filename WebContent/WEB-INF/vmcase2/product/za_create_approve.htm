@@ -8,9 +8,68 @@
 		<form id="id_module_form">
 			<div class="forms" id="formsId">
 			<input type="hidden" name="sqId" value="$!sqId">
-			<!--*************************************************************商圈信息*************************************************************-->
+			<input type="hidden" name="jName" value="$!jName">
+			<!--*************************************************************商圈信息*之前审批************************************************************-->
+				#foreach($obj in $!list)
+					<table class="rule" bordercolor="#CCCCCC" border="1">
+						<caption>${obj.reviewNodeName}审批</caption>
+						<colgroup>
+							<col width="15%">
+							<col width="35%">
+							<col width="15%">
+							<col width="35%">
+						</colgroup>
+						<tr>
+							<td class="table-label">客户类型：<font color="#ff0000">*</font></td>
+							<td><input class="rinpsty" type="text" id="" name="" value="${obj.customerType}" title="" readonly="readonly"/> </td>
+
+							<td class="table-label">客户经理级别：<font color="#ff0000">*</font></td>
+							<td><input class="rinpsty" type="text" value="${obj.customerLevel}" title=""  readonly="readonly"/></td>		
+	
+						</tr>
+						<tr>
+							<td class="table-label">最高额度：<font color="#ff0000">*</font></td>
+							<td><input type="text" value="${obj.ed}" readonly/></td>	
+							<td class="table-label">审批结果：<font color="#ff0000">*</font></td>
+							#if($obj.resultType=='2')
+								<td><input type="text" value="通过" readonly/></td>
+							#else	
+								<td><input type="text" value="拒绝" readonly/></td>
+							#end
+						</tr>
+					</table>	
+				#end
+				#if($list.size()==0)
+					#if(${jName}!='转办人员')
+					<table class="rule" bordercolor="#CCCCCC" border="1">
+						<caption>${jName}审批</caption>
+						<colgroup>
+							<col width="15%">
+							<col width="35%">
+							<col width="15%">
+							<col width="35%">
+						</colgroup>
+						<tr>
+							<td class="table-label">审批类型：<font color="#ff0000">*</font></td>
+							<td><select onchange="changeUser(this.value)" id="changeUser" name="changeUser">
+								<option value="1">自己审批</option>
+								<option value="2">转办人员审批</option>
+								</select></td>	
+							<td class="table-label"></td>
+							<td class="table-label"></td>
+						</tr>
+						<tr id="owner">
+							<td><label for="auditUserNames">转办人员:</label></td>
+              				<td><input type="text" id="auditUserNames" name="auditUserNames" value="" onclick="selectNodeConfigUsers()" readonly="readonly"/>
+              					<input type="hidden" id="auditUserIds" name="auditUserIds" value=""/></td>	
+							<td class="table-label"></td>
+							<td class="table-label"></td>
+						</tr>
+					</table>	
+					#end
+				#end
 				<table class="rule" bordercolor="#CCCCCC" border="1">
-					<caption>商圈信息</caption>
+					<caption>${jName}审批</caption>
 					<colgroup>
 						<col width="15%">
 						<col width="35%">
@@ -31,7 +90,7 @@
 			</div>
 			<div class="submit">
 		      	<input id="id_save_button" type="button" value="通过" class="current" />
-		      	<input id="id_unsave_button" type="button" value="不通过" class="current" />
+		      	<input id="id_unsave_button" type="button" value="拒绝" class="current" />
 		        <input type="button" value="返回" class="current" onclick="javascript:history.back();"/>
 	      	</div>
 		</form>	
@@ -96,9 +155,15 @@
 				return;
 			}
 			submitFlag = 1;
-			if ($($formName).valid()) {
+			var changeUser = $("#changeUser").val();
+			if(changeUser=='2'){
+				var auditUserNames=$("#auditUserNames").val();
+				if(auditUserNames==null||auditUserNames==""){
+					topWin.Dialog.message("请选择转办人员！");
+					return;
+				}
 				var formjson = $($formName).serialize();
-				var url = "${contextPath}/product/zainformation/pass.json";
+				var url = "${contextPath}/product/zainformation/pass.json?changeUser="+changeUser+"&auditUserNames="+auditUserNames;
 				$.ajax({
 					url : url,
 					type : "get",
@@ -115,7 +180,27 @@
 					}
 				});
 			}else{
-				submitFlag = 0;
+				if ($($formName).valid()) {
+					var formjson = $($formName).serialize();
+					var url = "${contextPath}/product/zainformation/pass.json";
+					$.ajax({
+						url : url,
+						type : "get",
+						data : formjson,
+						success : function(data) {
+							if (data.success) {
+								topWin.Dialog.message("保存成功！");
+								window.location.href = "${contextPath}/product/zainformation/approveBrowse.page";
+							}
+							else{
+								topWin.Dialog.message("保存失败！");
+						    }
+							submitFlag = 0;
+						}
+					});
+				}else{
+					submitFlag = 0;
+				}
 			}
 		});
 		
@@ -193,6 +278,40 @@ function selectCustomerLevel(obj){
 		}, null, 400, 140, 450,300);
 
 	}
+function selectNodeConfigUsers() {
+	
+	
+	 Dialog.tablePage("${contextPath}/system/approvaluser/browse.page","选择审批人员","get","",function(){
+				 
+				 var val = window.top.$("#selectval").val(); 
+				 if(val !=""){
+				 var  arr=val.split(',');
+				 var auditUserNames ="";
+				 var auditUserIds ="";
+				 for(key in arr){
+					 var arry = arr[key].split("_");
+					 if(arry[0] !=""){
+					 auditUserIds +=  arry[0] +"," ;
+					 }
+					 if(arry[1] !=""){
+					 auditUserNames +=  arry[1] +"," ;
+					 }
+				 }
+				 if(auditUserIds !=""){
+					 auditUserIds = auditUserIds.substring(0,auditUserIds.length - 1);
+					 $("#auditUserIds").val(auditUserIds);
+				 }
+	              if(auditUserNames !=""){
+	            	  auditUserNames =  auditUserNames.substring(0,auditUserNames.length - 1);
+	            	  $("#auditUserNames").val(auditUserNames);
+				 }
+				 }
+				 window.top.$("#selectval").val("");
+				 window.top.$("#tablePage_diaog").dialog("close");
+				 
+			 },800,750);
+		}
+		
 	</script>	
 </body>
 </html>

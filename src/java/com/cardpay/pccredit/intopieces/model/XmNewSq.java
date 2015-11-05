@@ -6,7 +6,7 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
 @ModelParam(table = "xm_new_sq")
 public class XmNewSq extends BusinessModel {
 	/**
-	 * 
+	 * 商圈
 	 */
 	private static final long serialVersionUID = -8470111754965975277L;
 	private String orgId;
@@ -23,6 +23,11 @@ public class XmNewSq extends BusinessModel {
 	private String customerTypeCode;
 	private String customerLevelCode;
 	private String ed;
+	
+	private String infoStatus;
+	private String nodeName;
+	private String applnId;
+	private String processId;
 	public String getOrgId() {
 		return orgId;
 	}
@@ -106,6 +111,30 @@ public class XmNewSq extends BusinessModel {
 	}
 	public void setCustomerLevelCode(String customerLevelCode) {
 		this.customerLevelCode = customerLevelCode;
+	}
+	public String getNodeName() {
+		return nodeName;
+	}
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
+	public String getApplnId() {
+		return applnId;
+	}
+	public void setApplnId(String applnId) {
+		this.applnId = applnId;
+	}
+	public String getProcessId() {
+		return processId;
+	}
+	public void setProcessId(String processId) {
+		this.processId = processId;
+	}
+	public String getInfoStatus() {
+		return infoStatus;
+	}
+	public void setInfoStatus(String infoStatus) {
+		this.infoStatus = infoStatus;
 	}
 
 }
