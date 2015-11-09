@@ -16,7 +16,7 @@
         </div>
 			</div>
 			<form id="id_module_form"
-				action="${contextPath}/product/productinformation/insert.json"  enctype="multipart/form-data" method="post">
+				action="${contextPath}/product/productinformation/insert.json"   method="post">
 				<div class="forms" id="formsId">
 					<table class="rule" border="1" bordercolor="#CCCCCC">
 					<caption>产品属性</caption>
@@ -153,13 +153,12 @@
 							<td><label for="name">该产品风险容忍度:</label></td>
 							<td><input type="text" id="productRiskTolerance" name="productRiskTolerance"
 								value="$!product.productRiskTolerance" /></td>-->
-						</tr>
+						<!-- <tr>
 							<td><label>产品图片：</label></td>
             				<td>
               					 <input type="file" name="file">
             				</td>
-						<tr>
-						</tr> 
+						</tr>  -->
 					</table>
 					
 				</div>
@@ -200,11 +199,10 @@
 	
 	
 	
-	var layout=new FormsLayout("formsId");			
-	window.top.currentWindow.setLayout(layout);
+	
 
 	 #set ($formName = "'#id_module_form'")
-	#validator($formName)
+	 #parse ("product/product_create_validation.js")
 	 $(document).ready(function() {
 		 $("#id_save_button").click(function() {
 		        if ($($formName).valid()) {

@@ -407,95 +407,6 @@
 					</tr>
 				</table>
 			</div>
-		<!-- 	<div id="type_6" class="forms" style="display :none">
-				<table class="rule" bordercolor="#CCCCCC" border="1">
-					<caption>资产</caption>
-					<colgroup>
-						<col width="10%" />
-						<col width="40%" />
-						<col width="10%" />
-						<col width="40%" />
-					</colgroup>
-					<tr>
-						<td><label for="value_1">担保人房产价值:</label></td>
-						<td><input type="text" id="value_28" name="value_28"
-							value="$!result.value_28"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-						<td><label for="value_2">担保人车产价值:</label></td>
-						<td><input type="text" id="value_29" name="value_29"
-							value="$!result.value_29"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-					</tr>
-					<tr>
-						<td><label for="value_30">担保人其他资产:</label></td>
-						<td><input type="text" id="value_30" name="value_30"
-							value="$!result.value_30"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-						<td><label for="value_31">申请人资产:</label></td>
-						<td><input type="text" id="value_31" name="value_31"
-							value="$!result.value_31"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-					</tr>
-				</table>
-				<table class="rule" bordercolor="#CCCCCC" border="1">
-					<caption>担保人负债</caption>
-					<colgroup>
-						<col width="10%" />
-						<col width="40%" />
-						<col width="10%" />
-						<col width="40%" />
-					</colgroup>
-					<tr>
-						<td><label for="value_32">征信贷款剩余金额:</label></td>
-						<td><input type="text" id="value_32" name="value_32"
-							value="$!result.value_32"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-						<td><label for="value_33">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度（取最大值）:</label></td>
-						<td><input type="text" id="value_33" name="value_33"
-							value="$!result.value_33"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-					</tr>
-					<tr>
-						<td><label for="value_34">准贷记卡总授信额度:</label></td>
-						<td><input type="text" id="value_34" name="value_34"
-							value="$!result.value_34"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-						<td><label for="value_35">对外担保金额（*0.5）:</label></td>
-						<td><input type="text" id="value_35" name="value_35"
-							value="$!result.value_35"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-					</tr>
-				</table>
-				<table class="rule" bordercolor="#CCCCCC" border="1">
-					<caption>申请人负债</caption>
-					<colgroup>
-						<col width="10%" />
-						<col width="40%" />
-						<col width="10%" />
-						<col width="40%" />
-					</colgroup>
-					<tr>
-						<td><label for="value_36">征信贷款剩余金额:</label></td>
-						<td><input type="text" id="value_36" name="value_36"
-							value="$!result.value_36"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-						<td><label for="value_37">贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度（取最大值）:</label></td>
-						<td><input type="text" id="value_37" name="value_37"
-							value="$!result.value_37"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-					</tr>
-					<tr>
-						<td><label for="value_38">准贷记卡总授信额度:</label></td>
-						<td><input type="text" id="value_38" name="value_38"
-							value="$!result.value_38"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-						<td><label for="value_39">对外担保金额（*0.5）:</label></td>
-						<td><input type="text" id="value_39" name="value_39"
-							value="$!result.value_39"
-							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-					</tr>
-				</table>
-			</div> -->
 			<div id="type_7" class="forms" style="display :none">
 				<table class="rule" bordercolor="#CCCCCC" border="1">
 					<caption>担保人数量</caption>
@@ -563,7 +474,7 @@
 					</colgroup>
 					<tr>
 						<td><label for="value_8">最高总额度:</label></td>
-						<td><input type="text" id="asset_1" name="asset_1" onblur="zzed()" value="$!result.asset_1" readonly="readonly"/></td>
+						<td><input type="text" id="asset_1" name="asset_1" onblur="zzed()" disabled="disabled" value="$!result.asset_1" readonly="readonly"/></td>
 						<td></td>
 						<td></td>
 				</table>
@@ -618,7 +529,53 @@
 				"ApplyIntopiecesSpareType_2" : $("#ApplyIntopiecesSpareType_2").val(),
 				"custType" : $("#custType").val(),
 				"productId" : $("#productId").val(),
-				"localExeclId" : $("#localExeclId").val()
+				"localExeclId" : $("#localExeclId").val(),
+				"house_type" :$("#house_type").val(),
+				"house_type1" :$("#house_type1").val(),
+				"value_1" :$("#value_1").val(),
+				"value_2" :$("#value_2").val(),
+				"value_3" :$("#value_3").val(),
+				"value_4" :$("#value_4").val(),
+				"value_5" :$("#value_5").val(),
+				"value_6" :$("#value_6").val(),
+				"value_7" :$("#value_7").val(),
+				"value_7_1" :$("#value_7_1").val(),
+				"value_8" :$("#value_8").val(),
+				"value_9" :$("#value_9").val(),
+				"value_10" :$("#value_10").val(),
+				"value_11" :$("#value_11").val(),
+				"value_12" :$("#value_12").val(),
+				"house_type2" :$("#house_type2").val(),
+				"value_13" :$("#value_13").val(),
+				"value_14" :$("#value_14").val(),
+				"value_15" :$("#value_15").val(),
+				"value_16" :$("#value_16").val(),
+				"value_17" :$("#value_17").val(),
+				"value_18" :$("#value_18").val(),
+				"value_19" :$("#value_19").val(),
+				"value_20" :$("#value_20").val(),
+				"value_21" :$("#value_21").val(),
+				"value_22" :$("#value_22").val(),
+				"value_23" :$("#value_23").val(),
+				"value_24" :$("#value_24").val(),
+				"value_25" :$("#value_25").val(),
+				"value_26" :$("#value_26").val(),
+				"value_27" :$("#value_27").val(),
+				"house_type3" :$("#house_type3").val(),
+				"value_28" :$("#value_28").val(),
+				"value_29" :$("#value_29").val(),
+				"value_30" :$("#value_30").val(),
+				"value_31" :$("#value_31").val(),
+				"value_32" :$("#value_32").val(),
+				"value_33" :$("#value_33").val(),
+				"value_34" :$("#value_34").val(),
+				"value_35" :$("#value_35").val(),
+				"value_36" :$("#value_36").val(),
+				"value_37" :$("#value_37").val(),
+				"value_38" :$("#value_38").val(),
+				"value_39" :$("#value_39").val(),
+				"value_40" :$("#value_40").val(),
+				"value_41" :$("#value_41").val()
 			      },
 			success : function(data) {
 				if (data.success) {

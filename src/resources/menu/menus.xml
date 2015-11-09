@@ -76,9 +76,9 @@
 		
 		<menu id="071000" name="adjustamount" title="客户调额流程" url="" img="images/icon_sys.gif" operations="">
 			<menu id="071001" name="customerprofilegenerate" title="客户调额生成" url="/customer/te/browse.page" img="" operations="change|display|browse"/>
-			<menu id="071002" name="customertunetobeaudited" title="客户调额待审核" url="/manager/weeklyaccount/browse.page" img="" operations="change|display|browse"/>
-			<menu id="071003" name="customercreditmanagement" title="客户额度管理" url="/manager/weeklyaccount/browse.page" img="" operations="change|display|browse"/>
-			<menu id="071004" name="pukatemplimitassessment" title="普卡临时额度评估" url="/manager/weeklyaccount/browse.page" img="" operations="change|display|browse"/>
+			<menu id="071002" name="customertunetobeaudited" title="客户调额待审核" url="/customer/te/browseforaudit.page" img="" operations="change|display|browse"/>
+			<menu id="071003" name="customercreditmanagement" title="客户额度管理" url="/customer/te/browsemanager.page" img="" operations="change|display|browse"/>
+			<menu id="071004" name="pukatemplimitassessment" title="普卡临时额度评估" url="/customer/te/normalbrowse.page" img="" operations="change|display|browse"/>
 		</menu>
 		
 		<menu id="081000" name="riskcontrol" title="综合风控管理" operations=""> 

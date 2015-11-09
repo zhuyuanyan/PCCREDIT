@@ -366,5 +366,10 @@
 				<!-- and customer_id = '8b978bab4c55124e014c5512c7271aef' -->
 		 </if>
 	</select>
+	
+	
+	<select id="findXmModelByAppId" resultType="com.cardpay.pccredit.intopieces.model.XmModel">
+		select * from  xm_model where app_id =#{appId}
+	</select>
 
 </mapper>

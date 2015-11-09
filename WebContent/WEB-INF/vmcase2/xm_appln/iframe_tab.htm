@@ -1,0 +1,151 @@
+﻿#parse ("common/iframe_page_header2.htm")
+	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
+	<style type="text/css">
+		.Tabs{margin-left:10px;position:fixed;margin-top:70px;height:30px;}
+		.Tabs li{list-style:none;border:1px solid #b9c4cf;border-radius:5px 5px 0 0;background:#ebf3fa;width:90px;text-align:center;line-height:30px;color:#333333;display:inline-block;float:left;}
+		.Tabs .active{background:#135aa4;border:1px solid #135aa4;color:#ffffff;}
+		.TabContent{width:98%;position:absolute;margin:1px 10px;margin-top:-1px\9;margin-top:102px;margin-bottom:10px;}
+		.tabContent{display:none;}
+		.selectTab{display:block}
+		.buttons{margin-top:15px;}
+	</style>
+</head>
+<body>
+	<div class="fixed">
+		<h1>申请信息</h1>
+		<div class="buttons"><!--按钮组放置区域-->
+		<!-- <input type="text" value="返回" /> -->
+		#if( $type=='read')
+		<input type="button" value="返回" class="button" onclick="javascript:history.back();"/>
+		#else
+			<!-- <input id="tabContent2_save" type="button" value="保存基本信息" class="button"/>
+			<input id="tabContent0_save" type="button" value="保存申请录入" class="button"/>
+			<input id="tabContent1_save" type="button" value="保存地址录入" class="button"/>
+			<input id="tabContent4_save" type="button" value="保存授信评估" class="button"/>
+			<input id="tabContent5_save" type="button" value="保存行内评分" class="button"/>
+			<input id="tabContent3_save" type="button" value="申请提交" class="button"/> -->
+			
+			<input id="tabContent6_save" type="button" value="保存基本信息" class="button"/><!--  -->
+		#end
+		</div>
+	</div>
+
+	<ul class="Tabs">
+		<!-- <li class="active" onclick="selectTab(2,this);" style="margin-left:0;">客户基本信息</li>
+		<li onclick="selectTab(0,this);" style="margin-left:0;">申请录入画面</li>
+		<li onclick="selectTab(1,this);">地址录入画面</li>
+		<li onclick="selectTab(4,this);">授信评估画面</li>
+		<li onclick="selectTab(5,this);">行内评分</li>-->
+		<li class="active" onclick="selectTab(6,this);">客户资料</li>
+		<li onclick="selectTab(3,this);">调查模板</li> 
+		<li onclick="selectTab(4,this);">审批情况列表</li>
+		#if($!count != 0)
+		<li onclick="selectTab(5,this);">行内模型</li>
+		#end
+		 <!-- $result.totalCount-->
+		 #foreach ($customer in $result.items)
+		 <li  onclick="selectTab($!customer.countNum,this);">产品信息</li> 
+         #end
+	</ul>
+	<div class="TabContent" id="Content1">
+		<!--*************************************主卡*****************************************-->
+		<!-- <div class="tabContent selectTab" id="tabContent2">			
+			<iframe id="tabContent_frame2" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page1_update.page?id=${customerId}&appId=${appId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		<div class="tabContent" id="tabContent0">			
+			<iframe id="tabContent_frame0" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page2.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		<div class="tabContent" id="tabContent1">
+			<iframe id="tabContent_frame1" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page3.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		<div class="tabContent" id="tabContent4">
+			<iframe id="tabContent_frame4" frameborder="0" width="100%;" src="${contextPath}/customer/basiccustomerinforUpdate/create_sxpg.page?id=${customerId}&type=${type}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		<div class="tabContent" id="tabContent5">
+			<iframe id="tabContent_frame5" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page5.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div> 
+		<div class="tabContent" id="tabContent3">
+			<iframe id="tabContent_frame3" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page4.page?id=${customerId}&appId=${appId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>-->
+		
+		<div class="tabContent" id="tabContent3">
+			<iframe id="tabContent_frame3" frameborder="0" width="100%;" src="${contextPath}/xm_appln/report_jy.page?appId=${appId}&urlType=1" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		
+		<div class="tabContent" id="tabContent4">
+			<iframe id="tabContent_frame4" frameborder="0" width="100%;" src="${contextPath}/intopieces/intopiecesquery/findApproveHistoryById.page?id=${appId}&ifHideUser=NO&dataType=application" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		<div class="tabContent" id="tabContent5">
+			<iframe id="tabContent_frame5" frameborder="0" width="100%;" src="${contextPath}/xm_appln/report_model_display.page?appId=${appId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div> 
+		<div class="tabContent selectTab" id="tabContent6">			
+			<iframe id="tabContent_frame6" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page6_update.page?id=${customerId}&appId=${appId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		 #foreach ($customer in $result.items)
+		<div class="tabContent" id="tabContent$!customer.countNum">
+			<iframe id="tabContent_frame$!customer.countNum" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page7.page?id=${customerId}&productId=$!customer.id&appId=$!customer.appId" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		<input type ="hidden" value ="$result.totalCount" id="totalCount">
+		 #end
+	</div>
+	<script src="${contextPath}/js/xm_appln/xm_appln.js" type="text/javascript"></script>
+	<script type="text/javascript">			
+		function selectTab(index,obj,btnId){//tab页
+			$(".Tabs li").attr("class","");
+			$(obj).attr("class","active");
+			$(".TabContent div").hide();
+			$("#tabContent"+index).show();
+			var totalCout = $("#totalCount").val();
+			for(var i=0;i<7+parseInt(totalCout);i++){
+				if(i==index){
+					$("#tabContent"+i+"_save").show();
+				}else{
+					$("#tabContent"+i+"_save").hide();
+				}
+			}
+			
+			document.getElementById("tabContent"+"_frame"+index).contentWindow.location.reload();
+		}
+		
+		$(document).ready(function(){
+			//隐藏按钮
+			$("#tabContent0_save").hide();
+			$("#tabContent1_save").hide();
+			$("#tabContent4_save").hide();
+			$("#tabContent5_save").hide();
+			$("#tabContent3_save").hide();
+			$("#tabContent6_save").show();
+			
+			/* $("#tabContent2_save").click(function() {
+				document.getElementById('tabContent_frame2').contentWindow.onSave(); 
+			});
+			
+			$("#tabContent0_save").click(function() {
+				document.getElementById('tabContent_frame0').contentWindow.onSave(); 
+			});
+			
+			$("#tabContent1_save").click(function() {
+				document.getElementById('tabContent_frame1').contentWindow.onSave(); 
+			});
+			
+			$("#tabContent4_save").click(function() {
+				document.getElementById('tabContent_frame4').contentWindow.onSave(); 
+			});
+			
+			$("#tabContent5_save").click(function() {
+				document.getElementById('tabContent_frame5').contentWindow.onSave(); 
+			});
+			
+			$("#tabContent3_save").click(function() {
+				document.getElementById('tabContent_frame3').contentWindow.onSave(); 
+			}); */
+			
+			$("#tabContent6_save").click(function() {
+				document.getElementById('tabContent_frame6').contentWindow.onSave(); 
+			});
+		});
+		
+	</script>	
+</body>
+#parse ("common/iframe_page_footer.htm")
+

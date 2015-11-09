@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
+import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.wicresoft.util.annotation.Mapper;
 
@@ -15,5 +16,6 @@ public interface LocalExcelDao {
 	public LocalExcel findById(@Param("id") String id);
 	public int findCountByProductAndCustomer(AddIntoPiecesFilter filter);
 	public LocalExcel findByApplication(@Param("applicationId") String applicationId);
+	public XmModel findModelById(@Param("applicationId") String applicationId);
 	
 }
