@@ -1,0 +1,91 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">待审核调额详情</div>
+      </div>
+      <form id="id_form_sample" action="">
+        <div class="forms" id="formsId">
+          <input type="hidden" id ="id" value="$!xmNewTe.id" />
+          <table class="rule">
+            <colgroup>
+              <col width="10%" />
+              <col width="30%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="30%" />
+            </colgroup>
+            <tr>
+              <td>客户名称:</td>
+              <td><input type="text" value="$!xmNewTe.custName" disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>证件号码:</td>
+              <td><input type="text" value="$!xmNewTe.certiCode" disabled="disabled" /></td>
+            </tr>
+            <tr>
+              <td>产品:</td>
+              <td><input type="text" value="$!xmNewTe.productName" disabled="disabled" /></td>
+              <td>&nbsp;</td>
+              <td>调额类型:</td>
+              <td><select id="teType" name="teType" disabled="disabled">
+	                   <option value="">请选择...</option>
+	                   #dict("teType",$!xmNewTe.teType)
+                  </select>
+               </td>
+            </tr>
+            <tr>
+              <td>符合调额规则:</td>
+              <td><select id="teRule" name="teRule" disabled="disabled">
+	                   <option value="">请选择...</option>
+	                   #dict("teRule",$!xmNewTe.teRule)
+                  </select>
+              </td>
+              <td>&nbsp;</td>
+              <td>审核结果:</td>
+              <td><select id="status" name="status">
+	                   #dict("teAuditResult","")
+                  </select>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <input class="current" type="button" onclick="auditAction();" value="审核" />
+        <input class="btn_g" type="button" onclick="toBrowse();"  value="#i18n('button.back')" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	
+	function toBrowse(){
+		var url = "${modulePath}/browseforaudit.page";
+		navigateTo(url);
+	}
+	
+	function auditAction(){
+   	        var url = "${modulePath}/update.json?id="+$("#id").val()+"&status="+$("#status").val();
+			$.ajax({
+				url : url,
+				type : "get",
+				data : "",
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("审核成功！");
+						window.location.href= contextPath+"/customer/te/browseforaudit.page" ;
+					}else{
+						topWin.Dialog.message(data.message);
+				    }
+				}
+			});
+	}
+	
+	
+
+  </script>
+</body>
+#parse ("common/iframe_page_footer.htm")
