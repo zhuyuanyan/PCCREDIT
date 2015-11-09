@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
+import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -712,7 +714,7 @@ public class XM_APPLN_Service {
 						  String custType,
 						  String applyQuota,
 						  String productId,
-						  String localExeclId){
+						  String localExeclId,XmModel xm){
 		
 		//设置申请
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
@@ -746,6 +748,12 @@ public class XM_APPLN_Service {
 		
 		commonDao.insertObject(customerApplicationInfo);
 		
+		//modified by songchen 20151109 start
+		if("1".equals(intopiecesType)){//散件
+			xm.setApp_id(customerApplicationInfo.getId());
+			commonDao.insertObject(xm);
+		}
+		//modified by songchen 20151109 end
 		//绑定appId
 		productService.updateLocalExecl(localExeclId, customerApplicationInfo.getId());
 		

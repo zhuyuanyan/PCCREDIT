@@ -44,6 +44,7 @@ import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.intopieces.model.XmNewSq;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
@@ -198,13 +199,15 @@ public class IntoPiecesApproveControl extends BaseController {
 						returnMap.put("message","此客户正在申请进件，无法再次申请!");
 					}else{
 						//设置流程开始
+						XmModel xm = getModel(request);
 						xM_APPLN_Service.saveApply(customerId,
 												   intopiecesType,
 												   IntopiecesSpareType,
 												   custType,
 												   applyQuota,
 												   productId,
-												   localExeclId);
+												   localExeclId,
+												   xm);
 						
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.addGlobalMessage(CREATE_SUCCESS);
@@ -398,5 +401,60 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject("custType", custType);
 			mv.addObject("productId", productId);
 			return mv;
+		}
+		
+		
+		public XmModel getModel(HttpServletRequest request){
+			XmModel xm = new XmModel();
+			xm.setIntopiecestype(request.getParameter("intopiecesType"));
+			xm.setApplyquota(request.getParameter("applyQuota"));
+			xm.setApplyintopiecessparetype_1(request.getParameter("ApplyIntopiecesSpareType_1"));
+			xm.setHouse_type(request.getParameter("house_type"));
+			xm.setHouse_type1(request.getParameter("house_type1"));
+			xm.setValue_1(request.getParameter("value_1"));
+			xm.setValue_2(request.getParameter("value_2"));
+			xm.setValue_3(request.getParameter("value_3"));
+			xm.setValue_4(request.getParameter("value_4"));
+			xm.setValue_5(request.getParameter("value_5"));
+			xm.setValue_6(request.getParameter("value_6"));
+			xm.setValue_7(request.getParameter("value_7"));
+			xm.setValue_7_1(request.getParameter("value_7_1"));
+			xm.setValue_8(request.getParameter("value_8"));
+			xm.setValue_9(request.getParameter("value_9"));
+			xm.setValue_10(request.getParameter("value_10"));
+			xm.setValue_11(request.getParameter("value_11"));
+			xm.setValue_12(request.getParameter("value_12"));
+			xm.setHouse_type2(request.getParameter("house_type2"));
+			xm.setValue_13(request.getParameter("value_13"));
+			xm.setValue_14(request.getParameter("value_14"));
+			xm.setValue_15(request.getParameter("value_15"));
+			xm.setValue_16(request.getParameter("value_16"));
+			xm.setValue_17(request.getParameter("value_17"));
+			xm.setValue_18(request.getParameter("value_18"));
+			xm.setValue_19(request.getParameter("value_19"));
+			xm.setValue_20(request.getParameter("value_20"));
+			xm.setValue_21(request.getParameter("value_21"));
+			xm.setValue_22(request.getParameter("value_22"));
+			xm.setValue_23(request.getParameter("value_23"));
+			xm.setValue_24(request.getParameter("value_24"));
+			xm.setValue_25(request.getParameter("value_25"));
+			xm.setValue_26(request.getParameter("value_26"));
+			xm.setValue_27(request.getParameter("value_27"));
+			xm.setHouse_type3(request.getParameter("house_type3"));
+			xm.setValue_28(request.getParameter("value_28"));
+			xm.setValue_29(request.getParameter("value_29"));
+			xm.setValue_30(request.getParameter("value_30"));
+			xm.setValue_31(request.getParameter("value_31"));
+			xm.setValue_32(request.getParameter("value_32"));
+			xm.setValue_33(request.getParameter("value_33"));
+			xm.setValue_34(request.getParameter("value_34"));
+			xm.setValue_35(request.getParameter("value_35"));
+			xm.setValue_36(request.getParameter("value_36"));
+			xm.setValue_37(request.getParameter("value_37"));	
+			xm.setValue_38(request.getParameter("value_38"));
+			xm.setValue_39(request.getParameter("value_39"));
+			xm.setValue_40(request.getParameter("value_40"));
+			xm.setValue_41(request.getParameter("value_41"));
+			return xm;
 		}
 }

@@ -8,6 +8,7 @@ import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
+import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.model.ProductAttributeVo;
 import com.cardpay.pccredit.system.model.Dict;
@@ -202,4 +203,5 @@ public interface CustomerInforDao {
 	
 	public List<ProductAttributeVo> findIntoProdByFilter(CustomerInforFilter filter);
 	public int  findIntoProdCountByFilter(CustomerInforFilter filter);
+	public XmModel findXmModelByAppId(CustomerInforFilter customerInforFilter);
 }

@@ -27,15 +27,16 @@
          </ul>
         </div>
 			</div>
-			<form id="id_module_form" action="${contextPath}/product/productinformation/update.json" enctype="multipart/form-data" method="post">
+			<form id="id_module_form" action="${contextPath}/product/productinformation/update.json"  method="post">
 				<div class="forms" id="formsId">
 					<input type="hidden" name="id" value="$!product.id" />
-					<table class="rule">
+					<table class="rule" border="1" bordercolor="#CCCCCC">
+					<caption>产品属性</caption>
 						<colgroup>
 							<col width="10%" />
 							<col width="30%" />
 			 				<col width="10%" />
-							<col width="10%" />
+							<col width="30%" />
 							<col width="30%" />
 						</colgroup>
 						<tr>
@@ -167,7 +168,7 @@
 							<td><input type="text" id="productRiskTolerance" name="productRiskTolerance"
 								value="$!product.productRiskTolerance" /></td>
 						</tr> -->
-						<tr>
+						<!-- <tr>
 							<td><label>产品图片：</label></td>
             				<td>
               					 <input type="file" name="file">
@@ -176,10 +177,10 @@
             				<td><label>查看当前图片：</label></td>
             				<td>
             				<a href="javascript:void(0)" onclick="viewPicture('${contextPath}/product/productinformation/getPicture.page?id=$!{product.id}&flag=true')">产品图片预览</a>
-            				 <!--  <div class="divcss5_list_title"><a class="ml20" href="#" id="click_test2">产品图片预览</a></div> -->
+            				  <div class="divcss5_list_title"><a class="ml20" href="#" id="click_test2">产品图片预览</a></div>
               					 
             				</td>
-						<tr>
+						</tr> -->
 					</table>
 				</div>
 			</form>
@@ -217,11 +218,10 @@
 		});
 	}
 	
-		var layout = new FormsLayout("formsId");
-		window.top.currentWindow.setLayout(layout);
-
+		 var layout = new FormsLayout("formsId");
+		 window.top.currentWindow.setLayout(layout);
 		 #set ($formName = "'#id_module_form'")
-			#validator($formName)
+	     #parse ("product/product_create_validation.js")
 		 $(document).ready(function() {
 			 $("#id_save_button").click(function() {
 			        if ($($formName).valid()) {

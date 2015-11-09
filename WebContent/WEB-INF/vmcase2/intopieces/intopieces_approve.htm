@@ -166,7 +166,14 @@
 	      				 if(parseFloat(ed)<parseFloat(applyQuota)){
 	      					Dialog.message("额度超出客户经理可申请额度!");
 	      					return;
-	      				} 
+	      				}
+	      				
+	      				//进件类型非散件时,申请额度必填
+	      				if(intopiecesType != '1' && applyQuota == ''){
+		      				Dialog.message("申请额度必填!");
+		      				return;
+	      				}
+	      				
 	      				//客户类型检查
 	      				if(typeCode.indexOf(custType)=="-1"){
 	      					Dialog.message("客户类型不符合客户经理可进件类型!");

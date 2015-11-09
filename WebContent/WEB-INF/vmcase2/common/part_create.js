@@ -20,7 +20,8 @@
 					#set ($formName = "'#id_module_form'");
 					var formjson = $($formName).serialize();
 					 $.ajax({
-							url : "${contextPath}/customer/amountadjustment/apply.json",
+							//url : "${contextPath}/customer/amountadjustment/apply.json",
+						    url : "${contextPath}/system/role/insert.json",
 							type : "get",
 							data : formjson,
 							success : function(data) {
