@@ -20,6 +20,7 @@ import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
+import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
@@ -72,6 +73,7 @@ public class AddIntoPiecesService {
 		}
 		
 		//读取excel内容
+		
 		JXLReadExcel readExcel = new JXLReadExcel();
 		String sheet[] = readExcel.readExcelToHtml(url, true);
 		for(String str : sheet){
@@ -245,5 +247,9 @@ public class AddIntoPiecesService {
 		if(v!=null){
 			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
 		}
+	}
+	
+	public XmModel findXmModel(String appId){
+		return localExcelDao.findModelById(appId);
 	}
 }

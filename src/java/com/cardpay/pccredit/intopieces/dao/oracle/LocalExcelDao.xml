@@ -67,4 +67,9 @@
     from local_excel
     where application_id=#{applicationId}
   </select>
+  
+  
+  <select id="findModelById" resultType="com.cardpay.pccredit.intopieces.model.XmModel">
+    select * from XM_MODEL where app_id=#{applicationId}
+  </select>
 </mapper>

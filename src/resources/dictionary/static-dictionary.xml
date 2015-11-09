@@ -716,5 +716,21 @@
 		<item name="03" title="跨境" />
 		<item name="04" title="其它" />
 	</dictionary>
+	
+	<dictionary name="teType" title="调额类型">
+		<item name="01" title="调升" />
+		<item name="02" title="调减" />
+	</dictionary>
+	
+	<dictionary name="teRule" title="调额规则">
+		<item name="01" title="普通信用卡调减" />
+		<item name="02" title="灵活金额度调增" />
+		<item name="03" title="灵活金额度调减" />
+	</dictionary>
+	
+    <dictionary name="teAuditResult" title="审批结果">
+		<item name="1" title="同意" />
+		<item name="2" title="不同意" />
+	</dictionary>
 	<!-- xm_appln 数据字典结束 -->
 </dictionaries>

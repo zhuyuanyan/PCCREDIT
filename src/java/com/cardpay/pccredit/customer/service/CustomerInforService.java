@@ -51,6 +51,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.model.ProductAttributeVo;
@@ -1496,6 +1497,11 @@ public class CustomerInforService {
 			return list.get(0);
 		}
 		return null;
+	}
+	
+	
+	public XmModel findXmModelById(CustomerInforFilter customerInforFilter){
+		return customerInforDao.findXmModelByAppId(customerInforFilter);
 	}
 	
 }

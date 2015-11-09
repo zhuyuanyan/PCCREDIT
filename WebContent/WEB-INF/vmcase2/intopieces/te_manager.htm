@@ -1,0 +1,105 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户额度管理</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" name="custName" value="$!result.filter.custName" /></span>
+              </li>
+              <li>
+                <span>证件号码：<input type="text" name="certiCode" value="$!result.filter.certiCode" /></span>
+              </li>
+              <li>
+                <span>调额类型：
+                	<select id="teType" name="teType">
+	                   <option value="">请选择...</option>
+	                   #dict("teType",$!result.filter.teType)
+                  	</select>
+                </span>
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+              
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%"  />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户名称</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">产品</th>
+              <th nowrap="nowrap">调额类型</th>
+              <th nowrap="nowrap">符合调额规则</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+              <col width="15%" />
+            </colgroup>
+            #foreach ($obj in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
+              <td nowrap="nowrap">$!obj.custName</td>
+              <td nowrap="nowrap">$!obj.certiCode</td>
+              <td nowrap="nowrap">$!obj.productName</td>
+              <td nowrap="nowrap">#dictVal("teType", $!obj.teType)</td>
+              <td nowrap="nowrap">#dictVal("teRule", $!obj.teRule)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" >查看</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
+		
+		
+		$("#id_create_button").click(function() {
+          
+        });
+		
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")
