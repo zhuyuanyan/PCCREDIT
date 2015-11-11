@@ -222,6 +222,7 @@ function noHouse (){
 		total = Number(value_13)+Number(value_14)+Number(value_15)+Number(value_16)+Number(value_17)+
 				Number(value_18)+Number(value_19)+Number(value_20)+Number(value_21)+Number(value_22)+
 				Number(value_23)+Number(value_24)+Number(2);
+		total = total * 10000;
 	
 	}else if($("#house_type2").val()=='2'){//ii.在我行有存款
 		 var value_25 =	$("#value_25").val();

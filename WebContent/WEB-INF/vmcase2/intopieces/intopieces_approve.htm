@@ -166,7 +166,14 @@
 	      				 if(parseFloat(ed)<parseFloat(applyQuota)){
 	      					Dialog.message("额度超出客户经理可申请额度!");
 	      					return;
-	      				} 
+	      				}
+	      				
+	      				//进件类型非散件时,申请额度必填
+	      				if(intopiecesType != '1' && applyQuota == ''){
+		      				Dialog.message("申请额度必填!");
+		      				return;
+	      				}
+	      				
 	      				//客户类型检查
 	      				if(typeCode.indexOf(custType)=="-1"){
 	      					Dialog.message("客户类型不符合客户经理可进件类型!");
@@ -191,47 +198,15 @@
 	      				if(isInRisk){
 		      				Dialog.confirm("此客户为风险客户，是否继续申请？", "提示",
 								  function() {
-		      						
 		      						window.location.href = "${modulePath}reportImport.page?customerId="+rowId+"&intopiecesType="+intopiecesType
 		      						+"&applyQuota="+applyQuota+"&ApplyIntopiecesSpareType_1="+ApplyIntopiecesSpareType_1+"&ApplyIntopiecesSpareType_2="+ApplyIntopiecesSpareType_2+"&custType="+custType+"&productId="+productId;
 		      						window.top.$("#form_diaog").dialog("close");
-		      						/* $.post("${modulePath}xm_appln_page0_apply.json", {
-				      					  	id: rowId,
-				      					  	intopiecesType:intopiecesType,
-				      					    applyQuota:applyQuota,
-				      					    ApplyIntopiecesSpareType:ApplyIntopiecesSpareType,
-				      					    custType:custType
-				      		      	},
-				      		      	function(data, textStatus, jqXhr) {
-				      		          if (data.success) {
-				      		        	  window.top.Dialog.message(data.message);
-				      		        	  var url = "${modulePath}approve.page";
-				      		              window.location.href = url;
-				      		          } else {
-				      		              //Dialog.message(data.message);
-				      		          }
-				      		      	});
-				      				window.top.$("#form_diaog").dialog("close"); */
-								  });
+						   });
 	      					
 	      				}else{
-	      					$.post("${modulePath}xm_appln_page0_apply.json", {
-	      					  	id: rowId,
-	      					  	intopiecesType:intopiecesType,
-	      					    applyQuota:applyQuota,
-	      					    ApplyIntopiecesSpareType:ApplyIntopiecesSpareType,
-	      					    custType:custType
-		      		      	},
-		      		      	function(data, textStatus, jqXhr) {
-		      		          if (data.success) {
-		      		        	  window.top.Dialog.message(data.message);
-		      		        	  var url = "${modulePath}approve.page";
-		      		              window.location.href = url;
-		      		          } else {
-		      		              //Dialog.message(data.message);
-		      		          }
-		      		      	});
-		      				window.top.$("#form_diaog").dialog("close");
+	      					window.location.href = "${modulePath}reportImport.page?customerId="+rowId+"&intopiecesType="+intopiecesType
+      						+"&applyQuota="+applyQuota+"&ApplyIntopiecesSpareType_1="+ApplyIntopiecesSpareType_1+"&ApplyIntopiecesSpareType_2="+ApplyIntopiecesSpareType_2+"&custType="+custType+"&productId="+productId;
+      						window.top.$("#form_diaog").dialog("close");
 	      				}
 	      				
 	      		}, null, 700, 200);

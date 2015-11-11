@@ -26,7 +26,9 @@
 	<bean id="masterDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
 		<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@11.23.11.35:1521:orcl" />  斜杠方式连接service_name 冒号方式连接sid -->
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@11.23.11.35:1521/xfxd" /> 
+<!-- 		<property name="jdbcUrl" value="jdbc:oracle:thin:@11.23.11.35:1521/xfxd" />  -->
+		 <!--<property name="jdbcUrl" value="jdbc:oracle:thin:@192.168.0:252/orcl" />-->
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@127.0.0.1:1521/orcl" />
 		<property name="user" value="pccredit" />
 		<property name="password" value="pccredit" />
 		
