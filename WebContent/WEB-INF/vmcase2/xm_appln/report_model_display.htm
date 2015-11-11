@@ -36,7 +36,8 @@
 						</select></td>
 						<td colspan="2"></td>
 					</tr>
-					<tr style= "display:none" id ="type1">
+					#if($!house_type=='2')
+					<tr id ="type1">
 						<td><label for="chineseName">是否已提供配偶征信:</label></td>
 						<td><select id="house_type1" name="house_type1" disabled="disabled"
 							onchange="changeType(this.value)">
@@ -49,6 +50,7 @@
 							</select>
 						</td>
 					</tr>
+					#end
 				</table>
 			</div>
 			<div class="forms">
