@@ -16,6 +16,7 @@ public class XmNewSqLog extends BusinessModel {
 	private String customerLevel;
 	private String ed;
 	private String resultType;
+	private String remark;
 	public String getReviewId() {
 		return reviewId;
 	}
@@ -57,6 +58,12 @@ public class XmNewSqLog extends BusinessModel {
 	}
 	public void setResultType(String resultType) {
 		this.resultType = resultType;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	
 }
