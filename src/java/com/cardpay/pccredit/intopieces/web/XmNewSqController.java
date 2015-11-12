@@ -1,10 +1,14 @@
 package com.cardpay.pccredit.intopieces.web;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
+import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.XmNewFlowFilter;
 import com.cardpay.pccredit.intopieces.filter.XmNewSqFilter;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.XmNewFlow;
 import com.cardpay.pccredit.intopieces.model.XmNewSq;
 import com.cardpay.pccredit.intopieces.model.XmNewSqForm;
@@ -227,6 +233,7 @@ public class XmNewSqController extends BaseController {
 		String id = request.getParameter("sqId");
 		String nodeName = request.getParameter("jName");
 		String changeUser = request.getParameter("changeUser");
+		String remark = request.getParameter("remark");
 		Boolean resultBoolean=true;
 		if (returnMap.isSuccess()) {
 			try {
@@ -234,14 +241,14 @@ public class XmNewSqController extends BaseController {
 					if(changeUser.equals("2")){
 						String auditUserIds = request.getParameter("auditUserIds");
 						//选择转办人员先审批
-						resultBoolean = xmNewSqService.passZ(id,qzZAForm,nodeName,request,auditUserIds);
+						resultBoolean = xmNewSqService.passZ(id,qzZAForm,nodeName,request,auditUserIds,remark);
 					}else{
 						//评审审批(节点跳跃)
-						resultBoolean = xmNewSqService.passP(id,qzZAForm,nodeName,request);
+						resultBoolean = xmNewSqService.passP(id,qzZAForm,nodeName,request,remark);
 					}
 				}else{
 					//其它节点审批
-					resultBoolean = xmNewSqService.pass(id,qzZAForm,nodeName,request);
+					resultBoolean = xmNewSqService.pass(id,qzZAForm,nodeName,request,remark);
 				}
 				if(resultBoolean){
 					returnMap.put(JRadConstants.SUCCESS, true);
@@ -325,9 +332,9 @@ public class XmNewSqController extends BaseController {
 	}
 	//查询商圈
 	@ResponseBody
-	@RequestMapping(value = "show.page")
+	@RequestMapping(value = "read.page")
 	@JRadOperation(JRadOperation.CREATE)
-	public AbstractModelAndView show(HttpServletRequest request) {
+	public AbstractModelAndView read(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/product/za_search_approve", request);
 		String sqId = request.getParameter(ID);
 		String nodeName = request.getParameter("nodeName");
@@ -408,5 +415,99 @@ public class XmNewSqController extends BaseController {
 
 		}
 		return returnMap;
+	}
+	
+	//商圈上传材料
+	@ResponseBody
+	@RequestMapping(value = "upload.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView upload(@ModelAttribute XmNewSqFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
+		String sqId =request.getParameter(ID);
+		filter.setSqId(sqId);
+		QueryResult<XmNewSqUploadForm> result = xmNewSqService.findSqUploadList(filter);
+		JRadPagedQueryResult<XmNewSqUploadForm> pagedResult = new JRadPagedQueryResult<XmNewSqUploadForm>(filter, result);
+		
+		JRadModelAndView mv = new JRadModelAndView("/product/sq_upload",request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		
+		mv.addObject("sqId", sqId);
+		
+		return mv;
+	}
+	
+	//上传材料
+	@ResponseBody
+	@RequestMapping(value = "upload_save.json")
+	public Map<String, Object> upload_save(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
+		response.setContentType("text/html;charset=utf-8");
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if(file==null||file.isEmpty()){
+				map.put(JRadConstants.SUCCESS, false);
+				map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTEMPTY);
+				return map;
+			}
+			String sqId = request.getParameter(ID);
+			xmNewSqService.importImage(file,sqId,user);
+			map.put(JRadConstants.SUCCESS, true);
+			map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
+			JSONObject obj = JSONObject.fromObject(map);
+			response.getWriter().print(obj.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put(JRadConstants.SUCCESS, false);
+			map.put(JRadConstants.MESSAGE, "上传失败:"+e.getMessage());
+			JSONObject obj = JSONObject.fromObject(map);
+			response.getWriter().print(obj.toString());
+		}
+		return null;
+	}
+	//删除影像资料
+	@ResponseBody
+	@RequestMapping(value = "deleteImage.json")
+	public JRadReturnMap deleteImage(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String id = request.getParameter("id");
+			xmNewSqService.deleteImage(id);
+			
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			return WebRequestHelper.processException(e);
+		}
+
+		return returnMap;
+	}
+	//下载影像资料
+	@ResponseBody
+	@RequestMapping(value = "downLoadYxzl.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.EXPORT)
+	public AbstractModelAndView downLoadYxzlById(HttpServletRequest request,HttpServletResponse response){
+		try {
+			xmNewSqService.downLoadYxzlById(response,request.getParameter(ID));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	//商圈上传材料（查看）
+	@ResponseBody
+	@RequestMapping(value = "show.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView show(@ModelAttribute XmNewSqFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
+		String sqId =request.getParameter(ID);
+		filter.setSqId(sqId);
+		QueryResult<XmNewSqUploadForm> result = xmNewSqService.findSqUploadList(filter);
+		JRadPagedQueryResult<XmNewSqUploadForm> pagedResult = new JRadPagedQueryResult<XmNewSqUploadForm>(filter, result);
+		
+		JRadModelAndView mv = new JRadModelAndView("/product/sq_upload_show",request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		
+		mv.addObject("sqId", sqId);
+		
+		return mv;
 	}
 }
