@@ -243,7 +243,7 @@ public class IntoPiecesOrgnizationControl extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "update.json")
-	@JRadOperation(JRadOperation.CHANGE)
+	//@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap update(@ModelAttribute MakeCardFilter cardFilter, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
@@ -329,7 +329,7 @@ public class IntoPiecesOrgnizationControl extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "updateCardStatus.json")
-	@JRadOperation(JRadOperation.CHANGE)
+	//@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap updateCardStatus(@ModelAttribute MakeCardFilter cardFilter, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
