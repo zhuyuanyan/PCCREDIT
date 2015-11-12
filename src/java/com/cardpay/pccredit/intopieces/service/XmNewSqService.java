@@ -117,16 +117,15 @@ public class XmNewSqService {
 	 */
 	public Boolean pass(String id ,XmNewSqForm sq,String nodeName,HttpServletRequest request,String remark) throws Exception{
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		XmNewSq xmNewSq = commonDao.findObjectById(XmNewSq.class, id);
+		xmNewSq.setCustomerType(sq.getCustomerType());
+		xmNewSq.setCustomerTypeCode(sq.getCustomerTypeCode());
+		xmNewSq.setCustomerLevel(sq.getCustomerLevel());
+		xmNewSq.setCustomerLevelCode(sq.getCustomerLevelCode());
+		xmNewSq.setEd(sq.getEd());
 		//开始审批
-		Boolean resultBoolean = next(id,request);
+		Boolean resultBoolean = next(id,request,xmNewSq);
 		if(resultBoolean){
-			XmNewSq xmNewSq = commonDao.findObjectById(XmNewSq.class, id);
-			xmNewSq.setCustomerType(sq.getCustomerType());
-			xmNewSq.setCustomerTypeCode(sq.getCustomerTypeCode());
-			xmNewSq.setCustomerLevel(sq.getCustomerLevel());
-			xmNewSq.setCustomerLevelCode(sq.getCustomerLevelCode());
-			xmNewSq.setEd(sq.getEd());
-			commonDao.updateObject(xmNewSq);
 			//添加日志
 			XmNewSqLog log = new XmNewSqLog();
 			log.setSqId(id);
@@ -165,7 +164,7 @@ public class XmNewSqService {
 			commonDao.updateObject(info);
 		}
 		//开始审批
-		return next(id,request);
+		return next(id,request,null);
 	}
 	/*
 	 * 评审审批---进入部门审批（需保存数据，并跳过转办人员、评审终审节点）
@@ -175,13 +174,13 @@ public class XmNewSqService {
 		//开始审批
 		Boolean resultBoolean = nextStepTwo(id,request);
 		if(resultBoolean){
-			XmNewSq xmNewSq = commonDao.findObjectById(XmNewSq.class, id);
-			xmNewSq.setCustomerType(sq.getCustomerType());
-			xmNewSq.setCustomerTypeCode(sq.getCustomerTypeCode());
-			xmNewSq.setCustomerLevel(sq.getCustomerLevel());
-			xmNewSq.setCustomerLevelCode(sq.getCustomerLevelCode());
-			xmNewSq.setEd(sq.getEd());
-			commonDao.updateObject(xmNewSq);
+//			XmNewSq xmNewSq = commonDao.findObjectById(XmNewSq.class, id);
+//			xmNewSq.setCustomerType(sq.getCustomerType());
+//			xmNewSq.setCustomerTypeCode(sq.getCustomerTypeCode());
+//			xmNewSq.setCustomerLevel(sq.getCustomerLevel());
+//			xmNewSq.setCustomerLevelCode(sq.getCustomerLevelCode());
+//			xmNewSq.setEd(sq.getEd());
+//			commonDao.updateObject(xmNewSq);
 			//添加日志
 			XmNewSqLog log = new XmNewSqLog();
 			log.setSqId(id);
@@ -210,7 +209,7 @@ public class XmNewSqService {
 		request.setAttribute("applicationStatus", ApplicationStatusEnum.REJECTAPPROVE);
 		request.setAttribute("objection", "false");
 		request.setAttribute("examineAmount", "");
-		Boolean result = stepToNextProcess(request);
+		Boolean result = stepToNextProcess(request,null);
 		if(result){
 			XmNewSq xmNewSq = commonDao.findObjectById(XmNewSq.class, id);
 			xmNewSq.setStatus(Constant.SQ_APPROVE_TYPE_3);
@@ -368,7 +367,7 @@ public class XmNewSqService {
 	/*
 	 * 创建进入下一流程条件
 	 */
-	public Boolean next(String id,HttpServletRequest request) throws Exception{
+	public Boolean next(String id,HttpServletRequest request,XmNewSq xmNewSq) throws Exception{
 		String sql = "select * from xm_new_application_info where sq_id='"+id+"'";
 		List<XmNewApplicationInfo> list = commonDao.queryBySql(XmNewApplicationInfo.class, sql, null);
 		request.setAttribute("serialNumber", list.get(0).getSerialNumber());
@@ -376,12 +375,12 @@ public class XmNewSqService {
 		request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 		request.setAttribute("objection", "false");
 		request.setAttribute("examineAmount", "");
-		return stepToNextProcess(request);
+		return stepToNextProcess(request,xmNewSq);
 	}
 	/*
 	 * 进入下一流程
 	 */
-	public Boolean stepToNextProcess(HttpServletRequest request) {
+	public Boolean stepToNextProcess(HttpServletRequest request,XmNewSq xmNewSq) {
 		try {
 			XmNewApplicationInfo xmNewApplicationInfo = new XmNewApplicationInfo();
 			CustomerApplicationProcess customerApplicationProcess = new CustomerApplicationProcess();
@@ -405,6 +404,8 @@ public class XmNewSqService {
 				}
 				if(examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())){
 					xmNewApplicationInfo.setStatus(Constant.APPROVED_INTOPICES);
+					//最后节点审批，需保存商圈状态
+					commonDao.updateObject(xmNewSq);
 				}
 				xmNewApplicationInfo.setId(applicationId);
 				xmNewApplicationInfo.setModifiedBy(user.getId());
@@ -449,11 +450,11 @@ public class XmNewSqService {
 		request.setAttribute("objection", "false");
 		request.setAttribute("examineAmount", "");
 		//进入转办人员
-		stepToNextProcess(request);
+		stepToNextProcess(request,null);
 		//进入评审终审
-		stepToNextProcess(request);
+		stepToNextProcess(request,null);
 		//进入部门审批
-		return stepToNextProcess(request);
+		return stepToNextProcess(request,null);
 	}
 	
 	/* 查询商圈资料信息 */
