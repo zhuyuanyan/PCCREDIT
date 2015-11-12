@@ -26,7 +26,8 @@
 							data : formjson,
 							success : function(data) {
 								if (data.success) {
-									window.top.Dialog.message(data.message);	
+									//window.top.Dialog.message(data.message);
+									topWin.Dialog.message("保存成功！");
 									#if ($request.getParameter('callBackUrl').indexOf('?') != -1)
 								         navigateTo("${request.getParameter('callBackUrl').replaceAll('\?.*','')}" + "?recordId=" + data.recordId);
 								     #else

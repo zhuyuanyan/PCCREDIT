@@ -24,7 +24,7 @@
 				<td><img src="${contextPath}/images/xm_appln/min.gif"/></td>
 			</tr>
 		</table>
-		<div name="content">
+		<div name="content" class="forms" id="formsId">
 			<table class="message">
 				<tr>
 					<td class="label">姓名<font color="#ff0000">*</font></td>
@@ -124,8 +124,9 @@
 	<script src="${contextPath}/js/xm_appln/xm_appln.js" type="text/javascript"></script>
 	<script src="${contextPath}/js/cardValidate.js" type="text/javascript"></script>
 	<script type="text/javascript">
-  
-  #set ($formName = "'#id_module_form'")
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+  	#set ($formName = "'#id_module_form'")
 	#parse ("xm_appln/xm_appln_page1_validation.js")
 	
 	$(document).ready(function() {
