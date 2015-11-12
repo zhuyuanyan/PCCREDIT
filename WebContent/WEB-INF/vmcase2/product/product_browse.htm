@@ -26,15 +26,16 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="5%" />
+<!--               <col width="10%" /> -->
               <col width="10%" />
-              <col />
-              <col />
-              <col />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
-              <th nowrap="nowrap">产品类型</th>
+<!--               <th nowrap="nowrap">产品类型</th> -->
               <th nowrap="nowrap">产品名称</th>
               <th nowrap="nowrap">授信额度</th>
               <th nowrap="nowrap">利率区间</th>
@@ -47,17 +48,18 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="5%" />
+<!--               <col width="10%" /> -->
               <col width="10%" />
-              <col />
-              <col />
-              <col />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
             </colgroup>
             #foreach ($product in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!product.id"
                   #if ($!request.getParameter("recordId") == $product.id) checked="checked" #end /></td>
-              <td nowrap="nowrap">#dictVal("CMMCPLX", $!product.productTypeCode)</td>
+<!--               <td nowrap="nowrap">#dictVal("CMMCPLX", $!product.productTypeCode)</td> -->
               <td nowrap="nowrap">$!product.productName</td>
               <td nowrap="nowrap">$!product.creditLine</td>
               <td nowrap="nowrap">$!product.rateRange</td>

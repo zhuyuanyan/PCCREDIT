@@ -29,8 +29,14 @@
 						<tr>
 							<td class="table-label">最高额度：<font color="#ff0000">*</font></td>
 							<td><input type="text" value="${obj.ed}" readonly/></td>	
+							<td class="table-label">备注：<font color="#ff0000">*</font></td>
+								<td><input type="text" value="${obj.remark}" readonly/></td>
+						</tr>
+						<tr>	
 							<td class="table-label">审批结果：<font color="#ff0000">*</font></td>
-								<td><input type="text" value="通过" readonly/></td>
+							<td><input type="text" value="通过" readonly/></td>
+							<td></td>
+							<td></td>
 						</tr>
 					</table>	
 				#else
@@ -53,8 +59,15 @@
 						<tr>
 							<td class="table-label">最高额度：<font color="#ff0000">*</font></td>
 							<td><input type="text" value="" readonly/></td>	
+							<td class="table-label">备注：<font color="#ff0000">*</font></td>
+							<td><input type="text" value="" readonly/></td>	
+							
+						</tr>
+						<tr>
 							<td class="table-label">审批结果：<font color="#ff0000">*</font></td>
-								<td><input type="text" value="拒绝" readonly/></td>
+							<td><input type="text" value="拒绝" readonly/></td>
+							<td></td>
+							<td></td>
 						</tr>
 					</table>
 					#end

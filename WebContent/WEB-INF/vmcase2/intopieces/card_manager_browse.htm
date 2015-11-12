@@ -68,7 +68,8 @@
         <div class="controlbtn">
 <!--           #btnpriv("issuedcustomer")<a class="btn_g" href="javascript:void(0);" title="下发到客户" onclick="issuedCard('${contextPath}/intopieces/orgnization/organizationIssuedCard.json?flag=true','${contextPath}/intopieces/orgnization/managerQueryCard.page','true')">下发到客户</a>#end
 <!--           #btnpriv("display")<a class="btn_g" href="javascript:void(0);" title="查看" onclick="viewCard('${contextPath}/intopieces/orgnization/viewCard.page')">查看</a>#end-->
-          	   #btnpriv("update")<a class="btn_g" href="javascript:void(0);" title="签收" onclick="sign()">签收</a>#end
+<!--           	   #btnpriv("update")<a class="btn_g" href="javascript:void(0);" title="签收" onclick="sign()">签收</a>#end -->
+			   <a class="btn_g" href="javascript:void(0);" title="签收" onclick="sign()">签收</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -116,6 +117,7 @@
         						topWin.Dialog.message("保存成功！");
         						window.location.href= contextPath+"/intopieces/orgnization/managerQueryCard.page" ;
         					}else{
+        						alert("shi");
         						topWin.Dialog.message(data.message);
         				    }
         				}

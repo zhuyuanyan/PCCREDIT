@@ -100,7 +100,7 @@
             	var value = $($(".checkbox :checked")[0]).attr("value");
                 var rowid = value.split("@")[0];
                	
-               	window.location.href="${modulePath}/show.page?id="+rowid;
+               	window.location.href="${modulePath}/read.page?id="+rowid;
             } else {
                 Dialog.message("请选择一行");
             }

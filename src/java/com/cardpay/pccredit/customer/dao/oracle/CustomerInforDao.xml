@@ -318,6 +318,9 @@
 		<if test="cardId != null and cardId != '' ">
 			AND card_id=#{cardId}
 		</if>
+		<if test="custId != null and custId != '' ">
+			AND id !=#{custId}
+		</if>
 	</select>
 	
 	
