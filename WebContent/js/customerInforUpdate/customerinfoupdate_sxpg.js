@@ -1,6 +1,4 @@
-$(document).ready(function() {
-	
-});
+
 //计算净资产——有房客户-自有
  function fuzhai1(){
 	
@@ -253,27 +251,24 @@ $(document).ready(function() {
 	
 }
 //无房优质行业客户
- function edushangxin9(){
-	
-	
-	var edushangxin =0;
-	var table = $("#noHouse_profession");
-	//
-	var highQuailtyIndustry= $("select[name=highQuailtyIndustry]",table).val();
-	if(highQuailtyIndustry =='normal'){
+ function  edushangxin9(){
 		
-		edushangxin = 30000_100000;
-	}
-   if(highQuailtyIndustry =='middle'){
+		var edushangxin =0;
+		var table = $("#noHouse_profession");
+		//
+		var highQuailtyIndustry= $("select[name=highQuailtyIndustry]").val();
+		if(highQuailtyIndustry =='normal'){
+			edushangxin = '30000_100000';
+		}
+	   if(highQuailtyIndustry =='middle'){
+			
+			edushangxin = '50000_200000';
+		}
+	   if(highQuailtyIndustry =='high'){
 		
-		edushangxin = 50000_200000;
-	}
-   if(highQuailtyIndustry =='high'){
-	
-	edushangxin = 50000_300000;
-   }
-	
-    $("#amountLimit",table).val(edushangxin); 
-     
-	
+		edushangxin = '50000_300000';
+	   }	
+		
+		
+	    $("#amountLimit",table).val(edushangxin); 
 }

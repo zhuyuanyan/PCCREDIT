@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.XmNewSqDao">
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.intopieces.model.XmNewSq">
+		<result property="id" column="ID" />
+		<result property="orgId" column="ORG_ID" />
+		<result property="orgName" column="ORG_NAME" />
+		<result property="userId" column="USER_ID" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="sqName" column="SQ_NAME" />
+		<result property="userName" column="USER_NAME" />
+		<result property="customerType" column="CUSTOMER_TYPE" />
+		<result property="customerTypeCode" column="CUSTOMER_TYPE_CODE" />
+		<result property="customerLevel" column="CUSTOMER_LEVEL" />
+		<result property="customerLevelCode" column="CUSTOMER_LEVEL_CODE" />
+		<result property="createdTime" column="CREATED_TIME" />
+	</resultMap>
+
+	<select id="findZaById" resultMap="ResultMap">
+		select *
+		from xm_new_sq
+		where ID=#{id}
+	</select>
+	<select id="findAllZaByFilter" resultMap="ResultMap"
+		parameterType="com.cardpay.pccredit.intopieces.filter.XmNewSqFilter">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select SQ.*,INFO.status as infoStatus,INFO.nodeName,INFO.USER_ID AS
+		applnId,INFO.ID AS processId from XM_NEW_SQ SQ LEFT JOIN
+		(SELECT
+		b.*,
+		A .SERIAL_NUMBER AS SERIALNUMBER,
+		N.NODE_NAME AS nodeName,
+		A . ID AS processId,
+		p.USER_ID
+		FROM
+		XM_NEW_APPLICATION_INFO b,
+		CUSTOMER_APPLICATION_PROCESS A,
+		NODE_AUDIT N,
+		NODE_AUDIT_USER P
+		WHERE
+		1 = 1
+		AND A .APPLICATION_ID = b. ID
+		AND N. ID = A .NEXT_NODE_ID
+		AND A .NEXT_NODE_ID = P .NODE_ID) INFO on SQ.id=INFO.sq_id where 1=1
+		<if test="applnId != null and applnId != '' ">
+						and INFO.USER_ID=#{applnId} 
+		</if>
+		<if test="name != null and name != '' ">
+						<![CDATA[ and SQ.sq_name like '%'||#{name}||'%']]>
+		</if>
+		<if test="orgName != null and orgName != '' ">
+						<![CDATA[ and SQ.org_name like '%'||#{orgName}||'%']]>
+		</if>
+				
+			<![CDATA[
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	<select id="findAllZaCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.intopieces.filter.XmNewSqFilter">
+		SELECT count(*)
+		FROM xm_new_sq t
+		WHERE 1=1
+		<if test="name != null and name != '' ">
+			<![CDATA[ and sq_name like '%'||#{name}||'%']]>
+		</if>
+	</select>
+	<select id="findApplyZaByFilter" resultMap="ResultMap"
+		parameterType="com.cardpay.pccredit.intopieces.filter.XmNewSqFilter">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+						SQ.*,b.status AS infoStatus,
+						N.NODE_NAME AS nodeName,
+						A . ID AS processId,
+						P .USER_ID AS applnId
+					FROM XM_NEW_SQ SQ,
+						XM_NEW_APPLICATION_INFO b,
+						CUSTOMER_APPLICATION_PROCESS A,
+						NODE_AUDIT N,
+						NODE_AUDIT_USER P
+					WHERE
+						1 = 1 and SQ. ID = b.sq_id
+					AND A .APPLICATION_ID = b. ID
+					AND N. ID = A .NEXT_NODE_ID
+					AND A .NEXT_NODE_ID = P .NODE_ID 
+					<if test="applnId != null and applnId != '' ">
+						and (P .USER_ID=#{applnId}  or b.zb_user=#{applnId} )
+					</if>
+
+		<if test="name != null and name != '' ">
+						<![CDATA[ and SQ.sq_name like '%'||#{name}||'%']]>
+		</if>
+		<if test="orgName != null and orgName != '' ">
+						<![CDATA[ and SQ.org_name like '%'||#{orgName}||'%']]>
+		</if>
+				
+			<![CDATA[
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+		<select id="findApplyZaByFilterCount" resultType="int"
+		parameterType="com.cardpay.pccredit.intopieces.filter.XmNewSqFilter">
+		SELECT count(*)
+			FROM XM_NEW_SQ SQ,
+				XM_NEW_APPLICATION_INFO b,
+				CUSTOMER_APPLICATION_PROCESS A,
+				NODE_AUDIT N,
+				NODE_AUDIT_USER P
+			WHERE
+				1 = 1 and SQ. ID = b.sq_id
+			AND A .APPLICATION_ID = b. ID
+			AND N. ID = A .NEXT_NODE_ID
+			AND A .NEXT_NODE_ID = P .NODE_ID 
+			<if test="applnId != null and applnId != '' ">
+						and (P .USER_ID=#{applnId}  or b.zb_user=#{applnId} )
+					</if>
+
+		<if test="name != null and name != '' ">
+						<![CDATA[ and SQ.sq_name like '%'||#{name}||'%']]>
+		</if>
+		<if test="orgName != null and orgName != '' ">
+						<![CDATA[ and SQ.org_name like '%'||#{orgName}||'%']]>
+		</if>
+				
+	</select>
+</mapper>

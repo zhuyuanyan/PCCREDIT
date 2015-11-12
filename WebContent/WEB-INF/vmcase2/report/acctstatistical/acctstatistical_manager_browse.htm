@@ -30,12 +30,13 @@
               <li>
                 <span>报表日期：<input type="text" name="reportDate" value='$!date.format("yyyy-MM-dd",$!filter.reportDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
-              
+              <li>
+                <span>选择机构：<select name="orgId"  >#dict("Organizations", $!filter.orgId)</select>
+              </span>
+              </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
-              </li>
-              <li class="search_button">
                 <input id="id_export_button" type="button" value="导出excel" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
               </li>
@@ -75,11 +76,14 @@
               <col width="140"/>
               <col width="140"/>
               <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
             </colgroup>
             <tr class="title" align="center">
               <th nowrap="nowrap">序号</th>
               <th nowrap="nowrap">客户经理</th>
-              
+              <th nowrap="nowrap">二级支行</th>
+              <th nowrap="nowrap">一级支行</th>
               <th nowrap="nowrap">基准日期</th>
               <th nowrap="nowrap">授信总额度</th>
               <th nowrap="nowrap">激活卡总授信额度</th>
@@ -142,13 +146,16 @@
               <col width="140"/>
               <col width="140"/>
               <col width="140"/>
+              <col width="140"/>
+              <col width="140"/>
               <col width="110"/>
             </colgroup>
             #foreach ($acctStatistical in $list)
             	<tr id="$!acctStatistical.id">
 	              <td nowrap="nowrap">$!acctStatistical.rowIndex</td>
 	              <td nowrap="nowrap">$!acctStatistical.name</td>
-	              
+	              <td nowrap="nowrap">$!acctStatistical.orgName</td>
+	              <td nowrap="nowrap">$!acctStatistical.orgParentName</td>
 	              <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!filter.basicDate)</td>
 	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bCreditExtensionAmount)</td>
 	              <td nowrap="nowrap">$format.formatNumber(2, $!acctStatistical.bActivateExtensionAmount)</td>

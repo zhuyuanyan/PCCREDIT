@@ -30,6 +30,7 @@ import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
+import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.intopieces.constant.CardStatus;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
@@ -64,9 +65,12 @@ import com.wicresoft.jrad.base.web.DataBindHelper;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
+import com.wicresoft.util.web.RequestHelper;
 
 @Controller
 @RequestMapping("/intopieces/orgnization/*")
@@ -231,6 +235,123 @@ public class IntoPiecesOrgnizationControl extends BaseController {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		DataBindHelper.initStandardBinder(binder);
+	}
+	
+	
+	/**
+	 * 卡片签收
+	 */
+	@ResponseBody
+	@RequestMapping(value = "update.json")
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap update(@ModelAttribute MakeCardFilter cardFilter, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String id[] = RequestHelper.getStringValue(request,ID).split(",");
+				List<String> ids = new ArrayList<String>();
+				for(int i =0;i<id.length;i++){
+					ids.add(id[i]);
+				}
+				cardFilter.setIds(ids);
+				boolean flag = intoPiecesService.updateCardSignStatus(cardFilter);
+				if(flag){
+					returnMap.put(JRadConstants.SUCCESS, true);
+					returnMap.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(JRadConstants.CHANGE_SUCCESS));
+				}else{
+					returnMap.put(JRadConstants.SUCCESS, false);
+					returnMap.put(JRadConstants.MESSAGE,CustomerInforConstant.UPDATEERROR);
+				}
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
+	}
+	
+	
+	/**
+	 * 客户领卡
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "managerGetCard.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView managerGetCard(@ModelAttribute MakeCardFilter filter,
+			HttpServletRequest request) {
+		filter.setRequest(request);
+		filter.setCardOrganization(Beans.get(LoginManager.class).getLoggedInUser(request).getOrganization().getId());
+		filter.setSignStatus("1");//已签收
+		QueryResult<MakeCard> result = intoPiecesService.findCardByFilter(filter);
+		JRadPagedQueryResult<MakeCard> pagedResult = new JRadPagedQueryResult<MakeCard>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/card_manager_get", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	/**
+	 * 卡片流转查询
+	 * 权限：总行/机构管理岗
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "QueryCardStatus.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView QueryCardStatus(@ModelAttribute MakeCardFilter filter,
+			HttpServletRequest request) {
+		filter.setRequest(request);
+		String organId = Beans.get(LoginManager.class).getLoggedInUser(request).getOrganization().getId();
+		//如果当前登录用户机构不是总行加限制条件
+		if("000000".equals(organId)){
+			filter.setCardOrganization(Beans.get(LoginManager.class).getLoggedInUser(request).getOrganization().getId());
+		}
+		QueryResult<MakeCard> result = intoPiecesService.findCardByFilter(filter);
+		JRadPagedQueryResult<MakeCard> pagedResult = new JRadPagedQueryResult<MakeCard>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/card_manager_query", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	/**
+	 * 
+	 */
+	/**
+	 * 卡片签收
+	 */
+	@ResponseBody
+	@RequestMapping(value = "updateCardStatus.json")
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap updateCardStatus(@ModelAttribute MakeCardFilter cardFilter, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				String id = RequestHelper.getStringValue(request,ID);
+				cardFilter.setId(id);
+				boolean flag = intoPiecesService.updateCardStatus(cardFilter);
+				if(flag){
+					returnMap.put(JRadConstants.SUCCESS, true);
+					returnMap.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(JRadConstants.CHANGE_SUCCESS));
+				}else{
+					returnMap.put(JRadConstants.SUCCESS, false);
+					returnMap.put(JRadConstants.MESSAGE,CustomerInforConstant.UPDATEERROR);
+				}
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
 	}
 
 }

@@ -106,4 +106,8 @@ public @interface JRadOperation {
 	public static final long FEEDBACK = 549755813888L;
 	
 	public static final long RHZX = 1099511627776L;
+	
+	public static final long IDCHECK = 2199023255552L;
+	
+	public static final long VIEWPIECES = 4398046511104L;//查看进件申请资料 added by nihc 20150705
 }

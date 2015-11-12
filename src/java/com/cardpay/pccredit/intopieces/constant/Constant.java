@@ -66,7 +66,7 @@ public class Constant {
 	
 	
 	/*FTP链接配置*/
-	public static String FTPIP = "33.1.49.1";
+	public static String FTPIP = "10.0.21.91";
 	
 	public static String FTPPORT = "21";
 	
@@ -94,4 +94,9 @@ public class Constant {
 	public static String CARD_RETURN_TYPE1="成功";
 	public static String CARD_RETURN_TYPE2="资料不全";
 	public static String CARD_RETURN_TYPE3="格式错误";
+	
+	//商圈审批状态
+	public static String SQ_APPROVE_TYPE_1="1";//未审批
+	public static String SQ_APPROVE_TYPE_2="2";//通过
+	public static String SQ_APPROVE_TYPE_3="3";//不通过
 }

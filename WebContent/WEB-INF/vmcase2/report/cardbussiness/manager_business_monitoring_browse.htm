@@ -32,7 +32,12 @@
               -->
              <ul>
               <li>
+                <span>选择机构：<select name="orgId"  >#dict("Organizations", $!filter.orgId)</select>
+              </span>
+              </li>
               <li class="search_button">
+              <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
                 <input id="id_export_button" type="button" value="导出excel" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
               </li>

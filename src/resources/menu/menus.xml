@@ -3,18 +3,20 @@
 	<menu id="000000" name="" title="所有资源" url="" img="" operations="" >
 		<menu id="010000" name="home" title="系统首页" url="/home.page" img="images/icon_4.png" operations=""/>
 		<menu id="030000" name="intopieces" title="进件管理" url="" img="images/icon_sys.gif" operations="">
-		    <menu id="030001" name="intopiecesapprove" title="申请进件" url="/intopieces/intopiecesapprove/approve.page" img="" operations="browse"></menu>
+		    <menu id="030001" name="intopiecesapprove" title="申请进件" url="/intopieces/intopiecesapprove/browseProduct.page" img="" operations="browse"></menu>
 		    <menu id="030002" name="intopiecesreceive" title="接收进件" url="/intopieces/intopiecesrecieve/recieve.page" img="" operations="browse"></menu>
-			<menu id="030003" name="intopiecessearch" title="查询进件" url="/intopieces/intopiecessearch/search.page" img="" operations="browse"></menu>
-			<menu id="030004" name="intopiecesluru" title="录入进件" url="/intopieces/intopiecesluru/luru.page" img="" operations="browse"></menu>
-			<menu id="030005" name="intopiecesfuhe" title="复核进件" url="/intopieces/intopiecesfuhe/fuhe.page" img="" operations="browse"></menu>
+			<menu id="030003" name="intopiecessearch" title="查询进件" url="/intopieces/intopiecessearch/search.page" img="" operations="browse|viewpieces"></menu>
+			<!-- <menu id="030004" name="intopiecesluru" title="录入进件" url="/intopieces/intopiecesluru/luru.page" img="" operations="browse"></menu>
+			<menu id="030005" name="intopiecesfuhe" title="复核进件" url="/intopieces/intopiecesfuhe/fuhe.page" img="" operations="browse"></menu> -->
 			<!-- <menu id="030020" name="applyintopieces" title="申请审批进件" url="/intopieces/applyintopieces/browse.page" img="" operations="create|change|delete|display|browse"></menu> -->
 			<menu id="030020" name="applyintopiecewait" title="评审岗评估" url="/intopieces/applyintopiecewait/browse.page" img="" operations="approve|applyapprove|approvelog|browse"></menu>
 			<menu id="030021" name="applyintopieceEnd" title="终审岗评估" url="/intopieces/applyintopieceend/browse.page" img="" operations="approve|applyapprove|approvelog|browse"></menu>
 			<menu id="030006" name="cardquery" title="制卡查询" url="/intopieces/applycardquery/browse.page" img="" operations="browse"></menu>
 			<!-- <menu id="030030" name="applyintopiecesquery" title="申请件上传银联" url="/intopieces/applyintopiecesquery/applyIntopiecesQuery.page" img="" operations="exportupload|display|browse"></menu> -->
-			<menu id="030040" name="carcenter" title="卡中心卡片管理" url="/intopieces/carcenter/queryCard.page" img="" operations="create|issuedorg|display|browse"></menu>
-			<menu id="030050" name="orgnization" title="分支机构卡片管理" url="/intopieces/orgnization/managerQueryCard.page" img="" operations="issuedcustomer|display|browse"></menu>
+			<menu id="030040" name="carcenter" title="卡片登记" url="/intopieces/carcenter/queryCard.page" img="" operations="create|issuedorg|display|browse"></menu>
+			<menu id="030050" name="orgnization" title="卡片签收" url="/intopieces/orgnization/managerQueryCard.page" img="" operations="issuedcustomer|display|browse"></menu>
+			<menu id="030051" name="getCard" title="客户领卡" url="/intopieces/orgnization/managerGetCard.page" img="" operations="issuedcustomer|display|browse"></menu>
+			<menu id="030052" name="queryCardStatus" title="卡片流转查询" url="/intopieces/orgnization/QueryCardStatus.page" img="" operations="issuedcustomer|display|browse"></menu>
 		</menu>
 		<menu id="040000" name="customer" title="客户管理" operations="">
 			<menu id="040010" name="basiccustomerinfor" title="客户原始信息管理" url="/customer/basiccustomerinfor/intopiecesbrowse.page" img="" operations="approveloguser|approvelog|displayaccount|display|browse"/>
@@ -31,6 +33,8 @@
 			<menu id="040020" name="adjustmentquota" title="客户调额生成" url="/customer/adjustmentquota/browse.page" img="" operations="amountadjustment|browse"/>
 			<menu id="040021" name="amountadjustment" title="客户调额待审核" url="/customer/amountadjustment/browse.page" img="" operations="approve|applyapprove|browse"/>
 			<menu id="040022" name="amountadjustmentview" title="客户调额查看" url="/customer/amountadjustmentview/browse.page" img="" operations="browse"/>
+			<menu id="040023" name="customerLimitMgr" title="客户额度管理" url="/customer/amountadjustmentview/limitMgr.page" img="" operations="browse"/>
+			<menu id="040024" name="generaltemporaryquota" title="普卡临时额度评估列表" url="/customer/temporaryquota/browse.page" img="" operations="browse"/>
 		</menu>
 		<menu id="050000" name="divisional" title="分案管理" operations=""> 
 			<menu id="050010" name="customerallot" title="客户主管分配" url="/divisional/customerallot/browse.page" img="" operations="distribution|browse"/>
@@ -42,6 +46,10 @@
 			<menu id="060010" name="productinformation" title="产品信息" url="/product/productinformation/browse.page" img="" operations="create|change|display|browse|confignodeintopieces|confignodeamountadjustment"/>
 			<menu id="060020" name="productpublic" title="产品发布（卡中心）" url="/product/productpublic/browse.page" img="" operations="approvepass|published|browse"/>
 			<menu id="060030" name="productfilter" title="产品筛选准入规则配置" url="/product/productfilter/browse.page" img="" operations="create|delete|browse"/>
+			<menu id="060040" name="createSq" title="商圈申请" url="/product/zainformation/browse.page" img="" operations="create|delete|browse"/>
+			<menu id="060050" name="approveSq" title="商圈审批" url="/product/zainformation/approveBrowse.page" img="" operations="create|delete|browse"/>
+			<menu id="060060" name="searchSq" title="商圈查询" url="/product/zainformation/search.page" img="" operations="create|delete|browse"/>
+			<menu id="060070" name="flowSq" title="商圈流程配置" url="/product/zainformation/browseFlow.page" img="" operations="create|change|display|browse|confignodeintopieces|confignodeamountadjustment"/>
 		</menu>
 		<menu id="070000" name="manager" title="客户经理管理" url="" img="images/icon_sys.gif" operations="">
 		    <menu id="070001" name="managercreate" title="客户经理参数配置" url="/manager/managercreate/browse.page" img="" operations="create|change|delete|display|browse"/>
@@ -64,6 +72,13 @@
 			<menu id="070017" name="information" title="信息员信息列表" url="/manager/information/browse.page" img="" operations="create|change|relevancecustomer|assess|browse"/>
 			<menu id="070018" name="informationmaintenance" title="信息员维护计划列表" url="/manager/informationmaintenance/browse.page" img="" operations="create|change|display|browse"/>
 			
+		</menu>
+		
+		<menu id="071000" name="adjustamount" title="客户调额流程" url="" img="images/icon_sys.gif" operations="">
+			<menu id="071001" name="customerprofilegenerate" title="客户调额生成" url="/customer/te/browse.page" img="" operations="change|display|browse"/>
+			<menu id="071002" name="customertunetobeaudited" title="客户调额待审核" url="/customer/te/browseforaudit.page" img="" operations="change|display|browse"/>
+			<menu id="071003" name="customercreditmanagement" title="客户额度管理" url="/customer/te/browsemanager.page" img="" operations="change|display|browse"/>
+			<menu id="071004" name="pukatemplimitassessment" title="普卡临时额度评估" url="/customer/te/normalbrowse.page" img="" operations="change|display|browse"/>
 		</menu>
 		
 		<menu id="081000" name="riskcontrol" title="综合风控管理" operations=""> 
@@ -111,6 +126,8 @@
 			<menu id="100120" name="cardqualityrejectbank" title="（拒绝）“灵活金”/普通信用卡业务进件质量监测报表统计（一级支行/二级支行维度） " url="/report/cardqualityrejectbank/browse.page" img="" operations="browse"/>
 		    <menu id="100130" name="workQuality" title="辅助岗位人员工作质量检测报告 " url="/report/workQuality/browse.page" img="" operations="browse"/>
 			<menu id="100113" name="reviewriskcontrol" title="评审岗位人员风控状况统计 " url="/report/reviewriskcontrol/browse.page" img="" operations="browse"/>
+			<menu id="100140" name="zxorgidquery" title="机构征信查询统计 " url="/report/customerzxquery/browse.page" img="" operations="browse"/>
+			<menu id="100150" name="zxmanagementquery" title="客户经理征信查询统计 " url="/report/customerzxquery/mgrbrowse.page" img="" operations="browse"/>
 		</menu>
 		
 		<menu id="110000" name="daihou" title="贷后管理" url="" img="images/icon_sys.gif" operations="">
@@ -131,6 +148,7 @@
 			<menu id="1030900" name="dict" title="数据字典" url="/system/dict/browse.page" img="" operations="create|delete|browse|change" />
 			<menu id="1031000" name="parameter" title="系统参数配置" url="/system/parameter/browse.page" img="" operations="change|browse" />
 <!-- 			<menu id="1030900" name="group" title="用户组管理" url="/system/group/browse.page" img="" operations="display|browse|export" /> -->
+			<menu id="1031100" name="charge" title="负责人管理" url="/system/charge/browse.page" img="" operations="create|change|delete|display|browse" />
 		</menu>
 		
 	</menu>

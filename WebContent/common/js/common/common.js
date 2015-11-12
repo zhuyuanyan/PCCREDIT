@@ -1,3 +1,13 @@
+topWin = (function(p,c){
+	while(p!=c){
+		c=p;
+		p=p.parent;
+	}
+	return c;
+})(window.parent,window);
+
+var submitFlag = 0;
+
 _post = $.post;
 _get = $.get;
 _flag = new Object;
@@ -204,7 +214,7 @@ function stopPropagation(selector, eventName) {
 function prepareOperations(opsObj) {
     // prepareListCheckboxs();
     initClickEvent();
-
+    opsObj.formObj.action="";
     if (opsObj.createUrl) {
         $("#id_create_button").click(function() {
             var url = opsObj.createUrl;
@@ -351,6 +361,7 @@ function prepareOperations(opsObj) {
             if (submitForm) {
                 submitForm.action = opsObj.exportUrl;
                 submitForm.submit();
+                submitForm.action="";
             }
         });
     }

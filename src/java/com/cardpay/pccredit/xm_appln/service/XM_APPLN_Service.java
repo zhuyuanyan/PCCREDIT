@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.LocalExcel;
+import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -77,9 +80,12 @@ import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.modules.privilege.model.User;
+import com.wicresoft.util.spring.Beans;
 
 /**
  * 
@@ -167,7 +173,9 @@ public class XM_APPLN_Service {
 //			customerinfor.setCardType("CST0000000000A");//身份证
 			customerinfor.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());//身份证
 			customerinfor.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());//身份证
-			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("1")?"Male":"Female");
+			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("M")?"Male":"Female");//MODIFIED BY NIHC 20150701
+			
+			
 			customerId = customerInforService.insertCustomerInfor(customerinfor);
 		}else{
 			CustomerInfor customerinfor = customerInforService.findCustomerInforById(customerId);
@@ -178,7 +186,7 @@ public class XM_APPLN_Service {
 //			customerinfor.setCardType("CST0000000000A");//身份证
 			customerinfor.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());//身份证
 			customerinfor.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());//身份证
-			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("1")?"Male":"Female");
+			customerinfor.setSex(xM_APPLN_NEW_CUSTOMER_FORM.getGender().equals("M")?"Male":"Female");//modified by nihc 20150702
 			customerinfor.setModifiedBy(user.getId());
 			customerinfor.setModifiedTime(new Date());
 			customerInforService.updateCustomerInfor(customerinfor);
@@ -224,7 +232,20 @@ public class XM_APPLN_Service {
 			customerinfor.setSex(xM_APPLN_JBZL_FORM.getGender().equals("1")?"Male":"Female");
 			customerId = customerInforService.insertCustomerInfor(customerinfor);
 		}*/
-		
+		/*modified by nihc 20150702 同步更新basic_customer_information begin*/
+		CustomerInfor customerinfor = customerInforService.findCustomerInforById(customerId);
+		customerinfor.setChineseName(xM_APPLN_JBZL_FORM.getSurname());
+		customerinfor.setPinyinenglishName(Cn2Spell.converterToSpell(xM_APPLN_JBZL_FORM.getSurname()));
+		customerinfor.setNationality("NTC00000000156");//中国
+		customerinfor.setTelephone(xM_APPLN_JBZL_FORM.getMo_phone());
+		customerinfor.setCardType(xM_APPLN_JBZL_FORM.getRace_code());//身份证
+		customerinfor.setCardId(xM_APPLN_JBZL_FORM.getCard_id());//身份证
+		customerinfor.setSex(xM_APPLN_JBZL_FORM.getGender().equals("M")?"Male":"Female");//modified by nihc 20150702
+		customerinfor.setModifiedBy(user.getId());
+		customerinfor.setModifiedTime(new Date());
+		customerinfor.setMaritalStatus(xM_APPLN_JBZL_FORM.getMar_status());
+		customerInforService.updateCustomerInfor(customerinfor);
+		/*modified by nihc 20150702 end*/
 		//CustomerInfor customerinfor = xM_APPLN_JBZL_FORM.createModel(XM_APPLN_JBZL_FORM.class);
 		XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_JBZL_FORM.createXM_APPLN_JCZL(customerId,user.getId());
 		XM_APPLN_KHFW xM_APPLN_KHFW = xM_APPLN_JBZL_FORM.createXM_APPLN_KHFW(customerId,user.getId());
@@ -243,6 +264,9 @@ public class XM_APPLN_Service {
 		insertOrUpdateXM_APPLN_ZXQSZL(xM_APPLN_ZXQSZL);
 		return customerId;
 	}
+	
+	
+	
 	
 	/**
 	 * 插入数据
@@ -280,7 +304,10 @@ public class XM_APPLN_Service {
 		
 		XM_APPLN xM_APPLN = xM_APPLN_Dao.findByCustomerId(xM_APPLN_TJINFO.getCustomer_id());
 		xM_APPLN.setMail_to(xM_APPLN_ADDR_FORM.getMail_to());
-		
+		/*added by nihc 20150706 保存家庭电话、公司电话 begin*/
+		XM_APPLN_JCZL xM_APPLN_JCZL = xM_APPLN_ADDR_FORM.createXM_APPLN_JCZL(user.getId());
+		insertOrUpdateXM_APPLN_JCZL(xM_APPLN_JCZL);
+		/*added by nihc 20150706 end */
 		insertOrUpdateXM_APPLN_TJINFO(xM_APPLN_TJINFO);
 		insertOrUpdateXM_APPLN_ADDR(xM_APPLN_ADDR);
 		
@@ -681,11 +708,19 @@ public class XM_APPLN_Service {
 	 * 提交申请，开始流程
 	 * @param customer_id
 	 */
-	public void saveApply(String customer_id){
+	public void saveApply(String customer_id,
+						  String intopiecesType,
+						  String IntopiecesSpareType,
+						  String custType,
+						  String applyQuota,
+						  String productId,
+						  String localExeclId,XmModel xm){
+		
 		//设置申请
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
 		//customerApplicationInfo.setStatus(status);
 		customerApplicationInfo.setId(IDGenerator.generateID());
+		customerApplicationInfo.setIntopiecesType(intopiecesType);
 		XM_APPLN_SQED xM_APPLN_SQED = findXM_APPLN_SQEDByCustomerId(customer_id);
 		if(xM_APPLN_SQED==null||xM_APPLN_SQED.getCrdlmt_req()==null||xM_APPLN_SQED.getCrdlmt_req().equals("")){
 			customerApplicationInfo.setApplyQuota("0");//设置额度
@@ -694,15 +729,33 @@ public class XM_APPLN_Service {
 		if(customerApplicationInfo.getApplyQuota()!=null){
 			customerApplicationInfo.setApplyQuota((Integer.valueOf(customerApplicationInfo.getApplyQuota())*100)+"");
 		}
+		
 		customerApplicationInfo.setStatus(Constant.APPROVE_INTOPICES);
 		//查找默认产品
 		ProductFilter filter = new ProductFilter();
 		filter.setDefault_type(Constant.DEFAULT_TYPE);
 		ProductAttribute productAttribute = productService.findProductsByFilter(filter).getItems().get(0);
-		customerApplicationInfo.setProductId(productAttribute.getId());
-				
+		customerApplicationInfo.setProductId(productId);
+		//modified by nihc 20150702 begin
+		customerApplicationInfo.setCreatedTime(new Date());
+		//modified by nihc 20150702 end
+		
+		//modified by songchen 20151019 begin
+		customerApplicationInfo.setIntopiecesSpareType(IntopiecesSpareType);
+		customerApplicationInfo.setCustType(custType);
+		customerApplicationInfo.setApplyQuota(applyQuota);
+		//modified by songchen 20151019 end
+		
 		commonDao.insertObject(customerApplicationInfo);
 		
+		//modified by songchen 20151109 start
+		if("1".equals(intopiecesType)){//散件
+			xm.setApp_id(customerApplicationInfo.getId());
+			commonDao.insertObject(xm);
+		}
+		//modified by songchen 20151109 end
+		//绑定appId
+		productService.updateLocalExecl(localExeclId, customerApplicationInfo.getId());
 		
 		//添加申请件流程
 		WfProcessInfo wf=new WfProcessInfo();

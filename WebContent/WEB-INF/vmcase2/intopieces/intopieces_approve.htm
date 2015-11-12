@@ -9,7 +9,8 @@
  <div class="inquiry">
         <div class="search_tag">#i18n("label.browse.filter")</div>
         <div class="search">
-          <form id="submitForm">
+          <form id="submitForm" onkeydown="javascript:if(event.keyCode==13) $('#id_browse_button').click();">
+          <input type="hidden" name="productId" id="productId" value="$!result.filter.productId" />
             <ul>
               <li>
                 <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
@@ -32,14 +33,14 @@
               <col width="20%" />
               <col width="20%" />
               <col width="25%" />
-              <col width="30%" />
+              <!-- <col width="30%" /> -->
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">中文姓名</th>
               <th nowrap="nowrap">证件类型</th>
               <th nowrap="nowrap">证件号码</th>
-              <th nowrap="nowrap">状态</th>
+              <!-- <th nowrap="nowrap">状态</th> -->
             </tr>
           </table>
         </div>
@@ -50,7 +51,7 @@
               <col width="20%" />
               <col width="20%" />
               <col width="25%" />
-              <col width="30%" />
+             <!--  <col width="30%" /> -->
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
@@ -59,7 +60,7 @@
               <td nowrap="nowrap">$!customer.chineseName</td>
               <td nowrap="nowrap">#dictVal("RACE_CODE",$!customer.cardType)</td>
               <td nowrap="nowrap">$!customer.cardId</td>
-              <td nowrap="nowrap">$!customer.processId</td>
+            <!--   <td nowrap="nowrap">$!customer.processId</td> -->
             </tr>
             #end
           </table>
@@ -69,10 +70,56 @@
         <div class="controlbtn">
 			 #btnpriv("browse")<a id="id_apply_button" class="btn_g" href="javascript:void(0);" title="申请">申请</a>#end 
 			<a id="id_edit_button" class="btn_g" href="javascript:void(0);" title="修改">修改</a>
+			<a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
       </div>
+    </div>
+  </div>
+
+   <div id="inputApplyInpDialog" title="选择客户进件方式" style="display: none; resize: none; z-index: 2000">
+    <div class="inquiry_list">
+      <form name="inputApplyForm" id="inputApplyForm">
+        <table id="inputApplyForm" style="border: 1px solid #dcdcdc;margin-bottom: 10px;width:600px;">
+          <colgroup>
+            <col width="10%">
+            <col width="40%">
+            <col width="40%">
+            <col width="10%">
+          </colgroup>
+          <tr style="height:40px">
+          	<td>&nbsp;</td>
+            <td>进件类型:</td>
+            <td><select id="intopiecesType" name="intopiecesType" onchange="changeSjType(this.value)">#dict("ApplyIntopiecesType", $!intopiecesType)</select></td>
+         	<td>&nbsp;</td>
+          </tr>
+         <tr style="height:40px">
+            <td>&nbsp;</td>
+            <td>具体类型:</td>
+            <td id="type_1" ><select id="ApplyIntopiecesSpareType_1" name="ApplyIntopiecesSpareType_1">#dict("SJ_TYPE_LIST", "")</select></td>
+            <td id="type_2"><select id="ApplyIntopiecesSpareType_2" name="ApplyIntopiecesSpareType_2">
+            					#foreach($obj in $xmNewSq)
+            						<option value="$!obj.id">$!obj.sqName</option>
+            					#end
+							</select>
+			</td>
+          	<td>&nbsp;</td>
+          </tr>
+          <tr style="height:40px">
+          	<td>&nbsp;</td>
+            <td>客户类型:</td>
+            <td><select id="custType" name="custType">#dict("KHLX", "")</select></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr style="height:40px">
+            <td>&nbsp;</td>
+            <td>申请额度(元):</td>
+            <td><input type="text" id="applyQuota" name="applyQuota"  /></td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+    </form>
     </div>
   </div>
 </body>
@@ -81,6 +128,7 @@
 	window.top.currentWindow.setLayout(layout);
 
 	$(document).ready(function() {
+		document.getElementById("type_2").style.display="none";
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
 		//改为xm_appln版本
@@ -90,25 +138,83 @@
 		opsObj.displayUrl = "${contextPath}/customer/basiccustomerinfor/displayclone.page?applicationId = '1000'";
 		opsObj.changeUrl = "${modulePath}/change.page";
 		opsObj.deleteUrl = "${modulePath}/delete.json";
-		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.browseUrl = "${modulePath}/browseCustomer.page";
 		opsObj.exportUrl = "${modulePath}/export.page";
 		
-		$("#id_apply_button").click(function() {
-			if ($(".checkbox :checked").length == 1) {
-				var rowId = getCurrentRowId();
-				if(rowId!=null){
-					$.post("${modulePath}/xm_appln_page0_apply.page", {id:rowId},
-		            function(data, textStatus, jqXhr) {
-		                if (data.success) {
-		                    window.location.reload(true);
-		                } else {
-		                    //Dialog.message(data.message);
-		                }
-		            });
-				}else{
-					Dialog.message("请选择要申请的客户!");
-				}
-			}
+			$("#id_apply_button").click(function() {
+	          //if ($(".checkbox :checked").length == 1) {
+	        	  var productId = "$!productId";
+	        	  var rowId = getCurrentRowId();
+	        	  var ed = "$!ed";
+	        	  var typeCode = "$!typeCode";
+	        	  if(ed==null||ed==""){
+	        		  Dialog.message("只有客户经理才能申请进件!");
+	        		  return;
+	        	  }
+				  if(rowId!=null){
+	      		  	Dialog.form("#inputApplyForm", "进件方式", function(){
+	      		  		//进件类型
+	      				var intopiecesType = window.top.$("#intopiecesType").val();
+	      		  		//申请额度
+	      				var applyQuota = window.top.$("#applyQuota").val();
+	      		  		//客户类型
+	      				var custType = window.top.$("#custType").val();
+	      		  		//>散件类型
+	      				var ApplyIntopiecesSpareType_1 = window.top.$("#ApplyIntopiecesSpareType_1").val();
+	      				var ApplyIntopiecesSpareType_2 = window.top.$("#ApplyIntopiecesSpareType_2").val();
+	      				//额度检查
+	      				 if(parseFloat(ed)<parseFloat(applyQuota)){
+	      					Dialog.message("额度超出客户经理可申请额度!");
+	      					return;
+	      				}
+	      				
+	      				//进件类型非散件时,申请额度必填
+	      				if(intopiecesType != '1' && applyQuota == ''){
+		      				Dialog.message("申请额度必填!");
+		      				return;
+	      				}
+	      				
+	      				//客户类型检查
+	      				if(typeCode.indexOf(custType)=="-1"){
+	      					Dialog.message("客户类型不符合客户经理可进件类型!");
+	      					return;
+	      				}
+	      				var isInRisk = false;
+	      				//风险名单检测
+	      				$.ajax({
+								url : "${modulePath}isInBlacklist.json?id="+rowId,
+								type : "get",
+								async: false,
+								success : function(data) {
+									if (data.success) {
+										if(data.isInList){
+											isInRisk = true;
+										}
+									}else{
+										window.top.Dialog.message("系统出现异常,请联系管理员");
+							    	}
+								}
+							});
+	      				if(isInRisk){
+		      				Dialog.confirm("此客户为风险客户，是否继续申请？", "提示",
+								  function() {
+		      						window.location.href = "${modulePath}reportImport.page?customerId="+rowId+"&intopiecesType="+intopiecesType
+		      						+"&applyQuota="+applyQuota+"&ApplyIntopiecesSpareType_1="+ApplyIntopiecesSpareType_1+"&ApplyIntopiecesSpareType_2="+ApplyIntopiecesSpareType_2+"&custType="+custType+"&productId="+productId;
+		      						window.top.$("#form_diaog").dialog("close");
+						   });
+	      					
+	      				}else{
+	      					window.location.href = "${modulePath}reportImport.page?customerId="+rowId+"&intopiecesType="+intopiecesType
+      						+"&applyQuota="+applyQuota+"&ApplyIntopiecesSpareType_1="+ApplyIntopiecesSpareType_1+"&ApplyIntopiecesSpareType_2="+ApplyIntopiecesSpareType_2+"&custType="+custType+"&productId="+productId;
+      						window.top.$("#form_diaog").dialog("close");
+	      				}
+	      				
+	      		}, null, 700, 200);
+	          } else {
+	              Dialog.message("请选择要申请的客户!");
+	          }
+	          //}
+	      //});
 	    });
 		
 		$("#id_edit_button").click(function() {
@@ -117,15 +223,17 @@
 				if(rowId!=null){
 					var url="${contextPath}/xm_appln/xm_appln_page0.page?customerId="+rowId;
 					window.location.href = url;
-				}else{
-					Dialog.message("请选择要修改的客户!");
 				}
+			}else{
+				Dialog.message("请选择要修改的客户!");
 			}
 	    });
         
 		
 		prepareOperations(opsObj);
 	});
+	
 </script>
+
    <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
 #parse ("common/iframe_page_footer.htm")

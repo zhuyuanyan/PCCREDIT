@@ -32,7 +32,6 @@ public class IntelligentReportService {
 	
 	/*客户信息智能报表*/
 	public List<IntelligentCustomerReport> findIntelligentCustomerReport(){
-
 		return intelligentReportDao.findIntelligentCustomerReport();		
 	}
 	
@@ -49,13 +48,13 @@ public class IntelligentReportService {
 		}
 		
 		List<IntelligentAccountReport2> ls = intelligentReportDao.findIntelligentAccountReport(filter);
-		int size = intelligentReportDao.findIntelligentAccountReportCount();
+		int size = intelligentReportDao.findIntelligentAccountReportCount(filter);
 		QueryResult<IntelligentAccountReport2> qs = new QueryResult<IntelligentAccountReport2>(size, ls);
 		return qs;
 	}
 	
 	/*客户信息智能报表-全部*/
-	public List<IntelligentAccountReport2> findIntelligentAccountReportAll(){
+	public List<IntelligentAccountReport2> findIntelligentAccountReportAll(UserDefFilter filter){
 		Calendar cal = Calendar.getInstance();
 		int month = cal.get(Calendar.MONTH)+1;
 		int year = cal.get(Calendar.YEAR);
@@ -65,7 +64,7 @@ public class IntelligentReportService {
 			lastMonth = 12;
 			lastYear -= 1; 
 		}
-		return intelligentReportDao.findIntelligentAccountReportAll(year,month,lastYear,lastMonth);	
+		return intelligentReportDao.findIntelligentAccountReportAll(filter);	
 	}
 	
 	/*贷后管理数据*/

@@ -19,7 +19,16 @@ public class XM_APPLN_NEW_CUSTOMER_FORM extends BaseForm {
 	//配偶
 	private String spu_name;
 	private String spu_custr_nbr;
+	private String spu_race_code;
 	
+	
+	
+	public String getSpu_race_code() {
+		return spu_race_code;
+	}
+	public void setSpu_race_code(String spu_race_code) {
+		this.spu_race_code = spu_race_code;
+	}
 	public String getCustomer_id() {
 		return customer_id;
 	}
@@ -93,6 +102,7 @@ public class XM_APPLN_NEW_CUSTOMER_FORM extends BaseForm {
 		obj.setCustomer_id(customerId);
 		obj.setName(spu_name);
 		obj.setCustr_nbr(spu_custr_nbr);
+		obj.setSpu_card_type(spu_race_code);
 		return obj;
 	}
 

@@ -519,4 +519,12 @@ public class AccountManagerParameterService {
 		String hierarchy = accountManagerParameter.getLevelInformation();
 		return accountManagerParameterComdao.getcustomerManagerTargetBymanagerIdDate(hierarchy, targetDate);
 	}
+	
+	/*
+	 * 通过userId获取客户经理属性
+	 */
+	public List<AccountManagerParameter> getParametersByUserId(String userId){
+		String sql = "select * from account_manager_parameter where user_id='"+userId+"'";
+		return commonDao.queryBySql(AccountManagerParameter.class, sql, null);
+	}
 }

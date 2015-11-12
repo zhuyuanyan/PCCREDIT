@@ -162,20 +162,20 @@ public class IntoPiecesfuheControl extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "fuhe.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView browse(@ModelAttribute IntoPiecesFilter filter,
+	public AbstractModelAndView browse(@ModelAttribute CustomerApplicationProcessFilter filter,
 			HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		QueryResult<IntoPieces> result=null;
 		String userId = user.getId();
-		filter.setUserId(userId);
-//		result = intoPiecesService.findintoPiecesByFilter(filter);
-//		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
-//				filter, result);
-
+		filter.setLoginId(userId);
+		filter.setIsReceive("NO");
+		filter.setIfRecieved(Constant.recieve_type);
+		filter.setFuheUser(userId);
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.recieveIntopieceWaitForm(filter);
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView(
 				"/intopieces/intopieces_fuhe", request);
-		mv.addObject(PAGED_RESULT, null);
+		mv.addObject(PAGED_RESULT, pagedResult);
 
 		return mv;
 	}
@@ -215,15 +215,17 @@ public class IntoPiecesfuheControl extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "refuse.page")
+	@RequestMapping(value = "refuse.json")
 	public JRadReturnMap refuse(@ModelAttribute XmApplnSxjcForm filter, HttpServletRequest request)  {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		String appId = request.getParameter("appId");
 		try {
 			intoPiecesService.refuse(appId,request);
 			returnMap.addGlobalMessage("退回成功");
+			returnMap.put("message", "退回成功");
 		} catch (Exception e) {
 			returnMap.addGlobalMessage("退回失败");
+			returnMap.put("message", "退回失败");
 			e.printStackTrace();
 		}
 		return returnMap;

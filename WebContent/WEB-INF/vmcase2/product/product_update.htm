@@ -20,25 +20,51 @@
 				  <div class="dvTab">
             <ul class="com-tab">
             <li class="tab activeTab" ><a href="${contextPath}/product/productinformation/change.page?id=${productId}">产品属性</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
+           <!--  <li class="tab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
             <li class="tab"><a href="${contextPath}/product/productinformation/change_cpgz.page?id=${productId}">产品规则</a></li>
             <li class="tab"><a href="${contextPath}/product/productinformation/change_csgz.page?id=${productId}">催收规则</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li>
+            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li> -->
          </ul>
         </div>
 			</div>
-			<form id="id_module_form" action="${contextPath}/product/productinformation/update.json" enctype="multipart/form-data" method="post">
+			<form id="id_module_form" action="${contextPath}/product/productinformation/update.json"  method="post">
 				<div class="forms" id="formsId">
 					<input type="hidden" name="id" value="$!product.id" />
-					<table class="rule">
+					<table class="rule" border="1" bordercolor="#CCCCCC">
+					<caption>产品属性</caption>
 						<colgroup>
 							<col width="10%" />
 							<col width="30%" />
 			 				<col width="10%" />
-							<col width="10%" />
+							<col width="30%" />
 							<col width="30%" />
 						</colgroup>
 						<tr>
+							<td><label for="name">产品名称:</label></td>
+							<td><input type="text" id="productName" name="productName"
+								value="$!product.productName" /></td>
+							
+							<td><label for="name">额度:</label></td>
+							<td><input type="text" id="ed" name="ed"
+								value="$!product.ed" /></td>
+						</tr>
+						<tr>
+							<td><label for="name">利率(%):</label></td>
+							<td><input type="text" id="lv" name="lv"
+								value="$!product.lv" /></td>
+							
+							<td><label for="name">年费:</label></td>
+							<td><input type="text" id="nf" name="nf"
+								value="$!product.nf" /></td>
+						</tr>
+						<tr>
+							<td><label for="name">卡片到期日:</label></td>
+							<td><input type="text" name="endTime" id="endTime"  value="$!accountInfo.endTime"  onmouseover="_calendar()"/></td>
+							
+							
+						</tr>
+						
+						<!-- <tr>
 							<td><label for="name">产品名称:</label></td>
 							<td><input type="text" id="productName" name="productName"
 								value="$!product.productName" /></td>
@@ -141,8 +167,8 @@
 							<td><label for="name">该产品风险容忍度:</label></td>
 							<td><input type="text" id="productRiskTolerance" name="productRiskTolerance"
 								value="$!product.productRiskTolerance" /></td>
-						</tr>
-						</tr>
+						</tr> -->
+						<!-- <tr>
 							<td><label>产品图片：</label></td>
             				<td>
               					 <input type="file" name="file">
@@ -151,10 +177,10 @@
             				<td><label>查看当前图片：</label></td>
             				<td>
             				<a href="javascript:void(0)" onclick="viewPicture('${contextPath}/product/productinformation/getPicture.page?id=$!{product.id}&flag=true')">产品图片预览</a>
-            				 <!--  <div class="divcss5_list_title"><a class="ml20" href="#" id="click_test2">产品图片预览</a></div> -->
+            				  <div class="divcss5_list_title"><a class="ml20" href="#" id="click_test2">产品图片预览</a></div>
               					 
             				</td>
-						<tr>
+						</tr> -->
 					</table>
 				</div>
 			</form>
@@ -192,11 +218,10 @@
 		});
 	}
 	
-		var layout = new FormsLayout("formsId");
-		window.top.currentWindow.setLayout(layout);
-
+		 var layout = new FormsLayout("formsId");
+		 window.top.currentWindow.setLayout(layout);
 		 #set ($formName = "'#id_module_form'")
-			#validator($formName)
+	     #parse ("product/product_create_validation.js")
 		 $(document).ready(function() {
 			 $("#id_save_button").click(function() {
 			        if ($($formName).valid()) {

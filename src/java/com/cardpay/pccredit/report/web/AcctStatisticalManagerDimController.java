@@ -16,6 +16,8 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -79,6 +81,9 @@ public class AcctStatisticalManagerDimController extends BaseController {
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
 		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
 		List<AcctStatistical> list = acctStatisticalService.getManagerAcctStatistical(filter);
 
 		JRadModelAndView mv = new JRadModelAndView("/report/acctstatistical/acctstatistical_manager_browse", request);
@@ -107,6 +112,9 @@ public class AcctStatisticalManagerDimController extends BaseController {
 		if(filter.getReportDate() == null){
 			filter.setReportDate(new Date());
 		}
+		if(filter.getOrgId()==null ||filter.getOrgId().equals("-1")){
+			filter.setOrgId(null);
+		}
 		List<AcctStatistical> list = acctStatisticalService.getManagerAcctStatistical(filter);
 		create(list, response,filter);
 	}
@@ -114,100 +122,287 @@ public class AcctStatisticalManagerDimController extends BaseController {
 	public void create(List<AcctStatistical> list,HttpServletResponse response,StatisticalFilter filter){
 		
 		// 第一步，创建一个webbook，对应一个Excel文件  
-       HSSFWorkbook wb = new HSSFWorkbook();  
-       // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
-      HSSFSheet sheet = wb.createSheet("客户经理“灵活金”透支情况统计");  
-       // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
-      HSSFRow row = sheet.createRow((int) 0);  
-       // 第四步，创建单元格，并设置值表头 设置表头居中  
-       HSSFCellStyle style = wb.createCellStyle();  
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式  
+//       HSSFWorkbook wb = new HSSFWorkbook();  
+//       // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
+//      HSSFSheet sheet = wb.createSheet("客户经理“灵活金”透支情况统计");  
+//       // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
+//      HSSFRow row = sheet.createRow((int) 0);  
+//       // 第四步，创建单元格，并设置值表头 设置表头居中  
+//       HSSFCellStyle style = wb.createCellStyle();  
+//        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式  
+//
+//       HSSFCell cell = row.createCell((short) 0);  
+//       cell.setCellValue("客户经理");  
+//       cell.setCellStyle(style);  
+//     cell = row.createCell((short) 1);  
+//       cell.setCellValue("基准日期");  
+//       cell.setCellStyle(style);  
+//      cell = row.createCell((short) 2);  
+//       cell.setCellValue("授信总额度");  
+//      cell.setCellStyle(style);  
+//       cell = row.createCell((short) 3);  
+//      cell.setCellValue("激活卡总授信额度");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 4);  
+//      cell.setCellValue("透支本金余额");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 5);  
+//      cell.setCellValue("透支总余额");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 6);  
+//      cell.setCellValue("年日均透支本金");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 7);  
+//      cell.setCellValue("年日均透支总余额");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 8);  
+//      cell.setCellValue("不良透支本金");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 9);  
+//      cell.setCellValue("不良率");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 10);  
+//      cell.setCellValue("报表日期");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 11);  
+//      cell.setCellValue("授信总额度");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 12);  
+//      cell.setCellValue("激活卡总授信额度");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 13);  
+//      cell.setCellValue("透支本金余额");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 14);  
+//      cell.setCellValue("透支总余额");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 15);  
+//      cell.setCellValue("年日均透支本金");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 16);  
+//      cell.setCellValue("年日均透支总余额");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 17);  
+//      cell.setCellValue("不良透支本金");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 18);  
+//      cell.setCellValue("不良率");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 19);  
+//      cell.setCellValue("授信总额度净增");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 20);  
+//      cell.setCellValue("激活卡总授信额度净增");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 21);  
+//      cell.setCellValue("透支本金余额净增");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 22);  
+//      cell.setCellValue("透支总余额净增");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 23);  
+//      cell.setCellValue("年日均透支本金净增");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 24);  
+//      cell.setCellValue("年日均透支总余额净增");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 25);  
+//      cell.setCellValue("不良透支本金净增");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 26);  
+//      cell.setCellValue("不良率变动");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 27);  
+//      cell.setCellValue("二级支行");  
+//      cell.setCellStyle(style);  
+//      cell = row.createCell((short) 28);  
+//      cell.setCellValue("一级支行");  
+//      cell.setCellStyle(style); 
+		HSSFWorkbook wb = new HSSFWorkbook();  
+		HSSFSheet sheet = wb.createSheet("客户经理“灵活金”透支情况统计"); 
+  
+        CellRangeAddress region = new CellRangeAddress(0,1,0,0);  
+        sheet.addMergedRegion(region);  
+        
+          
+        int border = 1;   
+        RegionUtil.setBorderBottom(border,region, sheet, wb);   
+        RegionUtil.setBorderLeft(border,region, sheet, wb);   
+        RegionUtil.setBorderRight(border,region, sheet, wb);   
+        RegionUtil.setBorderTop(border,region, sheet, wb);
+        
+        CellRangeAddress region1 = new CellRangeAddress(0,0,1,9);  
+        sheet.addMergedRegion(region1); 
+        int border1 = 1;   
+        RegionUtil.setBorderBottom(border1,region1, sheet, wb);   
+        RegionUtil.setBorderLeft(border1,region1, sheet, wb);   
+        RegionUtil.setBorderRight(border1,region1, sheet, wb);   
+        RegionUtil.setBorderTop(border1,region1, sheet, wb);
+        
+        CellRangeAddress region2 = new CellRangeAddress(0,0,10,18);  
+        sheet.addMergedRegion(region2); 
+        int border2 = 1;   
+        RegionUtil.setBorderBottom(border2,region2, sheet, wb);   
+        RegionUtil.setBorderLeft(border2,region2, sheet, wb);   
+        RegionUtil.setBorderRight(border2,region2, sheet, wb);   
+        RegionUtil.setBorderTop(border2,region2, sheet, wb);
+        
+        CellRangeAddress region3 = new CellRangeAddress(0,0,19,26);  
+        sheet.addMergedRegion(region3); 
+        int border3 = 1;   
+        RegionUtil.setBorderBottom(border3,region3, sheet, wb);   
+        RegionUtil.setBorderLeft(border3,region3, sheet, wb);   
+        RegionUtil.setBorderRight(border3,region3, sheet, wb);   
+        RegionUtil.setBorderTop(border3,region3, sheet, wb);
+        
+        CellRangeAddress region5 = new CellRangeAddress(0,1,27,27);  
+        sheet.addMergedRegion(region5);
+        
+        CellRangeAddress region6 = new CellRangeAddress(0,1,28,28);  
+        sheet.addMergedRegion(region6);
 
+        //创建第一行
+        HSSFRow row = (HSSFRow) sheet.createRow((int)0);
+        HSSFCellStyle style = (HSSFCellStyle) wb.createCellStyle();  
+//        style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式  
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中    
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
        HSSFCell cell = row.createCell((short) 0);  
        cell.setCellValue("客户经理");  
-       cell.setCellStyle(style);  
-     cell = row.createCell((short) 1);  
-       cell.setCellValue("基准日期");  
-       cell.setCellStyle(style);  
-      cell = row.createCell((short) 2);  
-       cell.setCellValue("授信总额度");  
-      cell.setCellStyle(style);  
-       cell = row.createCell((short) 3);  
-      cell.setCellValue("激活卡总授信额度");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 4);  
-      cell.setCellValue("透支本金余额");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 5);  
-      cell.setCellValue("透支总余额");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 6);  
-      cell.setCellValue("年日均透支本金");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 7);  
-      cell.setCellValue("年日均透支总余额");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 8);  
-      cell.setCellValue("不良透支本金");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 9);  
-      cell.setCellValue("不良率");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 10);  
-      cell.setCellValue("报表日期");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 11);  
-      cell.setCellValue("授信总额度");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 12);  
-      cell.setCellValue("激活卡总授信额度");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 13);  
-      cell.setCellValue("透支本金余额");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 14);  
-      cell.setCellValue("透支总余额");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 15);  
-      cell.setCellValue("年日均透支本金");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 16);  
-      cell.setCellValue("年日均透支总余额");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 17);  
-      cell.setCellValue("不良透支本金");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 18);  
-      cell.setCellValue("不良率");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 19);  
-      cell.setCellValue("授信总额度净增");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 20);  
-      cell.setCellValue("激活卡总授信额度净增");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 21);  
-      cell.setCellValue("透支本金余额净增");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 22);  
-      cell.setCellValue("透支总余额净增");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 23);  
-      cell.setCellValue("年日均透支本金净增");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 24);  
-      cell.setCellValue("年日均透支总余额净增");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 25);  
-      cell.setCellValue("不良透支本金净增");  
-      cell.setCellStyle(style);  
-      cell = row.createCell((short) 26);  
-      cell.setCellValue("不良率变动");  
-      cell.setCellStyle(style);  
+       cell.setCellStyle(style);
+       
+       cell = row.createCell((short) 1);  
+       cell.setCellValue("基准日期数据");  
+       cell.setCellStyle(style);
+       
+       cell = row.createCell((short) 10);  
+       cell.setCellValue("报表日期数据");  
+       cell.setCellStyle(style);
+       
+       cell = row.createCell((short) 19);  
+       cell.setCellValue("净增数据");  
+       cell.setCellStyle(style);
+       
+       cell = row.createCell((short) 27);  
+       cell.setCellValue("所属二级支行");  
+       cell.setCellStyle(style);
+       
+       cell = row.createCell((short) 28);  
+       cell.setCellValue("所属一级支行");  
+       cell.setCellStyle(style);
+
+     //创建第二行
+       HSSFRow row1 = (HSSFRow) sheet.createRow((int)1);
+       HSSFCell cell1 = row1.createCell((short) 1);
+       	
+//       cell1 = row1.createCell((short) 1);  
+       cell1.setCellValue("基准日期");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 2);  
+       cell1.setCellValue("授信总额度");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 3);  
+       cell1.setCellValue("激活卡总授信额度");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 4);  
+       cell1.setCellValue("透支本金金额");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 5);  
+       cell1.setCellValue("透支总金额");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 6);  
+       cell1.setCellValue("年日均透支本金");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 7);  
+       cell1.setCellValue("年日均透支总金额");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 8);  
+       cell1.setCellValue("不良透支本金");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 9);  
+       cell1.setCellValue("不良率");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 10);  
+       cell1.setCellValue("报表日期");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 11);  
+       cell1.setCellValue("授信总额度");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 12);  
+       cell1.setCellValue("激活卡总授信额度");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 13);  
+       cell1.setCellValue("透支本金金额");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 14);  
+       cell1.setCellValue("透支总金额");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 15);  
+       cell1.setCellValue("年日均透支本金");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 16);  
+       cell1.setCellValue("年日均透支总金额");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 17);  
+       cell1.setCellValue("不良透支本金");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 18);  
+       cell1.setCellValue("不良率");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 19);  
+       cell1.setCellValue("授信总额度");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 20);  
+       cell1.setCellValue("激活卡总授信额度");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 21);  
+       cell1.setCellValue("透支本金余额净增");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 22);  
+       cell1.setCellValue("透支余额净增");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 23);  
+       cell1.setCellValue("年日均透支本金净增");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 24);  
+       cell1.setCellValue("年日均透支总金额净增");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 25);  
+       cell1.setCellValue("不良透支本金净增");  
+       cell1.setCellStyle(style);
+       
+       cell1 = row1.createCell((short) 26);  
+       cell1.setCellValue("不良率变动");  
+       cell1.setCellStyle(style);
+      
       DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
       for (int i = 0; i < list.size(); i++)  
         {  
-            row = sheet.createRow((int) i + 1);  
+            row = sheet.createRow((int) i + 2);  
             row.createCell((short) 0).setCellValue((String) list.get(i).getName());  
             String basicDate  = format.format(filter.getBasicDate());
             row.createCell((short) 1).setCellValue((String) basicDate);  
@@ -236,6 +431,8 @@ public class AcctStatisticalManagerDimController extends BaseController {
             row.createCell((short) 24).setCellValue((Double) Double.parseDouble(list.get(i).getAddOverdraftAmountAvg()==null?"0":list.get(i).getAddOverdraftAmountAvg())); 
             row.createCell((short) 25).setCellValue((Double) Double.parseDouble(list.get(i).getAddBadOverdraftPrincipal()==null?"0":list.get(i).getAddBadOverdraftPrincipal())); 
             row.createCell((short) 26).setCellValue((Double) Double.parseDouble(list.get(i).getAddBadRate()==null?"0":list.get(i).getAddBadRate())+"%"); 
+            row.createCell((short) 27).setCellValue((String) list.get(i).getOrgName()); 
+            row.createCell((short) 28).setCellValue((String) list.get(i).getOrgParentName()); 
         }
       String fileName = "客户经理“灵活金”透支情况统计";
       try {

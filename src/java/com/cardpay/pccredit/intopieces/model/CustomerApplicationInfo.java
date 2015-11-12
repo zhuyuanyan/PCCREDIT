@@ -52,8 +52,32 @@ public class CustomerApplicationInfo  extends BusinessModel {
     private String isAutoPay;
     
     private String serialNumber;
+    
+    private String intopiecesType;
+    
+    private String intopiecesSpareType;
+    
+    private String custType;
+    
+    
 
-    public String getCustomerId() {
+    public String getIntopiecesSpareType() {
+		return intopiecesSpareType;
+	}
+
+	public void setIntopiecesSpareType(String intopiecesSpareType) {
+		this.intopiecesSpareType = intopiecesSpareType;
+	}
+
+	public String getCustType() {
+		return custType;
+	}
+
+	public void setCustType(String custType) {
+		this.custType = custType;
+	}
+
+	public String getCustomerId() {
         return customerId;
     }
 
@@ -219,6 +243,14 @@ public class CustomerApplicationInfo  extends BusinessModel {
 
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
+	}
+	
+	public String getIntopiecesType() {
+		return intopiecesType;
+	}
+
+	public void setIntopiecesType(String intopiecesType) {
+		this.intopiecesType = intopiecesType;
 	}
 	
 }

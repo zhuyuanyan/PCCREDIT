@@ -35,7 +35,33 @@ public class CustomerInforFilter extends BaseQueryFilter{
 	private String cashAdvanceRatio;
 	private String cardStatus;
 	private String userId;
+	private int userType;//用户类型 1表示客户经理
 	
+	private String productId;//产品id
+	
+	private String custId;
+	
+	private String appId;
+	
+	
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getCustId() {
+		return custId;
+	}
+	public void setCustId(String custId) {
+		this.custId = custId;
+	}
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 	public String getUserId() {
 		return userId;
 	}
@@ -180,4 +206,11 @@ public class CustomerInforFilter extends BaseQueryFilter{
 	public void setCardStatus(String cardStatus) {
 		this.cardStatus = cardStatus;
 	}
+	public int getUserType() {
+		return userType;
+	}
+	public void setUserType(int userType) {
+		this.userType = userType;
+	}
+	
 }

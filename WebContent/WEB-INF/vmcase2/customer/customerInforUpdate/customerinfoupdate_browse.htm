@@ -68,7 +68,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id"
                   #if ($!request.getParameter("recordId") == $customer.id) checked="checked" #end /></td>
               <td nowrap="nowrap">$!customer.chineseName</td>
-              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td>
+                <td nowrap="nowrap">#dictVal("RACE_CODE",$!customer.cardType)</td>
               <td nowrap="nowrap">$!customer.cardId</td>
               <td nowrap="nowrap">$!customer.residentialAddress</td>
               <td nowrap="nowrap">$!customer.telephone</td>
@@ -80,8 +80,8 @@
       <div class="pagebar">
         <div class="controlbtn">
           #btnpriv("maintenance")<a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="添加客户维护信息">添加客户维护信息</a>#end 
-          #btnpriv("addblacklist")<a id="id_blacklist_button" class="btn_g" href="javascript:void(0);" title="加入黑名单">加入黑名单</a>#end
-          #btnpriv("transfer")<a id="id_transfer_button" class="btn_g" href="javascript:void(0);" title="移交" onclick="transfer()">移交</a>#end
+<!--           #btnpriv("addblacklist")<a id="id_blacklist_button" class="btn_g" href="javascript:void(0);" title="加入黑名单">加入黑名单</a>#end
+ -->          <!-- #btnpriv("transfer")<a id="id_transfer_button" class="btn_g" href="javascript:void(0);" title="移交" onclick="transfer()">移交</a>#end -->
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

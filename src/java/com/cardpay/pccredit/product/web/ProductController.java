@@ -211,7 +211,7 @@ public class ProductController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "insert.json", method = { RequestMethod.POST })
 	@JRadOperation(JRadOperation.CREATE)
-	public JRadReturnMap insert(@RequestParam(value = "file", required = false) MultipartFile file, @ModelAttribute ProductAttributeForm productAttributeForm, HttpServletRequest request) {
+	public JRadReturnMap insert(@ModelAttribute ProductAttributeForm productAttributeForm, HttpServletRequest request) {
 		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), productAttributeForm);
 		if (returnMap.isSuccess()) {
 			try {
@@ -220,11 +220,13 @@ public class ProductController extends BaseController {
 				String loginId = user.getId();
 				ProductAttribute productAttribute = productAttributeForm.createModel(ProductAttribute.class);
 				productAttribute.setCreatedBy(loginId);
-				Map<String, String> result = UploadFileTool.uploadYxzlFileBySpring(file);
-				String fileName = result.get("fileName");
-				String pictureUrl = result.get("url");
-				productAttribute.setPictureUrl(pictureUrl);
-				productAttribute.setPictureName(fileName);
+//				Map<String, String> result = UploadFileTool.uploadYxzlFileBySpring(file);
+//				String fileName = result.get("fileName");
+//				String pictureUrl = result.get("url");
+//				productAttribute.setPictureUrl(pictureUrl);
+//				productAttribute.setPictureName(fileName);
+				//非默认产品
+				productAttribute.setDefault_type("2");
 				String id = productService.insertProduct(productAttribute);
 				String productId = productAttribute.getId();
 				returnMap.put("productId", productId);
@@ -971,7 +973,7 @@ public class ProductController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "update.json", method = { RequestMethod.POST })
 	@JRadOperation(JRadOperation.CHANGE)
-	public JRadReturnMap update(@RequestParam(value = "file", required = false) MultipartFile file, @ModelAttribute ProductAttributeForm productAttributeForm, HttpServletRequest request) {
+	public JRadReturnMap update(@ModelAttribute ProductAttributeForm productAttributeForm, HttpServletRequest request) {
 
 		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), productAttributeForm);
 		if (returnMap.isSuccess()) {
@@ -980,13 +982,13 @@ public class ProductController extends BaseController {
 				String loginId = user.getId();
 				ProductAttribute productAttribute = productAttributeForm.createModel(ProductAttribute.class);
 				productAttribute.setModifiedBy(loginId);
-				if (!file.isEmpty()) {
-					Map<String, String> result = UploadFileTool.uploadYxzlFileBySpring(file);
-					String fileName = result.get("fileName");
-					String pictureUrl = result.get("url");
-					productAttribute.setPictureUrl(pictureUrl);
-					productAttribute.setPictureName(fileName);
-				}
+//				if (!file.isEmpty()) {
+//					Map<String, String> result = UploadFileTool.uploadYxzlFileBySpring(file);
+//					String fileName = result.get("fileName");
+//					String pictureUrl = result.get("url");
+//					productAttribute.setPictureUrl(pictureUrl);
+//					productAttribute.setPictureName(fileName);
+//				}
 
 				int i = productService.updateProductAttribute(productAttribute);
 				returnMap.put(MESSAGE, "修改成功");

@@ -30,7 +30,10 @@
               <li>
                 <span>报表日期：<input type="text" name="reportDate" value='$!date.format("yyyy-MM-dd",$!filter.reportDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
-              
+              <li>
+                <span>选择机构：<select name="orgId"  >#dict("Organizations", $!filter.orgId)</select>
+              </span>
+              </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />

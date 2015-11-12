@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.psiviReport.dao.IdCheck_INFO_Dao">
+	<resultMap id="ResultMap"
+		type="com.cardpay.pccredit.psiviReport.model.ID_CHECK_INFO">
+		<result property="id" column="ID" />
+		<result property="customer_id" column="customer_id" />
+		<result property="card_name" column="card_name" />
+		<result property="card_no" column="card_no" />
+		<result property="card_office" column="card_office" />
+		<result property="card_checkResult" column="card_check_result" />
+	</resultMap>
+	<select id="findByCustomerId" resultMap="ResultMap"
+		parameterType="java.lang.String">
+		SELECT * from ID_CHECK_INFO
+		WHERE card_no = #{card_no}
+	</select>
+
+</mapper>

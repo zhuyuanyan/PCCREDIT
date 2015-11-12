@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="fixed">
-		<h1>客户维护信息</h1>
+		<h1>申请信息</h1>
 		<div><!--按钮组放置区域-->
 		</div>
 		<div class="buttons"><!--按钮组放置区域-->
@@ -38,7 +38,7 @@
 	<div class="TabContent" id="Content1">
 		<!--*************************************主卡*****************************************-->
 		<div class="tabContent selectTab" id="tabContent2">	
-			<iframe id="tabContent2_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page1_update.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
+			<iframe id="tabContent2_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page1_update.page?id=${customerId}&appId=${appId}" marginheight="0" marginwidth="0" height="420px"></iframe>
 		</div>
 		<div class="tabContent" id="tabContent0">			
 			<iframe id="tabContent0_frame" frameborder="0" width="100%;" src="${contextPath}/xm_appln/xm_appln_page2.page?id=${customerId}" marginheight="0" marginwidth="0" height="420px"></iframe>
@@ -109,32 +109,50 @@
 				document.getElementById('tabContent3_frame').contentWindow.onSave(); 
 			});
 			
-			document.getElementById('tabContent0_frame').onload = function(){
-				document.getElementById('tabContent0_frame').contentWindow.disableForm(); 
-			}; 
-			document.getElementById('tabContent1_frame').onload = function(){
-				document.getElementById('tabContent1_frame').contentWindow.disableForm(); 
-			}; 
-			document.getElementById('tabContent2_frame').onload = function(){
-				document.getElementById('tabContent2_frame').contentWindow.disableForm(); 
-			}; 
-			document.getElementById('tabContent3_frame').onload = function(){
-				document.getElementById('tabContent3_frame').contentWindow.disableForm(); 
-			}; 
-			document.getElementById('tabContent4_frame').onload = function(){
-				document.getElementById('tabContent4_frame').contentWindow.disableForm(); 
-			}; 
-			document.getElementById('tabContent5_frame').onload = function(){
-				document.getElementById('tabContent5_frame').contentWindow.disableForm(); 
-			}; 
+			//document.getElementById('tabContent0_frame').onload = function(){
+			//	document.getElementById('tabContent0_frame').contentWindow.disableForm(); 
+				//}; 
+			//document.getElementById('tabContent1_frame').onload = function(){
+			//	document.getElementById('tabContent1_frame').contentWindow.disableForm(); 
+			//}; 
+			//document.getElementById('tabContent2_frame').onload = function(){
+			//	document.getElementById('tabContent2_frame').contentWindow.disableForm(); 
+			//}; 
+			//document.getElementById('tabContent3_frame').onload = function(){
+			//	document.getElementById('tabContent3_frame').contentWindow.disableForm(); 
+				//}; 
+			//document.getElementById('tabContent4_frame').onload = function(){
+			//	document.getElementById('tabContent4_frame').contentWindow.disableForm(); 
+			//}; 
+			//document.getElementById('tabContent5_frame').onload = function(){
+			//	document.getElementById('tabContent5_frame').contentWindow.disableForm(); 
+				//}; 
 		});
 		
 		
 		function return_appln(){
-			$.post("${contextPath}/intopieces/intopiecesfuhe/refuse.page", {appId:"$!{appId}"},
-		            function(data, textStatus, jqXhr) {
-						window.location.href = "${contextPath}/intopieces/intopiecesfuhe/fuhe.page"; 
-		            });
+			Dialog.confirm("确定退回吗？", "提示",
+					function() {
+				 		$.ajax({
+							url : "${contextPath}/intopieces/intopiecesfuhe/refuse.json?appId=$!{appId}",
+							type : "get",
+							success : function(data) {
+								if (data.success) {
+									window.top.Dialog.message(data.message);	
+				            		var url = "${contextPath}/intopieces/intopiecesfuhe/fuhe.page";
+								    window.location.href = url;
+								}
+								else{
+									window.top.Dialog.message(data.message);
+						    	}
+							}
+					}); 
+                	});
+			//}
+			//$.post("${contextPath}/intopieces/intopiecesfuhe/refuse.page", {appId:"$!{appId}"},
+		       //     function(data, textStatus, jqXhr) {
+				//		window.location.href = "${contextPath}/intopieces/intopiecesfuhe/fuhe.page"; 
+		       //     });
 		}
 
 

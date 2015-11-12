@@ -20,7 +20,7 @@
   </select>
   
     <select id="cardQuery" resultMap="cardQueryResultMap">
-  select s.* from xm_appln_card_return s where approve_id =#{approveId} 
+  select s.* from xm_appln_card_return s where 1=1
   <if test="chineseName!=null ">
 		<![CDATA[ and s.chinese_name like '%'||#{chineseName}||'%' ]]>
   </if>
@@ -63,4 +63,18 @@
       <select id="getResult" resultMap="cardQueryResultMap">
   select s.* from xm_appln_card_return s where if_send=#{ifSend}
    </select>
+    <select id="getManagerId" resultType="String">
+  select MGR_NO from pccredit1.XM_ACC_CREDIT where CERT_CODE=#{cardId}
+   </select>
+   
+   <update id="updateCardSignStatus">
+		update make_card set sign_status ='1' where 1=1 and id in  
+	 		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")"> 
+				#{item} 
+			</foreach>
+   </update>
+   
+   <update id="updateCardStatus">
+		update make_card set CARD_STATUS ='1' where 1=1 and id =#{id}
+   </update>
 </mapper>

@@ -30,6 +30,24 @@ public class AccountManagerParameter extends BusinessModel{
 	private Date createdTime;
 	private String modifiedBy;
 	private Date modifiedTime;
+	
+	private String applyQuatoLimit;
+	private String custTypeList;
+	private String customerTypeCode;
+	private String jjzg;
+	
+	public String getApplyQuatoLimit() {
+		return applyQuatoLimit;
+	}
+	public void setApplyQuatoLimit(String applyQuatoLimit) {
+		this.applyQuatoLimit = applyQuatoLimit;
+	}
+	public String getCustTypeList() {
+		return custTypeList;
+	}
+	public void setCustTypeList(String custTypeList) {
+		this.custTypeList = custTypeList;
+	}
 	public String getUserId() {
 		return userId;
 	}
@@ -95,6 +113,18 @@ public class AccountManagerParameter extends BusinessModel{
 	}
 	public void setModifiedTime(Date modifiedTime) {
 		this.modifiedTime = modifiedTime;
+	}
+	public String getCustomerTypeCode() {
+		return customerTypeCode;
+	}
+	public void setCustomerTypeCode(String customerTypeCode) {
+		this.customerTypeCode = customerTypeCode;
+	}
+	public String getJjzg() {
+		return jjzg;
+	}
+	public void setJjzg(String jjzg) {
+		this.jjzg = jjzg;
 	}
 
 	

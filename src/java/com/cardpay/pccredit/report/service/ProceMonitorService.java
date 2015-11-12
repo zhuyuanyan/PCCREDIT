@@ -30,6 +30,7 @@ import com.cardpay.pccredit.system.service.SystemUserService;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.modules.privilege.constant.PrivilegeConstants;
+import com.wicresoft.jrad.modules.privilege.model.User;
 
 
 /**
@@ -58,6 +59,9 @@ public class ProceMonitorService {
 	@Autowired
 	private  PccOrganizationService  pccOrganizationService;
 	
+	@Autowired
+	private  CommonDao  commonDao;
+	
 	/**
 	 * “灵活金”/普通信用卡业务流程监测报表（统计期间：XXXX年XX月XX日-XXXX年XX月XX日，客户经理/微贷经理维度）
 	 * @param filter
@@ -67,11 +71,12 @@ public class ProceMonitorService {
 		List<manaProceMonitor> rtn_ls = new ArrayList<manaProceMonitor>();
 		List<LCJC> LCJC_ls = proceMonitorDao.getProceMonitorStatistical(filter);
 		//处理数据
-		List<AccountManagerParameterForm> accountManagerParameterForm_ls = accountManagerParameterService.findAccountManagerParameterAll();//所有客户经理
+//		List<AccountManagerParameterForm> accountManagerParameterForm_ls = accountManagerParameterService.findAccountManagerParameterAll();//所有客户经理
+		List<SystemUser> accountManagerParameterForm_ls = commonDao.queryBySql(SystemUser.class, "select s.* from sys_user s where s.user_type='1'", null);
 		 for(int i = 0;i < accountManagerParameterForm_ls.size(); i ++){
-			manaProceMonitor manaprocemonitor = new manaProceMonitor("0",String.valueOf(i),accountManagerParameterForm_ls.get(i).getDisplayName(),"0","0","0","0","0","0","0",accountManagerParameterForm_ls.get(i).getUserId());
+			manaProceMonitor manaprocemonitor = new manaProceMonitor("0",String.valueOf(i),accountManagerParameterForm_ls.get(i).getDisplayName(),"0","0","0","0","0","0","0",accountManagerParameterForm_ls.get(i).getId());
 			for(LCJC lcjc : LCJC_ls){
-				if(accountManagerParameterForm_ls.get(i).getUserId().endsWith(lcjc.getUserid())){
+				if(accountManagerParameterForm_ls.get(i).getId().endsWith(lcjc.getUserid())){
 					//填充数据到返回list
 					if(lcjc.getSeq_no().equals("1")){//初审
 						if(lcjc.getExamine_result() == null){
@@ -146,8 +151,17 @@ public class ProceMonitorService {
 					}
 					manaprocemonitor.setJinjian((Integer.parseInt(manaprocemonitor.getJinjian())+Integer.parseInt(lcjc.getTotal()))+"");
 				}
+				//如果选择了机构（只有一条机构数据）
 			}
-			rtn_ls.add(manaprocemonitor);
+			//如果没有选择机构（显示所有数据）
+			if(filter.getOrgId()==null){
+				rtn_ls.add(manaprocemonitor);
+			}else{
+				if(results.get(i).getId().endsWith(filter.getOrgId())){
+					rtn_ls.add(manaprocemonitor);
+				}
+				
+			}
 		}
 		return rtn_ls;
 	}

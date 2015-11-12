@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.xm_appln.web;
 
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
+import com.cardpay.pccredit.xm_appln.model.XM_APPLN_JCZL;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_TJINFO;
 import com.wicresoft.jrad.base.web.form.BaseForm;
 
@@ -59,6 +60,30 @@ public class XM_APPLN_ADDR_FORM extends BaseForm {
 	private String state_c4;
 	private String postcode4;
 	
+	/*added by nihc 20150706 保存家庭电话、公司电话 begin*/
+	private String home_phone;
+	private String busi_phone;
+	private String extension;
+	
+	public String getHome_phone() {
+		return home_phone;
+	}
+	public void setHome_phone(String home_phone) {
+		this.home_phone = home_phone;
+	}
+	public String getBusi_phone() {
+		return busi_phone;
+	}
+	public void setBusi_phone(String busi_phone) {
+		this.busi_phone = busi_phone;
+	}
+	public String getExtension() {
+		return extension;
+	}
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+
 	//
 	private String mail_to;
 	public String getMail_to() {
@@ -418,5 +443,16 @@ public class XM_APPLN_ADDR_FORM extends BaseForm {
 		obj.setState_c4(state_c4);
 		obj.setCreatedBy(userId);
 		return obj;
+	}
+	/**
+	 
+	 */
+	public XM_APPLN_JCZL createXM_APPLN_JCZL(String userId){
+		XM_APPLN_JCZL obj = new XM_APPLN_JCZL();
+		obj.setHome_phone(home_phone);
+		obj.setBusi_phone(busi_phone);
+		obj.setExtension(extension);
+		obj.setModifiedBy(userId);
+	    return obj;
 	}
 }

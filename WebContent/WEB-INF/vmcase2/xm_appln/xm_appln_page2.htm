@@ -62,7 +62,8 @@
 					</td>
 					<td class="label">公司名称</td>
 					<td>
-						<span name="busn_name">$!xM_APPLN.busn_name</span>
+						<input type="text" class="text" name="busn_name" value="$!xM_APPLN.busn_name"  maxlength="100"/>
+						
 					</td>
 				</tr>
 				<tr>
@@ -80,7 +81,7 @@
 					</td>
 					<td class="label">分行名称</td>
 					<td>
-						<span name="brch_name">$!xM_APPLN.brch_name</span>
+					<input type="text" class="text" name="brch_name" value="$!xM_APPLN.brch_name" maxlength="100"/>
 					</td>
 				</tr>
 				<tr>
@@ -265,23 +266,23 @@
 							</td>
 							<td class="label">需要PIN密信?</td>
 							<td>
-								<input type="checkbox" name="pin_reqd1" value="1" #if($!xM_APPLN_KPMX_ls.get(0).pin_reqd == '1') checked #end/>
+								<input type="checkbox" name="pin_reqd1" value="1" #if(!$!xM_APPLN_KPMX_ls.get(0).createdBy||$!xM_APPLN_KPMX_ls.get(0).pin_reqd == '1') checked #end/>
 							</td>
 						</tr>						
 						<tr>
 							<td class="label">开通短信通知?</td>
 							<td>
-								<input type="checkbox" name="sms_yn1" value="1" #if($!xM_APPLN_KPMX_ls.get(0).sms_yn == '1') checked #end/>
+								<input type="checkbox" name="sms_yn1" value="1" #if(!$!xM_APPLN_KPMX_ls.get(0).createdBy||!$!xM_APPLN_KPMX_ls.get(0)||$!xM_APPLN_KPMX_ls.get(0).sms_yn == '1') checked #end/>
 							</td>
 							<td class="label">消费需要密码?</td>
 							<td>
-								<input type="checkbox" name="pin_chk1" value="1" #if($!xM_APPLN_KPMX_ls.get(0).pin_chk == '1') checked #end/>
+								<input type="checkbox" name="pin_chk1" value="1" #if(!$!xM_APPLN_KPMX_ls.get(0).createdBy||!$!xM_APPLN_KPMX_ls.get(0) || $!xM_APPLN_KPMX_ls.get(0).pin_chk == '1' ) checked #end/>
 							</td>
 						</tr>
 						<tr>
 							<td class="label">递送分行<font color="#ff0000">*</font></td>
 							<td>
-								#if(!$xM_APPLN_KPMX_ls.get(0) || !$xM_APPLN_KPMX_ls.get(0).cdesploc || $xM_APPLN_KPMX_ls.get(0).cdesploc=='')
+								#if(!$xM_APPLN_KPMX_ls.get(0) || !$xM_APPLN_KPMX_ls.get(0) || $xM_APPLN_KPMX_ls.get(0).cdesploc=='')
 								<input type="text" class="text small" name="cdesploc1" value="0" maxlenght="4"/>
 								#else
 								<input type="text" class="text small" name="cdesploc1" value="$!xM_APPLN_KPMX_ls.get(0).cdesploc" maxlenght="4"/>
@@ -368,17 +369,17 @@
 							</td>
 							<td class="label">需要PIN密信?</td>
 							<td>
-								<input type="checkbox" name="pin_reqd2" value="1" #if($!xM_APPLN_KPMX_ls.get(1).pin_reqd == '1') checked #end/>
+								<input type="checkbox" name="pin_reqd2" value="1" #if(!$!xM_APPLN_KPMX_ls.get(1).createdBy||$!xM_APPLN_KPMX_ls.get(1).pin_reqd == '1') checked #end/>
 							</td>
 						</tr>						
 						<tr>
 							<td class="label">开通短信通知?</td>
 							<td>
-								<input type="checkbox" name="sms_yn2" value="1" #if($!xM_APPLN_KPMX_ls.get(1).sms_yn == '1') checked #end/>
+								<input type="checkbox" name="sms_yn2" value="1" #if(!$!xM_APPLN_KPMX_ls.get(1).createdBy||$!xM_APPLN_KPMX_ls.get(1).sms_yn == '1') checked #end/>
 							</td>
 							<td class="label">消费需要密码?</td>
 							<td>
-								<input type="checkbox" name="pin_chk2" value="1" #if($!xM_APPLN_KPMX_ls.get(1).pin_chk == '1') checked #end/>
+								<input type="checkbox" name="pin_chk2" value="1" #if(!$!xM_APPLN_KPMX_ls.get(1).createdBy||$!xM_APPLN_KPMX_ls.get(1).pin_chk == '1') checked #end/>
 							</td>
 						</tr>
 						<tr>
@@ -474,17 +475,17 @@
 							</td>
 							<td class="label">需要PIN密信?</td>
 							<td>
-								<input type="checkbox" name="pin_reqd$!{velocityCount}" value="1" #if($!obj.pin_reqd == '1') checked #end/>
+								<input type="checkbox" name="pin_reqd$!{velocityCount}" value="1" #if(!$!obj.createdBy||$!obj.pin_reqd == '1') checked #end/>
 							</td>
 						</tr>						
 						<tr>
 							<td class="label">开通短信通知?</td>
 							<td>
-								<input type="checkbox" name="sms_yn$!{velocityCount}" value="1" #if($!obj.sms_yn == '1') checked #end/>
+								<input type="checkbox" name="sms_yn$!{velocityCount}" value="1" #if(!$!obj.createdBy||$!obj.sms_yn == '1') checked #end/>
 							</td>
 							<td class="label">消费需要密码?</td>
 							<td>
-								<input type="checkbox" name="pin_chk$!{velocityCount}" value="1" #if($!obj.pin_chk == '1') checked #end/>
+								<input type="checkbox" name="pin_chk$!{velocityCount}" value="1" #if(!$!obj.createdBy||$!obj.pin_chk == '1') checked #end/>
 							</td>
 						</tr>
 						<tr>
@@ -768,7 +769,11 @@
 					</td>
 					<td class="label">调查人姓名</td>
 					<td>
-						<span name="aval_name">$!xM_APPLN_DCSC.aval_name</span>
+						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.aval_name || $xM_APPLN_DCSC.aval_name=='')
+						<input type="text" class="text" name="aval_name" value="" maxlength="6"/>
+						#else
+						<input type="text" class="text" name="aval_name" value="$!xM_APPLN_DCSC.aval_name" maxlength="6"/>
+						#end
 					</td>
 				</tr>
 				<tr>
@@ -777,26 +782,35 @@
 						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.achk_nbr || $xM_APPLN_DCSC.achk_nbr=='')
 						<input type="text" class="text" name="achk_nbr" value="0" maxlength="6"/>
 						#else
-						<input type="text" class="text" name="achk_nbr" value="$!xM_APPLN_DCSC.achk_nbr" maxlength="6"/>
+						<input type="text" class="text" name="achk_nbr" value="$!xM_APPLN_DCSC.achk_nbr"  maxlength="6"/>
 						#end
 					</td>
 					<td class="label">审核人姓名</td>
+					
 					<td>
-						<span name="achk_name">$!xM_APPLN_DCSC.achk_name</span>
+						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.achk_name || $xM_APPLN_DCSC.achk_name=='')
+						<input type="text" class="text" name="achk_name" value=""  maxlength="6"/>
+						#else
+						<input type="text" class="text" name="achk_name" value="$!xM_APPLN_DCSC.achk_name"  maxlength="6"/>
+						#end
 					</td>
 				</tr>
 				<tr>
 					<td class="label">审批人工号<font color="#ff0000">*</font></td>
 					<td>
 						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.adec_nbr || $xM_APPLN_DCSC.adec_nbr=='')
-						<input type="text" class="text" name="adec_nbr" value="0" maxlength="6"/>
+						<input type="text" class="text" name="adec_nbr" value="0"  maxlength="6"/>
 						#else
-						<input type="text" class="text" name="adec_nbr" value="$!xM_APPLN_DCSC.adec_nbr" maxlength="6"/>
+						<input type="text" class="text" name="adec_nbr" value="$!xM_APPLN_DCSC.adec_nbr"  maxlength="6"/>
 						#end
 					</td>
 					<td class="label">审批人姓名</td>
 					<td>
-						<span name="adec_name">$!xM_APPLN_DCSC.adec_name</span>
+						#if(!$xM_APPLN_DCSC || !$xM_APPLN_DCSC.adec_name || $xM_APPLN_DCSC.adec_name=='')
+						<input type="text" class="text" name="adec_name" value=""  maxlength="6"/>
+						#else
+						<input type="text" class="text" name="adec_name" value="$!xM_APPLN_DCSC.adec_name"  maxlength="6"/>
+						#end
 					</td>
 				</tr>
 			</table>
@@ -835,8 +849,9 @@
    	          }
    	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
    	            if (data.success) {
-   	            	Dialog.message("保存成功!");
-   	            	window.location.reload();
+   	            	window.top.Dialog.message("保存成功!");
+   	            	var url = "${contextPath}/xm_appln/xm_appln_page2.page?id=${customerId}";
+   	            	window.location.href = url;
    	            }
    	          });
    	        }

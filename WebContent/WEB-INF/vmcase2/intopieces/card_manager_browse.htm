@@ -4,10 +4,10 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">制卡查询</div>
+        <div class="title">卡片签收</div>
       </div>
       <div class="inquiry">
-       <div class="search_tag">制卡查询</div>
+       <div class="search_tag">卡片签收</div>
         <div class="search">
           <form id="submitForm" action="${contextPath}/intopieces/orgnization/managerQueryCard.page">
           <ul>
@@ -28,7 +28,6 @@
               <col width="10%" />
               <col width="20%" />
               <col width="20%"/>
-              <col width="20%"/>
               <col width="15%"/>
               <col width="10%"/>
             </colgroup>
@@ -37,8 +36,7 @@
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">证件号码</th>
               <th nowrap="nowrap">卡号</th>
-              <th nowrap="nowrap">下发到机构的状态</th>
-              <th nowrap="nowrap">下发到客户的状态</th>
+              <th nowrap="nowrap">卡片签收状态</th>
               <th nowrap="nowrap">创建时间</th>
             </tr>
           </table>
@@ -50,18 +48,16 @@
               <col width="10%" />
               <col width="20%" />
               <col width="20%"/>
-              <col width="20%"/>
               <col width="15%"/>
               <col width="10%"/>
             </colgroup>
             #foreach ($card in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!{card.id}"/></td>
+              <td class="checkbox"><input type="checkbox" name="checkbox" value="$!{card.id}"/></td>
               <td nowrap="nowrap">$!card.customerName</td>
               <td nowrap="nowrap">$!card.customerIdentity</td>
               <td nowrap="nowrap">$!card.cardNumber</td>
-              <td nowrap="nowrap">#if($!card.cardOrganizationStatus=='0')未下发  #elseif($!card.cardOrganizationStatus=='1')已下发 #end</td>
-              <td nowrap="nowrap">#if($!card.cardCustomerStatus=='0')未下发  #elseif($!card.cardCustomerStatus=='1')已下发 #end</td>
+              <td nowrap="nowrap">#if($!card.signStatus=='0')未签收 #elseif($!card.signStatus=='1')已签收 #end</td>
               <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss ',$!card.createdTime)</td>
             </tr>
             #end
@@ -70,8 +66,9 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #btnpriv("issuedcustomer")<a class="btn_g" href="javascript:void(0);" title="下发到客户" onclick="issuedCard('${contextPath}/intopieces/orgnization/organizationIssuedCard.json?flag=true','${contextPath}/intopieces/orgnization/managerQueryCard.page','true')">下发到客户</a>#end
-          #btnpriv("display")<a class="btn_g" href="javascript:void(0);" title="查看" onclick="viewCard('${contextPath}/intopieces/orgnization/viewCard.page')">查看</a>#end
+<!--           #btnpriv("issuedcustomer")<a class="btn_g" href="javascript:void(0);" title="下发到客户" onclick="issuedCard('${contextPath}/intopieces/orgnization/organizationIssuedCard.json?flag=true','${contextPath}/intopieces/orgnization/managerQueryCard.page','true')">下发到客户</a>#end
+<!--           #btnpriv("display")<a class="btn_g" href="javascript:void(0);" title="查看" onclick="viewCard('${contextPath}/intopieces/orgnization/viewCard.page')">查看</a>#end-->
+          	   #btnpriv("update")<a class="btn_g" href="javascript:void(0);" title="签收" onclick="sign()">签收</a>#end
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -86,15 +83,46 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		opsObj.createUrl = "${modulePath}/create.page";
-		opsObj.displayUrl = "${modulePath}/display.page";
-		opsObj.changeUrl = "${modulePath}/change.page";
-		opsObj.deleteUrl = "${modulePath}/delete.json";
+		//opsObj.createUrl = "${modulePath}/create.page";
+		//opsObj.displayUrl = "${modulePath}/display.page";
+		//opsObj.changeUrl = "${modulePath}/change.page";
+		//opsObj.deleteUrl = "${modulePath}/delete.json";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-		opsObj.exportUrl = "${modulePath}/export.page";
-
+		//opsObj.exportUrl = "${modulePath}/export.page";
 		prepareOperations(opsObj);
 		
 	});
+	
+	 //签收
+	 function sign(){
+		if ($(".checkbox :checked").length !=0) {
+		      var ids="";
+			  var input = document.getElementsByName("checkbox");
+              for(var i = 0; i < input.length;i ++){              
+                   if(input[i].type == "checkbox"){                
+                     if (input[i].checked){                          
+                           ids += input[i].value +','; 
+                     }             
+                   }       
+              }
+              
+           	    var url = "${modulePath}/update.json?id=" + ids;
+        	    $.ajax({
+        				url : url,
+        				type : "get",
+        				data : "",
+        				success : function(data) {
+        					if (data.success) {
+        						topWin.Dialog.message("保存成功！");
+        						window.location.href= contextPath+"/intopieces/orgnization/managerQueryCard.page" ;
+        					}else{
+        						topWin.Dialog.message(data.message);
+        				    }
+        				}
+        	   });
+		}else{
+				topWin.Dialog.message("请选择要签收的卡片！");
+		}
+    }
 </script>
 #parse ("common/iframe_page_footer.htm")

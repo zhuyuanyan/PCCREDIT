@@ -23,8 +23,10 @@ import com.cardpay.pccredit.customer.model.AmountAdjustment;
 import com.cardpay.pccredit.customer.model.AverageDailyOverdraft;
 import com.cardpay.pccredit.customer.service.AmountAdjustmentService;
 import com.cardpay.pccredit.customer.service.CustomerQuotaService;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
@@ -64,6 +66,9 @@ public class CustomerAdjustmentQuotaController extends BaseController{
 	
 	@Autowired
 	private AmountAdjustmentService amountAdjustmentService;
+	
+	@Autowired
+	private CommonDao commonDao;
 	
 	private final static Long BET_SEARCH_TIME = 1000L;
 	
@@ -233,10 +238,21 @@ public class CustomerAdjustmentQuotaController extends BaseController{
 			String adjustmentType = request.getParameter("adjustmentType");
 			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 			adjustmentAccount = (Double.parseDouble(adjustmentAccount) * 100) + "";
-			amountAdjustmentService.insertAmountAdjustment(appId, adjustmentAccount, adjustmentType, user);
+			//判断该客户是否有在额度申请
+			//进件信息
+			CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, appId);
+			Boolean processBoolean = amountAdjustmentService.ifQuoteApply(applicationInfo.getCustomerId());
+			if(processBoolean){
+				returnMap.addGlobalMessage("此客户正在申请进件，无法再次申请!");
+				returnMap.put(RECORD_ID, appId);
+				returnMap.put("message","此客户正在申请进件，无法再次申请!");
+			}else{
+				amountAdjustmentService.insertAmountAdjustment(appId, adjustmentAccount, adjustmentType, user);
 			
-			returnMap.put(RECORD_ID, appId);
-			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+				returnMap.put(RECORD_ID, appId);
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+				returnMap.put("message","修改成功");
+			}
 		}
 		catch (Exception e) {
 			return WebRequestHelper.processException(e);

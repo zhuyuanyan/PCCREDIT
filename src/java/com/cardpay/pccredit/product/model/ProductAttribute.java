@@ -1,8 +1,9 @@
 package com.cardpay.pccredit.product.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
-
 /**
  * Description of ProductAttribute
  * 
@@ -32,6 +33,10 @@ public class ProductAttribute extends BusinessModel {
 	private String pictureName;
 	private String seqno;
 	private String default_type;
+	private String ed;
+	private String lv;
+	private String nf;
+	private Date endTime;
 
 	public String getPictureName() {
 		return pictureName;
@@ -168,5 +173,39 @@ public class ProductAttribute extends BusinessModel {
 	public void setDefault_type(String default_type) {
 		this.default_type = default_type;
 	}
+
+	public String getEd() {
+		return ed;
+	}
+
+	public void setEd(String ed) {
+		this.ed = ed;
+	}
+
+	public String getLv() {
+		return lv;
+	}
+
+	public void setLv(String lv) {
+		this.lv = lv;
+	}
+
+	public String getNf() {
+		return nf;
+	}
+
+	public void setNf(String nf) {
+		this.nf = nf;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+
 
 }

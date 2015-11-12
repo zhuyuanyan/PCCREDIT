@@ -20,6 +20,8 @@
 		<result property="addActivateCardNumber" column="add_activate_card_number" />
 		<result property="addNoActivateCardNumber" column="add_no_activate_card_number" />
 		<result property="addActiveRate" column="add_active_rate" />
+		<result property="orgParentName" column="org_parent_name" />
+		<result property="orgName" column="org_name" />
 	</resultMap>
 	
 	<select id="getOrgCardStatistical" resultMap="ResultMap"
@@ -75,11 +77,15 @@
                                        decode(connect_by_isleaf, 1, 'Y', 'N') is_leaf
                                   from SYS_ORGANIZATION org
                                  where is_deleted = 0 /*未删除*/
-                                   and level = 3 /*只查支行*/
+                                   and level = 3 /*只查支行*/ 
+                                   <if test="orgId!=null and orgId!=''">
+	                               and id=#{orgId} 
+	                              </if>
                                  start with parent_id is null
                                 connect by prior id = parent_id) sys_org
                          inner join sys_department sys_dep
                             on sys_org.id = sys_dep.org_id
+                            
                          inner join sys_dept_user sys_dept_usr
                             on sys_dep.id = sys_dept_usr.dept_id
                          inner join sys_user usr
@@ -135,6 +141,7 @@
               0,
               0,
               a.b_activate_card_number / a.b_send_card_number * 100)) as add_active_rate
+              ,A.org_name,A.org_parent_name
 
   from (select result_date.user_id as id,
                result_date.user_name as name,
@@ -146,7 +153,9 @@
                sum(r_send_card_number) as r_send_card_number,
                sum(r_accept_card_number) as r_accept_card_number,
                sum(r_activate_card_number) as r_activate_card_number,
-               sum(r_send_card_number) - sum(r_activate_card_number) r_no_activate_card_number
+               sum(r_send_card_number) - sum(r_activate_card_number) r_no_activate_card_number,
+               result_date.org_name as org_name,
+				result_date.org_parent_name as org_parent_name
           from (select user_info.user_id,
                        user_info.user_name,
                        nvl(basic_date_info.send_card_number, 0) as b_send_card_number,
@@ -154,15 +163,18 @@
                        nvl(basic_date_info.activate_card_number, 0) as b_activate_card_number,
                        nvl(report_date_info.send_card_number, 0) as r_send_card_number,
                        nvl(report_date_info.accept_card_number, 0) as r_accept_card_number,
-                       nvl(report_date_info.activate_card_number, 0) as r_activate_card_number
+                       nvl(report_date_info.activate_card_number, 0) as r_activate_card_number,
+                       user_info.org_name as org_name,
+						user_info.org_parent_name as org_parent_name
                   from (select sys_org.name     as org_name,
+                  			   sys_org1.name 	as org_parent_name,
                                sys_org.id       as org_id,
                                sys_dep.name     as dep_name,
                                sys_dep.id       as dep_id,
                                usr.id           as user_id,
                                usr.display_name as user_name
                           from (select org.name,
-                                       org.id,
+                                       org.id,ORG.PARENT_ID,
                                        level lev,
                                        decode(connect_by_isleaf, 1, 'Y', 'N') is_leaf
                                   from SYS_ORGANIZATION org
@@ -172,11 +184,15 @@
                                 connect by prior id = parent_id) sys_org
                          inner join sys_department sys_dep
                             on sys_org.id = sys_dep.org_id
+                            <if test="orgId!=null and orgId!=''">
+	                               and sys_dep.org_id=#{orgId}
+	                              </if>
                          inner join sys_dept_user sys_dept_usr
                             on sys_dep.id = sys_dept_usr.dept_id
                          inner join sys_user usr
                             on sys_dept_usr.user_id = usr.id
-                           and usr.user_type = 1 /*客户经理*/
+                           and usr.user_type = 1 /*客户经理*/ 
+                           INNER JOIN SYS_ORGANIZATION sys_org1 on sys_org1.id=sys_org.parent_id
                         ) user_info
                 
                   left join (select t.customer_manager_id as manager_id,
@@ -199,6 +215,6 @@
                              group by t.customer_manager_id) report_date_info
                     on user_info.user_id = report_date_info.manager_id) result_date
         
-         group by result_date.user_id, result_date.user_name) a
+         group by result_date.user_id, result_date.user_name,result_date.org_name,result_date.org_parent_name) a
 	</select>
 </mapper>

@@ -131,9 +131,10 @@ public class AmountAdjustmentController extends BaseController{
 
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
-//			amountAdjustmentService.approveAmountAdjustment(amountAdjustmentForm, request);
+			amountAdjustmentService.approveAmountAdjustment(amountAdjustmentForm, request);
 			returnMap.put(RECORD_ID, amountAdjustmentForm.getId());
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			returnMap.put("message", "提交成功");
 		}
 		catch (Exception e) {
 			return WebRequestHelper.processException(e);

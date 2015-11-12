@@ -1,0 +1,88 @@
+#parse ("common/iframe_page_header2.htm")
+	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
+	<style type="text/css"/>
+		form{padding-top:0px;padding-bottom:15px;margin:0px 5px 0 0;}
+	</style>
+</head>
+<body>
+<form id="id_module_form" action="${contextPath}/xm_appln/update_xm_appln_page2.json">
+<input type="hidden" id="id" name="customer_id" value="$!{customerId}" />
+<!--*************************************************************基本资料*************************************************************-->
+	<div class="box">
+		<table class="title" onclick="Open(this)">
+			<tr>
+				<td>基本资料</td>
+				<td><img src="${contextPath}/images/xm_appln/min.gif"/></td>
+			</tr>
+		</table>
+		<div name="content">
+			<table class="message">
+				<tr>
+					<td class="label">产品名称</td>
+					<td>
+						<input type="text" class="text mast" id="productName" name="productName" value="$!productAttribute.productName" readonly="readonly" disabled="disabled"/>
+					</td>
+					<td class="label">额度</td>
+					<td>
+						<input type="text" class="text mast" id="ed" name="ed" value="$!productAttribute.ed" readonly="readonly" disabled="disabled"/></td>
+					<td class="label">利率</td>
+					<td>
+						<input type="text" class="text mast" id="lv" name="lv" value="$!productAttribute.lv" readonly="readonly" disabled="disabled"/></td>
+				</tr>
+				<tr>
+					<td class="label">年费</td>
+					<td>
+						<input type="text" class="text mast" id="nf" name="nf" value="$!productAttribute.nf" readonly="readonly" disabled="disabled"/>
+					</td>
+					<td class="label">卡片到期日</td>
+					<td>
+						<input type="text" class="text mast" id="endTime" name="endTime" value="$!productAttribute.endTime" readonly="readonly" disabled="disabled"/>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</form>	
+	<script src="${contextPath}/js/xm_appln/xm_appln.js" type="text/javascript"></script>
+	<script type="text/javascript">			
+		$(document).ready(function(){
+			if($("#date")!=""){//账单日不为空时，调整日历样式
+				var num=$("#date").val();
+				$(".date tr td").each(function(){//通过日历修改账单日					
+					if($(this).text()==num){
+						$(this).css("background","#7ecef4");
+					}
+				})
+			}
+			$(".date tr td").click(function(){//通过日历修改账单日
+				$(".date tr td").css("background","#f8f8f8");
+				$(this).css("background","#7ecef4");
+				$("#date").val($(this).text());
+			})
+		});
+		
+		#set ($formName = "'#id_module_form'")
+		#parse ("xm_appln/xm_appln_page2_validation.js")
+		
+		function onSave(){
+			if ($($formName).valid()) {
+   	          var formjson = $($formName).serialize();
+   	          if($("#gtoc").attr("checked")=='checked'){
+   	        	  if($("#downprod").val()==''){
+   	        		Dialog.message("请输入降级产品!");
+   	        		return;
+   	        	  }
+   	          }
+   	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
+   	            if (data.success) {
+   	            	window.top.Dialog.message("保存成功!");
+   	            	var url = "${contextPath}/xm_appln/xm_appln_page2.page?id=${customerId}";
+   	            	window.location.href = url;
+   	            }
+   	          });
+   	        }
+		}
+	</script>	
+</body>
+#parse ("common/iframe_page_footer.htm")
+

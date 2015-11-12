@@ -36,6 +36,7 @@ public class CreditPaymentService {
      */
 	public List<CreditPayment> getManagerCreditPayment(StatisticalFilter filter){
 		return creditPaymentDao.getManagerCreditPayment(filter);
+		
 	}
 	
 }

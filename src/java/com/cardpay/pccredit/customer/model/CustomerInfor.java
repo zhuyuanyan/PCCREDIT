@@ -37,6 +37,9 @@ public class CustomerInfor extends BusinessModel{
 	private String customerBusinessAptitude;
 	private String processId;
 	
+	
+	
+	
 	public String getChineseName() {
 		return chineseName;
 	}
