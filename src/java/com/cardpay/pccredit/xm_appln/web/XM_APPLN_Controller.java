@@ -203,6 +203,7 @@ public class XM_APPLN_Controller extends BaseController {
 				CustomerInforFilter customerInforFilter = new CustomerInforFilter();
 				customerInforFilter.setCardId(xM_APPLN_NEW_CUSTOMER_FORM.getCard_id());
 				customerInforFilter.setCardType(xM_APPLN_NEW_CUSTOMER_FORM.getRace_code());
+				customerInforFilter.setCustId(xM_APPLN_NEW_CUSTOMER_FORM.getCustomer_id());
 				int i = customerInforService.findCustomerOriginaCountList(customerInforFilter);
 				if(i!=0){
 					returnMap.put(JRadConstants.MESSAGE, "证件号码已存在");

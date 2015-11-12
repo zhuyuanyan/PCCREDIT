@@ -135,10 +135,11 @@ function hasHouse (){
 		//净资产
 		var asset_1 = Number(value_1) + Number(value_2) + Number(value_3) - 
 				      Number(value_4) - Number(value_5) - Number(value_6) - 
-				      Number(value_7) - Number(value_7_1) - Number(value_8) -
-				      Number(value_9) - Number(value_10) - Number(value_11) - Number(value_12);
+				      Math.round(value_7 * 0.5) - Number(value_7_1) - Number(value_8) -
+				      Number(value_9) - Number(value_10) -  Math.round(value_11 * 0.5) - Number(value_12);
 		
 		var total ="";
+		
 		if(asset_1 < 400000){
 			total = 100000;
 		}else if(asset_1>=400000 && asset_1 <= 700000){
@@ -169,8 +170,8 @@ function hasHouse (){
 		//净资产
 		var asset_1 = Number(value_1) + Number(value_2) + Number(value_3) - 
 				      Number(value_4) - Number(value_5) - Number(value_6) - 
-				      Number(value_7) - Number(value_7_1) - Number(value_8) -
-				      Number(value_9) - Number(value_10) - Number(value_11) - Number(value_12);
+				      Math.round(value_7 * 0.5) - Number(value_7_1) - Number(value_8) -
+				      Number(value_9) - Number(value_10) - Math.round(value_11 * 0.5) - Number(value_12);
 		
 		var total ="";
 		if($("#house_type1").val()=="1"){//已提供配偶征信
@@ -226,7 +227,7 @@ function noHouse (){
 	
 	}else if($("#house_type2").val()=='2'){//ii.在我行有存款
 		 var value_25 =	$("#value_25").val();
-		 total =  Math.round(value_25 * 0.5)>150000 ? 150000 : Math.round(value_25 * 0.5);
+		 total =  Math.round(value_25 * 0.5) > 150000 ? 150000 : Math.round(value_25 * 0.5);
 	}else{//iii.持我行股金
 		 var value_26 =	$("#value_26").val();
 		 var value_27 =	$("#value_27").val();
@@ -253,8 +254,8 @@ function promise (){
 		var value_39 = $("#value_39").val() ==''?0 : $("#value_39").val();
 		
 		total = Number(value_28)+ Number(value_29)+ Number(value_30)+ Number(value_31)
-				-Number(value_32)- Number(value_33)- Number(value_34)- Number(value_35)
-				-Number(value_36)- Number(value_37)- Number(value_38)- Number(value_39);
+				-Number(value_32)- Number(value_33)- Number(value_34)- Math.round(value_35 * 0.5)
+				-Number(value_36)- Number(value_37)- Number(value_38)- Math.round(value_39 * 0.5);
 		
 		if(total < 800000){
 			total = 80000;
@@ -280,8 +281,8 @@ function promise (){
 		var value_39 = $("#value_39").val() ==''?0 : $("#value_39").val();
 		
 		total = Number(value_28)+ Number(value_29)+ Number(value_30)+ Number(value_31)
-				-Number(value_32)- Number(value_33)- Number(value_34)- Number(value_35)
-				-Number(value_36)- Number(value_37)- Number(value_38)- Number(value_39);
+				-Number(value_32)- Number(value_33)- Number(value_34)- Math.round(value_35 * 0.5)
+				-Number(value_36)- Number(value_37)- Number(value_38)- Math.round(value_39 * 0.5);
 		
 		if(total < 600000){
 			total = 80000;
