@@ -44,6 +44,7 @@ import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.model.ModelParamConfigure;
 import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.intopieces.model.XmNewSq;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
@@ -321,7 +322,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			String custType =request.getParameter("custType");
 			String productId =request.getParameter("productId");
 			
-			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer(filter);
+			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer1(filter);
 			JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
 			List<LocalExcelForm> list = pagedResult.getItems();
 			
@@ -400,6 +401,95 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject("ApplyIntopiecesSpareType_2", ApplyIntopiecesSpareType_2);
 			mv.addObject("custType", custType);
 			mv.addObject("productId", productId);
+			
+			
+			if("2".equals(ApplyIntopiecesSpareType_1)){//2-有房
+				List<ModelParamConfigure> list1  = addIntoPiecesService.findModelParamConfigureById("房子在本人名下");
+					for(ModelParamConfigure m : list1){
+						if("小于40万".equals(m.getTypeName())){
+							mv.addObject("yf_1", m.getTypeCode());
+						}
+						if("40-70万".equals(m.getTypeName())){
+							mv.addObject("yf_2", m.getTypeCode());
+						}
+						if("70-100万".equals(m.getTypeName())){
+							mv.addObject("yf_3", m.getTypeCode());
+						}
+						if("100-130万".equals(m.getTypeName())){
+							mv.addObject("yf_4", m.getTypeCode());
+						}
+						if("大于130万".equals(m.getTypeName())){
+							mv.addObject("yf_5", m.getTypeCode());
+						}
+					}
+				List<ModelParamConfigure> list2  = addIntoPiecesService.findModelParamConfigureById("已提供配偶征信");
+					for(ModelParamConfigure m : list2){
+						if("小于40万".equals(m.getTypeName())){
+							mv.addObject("yz_1", m.getTypeCode());
+						}
+						if("40-70万".equals(m.getTypeName())){
+							mv.addObject("yz_2", m.getTypeCode());
+						}
+						if("70-100万".equals(m.getTypeName())){
+							mv.addObject("yz_3", m.getTypeCode());
+						}
+						if("100-130万".equals(m.getTypeName())){
+							mv.addObject("yz_4", m.getTypeCode());
+						}
+						if("大于130万".equals(m.getTypeName())){
+							mv.addObject("yz_5", m.getTypeCode());
+						}
+					}
+				List<ModelParamConfigure> list3  = addIntoPiecesService.findModelParamConfigureById("未提供配偶征信");
+					for(ModelParamConfigure m : list3){
+						if("小于60万".equals(m.getTypeName())){
+							mv.addObject("wz_1", m.getTypeCode());
+						}
+						if("60-100万".equals(m.getTypeName())){
+							mv.addObject("wz_2", m.getTypeCode());
+						}
+						if("100-140万".equals(m.getTypeName())){
+							mv.addObject("wz_3", m.getTypeCode());
+						}
+						if("140-180万".equals(m.getTypeName())){
+							mv.addObject("wz_4", m.getTypeCode());
+						}
+						if("大于180万".equals(m.getTypeName())){
+							mv.addObject("wz_5", m.getTypeCode());
+						}
+					}
+			}else if("3".equals(ApplyIntopiecesSpareType_1)){//3-担保
+				List<ModelParamConfigure> list4   = addIntoPiecesService.findModelParamConfigureById("外地无房客户");
+					for(ModelParamConfigure m : list4){
+						if("小于80万".equals(m.getTypeName())){
+							mv.addObject("ww_1", m.getTypeCode());
+						}
+						if("80万".equals(m.getTypeName())){
+							mv.addObject("ww_2", m.getTypeCode());
+						}
+						if("140万".equals(m.getTypeName())){
+							mv.addObject("ww_3", m.getTypeCode());
+						}
+						if("200万及以上".equals(m.getTypeName())){
+							mv.addObject("ww_4", m.getTypeCode());
+						}
+					}
+				List<ModelParamConfigure> list5   = addIntoPiecesService.findModelParamConfigureById("本地客户,担保人有房");
+					for(ModelParamConfigure m : list5){
+						if("小于60万".equals(m.getTypeName())){
+							mv.addObject("by_1", m.getTypeCode());
+						}
+						if("60万".equals(m.getTypeName())){
+							mv.addObject("by_2", m.getTypeCode());
+						}
+						if("100万".equals(m.getTypeName())){
+							mv.addObject("by_3", m.getTypeCode());
+						}
+						if("150万及以上".equals(m.getTypeName())){
+							mv.addObject("by_4", m.getTypeCode());
+						}
+					}
+			}
 			return mv;
 		}
 		

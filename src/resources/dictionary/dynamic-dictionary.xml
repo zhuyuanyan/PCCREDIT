@@ -440,4 +440,100 @@ AND A.IS_DELETED = '0'
 		from std_gb
 		where (length(locate)-length(replace(locate,',','')))=5
 	</dictionary>
+	
+	
+	<dictionary name="sqzw" title="申请人职位" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='申请人职位'
+	</dictionary>
+	
+	
+	<dictionary name="rjls" title="日均流水大于1万" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='日均流水大于1万'
+	</dictionary>
+	
+	<dictionary name="nl" title="年龄35-50岁" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='年龄35-50岁'
+	</dictionary>
+	
+	<dictionary name="dn" title="岛内（思明区/湖里区）" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='岛内（思明区/湖里区）'
+	</dictionary>
+	
+	<dictionary name="yh" title="已婚" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='已婚'
+	</dictionary>
+	
+	<dictionary name="yzxjl" title="有征信记录" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='有征信记录'
+	</dictionary>
+	
+	
+	<dictionary name="zxjjkqk" title="征信贷记卡使用情况（低于70%）" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='征信贷记卡使用情况（低于70%）'
+	</dictionary>
+	
+	<dictionary name="sex" title="性别（女）" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='性别（女）'
+	</dictionary>
+	
+	<dictionary name="mshy" title="民生行业" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='民生行业'
+	</dictionary>
+	
+	
+	<dictionary name="whfwpz" title="我行业务品种" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='我行业务品种'
+	</dictionary>
+	
+	<dictionary name="ydkye" title="在我行有贷款余额的" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='在我行有贷款余额的'
+	</dictionary>
+	
+	
+	<dictionary name="ccjz" title="车产价值大于5万" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='车产价值大于5万'
+	</dictionary>
+	
+	<dictionary name="gtjynx" title="个体户经营年限大于1年" timeout="10000">
+		SELECT  TYPE_CODE AS NAME,
+				TYPE_NAME AS TITLE 
+		FROM MODEL_PARAMETER_CONFIGURATION
+		WHERE DICT_TYPE ='个体户经营年限大于1年'
+	</dictionary>
 </dictionaries>

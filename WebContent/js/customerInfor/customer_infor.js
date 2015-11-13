@@ -135,21 +135,20 @@ function hasHouse (){
 		//净资产
 		var asset_1 = Number(value_1) + Number(value_2) + Number(value_3) - 
 				      Number(value_4) - Number(value_5) - Number(value_6) - 
-				      Math.round(value_7 * 0.5) - Number(value_7_1) - Number(value_8) -
-				      Number(value_9) - Number(value_10) -  Math.round(value_11 * 0.5) - Number(value_12);
+				      Number(value_7 * 0.5) - Number(value_7_1) - Number(value_8) -
+				      Number(value_9) - Number(value_10) -  Number(value_11 * 0.5) - Number(value_12);
 		
 		var total ="";
-		
 		if(asset_1 < 400000){
-			total = 100000;
+			total = $("#yf_1").val();
 		}else if(asset_1>=400000 && asset_1 <= 700000){
-			total = 150000;
+			total = $("#yf_2").val();
 		}else if(asset_1>700000 && asset_1 < 1000000){
-			total = 200000;
+			total = $("#yf_3").val();
 		}else if(asset_1>=1000000 && asset_1 <= 1300000){
-			total = 250000;
+			total = $("#yf_4").val();
 		}else if(asset_1 >1300000){
-			total = 300000;
+			total = $("#yf_5").val();
 		}
 		document.getElementById("asset_1").value = total;
 	}else{//ii.房子为家庭共有或者配偶独有：
@@ -170,33 +169,33 @@ function hasHouse (){
 		//净资产
 		var asset_1 = Number(value_1) + Number(value_2) + Number(value_3) - 
 				      Number(value_4) - Number(value_5) - Number(value_6) - 
-				      Math.round(value_7 * 0.5) - Number(value_7_1) - Number(value_8) -
-				      Number(value_9) - Number(value_10) - Math.round(value_11 * 0.5) - Number(value_12);
+				      Number(value_7 * 0.5) - Number(value_7_1) - Number(value_8) -
+				      Number(value_9) - Number(value_10) - Number(value_11 * 0.5) - Number(value_12);
 		
 		var total ="";
 		if($("#house_type1").val()=="1"){//已提供配偶征信
 			if(asset_1 < 400000){
-				total = 100000;
+				total = $("#yz_1").val();
 			}else if(asset_1>=400000 && asset_1 <= 700000){
-				total = 150000;
+				total = $("#yz_2").val();
 			}else if(asset_1>700000 && asset_1 < 1000000){
-				total = 200000;
+				total = $("#yz_3").val();
 			}else if(asset_1>=1000000 && asset_1 <= 1300000){
-				total = 250000;
+				total = $("#yz_4").val();
 			}else if(asset_1 >1300000){
-				total = 300000;
+				total = $("#yz_5").val();
 			}
 		}else{//未提供配偶征信：
 			if(asset_1 < 600000){
-				total = 100000;
+				total = $("#wz_1").val();;
 			}else if(asset_1>=600000 && asset_1 <= 1000000){
-				total = 150000;
+				total = $("#wz_2").val();;
 			}else if(asset_1>1000000 && asset_1 < 1400000){
-				total = 200000;
+				total = $("#wz_3").val();;
 			}else if(asset_1>=1400000 && asset_1 <= 1800000){
-				total = 250000;
+				total = $("#wz_4").val();;
 			}else if(asset_1 >1800000){
-				total = 300000;
+				total = $("#wz_5").val();;
 			}
 		}
 		document.getElementById("asset_1").value = total;
@@ -207,27 +206,26 @@ function hasHouse (){
 function noHouse (){
 	var total ="";
 	if($("#house_type2").val()=='1'){//i.散件：
-		var value_13 =  $("#value_13").val() == '1'?2:0;
-		var value_14 =	$("#value_14").val() == '1'?2:0;
-		var value_15 =	$("#value_15").val() == '1'?2:0;
-		var value_16 =	$("#value_16").val() == '1'?1:0;
-		var value_17 =	$("#value_17").val() == '1'?2:0;
-		var value_18 =	$("#value_18").val() == '1'?2:0;
-		var value_19 =	$("#value_19").val() == '1'?1:0;
-		var value_20 =	$("#value_20").val() == '1'?1:0;
-		var value_21 =	$("#value_21").val() == '1'?1:0;
-		var value_22 =	$("#value_22").val() == '1'?5:0;
-		var value_23 =	$("#value_23").val() == '1'?2:0;
-		var value_24 =	$("#value_24").val() == '1'?2:0;
+		var value_13 =  $("#value_13").val(); 
+		var value_14 =	$("#value_14").val(); 
+		var value_15 =	$("#value_15").val(); 
+		var value_16 =	$("#value_16").val(); 
+		var value_17 =	$("#value_17").val(); 
+		var value_18 =	$("#value_18").val(); 
+		var value_19 =	$("#value_19").val(); 
+		var value_20 =	$("#value_20").val(); 
+		var value_21 =	$("#value_21").val(); 
+		var value_22 =	$("#value_22").val();
+		var value_23 =	$("#value_23").val();
+		var value_24 =	$("#value_24").val();
 		
-		total = Number(value_13)+Number(value_14)+Number(value_15)+Number(value_16)+Number(value_17)+
+		var result = Number(value_13)+Number(value_14)+Number(value_15)+Number(value_16)+Number(value_17)+
 				Number(value_18)+Number(value_19)+Number(value_20)+Number(value_21)+Number(value_22)+
-				Number(value_23)+Number(value_24)+Number(2);
-		total = total * 10000;
-	
+				Number(value_23)+Number(value_24)+Number(20000);
+		total = result;
 	}else if($("#house_type2").val()=='2'){//ii.在我行有存款
 		 var value_25 =	$("#value_25").val();
-		 total =  Math.round(value_25 * 0.5) > 150000 ? 150000 : Math.round(value_25 * 0.5);
+		 total =  value_25 * 0.5 > 150000 ? 150000 : value_25 * 0.5;
 	}else{//iii.持我行股金
 		 var value_26 =	$("#value_26").val();
 		 var value_27 =	$("#value_27").val();
@@ -254,17 +252,17 @@ function promise (){
 		var value_39 = $("#value_39").val() ==''?0 : $("#value_39").val();
 		
 		total = Number(value_28)+ Number(value_29)+ Number(value_30)+ Number(value_31)
-				-Number(value_32)- Number(value_33)- Number(value_34)- Math.round(value_35 * 0.5)
-				-Number(value_36)- Number(value_37)- Number(value_38)- Math.round(value_39 * 0.5);
+				-Number(value_32)- Number(value_33)- Number(value_34)- Number(value_35 * 0.5)
+				-Number(value_36)- Number(value_37)- Number(value_38)- Number(value_39 * 0.5);
 		
 		if(total < 800000){
-			total = 80000;
+			total = $("#ww_1").val();
 		}else if(total>=800000 && total<=1400000){
-			total = 100000;
+			total = $("#ww_2").val();
 		}else if(total>=14000000 && total<=2000000){
-			total = 150000;
+			total = $("#ww_3").val();
 		}else{
-			total = 200000;
+			total = $("#ww_4").val();
 		}
 	}else if($("#house_type3").val() == '2'){//ii.本地客户，担保人有房：
 		var value_28 = $("#value_28").val() ==''?0 : $("#value_28").val();
@@ -281,17 +279,17 @@ function promise (){
 		var value_39 = $("#value_39").val() ==''?0 : $("#value_39").val();
 		
 		total = Number(value_28)+ Number(value_29)+ Number(value_30)+ Number(value_31)
-				-Number(value_32)- Number(value_33)- Number(value_34)- Math.round(value_35 * 0.5)
-				-Number(value_36)- Number(value_37)- Number(value_38)- Math.round(value_39 * 0.5);
+				-Number(value_32)- Number(value_33)- Number(value_34)- Number(value_35 * 0.5)
+				-Number(value_36)- Number(value_37)- Number(value_38)- Number(value_39 * 0.5);
 		
 		if(total < 600000){
-			total = 80000;
+			total = $("#by_1").val();
 		}else if(total>=600000 && total<=1000000){
-			total = 100000;
+			total = $("#by_2").val();
 		}else if(total>10000000 && total<1500000){
-			total = 150000;
+			total = $("#by_3").val();
 		}else{
-			total = 200000;
+			total = $("#by_4").val();
 		}
 	}else{//iii.本地客户，担保人无房：
 		total = Number($("#value_40").val()) * Number(5) >=200000?200000: Number($("#value_40").val()) * Number(5)
@@ -301,15 +299,7 @@ function promise (){
 
 //4.优质行业
 function goodwork(){
-	var total ="";
-	if($("#value_41").val() == '1'){
-		total = 100000;
-	}else if ($("#value_41").val() =='2'){
-		total = 200000;
-	}else{
-		total =300000;
-	} 
-	document.getElementById("asset_1").value = total;
+	document.getElementById("asset_1").value = $("#value_41").val();
 }
 
 

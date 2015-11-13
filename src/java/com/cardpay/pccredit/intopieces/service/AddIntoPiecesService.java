@@ -20,6 +20,7 @@ import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
+import com.cardpay.pccredit.intopieces.model.ModelParamConfigure;
 import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
@@ -50,6 +51,14 @@ public class AddIntoPiecesService {
 	/* 查询调查报告信息 */
 	public QueryResult<LocalExcelForm> findLocalExcelByProductAndCustomer(AddIntoPiecesFilter filter) {
 		List<LocalExcelForm> ls = localExcelDao.findByProductAndCustomer(filter);
+		int size = localExcelDao.findCountByProductAndCustomer(filter);
+		QueryResult<LocalExcelForm> qr = new QueryResult<LocalExcelForm>(size,ls);
+		return qr;
+	}
+	
+	/* 查询调查报告信息1 */
+	public QueryResult<LocalExcelForm> findLocalExcelByProductAndCustomer1(AddIntoPiecesFilter filter) {
+		List<LocalExcelForm> ls = localExcelDao.findByProductAndCustomer1(filter);
 		int size = localExcelDao.findCountByProductAndCustomer(filter);
 		QueryResult<LocalExcelForm> qr = new QueryResult<LocalExcelForm>(size,ls);
 		return qr;
@@ -251,5 +260,9 @@ public class AddIntoPiecesService {
 	
 	public XmModel findXmModel(String appId){
 		return localExcelDao.findModelById(appId);
+	}
+	
+	public List<ModelParamConfigure> findModelParamConfigureById(String dictType){
+		return localExcelDao.findModelParamConfigureById(dictType);
 	}
 }

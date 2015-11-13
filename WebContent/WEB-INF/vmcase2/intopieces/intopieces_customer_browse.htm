@@ -67,11 +67,11 @@
             <tr ondblclick="viewPiecesInfo();">
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
-              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
+              <td nowrap="nowrap">$!wait.applyQuota</td>
               <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>
               <td nowrap="nowrap">$!wait.cardId</td>
               <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
-              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.auditTime)</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.createdTime)</td>
               <td nowrap="nowrap">$!wait.nodeName</td>
             </tr>
             #end
@@ -82,10 +82,9 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-         #btnpriv("viewpieces")<a class="btn_g" href="javascript:void(0);" title="查看进件相关申请信息" 
-onclick="viewPiecesInfo();">查看进件信息</a>#end
-<!-- 		#btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>#end
- -->		
+<!--    #btnpriv("viewpieces")<a class="btn_g" href="javascript:void(0);" title="查看进件相关申请信息" onclick="viewPiecesInfo();">查看进件信息</a>#end -->
+		<a class="btn_g" href="javascript:void(0);" title="查看进件相关申请信息" onclick="viewPiecesInfo();">查看进件信息</a>
+<!-- 	#btnpriv("approvelog")<a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>#end -->
 		</div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

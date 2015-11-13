@@ -193,122 +193,74 @@
 					<tr>
 						<td><label for="value_13">日均流水是否大于一万:</label></td>
 						<td><select id="value_13" name="value_13" onchange="wf()" disabled="disabled">
-								#if($!value_13=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_13=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								<#dict("rjls",$!value_13)
+							</select>
+						</td>
 						<td><label for="value_14">年龄是否为35-50岁:</label></td>
 						<td><select id="value_14" name="value_14" onchange="wf()" disabled="disabled">
-								#if($!value_14=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_14=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								<#dict("nl",$!value_14)
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_15">是否岛内，思明区/湖里区:</label></td>
 						<td><select id="value_15" name="value_15" onchange="wf()" disabled="disabled">
-								#if($!value_15=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_15=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								<#dict("dn",$!value_15)
+							</select>
+						</td>
 						<td><label for="value_16">是否已婚:</label></td>
 						<td><select id="value_16" name="value_16" onchange="wf()" disabled="disabled">
-								#if($!value_16=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_16=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								<#dict("yh",$!value_16)
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_17">是否有征信记录:</label></td>
 						<td><select id="value_17" name="value_17" onchange="wf()" disabled="disabled">
-								#if($!value_17=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_17=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								<#dict("yzxjl",$!value_17)
+							</select>
+						</td>
 						<td><label for="value_18">征信贷记卡使用情况，是否低于70%:</label></td>
 						<td><select id="value_18" name="value_18" onchange="wf()" disabled="disabled">
-								#if($!value_18=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_18=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								#dict("zxjjkqk",$!value_18)
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_19">是否女性:</label></td>
 						<td><select id="value_19" name="value_19" onchange="wf()" disabled="disabled">
-								#if($!value_19=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_19=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								#dict("sex",$!value_19)
+							</select>
+						</td>
 						<td><label for="value_20">是否民生行业:</label></td>
 						<td><select id="value_20" name="value_20" onchange="wf()" disabled="disabled">
-								#if($!value_20=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_20=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								#dict("mshy",$!value_20)
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_21">是否我行业务品种:</label></td>
 						<td><select id="value_21" name="value_21" onchange="wf()" disabled="disabled">
-								#if($!value_21=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_21=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								#dict("whfwpz",$!value_21)
+							</select>
+						</td>
 						<td><label for="value_22">是否在我行有贷款余额:</label></td>
 						<td><select id="value_22" name="value_22" onchange="wf()" disabled="disabled">
-								#if($!value_22=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_22=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								#dict("ydkye",$!value_22)
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_23">车产价值是否大于5万:</label></td>
 						<td><select id="value_23" name="value_23" onchange="wf()" disabled="disabled">
-								#if($!value_23=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_23=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								#dict("ccjz",$!value_23)
+							</select>
+						</td>
 						<td><label for="value_24">个体户经营年限是否大于1年:</label></td>
 						<td><select id="value_24" name="value_24" onchange="wf()" disabled="disabled">
-								#if($!value_24=='1')
-								<option value="1">是</option>
-								#end
-								#if($!value_24=='2')
-								<option value="2">否</option>
-								#end
-						</select></td>
+								#dict("gtjynx",$!value_24)
+							</select>
+						</td>
 					</tr>
 				</table>
 				#end
@@ -522,16 +474,9 @@
 					<tr>
 						<td><label for="value_41">申请人职位:</label></td>
 						<td><select id="value_41" name="value_41" onchange="yzhy()" disabled="disabled">
-							#if($!value_41=='1')
-								<option value="1">一般员工</option>
-							#end
-						 	#if($!value_41=='2')
-								<option value="2">中层领导</option>
-							#end
-							#if($!value_41=='3')
-								<option value="3">高层领导</option>
-							#end
-						</select></td>
+							#dict("sqzw",$!value_41)
+							</select>
+					    </td>
 						<td></td>
 						<td></td>
 					</tr>
@@ -558,11 +503,6 @@
 	</div>
 	<div class="pagebar">
 		<div class="controlbtn">
-			<a id="id_pre_button" class="btn_g" href="javascript:history.back();"
-				title="上一步">上一步</a>
-			#if($!intopiecesType == '1')
-            <a id="id_submit_button" onclick="submit()" class="btn_g" href="javascript:void(0);" title="提交进件">提交进件</a>
-         	#end
 		</div>
 		<div class="clear"></div>
 	</div>
