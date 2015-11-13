@@ -47,7 +47,7 @@
 		<result column="NEXT_NODE_ID" property="nextNodeId" />
 		<result column="DELAY_AUDIT_USER" property="delayAuditUser" />
 		<result column="AUDIT_TIME" property="auditTime" />
-		
+		<result column="CREATED_TIME" property="createdTime" />
 		<result column="NODE_NAME" property="nodeName" />
 
 		<result column="USER_ID" property="userId"/>

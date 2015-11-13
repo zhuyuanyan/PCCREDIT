@@ -30,6 +30,32 @@
 					WHERE ROWNUM_ > #{limit}*#{page}
 					]]>
   </select>
+  
+   <select id="findByProductAndCustomer1" resultMap="BaseResultMap">
+      SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		    select t.ID,
+		    	   t.CUSTOMER_ID,
+		    	   t.PRODUCT_ID,
+		    	   t.ATTACHMENT,
+		    	   t.URI,
+		    	   t.APPLICATION_ID,
+		    	   t.CREATED_TIME,
+		    	   bci.chinese_name,
+		    	   pa.product_name
+		    from local_excel t
+		    left join BASIC_CUSTOMER_INFORMATION bci on t.customer_id = bci.id
+		    left join PRODUCT_ATTRIBUTE pa on t.product_id = pa.id
+		    where 
+		    product_id=#{productId} and customer_id=#{customerId}
+		    
+		    <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+  	</select>
   <select id="findCountByProductAndCustomer" resultType="int">
     select count(0) from local_excel
     where 
@@ -71,5 +97,14 @@
   
   <select id="findModelById" resultType="com.cardpay.pccredit.intopieces.model.XmModel">
     select * from XM_MODEL where app_id=#{applicationId}
+  </select>
+  
+  
+   <select id="findModelParamConfigureById" resultType="com.cardpay.pccredit.intopieces.model.ModelParamConfigure">
+    select dict_type as dictType ,
+    	   type_code as typeCode,
+    	   type_name as typeName 
+    from model_parameter_configuration 
+    where dict_type =#{dictType}
   </select>
 </mapper>
