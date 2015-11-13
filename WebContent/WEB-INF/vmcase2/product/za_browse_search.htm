@@ -61,11 +61,15 @@
               <td nowrap="nowrap">$!obj.orgName</td>
               <td nowrap="nowrap">$!obj.productName</td>
               
-              #if($!obj.infoStatus)
+             #if($!obj.infoStatus)
               	#if($!obj.infoStatus=='audit')
               		<td nowrap="nowrap">已申请</td>
               	#else
-              		<td nowrap="nowrap">审批结束</td>
+              		#if($!obj.infoStatus=='approved')
+              		<td nowrap="nowrap">已通过</td>
+              		#else
+              		<td nowrap="nowrap">已拒绝</td>
+              		#end
               	#end
               #else
               	<td nowrap="nowrap">未申请</td>
@@ -100,7 +104,7 @@
             	var value = $($(".checkbox :checked")[0]).attr("value");
                 var rowid = value.split("@")[0];
                	
-               	window.location.href="${modulePath}/show.page?id="+rowid;
+               	window.location.href="${modulePath}/read.page?id="+rowid;
             } else {
                 Dialog.message("请选择一行");
             }

@@ -65,7 +65,11 @@
               	#if($!obj.infoStatus=='audit')
               		<td nowrap="nowrap">已申请</td>
               	#else
-              		<td nowrap="nowrap">审批结束</td>
+              		#if($!obj.infoStatus=='approved')
+              		<td nowrap="nowrap">已通过</td>
+              		#else
+              		<td nowrap="nowrap">已拒绝</td>
+              		#end
               	#end
               #else
               	<td nowrap="nowrap">未申请</td>
@@ -80,6 +84,7 @@
         <div class="controlbtn">
           <a id="id_createApprove_button" class="btn_g" href="javascript:void(0);" >审批</a>
           <!-- <a id="id_change_button" class="btn_g" href="javascript:void(0);" >修改</a> -->
+          <a id="id_show_button" class="btn_g" href="javascript:void(0);" >上传材料查看</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -123,7 +128,15 @@
                 Dialog.message("请选择一行");
             }
         }); */
-		
+		$("#id_show_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+            	var value = $($(".checkbox :checked")[0]).attr("value");
+                var rowid = value.split("@")[0];
+               	window.location.href="${modulePath}/show.page?id="+rowid;
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });
 	});
 </script>
 #parse ("common/iframe_page_footer.htm")

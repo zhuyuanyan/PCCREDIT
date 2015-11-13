@@ -6,26 +6,34 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.dao.XmNewSqDao;
+import com.cardpay.pccredit.intopieces.dao.XmNewSqUploadDao;
+import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.XmNewFlowFilter;
 import com.cardpay.pccredit.intopieces.filter.XmNewSqFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.model.XmNewApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.XmNewFlow;
 import com.cardpay.pccredit.intopieces.model.XmNewSq;
 import com.cardpay.pccredit.intopieces.model.XmNewSqForm;
 import com.cardpay.pccredit.intopieces.model.XmNewSqLog;
+import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.intopieces.web.XmApplnSxjcForm;
+import com.cardpay.pccredit.intopieces.web.XmNewSqUploadForm;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.model.ProductCollectionRules;
@@ -59,6 +67,8 @@ public class XmNewSqService {
 	private CommonDao commonDao;
 	@Autowired
 	private XmNewSqDao xmNewSqDao;
+	@Autowired
+	private XmNewSqUploadDao xmNewSqUploadDao;
 	@Autowired
 	private NodeAuditService nodeAuditService;
 	@Autowired
@@ -105,18 +115,17 @@ public class XmNewSqService {
 	/*
 	 * 通过审批(普通审批)
 	 */
-	public Boolean pass(String id ,XmNewSqForm sq,String nodeName,HttpServletRequest request) throws Exception{
+	public Boolean pass(String id ,XmNewSqForm sq,String nodeName,HttpServletRequest request,String remark) throws Exception{
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		XmNewSq xmNewSq = commonDao.findObjectById(XmNewSq.class, id);
+		xmNewSq.setCustomerType(sq.getCustomerType());
+		xmNewSq.setCustomerTypeCode(sq.getCustomerTypeCode());
+		xmNewSq.setCustomerLevel(sq.getCustomerLevel());
+		xmNewSq.setCustomerLevelCode(sq.getCustomerLevelCode());
+		xmNewSq.setEd(sq.getEd());
 		//开始审批
-		Boolean resultBoolean = next(id,request);
+		Boolean resultBoolean = next(id,request,xmNewSq);
 		if(resultBoolean){
-			XmNewSq xmNewSq = commonDao.findObjectById(XmNewSq.class, id);
-			xmNewSq.setCustomerType(sq.getCustomerType());
-			xmNewSq.setCustomerTypeCode(sq.getCustomerTypeCode());
-			xmNewSq.setCustomerLevel(sq.getCustomerLevel());
-			xmNewSq.setCustomerLevelCode(sq.getCustomerLevelCode());
-			xmNewSq.setEd(sq.getEd());
-			commonDao.updateObject(xmNewSq);
 			//添加日志
 			XmNewSqLog log = new XmNewSqLog();
 			log.setSqId(id);
@@ -125,6 +134,7 @@ public class XmNewSqService {
 			log.setCustomerType(sq.getCustomerType());
 			log.setCustomerLevel(sq.getCustomerLevel());
 			log.setEd(sq.getEd());
+			log.setRemark(remark);
 			log.setResultType(Constant.SQ_APPROVE_TYPE_2);
 			log.setCreatedTime(new Date());
 			commonDao.insertObject(log);
@@ -144,7 +154,7 @@ public class XmNewSqService {
 	/*
 	 * 通过审批至---转办人员（无需保存数据，只需进入下一流程）
 	 */
-	public Boolean passZ(String id ,XmNewSqForm sq,String nodeName,HttpServletRequest request,String auditUserIds) throws Exception{
+	public Boolean passZ(String id ,XmNewSqForm sq,String nodeName,HttpServletRequest request,String auditUserIds,String remark) throws Exception{
 		//添加applicationinfo表审批人(转办人员动态变化，采用这方式)
 		String sql = "select * from xm_new_application_info where sq_id='"+id+"'";
 		List<XmNewApplicationInfo> list = commonDao.queryBySql(XmNewApplicationInfo.class, sql, null);
@@ -154,14 +164,39 @@ public class XmNewSqService {
 			commonDao.updateObject(info);
 		}
 		//开始审批
-		return next(id,request);
+		return next(id,request,null);
 	}
 	/*
 	 * 评审审批---进入部门审批（需保存数据，并跳过转办人员、评审终审节点）
 	 */
-	public Boolean passP(String id ,XmNewSqForm sq,String nodeName,HttpServletRequest request) throws Exception{
+	public Boolean passP(String id ,XmNewSqForm sq,String nodeName,HttpServletRequest request,String remark) throws Exception{
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		//开始审批
-		return nextStepTwo(id,request);
+		Boolean resultBoolean = nextStepTwo(id,request);
+		if(resultBoolean){
+//			XmNewSq xmNewSq = commonDao.findObjectById(XmNewSq.class, id);
+//			xmNewSq.setCustomerType(sq.getCustomerType());
+//			xmNewSq.setCustomerTypeCode(sq.getCustomerTypeCode());
+//			xmNewSq.setCustomerLevel(sq.getCustomerLevel());
+//			xmNewSq.setCustomerLevelCode(sq.getCustomerLevelCode());
+//			xmNewSq.setEd(sq.getEd());
+//			commonDao.updateObject(xmNewSq);
+			//添加日志
+			XmNewSqLog log = new XmNewSqLog();
+			log.setSqId(id);
+			log.setReviewId(user.getId());
+			log.setReviewNodeName(nodeName);
+			log.setCustomerType(sq.getCustomerType());
+			log.setCustomerLevel(sq.getCustomerLevel());
+			log.setEd(sq.getEd());
+			log.setRemark(remark);
+			log.setResultType(Constant.SQ_APPROVE_TYPE_2);
+			log.setCreatedTime(new Date());
+			commonDao.insertObject(log);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	/*
 	 * 未通过审批
@@ -174,7 +209,7 @@ public class XmNewSqService {
 		request.setAttribute("applicationStatus", ApplicationStatusEnum.REJECTAPPROVE);
 		request.setAttribute("objection", "false");
 		request.setAttribute("examineAmount", "");
-		Boolean result = stepToNextProcess(request);
+		Boolean result = stepToNextProcess(request,null);
 		if(result){
 			XmNewSq xmNewSq = commonDao.findObjectById(XmNewSq.class, id);
 			xmNewSq.setStatus(Constant.SQ_APPROVE_TYPE_3);
@@ -332,7 +367,7 @@ public class XmNewSqService {
 	/*
 	 * 创建进入下一流程条件
 	 */
-	public Boolean next(String id,HttpServletRequest request) throws Exception{
+	public Boolean next(String id,HttpServletRequest request,XmNewSq xmNewSq) throws Exception{
 		String sql = "select * from xm_new_application_info where sq_id='"+id+"'";
 		List<XmNewApplicationInfo> list = commonDao.queryBySql(XmNewApplicationInfo.class, sql, null);
 		request.setAttribute("serialNumber", list.get(0).getSerialNumber());
@@ -340,12 +375,12 @@ public class XmNewSqService {
 		request.setAttribute("applicationStatus", ApplicationStatusEnum.APPROVE);
 		request.setAttribute("objection", "false");
 		request.setAttribute("examineAmount", "");
-		return stepToNextProcess(request);
+		return stepToNextProcess(request,xmNewSq);
 	}
 	/*
 	 * 进入下一流程
 	 */
-	public Boolean stepToNextProcess(HttpServletRequest request) {
+	public Boolean stepToNextProcess(HttpServletRequest request,XmNewSq xmNewSq) {
 		try {
 			XmNewApplicationInfo xmNewApplicationInfo = new XmNewApplicationInfo();
 			CustomerApplicationProcess customerApplicationProcess = new CustomerApplicationProcess();
@@ -369,6 +404,8 @@ public class XmNewSqService {
 				}
 				if(examineResutl.equals(ApproveOperationTypeEnum.NORMALEND.toString())){
 					xmNewApplicationInfo.setStatus(Constant.APPROVED_INTOPICES);
+					//最后节点审批，需保存商圈状态
+					commonDao.updateObject(xmNewSq);
 				}
 				xmNewApplicationInfo.setId(applicationId);
 				xmNewApplicationInfo.setModifiedBy(user.getId());
@@ -413,10 +450,54 @@ public class XmNewSqService {
 		request.setAttribute("objection", "false");
 		request.setAttribute("examineAmount", "");
 		//进入转办人员
-		stepToNextProcess(request);
+		stepToNextProcess(request,null);
 		//进入评审终审
-		stepToNextProcess(request);
+		stepToNextProcess(request,null);
 		//进入部门审批
-		return stepToNextProcess(request);
+		return stepToNextProcess(request,null);
+	}
+	
+	/* 查询商圈资料信息 */
+	public QueryResult<XmNewSqUploadForm> findSqUploadList(XmNewSqFilter filter) {
+		List<XmNewSqUploadForm> ls = xmNewSqUploadDao.findSqUploadList(filter);
+		int size = xmNewSqUploadDao.findSqUploadListCount(filter);
+		QueryResult<XmNewSqUploadForm> qr = new QueryResult<XmNewSqUploadForm>(size,ls);
+		return qr;
+	}
+	/*
+	 * 上传商圈材料
+	 */
+	public void importImage(MultipartFile file, String sqId,User user) {
+		// TODO Auto-generated method stub
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,sqId);
+		String fileName = map.get("fileName");
+		String url = map.get("url");
+		XmNewSqUploadForm form = new XmNewSqUploadForm();
+		form.setSqId(sqId);
+		form.setCreatedBy(user.getId());
+		form.setCreatedTime(new Date());
+		if (StringUtils.trimToNull(url) != null) {
+			form.setUrl(url);
+		}
+		if (StringUtils.trimToNull(fileName) != null) {
+			form.setAttachment(fileName);
+		}
+		
+		commonDao.insertObject(form);
+	}
+	/* 删除资料信息 */
+	public void deleteImage(String id) {
+		commonDao.deleteObject(XmNewSqUploadForm.class, id);
+	}
+	/**
+	 * 下载商圈上传资料
+	 * @param id
+	 * @throws Exception 
+	 */
+	public void downLoadYxzlById(HttpServletResponse response,String id) throws Exception{
+		XmNewSqUploadForm v = commonDao.findObjectById(XmNewSqUploadForm.class, id);
+		if(v!=null){
+			UploadFileTool.downLoadFile(response, v.getUrl(), v.getAttachment());
+		}
 	}
 }
