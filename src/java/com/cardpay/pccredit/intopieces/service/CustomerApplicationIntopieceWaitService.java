@@ -147,14 +147,17 @@ public class CustomerApplicationIntopieceWaitService {
 		String cardId = request.getParameter("cardId");
 		String cardType = request.getParameter("cardType");
 		String chineseName = request.getParameter("chineseName");
+		String applyQuota = request.getParameter("applyAmout");
+		String desc = request.getParameter("desc");
 		if(objection.equals("true")){
 			applicationStatus = ApproveOperationTypeEnum.OBJECTION.toString();
 		}
 		if(StringUtils.isNotEmpty(examineAmount)){
-			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
+			//examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
+			examineAmount = examineAmount+"";
 		}
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
-		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount);
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,applyQuota);
 		//更新单据状态
 	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
 	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
@@ -239,6 +242,7 @@ public class CustomerApplicationIntopieceWaitService {
 				risk.setCreatedBy(loginId);
 				risk.setCreatedTime(new Date());
 				risk.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
+				risk.setRiskDes(desc);
 				commonDao.insertObject(risk);
 			}
 			if(!blacklist.equals("-1")){
@@ -277,7 +281,7 @@ public class CustomerApplicationIntopieceWaitService {
 			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
 		}
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
-		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount);
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,null);
 		//更新单据状态
 	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
 	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
@@ -352,7 +356,7 @@ public class CustomerApplicationIntopieceWaitService {
 			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
 		}
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
-		String examineResutl = processService.examine(applicationId,serialNumber, loginId, ApplicationStatusEnum.APPROVE, examineAmount);
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, ApplicationStatusEnum.APPROVE, examineAmount,null);
 		//更新单据状态
 	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
 	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||

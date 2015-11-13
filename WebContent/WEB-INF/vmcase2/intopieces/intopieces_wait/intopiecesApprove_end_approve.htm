@@ -61,7 +61,7 @@
             <!-- #if($!nodeAuditOperationType == "entering")
            		<td><input type="text" id="examineAmount" readonly="readonly"  name="examineAmount"  value="$format.formatNumber($!customerApplicationProcess.examineAmount, 2, 100)" ></td>
             #else -->
-				<td><input type="text"  id="examineAmount"  name="examineAmount"  value="$format.formatNumber($!customerApplicationProcess.examineAmount, 2, 100)" ></td>            
+				<td><input type="text"  id="examineAmount"  name="examineAmount"  value="$!customerApplicationProcess.examineAmount" ></td>            
             <!-- #end -->
             </tr>
             <tr>
