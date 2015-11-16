@@ -222,6 +222,9 @@
 			<if test="fallbackReason !=null">
 				c.FALLBACK_REASON=#{fallbackReason},
 			</if>
+			<if test="fallbackDesc !=null">
+				c.FALLBACK_DESC=#{fallbackDesc},
+			</if>
 			<if test="nextNodeId !=null">
 				c.NEXT_NODE_ID=#{nextNodeId},
 			</if>
@@ -237,7 +240,8 @@
 			<if test="fuheUser==null">
 				c.fuhe_user=#{fuheUser},
 			</if>
-			c.Delay_Audit_User=''
+				c.Delay_Audit_User='',
+				c.IF_RECIEVED = #{ifRecieved}
 		</set>
 		WHERE c.SERIAL_NUMBER=#{serialNumber}
 	</update>
