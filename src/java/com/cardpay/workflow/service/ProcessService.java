@@ -226,11 +226,11 @@ public class ProcessService {
 			//通过复核节点获取复核流程
 			WfStatusQueueRecord befoRecord = wfStatusResultDao.getLastStatus(beforeStatus);
 			//获取录入标记
-			String lastLastNode = befoRecord.getBeforeStatus();
+			//String lastLastNode = befoRecord.getBeforeStatus();
 			//通过录入节点获取录入流程
-			WfStatusQueueRecord lastlastRecord = wfStatusResultDao.getLastStatus(lastLastNode);
+			//WfStatusQueueRecord lastlastRecord = wfStatusResultDao.getLastStatus(lastLastNode);
 			//设置节点为录入
-			wfProcessRecord.setWfStatusQueueRecord(lastlastRecord.getId());
+			wfProcessRecord.setWfStatusQueueRecord(befoRecord.getId());
 			commonDao.updateObject(wfProcessRecord);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

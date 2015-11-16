@@ -227,6 +227,7 @@ public class CustomerApplicationIntopieceWaitService {
 		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.RETURNAPPROVE)) {
 			String fallbackReason = request.getParameter("reason");
 			customerApplicationProcess.setFallbackReason(fallbackReason);
+			customerApplicationProcess.setFallbackDesc(desc);
 		} else if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.REJECTAPPROVE)) {
 			String refusalReason = request.getParameter("reason");
 			customerApplicationProcess.setRefusalReason(refusalReason);
@@ -242,7 +243,6 @@ public class CustomerApplicationIntopieceWaitService {
 				risk.setCreatedBy(loginId);
 				risk.setCreatedTime(new Date());
 				risk.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
-				risk.setRiskDes(desc);
 				commonDao.insertObject(risk);
 			}
 			if(!blacklist.equals("-1")){
