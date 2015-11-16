@@ -116,7 +116,7 @@
               <td nowrap="nowrap">#dictVal("approveOperationSpecialStatus" , $!history.examineResult)</td>
               <td nowrap="nowrap">$!history.displayName</td>
               <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss',$!history.startExamineTime)</td>
-              <td nowrap="nowrap">$format.formatNumber($!history.examineAmount, 2, 100)</td>
+              <td nowrap="nowrap">$!history.examineAmount</td>
             </tr>
             #end
           </table>

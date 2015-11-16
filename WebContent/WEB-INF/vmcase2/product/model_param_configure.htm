@@ -1,0 +1,85 @@
+#parse ("common/iframe_page_header.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">模型参数配置</div>
+      </div>
+      <div class="inquiry">
+        <div class="search_tag">#i18n("label.browse.filter")</div>
+        <div class="search">
+          <form id="submitForm">
+            <ul>
+              <li>
+                <span>字典类型：<input type="text" name="dictType" value="$!result.filter.dictType" /></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">字典类型</th>
+              <th nowrap="nowrap">字典code</th>
+              <th nowrap="nowrap">字典名称</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($m in $result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!m.id"/></td>
+              <td nowrap="nowrap">$!m.dictType</td>
+              <td nowrap="nowrap">$!m.typeCode</td>
+              <td nowrap="nowrap">$!m.typeName</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+          <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">新增</a>
+          <a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">修改</a>
+          <a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">删除</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/create.page";
+		opsObj.changeUrl = "${modulePath}/change.page";
+		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.deleteUrl = "${modulePath}/delete.json";
+		prepareOperations(opsObj);
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

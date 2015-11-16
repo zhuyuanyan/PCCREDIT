@@ -16,8 +16,33 @@
 		       <input type ="hidden" id ="ApplyIntopiecesSpareType_2" value ="$!ApplyIntopiecesSpareType_2"/>
 		       <input type ="hidden" id ="custType" value ="$!custType"/>
 		       <input type ="hidden" id ="productId" value ="$!productId"/>
-		       <input type ="hidden" id ="localExeclId" value ="$!localExeclId"/> 
-			   <li class="tab "><a
+		       <input type ="hidden" id ="localExeclId" value ="$!localExeclId"/>
+
+				<input id="yf_1" type="hidden" value="$!yf_1" />
+				<input id="yf_2" type="hidden" value="$!yf_2" />
+				<input id="yf_3" type="hidden" value="$!yf_3" />
+				<input id="yf_4" type="hidden" value="$!yf_4" />
+				<input id="yf_5" type="hidden" value="$!yf_5" />
+				<input id="yz_1" type="hidden" value="$!yz_1" />
+				<input id="yz_2" type="hidden" value="$!yz_2" />
+				<input id="yz_3" type="hidden" value="$!yz_3" />
+				<input id="yz_4" type="hidden" value="$!yz_4" />
+				<input id="yz_5" type="hidden" value="$!yz_5" />
+				<input id="wz_1" type="hidden" value="$!wz_1" />
+				<input id="wz_2" type="hidden" value="$!wz_2" />
+				<input id="wz_3" type="hidden" value="$!wz_3" />
+				<input id="wz_4" type="hidden" value="$!wz_4" />
+				<input id="wz_5" type="hidden" value="$!wz_5" />
+				
+				<input id="ww_1" type="hidden" value="$!ww_1" />
+				<input id="ww_2" type="hidden" value="$!ww_2" />
+				<input id="ww_3" type="hidden" value="$!ww_3" />
+				<input id="ww_4" type="hidden" value="$!ww_4" />
+				<input id="by_1" type="hidden" value="$!by_1" />
+				<input id="by_2" type="hidden" value="$!by_2" />
+				<input id="by_3" type="hidden" value="$!by_3" />
+				<input id="by_4" type="hidden" value="$!by_4" />
+					<li class="tab "><a
 				href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId">调查报告</a></li>
 			   <li class="tab activeTab"><a
 				href="${contextPath}/intopieces/intopiecesapprove/bankModel.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId">行内模型</a></li>
@@ -187,74 +212,74 @@
 					<tr>
 						<td><label for="value_13">日均流水是否大于一万:</label></td>
 						<td><select id="value_13" name="value_13" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("rjls","")
+							</select>
+						</td>
 						<td><label for="value_14">年龄是否为35-50岁:</label></td>
 						<td><select id="value_14" name="value_14" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("nl","")
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_15">是否岛内，思明区/湖里区:</label></td>
 						<td><select id="value_15" name="value_15" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("dn","")
+							</select>
+						</td>
 						<td><label for="value_16">是否已婚:</label></td>
 						<td><select id="value_16" name="value_16" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("yh","")
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_17">是否有征信记录:</label></td>
 						<td><select id="value_17" name="value_17" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("yzxjl","")
+							</select>
+						</td>
 						<td><label for="value_18">征信贷记卡使用情况，是否低于70%:</label></td>
 						<td><select id="value_18" name="value_18" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("zxjjkqk","")
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_19">是否女性:</label></td>
 						<td><select id="value_19" name="value_19" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("sex","")
+							</select>
+						</td>
 						<td><label for="value_20">是否民生行业:</label></td>
 						<td><select id="value_20" name="value_20" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("mshy","")
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_21">是否我行业务品种:</label></td>
 						<td><select id="value_21" name="value_21" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("whfwpz","")
+							</select>
+						</td>
 						<td><label for="value_22">是否在我行有贷款余额:</label></td>
 						<td><select id="value_22" name="value_22" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("ydkye","")
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td><label for="value_23">车产价值是否大于5万:</label></td>
 						<td><select id="value_23" name="value_23" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("ccjz","")
+							</select>
+						</td>
 						<td><label for="value_24">个体户经营年限是否大于1年:</label></td>
 						<td><select id="value_24" name="value_24" onchange="wf()">
-								<option value="1">是</option>
-								<option value="2">否</option>
-						</select></td>
+								<#dict("gtjynx","")
+							</select>
+						</td>
 					</tr>
 				</table>
 				<table class="rule" bordercolor="#CCCCCC" border="1" id = "yck" style= "display:none">
@@ -328,11 +353,11 @@
 						<col width="40%" />
 					</colgroup>
 					<tr>
-						<td><label for="value_1">担保人房产价值:</label></td>
+						<td><label for="value_28">担保人房产价值:</label></td>
 						<td><input type="text" id="value_28" name="value_28"
 							value="$!result.value_28" onkeydown="dbhy()"
 							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
-						<td><label for="value_2">担保人车产价值:</label></td>
+						<td><label for="value_29">担保人车产价值:</label></td>
 						<td><input type="text" id="value_29" name="value_29"
 							value="$!result.value_29" onkeydown="dbhy()"
 							onKeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" /></td>
@@ -453,10 +478,9 @@
 					<tr>
 						<td><label for="value_41">申请人职位:</label></td>
 						<td><select id="value_41" name="value_41" onchange="yzhy()">
-								<option value="1">一般员工</option>
-								<option value="2">中层领导</option>
-								<option value="3">高层领导</option>
-						</select></td>
+						 	#dict("sqzw","")
+							</select>
+						</td>
 						<td></td>
 						<td></td>
 					</tr>
@@ -495,13 +519,200 @@
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
-
-	//$(document).ready(function() {
-
-	//});
 	
 	// 提交进件
 	function submit(){
+		//检验输入项
+		if($("#value_1").val() !=''&& $("#value_1").val() !=null){
+			if(isNaN(Number($("#value_1").val()))){
+				alert("房产价值格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_2").val() !=''&& $("#value_2").val() !=null){
+			if(isNaN(Number($("#value_2").val()))){
+				alert("车产价值格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_3").val() !=''&& $("#value_3").val() !=null){
+			if(isNaN(Number($("#value_3").val()))){
+				alert("其他资产格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_4").val() !=''&& $("#value_4").val() !=null){
+			if(isNaN(Number($("#value_4").val()))){
+				alert("征信贷款剩余金额格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_5").val() !=''&& $("#value_5").val() !=null){
+			if(isNaN(Number($("#value_5").val()))){
+				alert("贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度(取最大值)格式输入不正确！");
+				return;
+			}
+		}
+		
+		
+		if($("#value_6").val() !=''&& $("#value_6").val() !=null){
+			if(isNaN(Number($("#value_6").val()))){
+				alert("准贷记卡总授信额度格式输入不正确！");
+				return;
+			}
+		}
+		
+		
+		if($("#value_7").val() !=''&& $("#value_7").val() !=null){
+			if(isNaN(Number($("#value_7").val()))){
+				alert("对外担保金额格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_7_1").val() !=''&& $("#value_7_1").val() !=null){
+			if(isNaN(Number($("#value_7_1").val()))){
+				alert("或有负债格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_8").val() !=''&& $("#value_8").val() !=null){
+			if(isNaN(Number($("#value_8").val()))){
+				alert("征信贷款剩余金额格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_9").val() !=''&& $("#value_9").val() !=null){
+			if(isNaN(Number($("#value_9").val()))){
+				alert("贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度(取最大值)格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_10").val() !=''&& $("#value_10").val() !=null){
+			if(isNaN(Number($("#value_10").val()))){
+				alert("准贷记卡总授信额度格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_11").val() !=''&& $("#value_11").val() !=null){
+			if(isNaN(Number($("#value_11").val()))){
+				alert("对外担保金额格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_12").val() !=''&& $("#value_12").val() !=null){
+			if(isNaN(Number($("#value_12").val()))){
+				alert("或有负债格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_25").val() !=''&& $("#value_25").val() !=null){
+			if(isNaN(Number($("#value_25").val()))){
+				alert("我行日均流水格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_26").val() !=''&& $("#value_26").val() !=null){
+			if(isNaN(Number($("#value_26").val()))){
+				alert("股金价值格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_27").val() !=''&& $("#value_27").val() !=null){
+			if(isNaN(Number($("#value_27").val()))){
+				alert("家庭在我行授信余额格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_28").val() !=''&& $("#value_28").val() !=null){
+			if(isNaN(Number($("#value_28").val()))){
+				alert("担保人房产价值格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_29").val() !=''&& $("#value_29").val() !=null){
+			if(isNaN(Number($("#value_29").val()))){
+				alert("担保人车产价值格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_30").val() !=''&& $("#value_30").val() !=null){
+			if(isNaN(Number($("#value_30").val()))){
+				alert("担保人其他资产格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_31").val() !=''&& $("#value_31").val() !=null){
+			if(isNaN(Number($("#value_31").val()))){
+				alert("申请人资产格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_32").val() !=''&& $("#value_32").val() !=null){
+			if(isNaN(Number($("#value_32").val()))){
+				alert("征信贷款剩余金额格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_33").val() !=''&& $("#value_33").val() !=null){
+			if(isNaN(Number($("#value_33").val()))){
+				alert("贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度（取最大值）格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_34").val() !=''&& $("#value_34").val() !=null){
+			if(isNaN(Number($("#value_34").val()))){
+				alert("准贷记卡总授信额度格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_35").val() !=''&& $("#value_35").val() !=null){
+			if(isNaN(Number($("#value_35").val()))){
+				alert("对外担保金额格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_36").val() !=''&& $("#value_36").val() !=null){
+			if(isNaN(Number($("#value_36").val()))){
+				alert("征信贷款剩余金额格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_37").val() !=''&& $("#value_37").val() !=null){
+			if(isNaN(Number($("#value_37").val()))){
+				alert("贷记卡授信总额/贷记卡已用额度/最近六个月平均使用额度（取最大值）格式输入不正确！");
+				return;
+			}
+		}
+		if($("#value_38").val() !=''&& $("#value_38").val() !=null){
+			if(isNaN(Number($("#value_38").val()))){
+				alert("准贷记卡总授信额度格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_39").val() !=''&& $("#value_39").val() !=null){
+			if(isNaN(Number($("#value_39").val()))){
+				alert("对外担保金额格式输入不正确！");
+				return;
+			}
+		}
+		
+		if($("#value_40").val() !=''&& $("#value_40").val() !=null){
+			if(isNaN(Number($("#value_40").val()))){
+				alert("担保人数量格式输入不正确！");
+				return;
+			}
+		}
+		
 		if($("#localExeclId").val() == ''){
 			alert("请导入调查模板！");
 			return;
@@ -627,6 +838,10 @@
 			document.getElementById("type_7").style.display="inline";
 		}
 	}
+	
+	
+		
+	
 
 </script>
 <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>

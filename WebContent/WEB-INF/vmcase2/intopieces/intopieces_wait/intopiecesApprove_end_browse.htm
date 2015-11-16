@@ -53,25 +53,25 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%"/>
+              <col width="9%" />
+              <col width="9%" />
+              <col width="9%"/>
               <col width="15%"/>
               <col width="17%"/>
               <col width="10%"/>
-              <col width="10%"/>
+              <col width="13%"/>
               <col width="13%"/>
             </colgroup>
            #foreach ($wait in $result.items)
             <tr ondblclick="javascript:$('#id_change_button').click();">
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.serialNumber@$!wait.customerId@$!wait.id@$!wait.applyQuota"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
-              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 100)</td>
-              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!wait.cardType)</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota, 2, 10)</td>
+              <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>
               <td nowrap="nowrap">$!wait.cardId</td>
               <td nowrap="nowrap">$!wait.residentialAddress</td>
               <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
-              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.auditTime)</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.createdTime)</td>
               <td nowrap="nowrap">$!wait.nodeName</td>
             </tr>
             #end

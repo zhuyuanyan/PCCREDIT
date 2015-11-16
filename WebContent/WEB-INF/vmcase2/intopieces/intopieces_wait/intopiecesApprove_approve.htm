@@ -49,7 +49,8 @@
             <td><input type="text"  value="$!ci.telephone"  disabled="disabled"  ></td>
             <td><label>申请额度</label></td>
 <!--             <td><input type="text"  value="$format.formatNumber($!applyQuota, 2, 100)"  disabled="disabled"  ></td>
- -->             <td><input type="text"  value="$!applyQuota"  disabled="disabled"  ></td>
+ -->             <td><input type="text"  value="$!applyQuota"  disabled="disabled"  >
+ 					 <input type="hidden" id ="applyAmout" name ="applyAmout" value="$!applyQuota" ></td>
             </tr>
             <tr >
             <td><label>负责客户经理</label></td>
@@ -107,7 +108,13 @@
             <td><select id="risklist" name="risklist" disabled="disabled">
 				<option value='-1'>请选择..</option>
 				<option value='1'>进入风险名单</option>
-			</select></td>
+				</select>
+			</td>
+            </tr>
+            <tr id ="descarea" style="display:none">
+	            <td><label>备注</label></td>
+	            <td><textarea class="w200" rows="3"  id="desc"  name="desc"></textarea>
+	            </td>
             </tr>
           </table>
 		</div>
@@ -209,22 +216,24 @@ function checkStatus() {
 	  $("#blacklist").replaceWith("<select id='blacklist' name='blacklist' disabled><option value='-1'>请选择..</option>   #dict('blacklist','')   </select>"); 
  	  $("#risklist").replaceWith("<select id='risklist' name='risklist' disabled><option value='-1'>请选择..</option><option value='1'>进入风险名单</option> </select>"); 
 
-		var applicationStatus = $("#formsId select[name='applicationStatus'] option:selected").val();
-		  switch (applicationStatus) {
-         case ("APPROVE"):
+	var applicationStatus = $("#formsId select[name='applicationStatus'] option:selected").val();
+	
+	switch (applicationStatus) {
+        case ("APPROVE"):
        		$('#reason').replaceWith("<textarea readonly='readonly' class='w200' rows='3'  id='reason'  name='reason'></textarea>"); 
-             break;
-         case ("RETURNAPPROVE"):
-       	  $("#reason").replaceWith("<select id='reason' name='reason'><option value='0'>请选择..</option>   #dict('APPRETURESION','')   </select>"); 
-             break;
-         case ("REJECTAPPROVE"):
-       	  $('#reason').replaceWith("<textarea class='w200' rows='3'  id='reason'  name='reason'></textarea>"); 
-         	  $("#blacklist").replaceWith("<select id='blacklist' name='blacklist'><option value='-1'>请选择..</option>   #dict('blacklist','')   </select>"); 
-         	  $("#risklist").replaceWith("<select id='risklist' name='risklist'><option value='-1'>请选择..</option><option value='1'>进入风险名单</option> </select>"); 
-         
-             break;
-         default:
-           
+        	$("#descarea").hide();
+        	break;
+        case ("RETURNAPPROVE"):
+       	    $("#reason").replaceWith("<select id='reason' name='reason'><option value='0'>请选择..</option>   #dict('APPRETURESION','')   </select>"); 
+        	$("#descarea").show();
+        	break;
+        case ("REJECTAPPROVE"):
+       	    $('#reason').replaceWith("<textarea class='w200' rows='3'  id='reason'  name='reason'></textarea>"); 
+         	$("#blacklist").replaceWith("<select id='blacklist' name='blacklist'><option value='-1'>请选择..</option>   #dict('blacklist','')   </select>"); 
+         	$("#risklist").replaceWith("<select id='risklist' name='risklist'><option value='-1'>请选择..</option><option value='1'>进入风险名单</option> </select>"); 
+         	$("#descarea").hide();
+         	break;
+            default:
      }
 		
 }

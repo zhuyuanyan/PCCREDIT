@@ -69,6 +69,16 @@ public class CustomerApplicationIntopieceWaitForm extends BaseForm {
 	
 	private String ifRecieved;
 	
+	private String createdTime;
+	
+	public String getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
+	}
+
 	public String getNodeName() {
 		return nodeName;
 	}

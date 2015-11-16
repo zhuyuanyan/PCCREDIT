@@ -31,6 +31,18 @@ public class CustomerApplicationProcess extends BusinessModel {
 	private String processOpStatus;
 	private String ifRecieved;
 	private String fuheUser;
+	
+	private String fallbackDesc;
+	
+	
+
+	public String getFallbackDesc() {
+		return fallbackDesc;
+	}
+
+	public void setFallbackDesc(String fallbackDesc) {
+		this.fallbackDesc = fallbackDesc;
+	}
 
 	public String getProductId() {
 		return productId;
