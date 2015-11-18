@@ -1,0 +1,137 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户移交</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/customer/basiccustomerinforUpdate/turnCustManager.json" method="post">
+          <input type="hidden" name="id" value="" />
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC" >
+          <caption>客户经理属性</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+              <tr>
+              <td><label for="custName">被移交客户姓名:</label></td>
+              <td><input class="rinpsty" type="text" id="custName" name="custName" value="$!customerName"/>
+              	  <input type="hidden" id="custId" name="custId" value="$!customerId" /></td>
+              <td><label for="oldCustomerManager">原客户经理:</label></td>
+              <td><input class="rinpsty" type="text" id="oldCustomerManager" name="oldCustomerManager" value="$!systemUser.displayName"  />
+              	  <input type="hidden" id="custManagerId" name="custManagerId" value="$!user.userId" /></td>
+            </tr>
+            
+             <tr>
+              <td><label for="oldOrgan">所属机构:</label></td>
+              <td><input class="rinpsty" type="text" id="oldOrgan" name="oldOrgan" value="$organization.name"/>
+             	  <input type="hidden" id="oldOrganId" name="oldOrganId" value="$organization.id" /></td>
+              <td><label for="customerManagerId">移交客户经理:</label></td>
+              <td><select id="customerManagerId" name="customerManagerId">
+		                <option value="">请选择...</option>
+		                #web($forms,$!result.filter.customerManagerId)
+                  </select>
+              </td>
+             </tr>
+             
+              <tr>
+              <td><label for="oldOrgan">营销人员:</label></td>
+              <td><input type="text" id="auditUserNames" name="auditUserNames" value="" onclick="selectNodeConfigUsers()" readonly="readonly"/>
+              	      <input type="hidden" id="auditUserIds" name="auditUserIds" value=""/></td>
+             </tr>
+          </table>
+        
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  
+    
+  
+    <script type="text/javascript">
+    	var layout = new TableLayout(2);
+		window.top.currentWindow.setLayout(layout);
+	    #set ($formName = "'#id_module_form'")
+		#parse ("/customer/customerInforUpdate/customerinfoupdate_transfer.js")
+	</script>
+	
+	<script type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	//选择营销人员
+	function selectNodeConfigUsers() {
+		 Dialog.tablePage("${contextPath}/customer/basiccustomerinforUpdate/yxbrowse.page","选择营销人员","get","",function(){
+					 var val = window.top.$("#selectval").val();
+					 if(val !=""){
+					 var  arr=val.split(',');
+					 var auditUserNames ="";
+					 var auditUserIds ="";
+					 for(key in arr){
+						 var arry = arr[key].split("_");
+						 if(arry[0] !=""){
+						 auditUserIds +=  arry[0] +"," ;
+						 }
+						 if(arry[1] !=""){
+						 auditUserNames +=  arry[1] +"," ;
+						 }
+					 }
+					 if(auditUserIds !=""){
+						 auditUserIds = auditUserIds.substring(0,auditUserIds.length - 1);
+						 $("#auditUserIds").val(auditUserIds);
+					 }
+		              if(auditUserNames !=""){
+		            	  auditUserNames =  auditUserNames.substring(0,auditUserNames.length - 1);
+		            	  $("#auditUserNames").val(auditUserNames);
+					 }
+					 }
+					 window.top.$("#selectval").val("");
+					 window.top.$("#tablePage_diaog").dialog("close");
+					 
+				 },800,300);
+			}
+	
+		//移交客户
+		var submitFlag ="";
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+	   	        var url = "${modulePath}/turnCustManager.json";
+				$.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							window.location.href= contextPath+"/customer/basiccustomerinforUpdate/browse.page" ;
+						}
+						else{
+							topWin.Dialog.message(data.message);
+					    }
+						submitFlag = 0;
+					}
+				});
+			}else{
+				submitFlag = 0;
+			}
+    	});
+	
+
+	</script>
+	
+	
+</body>
+#parse ("common/iframe_page_footer.htm")
