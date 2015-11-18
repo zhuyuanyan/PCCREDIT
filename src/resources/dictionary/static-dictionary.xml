@@ -85,6 +85,7 @@
 		<item name="0" title="系统用户" />
 		<item name="1" title="客户经理" />
 		<item name="2" title="卡中心" />
+		<item name="3" title="评审岗" />
 	</dictionary>
 	<dictionary name="MarketingEndResult" title="营销计划最终结果">
 		<item name="marketing" title="营销中" />
