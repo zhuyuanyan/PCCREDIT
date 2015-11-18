@@ -54,7 +54,6 @@ import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerService;
 import com.cardpay.pccredit.system.service.NodeAuditService;
 import com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA;
-import com.cardpay.pccredit.xm_appln.model.BeanModel;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DBXX;
