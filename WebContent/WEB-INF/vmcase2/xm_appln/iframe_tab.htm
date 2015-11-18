@@ -39,6 +39,7 @@
 		<li class="active" onclick="selectTab(6,this);">客户资料</li>
 		<li onclick="selectTab(3,this);">调查模板</li> 
 		<li onclick="selectTab(4,this);">审批情况列表</li>
+		<li onclick="selectTab(2,this);">行内产品</li>
 		#if($!count != 0)
 		<li onclick="selectTab(5,this);">行内模型</li>
 		#end
@@ -74,6 +75,9 @@
 		
 		<div class="tabContent" id="tabContent4">
 			<iframe id="tabContent_frame4" frameborder="0" width="100%;" src="${contextPath}/intopieces/intopiecesquery/findApproveHistoryById.page?id=${appId}&ifHideUser=NO&dataType=application" marginheight="0" marginwidth="0" height="420px"></iframe>
+		</div>
+		<div class="tabContent" id="tabContent2">
+			<iframe id="tabContent_frame2" frameborder="0" width="100%;" src="${contextPath}/intopieces/intopiecesquery/findBankProdTimeData.page?id=${cardId}" marginheight="0" marginwidth="0" height="420px"></iframe>
 		</div>
 		<div class="tabContent" id="tabContent5">
 			<iframe id="tabContent_frame5" frameborder="0" width="100%;" src="${contextPath}/xm_appln/report_model_display.page?appId=${appId}" marginheight="0" marginwidth="0" height="420px"></iframe>
