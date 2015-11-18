@@ -55,7 +55,7 @@
             #foreach ($systemuser in $result.items)
              
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!{systemuser.id}_$!{systemuser.displayName}"
+              <td class="checkbox"><input type="checkbox" name="checkbox" value="$!{systemuser.id}_$!{systemuser.displayName}"
              #foreach( $selectval in $selectvalList )
               #if ($selectval == "$!{systemuser.id}_$!{systemuser.displayName}")
               checked="checked"

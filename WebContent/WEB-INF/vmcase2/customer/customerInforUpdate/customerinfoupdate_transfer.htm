@@ -72,6 +72,10 @@
 					 var val = window.top.$("#selectval").val();
 					 if(val !=""){
 					 var  arr=val.split(',');
+					 if(arr.length >1){
+						 alert("只能选择一个营销人员!");
+						 return;
+					 }
 					 var auditUserNames ="";
 					 var auditUserIds ="";
 					 for(key in arr){
