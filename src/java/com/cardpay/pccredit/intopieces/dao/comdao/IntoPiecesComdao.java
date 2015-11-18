@@ -35,6 +35,7 @@ import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.ManagerProductsConfiguration;
+import com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -459,6 +460,7 @@ public class IntoPiecesComdao {
 
 		return commonDao.queryBySql(ApproveHistoryForm.class, sql, params);
 	}
+	
 
 	/**
 	 * 查找进件的审批中的节点

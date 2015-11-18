@@ -304,3 +304,18 @@ function goodwork(){
 
 
 
+
+//移交
+function turn(){
+	if ($(".checkbox :checked").length == 1) {
+        var rowid = $($(".checkbox :checked")[0]).attr("value").split("&")[0];
+        var name = $($(".checkbox :checked")[0]).attr("value").split("&")[1];
+        var url =contextPath+"/customer/basiccustomerinforUpdate/transferCustomerManager.page?id="+rowid+"&custName="+name;
+	    window.location.href = url;
+	}else{
+		Dialog.message("请选择一行");
+	}
+}
+
+
+

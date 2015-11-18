@@ -19,6 +19,13 @@
 		<result property="fuheUser" column="fuhe_user" />
 
 	</resultMap>
+	
+	
+	<resultMap id="MResultMap" type="com.cardpay.pccredit.intopieces.model.ModelParamConfigure">
+		<result property="dictType" column="DICT_TYPE" />
+		<result property="typeCode" column="TYPE_CODE" />
+		<result property="typeName" column="TYPE_NAME" />
+	</resultMap>
 
 	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
 		SELECT * from customer_application_process T
@@ -28,5 +35,10 @@
 	<select id="findByAppId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		SELECT * from customer_application_process T
 		WHERE T.APPLICATION_ID = #{appId}
+	</select>
+	
+	
+	<select id="findModelByType" resultMap="MResultMap" parameterType="java.lang.String">
+		select * from model_parameter_configuration t where dict_type = #{dictType}
 	</select>
 </mapper>

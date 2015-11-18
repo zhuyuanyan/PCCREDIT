@@ -84,6 +84,7 @@ import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_POZL_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_SQED_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_TJINFO_Dao;
 import com.cardpay.pccredit.xm_appln.dao.XM_APPLN_ZXQSZL_Dao;
+import com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_JCZL;
@@ -1740,6 +1741,8 @@ public class IntoPiecesService {
 	public List<ApproveHistoryForm> findApplicationDataImport(String id, String dataType) {
 		return intoPiecesComdao.findApproveHistoryByDataId(id, dataType);
 	}
+	
+	
 	
 	public boolean checkApplyQuota(float applyQuota,String userId,String productId){
 		boolean flag = false;

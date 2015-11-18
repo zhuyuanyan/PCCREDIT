@@ -65,7 +65,7 @@
             </colgroup>
            #foreach ($wait in $result.items)
             <tr ondblclick="viewPiecesInfo();">
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.applyQuota</td>
               <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>
@@ -162,10 +162,11 @@
 		$("input[name='checkbox']:checked").each(function() {
 			id = $(this).val().split("@")[0];
 			customerId = $(this).val().split("@")[1];
+			cardId = $(this).val().split("@")[5];
 		});
 		if(id!=null){
 			window.location.href = 
-				"${contextPath}/xm_appln/turn_iframe_tab.page?customerId="+customerId+"&applicationId="+id;
+				"${contextPath}/xm_appln/turn_iframe_tab.page?customerId="+customerId+"&applicationId="+id+"&cardId="+cardId;
 		}else{
 			Dialog.message("请选择要查看的进件!");
 		}

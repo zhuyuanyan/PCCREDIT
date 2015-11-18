@@ -37,7 +37,7 @@
               
               <li class="search_button">
               <input type="button" value="导入" class="search_button_inquiry" style=" line-height: 24px;"
-              	onclick="importCustomer('${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!result.filter.customerId&productId=$!result.filter.productId&intopiecesType=$!intopiecesType&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType')"/>
+              	onclick="importCustomer('${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!result.filter.customerId&productId=$!result.filter.productId&intopiecesType=$!intopiecesType&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&applyQuota=$!applyQuota')"/>
               </li>
             </ul>
             </div>
@@ -133,7 +133,7 @@
 			      },
 			success : function(data) {
 				if (data.success) {
-					topWin.Dialog.message("保存成功！");
+					topWin.Dialog.message(data.message);
 					window.location.href= contextPath+"/intopieces/intopiecesapprove/browseProduct.page"
 				} else {
 					topWin.Dialog.message(data.message);
