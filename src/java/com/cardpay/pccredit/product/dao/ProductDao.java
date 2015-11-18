@@ -9,6 +9,7 @@ import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.FilterDict;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.model.ProductsAgencyAssociation;
+import com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA;
 import com.wicresoft.util.annotation.Mapper;
 
 /**
@@ -64,4 +65,6 @@ public interface ProductDao {
 	
 	
 	public void updateLocalExecl(@Param("localExeclId")String localExeclId,@Param("appId")String appId);
+	
+	public List<BANK_PRODUCT_TIME_DATA> findBankProdTimeData(@Param("id")String id);
 }

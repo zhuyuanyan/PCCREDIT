@@ -85,6 +85,16 @@
 		<result property="modifyTime" column="MODIFIED_TIME" />
 		<result property="modifyBy" column="MODIFIED_BY" />
 	</resultMap>
+	
+    <resultMap id="bankProductTimeDataMap" type="com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA">
+		<result property="id" column="ID" />
+		<result property="three_month_average" column="THREE_MONTH_AVERAGE" />
+		<result property="credit_amount" column="CREDIT_AMOUNT" />
+		<result property="balance" column="BALANCE" />
+		<result property="five_stage_classification" column="FIVE_STAGE_CLASSIFICATION" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="createdBy" column="CREATED_BY" />
+	</resultMap>
 
 	<select id="findPublishedProductsByFilter" resultMap="ResultMap"
 		parameterType="map">
@@ -248,4 +258,22 @@
 <update id="updateLocalExecl">
 		update local_excel set APPLICATION_ID = #{appId} where ID = #{localExeclId}
 </update>
+
+
+<select id="findBankProdTimeData" resultMap="bankProductTimeDataMap">
+	  select           bptd.id,					     
+				       bptd.three_month_average,       
+				       bptd.credit_amount,             
+				       bptd.balance,                   
+				       bptd.five_stage_classification, 
+				       bptd.created_time,              
+				       bptd.card_id,                   
+				       u.display_name as created_by    
+				from bank_prod_time_data bptd,         
+				     sys_user u                        
+				where u.id = bptd.created_by  
+		 <if test="id != null and id != '' ">
+			AND bptd.CARD_ID =#{id}
+		</if>      
+</select>
 </mapper>
