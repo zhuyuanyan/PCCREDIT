@@ -193,12 +193,12 @@ public class IntoPiecesApproveControl extends BaseController {
 					String localExeclId = request.getParameter("localExeclId");
    				 
 					//先判断是否已有流程
-					Boolean processBoolean = customerInforservice.ifProcess(customerId);
+					/*Boolean processBoolean = customerInforservice.ifProcess(customerId);
 					if(processBoolean){
 						returnMap.addGlobalMessage("此客户正在申请进件，无法再次申请!");
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.put("message","此客户正在申请进件，无法再次申请!");
-					}else{
+					}else{*/
 						//设置流程开始
 						XmModel xm = getModel(request);
 						xM_APPLN_Service.saveApply(customerId,
@@ -213,7 +213,7 @@ public class IntoPiecesApproveControl extends BaseController {
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.addGlobalMessage(CREATE_SUCCESS);
 						returnMap.put("message","申请成功");
-					}
+					//}
 					
 				}catch (Exception e) {
 					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);

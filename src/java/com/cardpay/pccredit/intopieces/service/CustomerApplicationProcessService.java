@@ -14,6 +14,7 @@ import com.cardpay.pccredit.intopieces.dao.CustomerApplicationProcessDao;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationInfoFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.ModelParamConfigure;
 import com.cardpay.pccredit.system.model.NodeControl;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
@@ -69,5 +70,10 @@ public class CustomerApplicationProcessService {
 		} else {
 			return null;
 		}
+	}
+	
+	
+	public ModelParamConfigure findModelByType(String dictType){
+		return customerApplicationProcessDao.findModelByType(dictType);
 	}
 }
