@@ -1,0 +1,91 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<style type="text/css">
+.divcss5_list_title{background:#eeeeee; border:1px solid #cccccc; padding:1em;}
+.divcss5_list_content{padding:1em;}
+#tinybox{position:absolute; display:none; padding:10px; background:#ffffff url(${contextPath}/images/preload.gif) no-repeat 50% 50%; border:10px solid #e3e3e3; z-index:2000;}
+#tinymask{position:absolute; display:none; top:0; left:0; height:100%; width:100%; background:#000000; z-index:1500;}
+#tinycontent{background:#ffffff; font-size:1.1em;}
+
+#n{margin:10px auto; width:920px; border:1px solid #CCC;font-size:12px; line-height:30px;}
+#n a{ padding:0 4px; color:#333}
+</style>
+<script type="text/javascript" src="${contextPath}/common/js/common/tinybox.js"></script>
+<script src="${contextPath}/common/js/common/jquery.form.js"></script>
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<body>
+	<div class="content_main">
+		<div class="contentinner">
+			<form id="id_module_form" action="${contextPath}/product/modelparamconfigure/update.json"  method="post">
+				<div class="forms" id="formsId">
+					<input type="hidden" name="id" value="$!model.id" />
+					<table class="rule" border="1" bordercolor="#CCCCCC">
+					<caption>配置属性修改</caption>
+						<colgroup>
+							<col width="10%" />
+							<col width="30%" />
+			 				<col width="10%" />
+							<col width="30%" />
+							<col width="30%" />
+						</colgroup>
+						<tr>
+							<td><label for="name">字典类型:</label></td>
+							<td><input type="text" id="dictType" name="dictType"value="$!model.dictType" disabled="disabled" readonly="readonly"/></td>
+							<td><label for="name">字典code:</label></td>
+							<td><input type="text" id="typeCode" name="typeCode" value="$!model.typeCode" /></td>
+						</tr>
+						<tr>
+							<td><label for="name">名称:</label></td>
+							<td><input type="text" id="typeName" name="typeName"value="$!model.typeName" disabled="disabled" readonly="readonly"/></td>
+							<td><label for="name">备注:</label></td>
+							<td><input type="text" id="descp" name="descp"value="$!model.descp" /></td>
+						</tr>
+					</table>
+				</div>
+			</form>
+		
+			<div class="submit">
+			  <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		 var layout = new FormsLayout("formsId");
+		 window.top.currentWindow.setLayout(layout);
+		 #set ($formName = "'#id_module_form'")
+		 
+		 $(document).ready(function() {
+			 $("#id_save_button").click(function() {
+			        if ($($formName).valid()) {
+			        	mySave();
+			        }
+			 });
+		 });
+		 
+		 
+		function mySave() {
+			$('#id_module_form').ajaxSubmit({
+					dataType : 'json',
+					type : "post",
+					success : function(data) {
+						if (data.success) {
+							Dialog.message(data.message,"提示", function() {
+								navigateTo("${contextPath}/product/modelparamconfigure/browse.page");
+							 });
+						} else {
+							Dialog.message(data.message);
+							return false;
+						}
+					},
+					error : function(data) {
+						Dialog.closeLoad();
+						Dialog.message("操作失败");
+						return false;
+					}
+			});
+	     }
+	</script>
+</body>
+
+</html>

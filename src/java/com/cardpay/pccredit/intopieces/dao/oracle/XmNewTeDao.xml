@@ -13,6 +13,13 @@
 		<result property="teRule"      column="TE_RULE" />
 		<result property="status"      column="STATUS" />
 	</resultMap>
+	
+	 <resultMap id="ResultModelMap" type="com.cardpay.pccredit.intopieces.model.ModelParamConfigure">
+        <result property="id" 		   		column="ID" />
+		<result property="dictType" 	    column="DICT_TYPE" />
+		<result property="typeCode"         column="TYPE_CODE" />
+		<result property="typeName"         column="TYPE_NAME" />
+	</resultMap>
     
 	
 	<select id="findAllTeByFilter" resultMap="ResultMap" parameterType="com.cardpay.pccredit.intopieces.filter.XmNewTeFilter">
@@ -63,6 +70,48 @@
 		 <if test="certiCode != null and certiCode != '' ">
 			and CERTI_CODE =#{certiCode}
 		 </if>
+	</select>
+	
+	
+	
+	<!-- ====================================模型参数化配置================================================== -->
+	<select id="findModelParamFilter" resultMap="ResultModelMap" parameterType="com.cardpay.pccredit.intopieces.model.ModelParamConfigure">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 SELECT *
+					 FROM  MODEL_PARAMETER_CONFIGURATION t
+					 WHERE 1=1
+					 <if test="dictType != null and dictType!= '' ">
+						and dict_type =#{dictType}
+					 </if>
+					   <if test="typeCode != null and typeCode != '' ">
+						and type_code =#{typeCode}
+					 </if>
+					 <if test="typeName != null and typeName != '' ">
+						and type_name =#{typeName}
+					 </if>
+			<![CDATA[
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findModelParamCountFilter" resultType="int" parameterType="com.cardpay.pccredit.intopieces.model.ModelParamConfigure">
+		 SELECT count(*)
+		 FROM  MODEL_PARAMETER_CONFIGURATION t
+		 WHERE 1=1
+		 <if test="dictType != null and dictType!= '' ">
+			and dict_type =#{dictType}
+		</if>
+		<if test="typeCode != null and typeCode != '' ">
+			and type_code =#{typeCode}
+		</if>
+		<if test="typeName != null and typeName != '' ">
+		    and type_name =#{typeName}
+		</if>
+		 
 	</select>
 	
 </mapper>
