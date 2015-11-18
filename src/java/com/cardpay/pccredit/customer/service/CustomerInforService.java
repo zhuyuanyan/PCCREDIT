@@ -34,6 +34,7 @@ import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.dao.comdao.CustomerInforCommDao;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
+import com.cardpay.pccredit.customer.model.CUSTMANAGER_TRANSFER_HISTORY;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.CustomerInforWeb;
@@ -53,6 +54,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.model.XmModel;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.model.ProductAttributeVo;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
@@ -62,10 +64,12 @@ import com.cardpay.pccredit.system.model.NodeAudit;
 import com.cardpay.pccredit.system.model.NodeControl;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.cardpay.pccredit.system.service.NodeAuditService;
+import com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA;
 import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
@@ -1504,4 +1508,30 @@ public class CustomerInforService {
 		return customerInforDao.findXmModelByAppId(customerInforFilter);
 	}
 	
+	
+	public void insertBankProductTimeData(BANK_PRODUCT_TIME_DATA data){
+		commonDao.insertObject(data);
+	}
+	
+	/**
+	 * 查询指定机构下的客户经理
+	 * @return
+	 */
+	public  List<AccountManagerParameterForm> findOrganDownManager(String organId,String custManagerId){
+		return customerInforDao.findOrganDownManager(organId,custManagerId);
+	}
+	
+	
+	public CustomerInfor findCustomerById(String id){
+		return commonDao.findObjectById(CustomerInfor.class, id);
+	}
+	
+	public void updateCustomerForAndInsertHis(CustomerInfor cust,CUSTMANAGER_TRANSFER_HISTORY his){
+		 commonDao.updateObject(cust);
+		 commonDao.insertObject(his);
+	}
+	
+	public SystemUser findById(String id){
+		return commonDao.findObjectById(SystemUser.class, id);
+	}
 }
