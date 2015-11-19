@@ -23,6 +23,7 @@
 			<!-- <menu id="040011" name="basiccustomerinforCreate" title="客户信息新增" url="/customer/basiccustomerinforCreate/insert.page" img="" operations="create|browse"/> -->
 			<menu id="040011" name="basiccustomerinforCreate" title="客户信息新增" url="/xm_appln/browse.page" img="" operations="create|rhzx|browse"/>
 			<menu id="040012" name="basiccustomerinforUpdate" title="客户维护信息" url="/customer/basiccustomerinforUpdate/browse.page" img="" operations="create|change|transfer|maintenance|addblacklist|browse|delete"/>
+			<menu id="040013" name="basiccustomerinforTransfer" title="客户经理移交" url="/customer/basiccustomerinforUpdate/mbrowse.page" img="" operations="create|change|transfer|maintenance|addblacklist|browse|delete"/>
 			<!-- <menu id="040013" name="basiccustomerinforAssess" title="客户评估信息" url="/customer/basiccustomerinforAssess/browse.page" img="" operations="create|change|delete|display|browse"/> -->
 			<menu id="040014" name="customerfilter" title="产品筛选客户" url="/customer/customerfilter/browse.page" img="" operations="browse"/>
 			<menu id="040015" name="customermarketingplan" title="客户营销计划列表" url="/customer/customermarketingplan/browse.page" img="" operations="create|change|display|browse"/>
