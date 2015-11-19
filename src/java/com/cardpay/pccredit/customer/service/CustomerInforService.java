@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -1522,13 +1523,16 @@ public class CustomerInforService {
 	}
 	
 	
+	public List<SystemUser> findUserByOrgId(String organId){
+		return customerInforDao.findUserByOrgId(organId);
+	}
+	
 	public CustomerInfor findCustomerById(String id){
 		return commonDao.findObjectById(CustomerInfor.class, id);
 	}
 	
-	public void updateCustomerForAndInsertHis(CustomerInfor cust,CUSTMANAGER_TRANSFER_HISTORY his){
+	public void updateCustomerForAndInsertHis(CustomerInfor cust){
 		 commonDao.updateObject(cust);
-		 commonDao.insertObject(his);
 	}
 	
 	public SystemUser findById(String id){

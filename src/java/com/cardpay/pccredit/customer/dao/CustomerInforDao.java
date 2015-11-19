@@ -13,6 +13,7 @@ import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.model.ProductAttributeVo;
 import com.cardpay.pccredit.system.model.Dict;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.util.annotation.Mapper;
 /**
  * 
@@ -208,4 +209,6 @@ public interface CustomerInforDao {
 	
 	
 	public  List<AccountManagerParameterForm> findOrganDownManager(@Param("organId")String organId,@Param("custManagerId")String custManagerId);
+	
+	public List<SystemUser> findUserByOrgId(@Param("organId")String organId);
 }

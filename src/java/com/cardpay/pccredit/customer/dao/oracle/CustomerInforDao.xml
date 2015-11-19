@@ -34,6 +34,11 @@
 		<result property="displayName" column="DISPLAY_NAME" />
 </resultMap>
 
+<resultMap id="userMap" type="com.cardpay.pccredit.system.model.SystemUser">
+		<result property="userId" column="ID" />
+		<result property="displayName" column="DISPLAY_NAME" />
+</resultMap>
+
 <select id="findcloneCustomerCareersByCustomerId" resultMap="customerCareersInformationMap">
 	select * from customer_careers_information_s t 
 	where t.customer_id=#{customerId}
@@ -398,6 +403,20 @@
 			              and e.id = d.user_id    
 			              and b.id = #{organId})
 			     and u.id != #{custManagerId}
+	</select>
+	
+	
+	<select id="findUserByOrgId" resultMap="userMap">
+			       select 	 e.id  as userId,
+                             e.display_name as displayName
+                         from sys_organization b,
+                        sys_department c,
+                        sys_dept_user d,
+                        sys_user e  
+                  where c.org_id = b.id
+                    and d.dept_id = c.id
+                    and e.id = d.user_id    
+                    and b.id = #{organId}
 	</select>
 	
 	
