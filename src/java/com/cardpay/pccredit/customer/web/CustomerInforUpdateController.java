@@ -30,12 +30,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
-import com.cardpay.pccredit.customer.constant.MarketingCreateWayEnum;
 import com.cardpay.pccredit.customer.constant.QuestionConstant;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.filter.CustomerQuestionInfoFilter;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
-import com.cardpay.pccredit.customer.model.CUSTMANAGER_TRANSFER_HISTORY;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerCareersWeb;
 import com.cardpay.pccredit.customer.model.CustomerCreditEvaluation;
@@ -47,7 +45,6 @@ import com.cardpay.pccredit.customer.model.CustomerInforUpdateIncomeStatement;
 import com.cardpay.pccredit.customer.model.CustomerMainManager;
 import com.cardpay.pccredit.customer.model.CustomerQuestionInfo;
 import com.cardpay.pccredit.customer.model.CustomerinforUpdateWorship;
-import com.cardpay.pccredit.customer.model.Maintenance;
 import com.cardpay.pccredit.customer.model.managerChageForm;
 import com.cardpay.pccredit.customer.service.CustomerCareersService;
 import com.cardpay.pccredit.customer.service.CustomerCreditEvaluationService;
@@ -65,6 +62,8 @@ import com.cardpay.pccredit.divisional.service.DivisionalService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter;
+import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.riskControl.constant.RiskAttributeEnum;
@@ -78,28 +77,6 @@ import com.cardpay.pccredit.system.model.Dict;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.cardpay.pccredit.system.service.DictService;
 import com.cardpay.pccredit.system.service.SystemUserService;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DBXX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DCSC;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_HKSZ;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_JCZL;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHED;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHFW;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHLB;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KPMX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_LXRZL;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_POZL;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_QTXYKXX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQED;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_TJINFO;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_YWXX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXQSZL;
-import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
-import com.cardpay.pccredit.xm_appln.web.XM_APPLN_ADDR_FORM;
-import com.cardpay.pccredit.xm_appln.web.XM_APPLN_FORM;
-import com.cardpay.pccredit.xm_appln.web.XM_APPLN_JBZL_FORM;
-import com.cardpay.pccredit.xm_appln.web.XM_APPLN_NEW_CUSTOMER_FORM;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -113,9 +90,6 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
-import com.wicresoft.jrad.modules.dictionary.DictionaryManager;
-import com.wicresoft.jrad.modules.dictionary.model.Dictionary;
-import com.wicresoft.jrad.modules.dictionary.model.DictionaryItem;
 import com.wicresoft.jrad.modules.privilege.model.Organization;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.jrad.modules.privilege.service.OrganizationService;
@@ -179,6 +153,9 @@ public class CustomerInforUpdateController extends BaseController {
 	
 	@Autowired
 	private SystemUserService systemUserService;
+	
+	@Autowired
+	private AccountManagerParameterService accountManagerParameterService;
 
 	/**
 	 * 浏览页面
@@ -1837,16 +1814,16 @@ public class CustomerInforUpdateController extends BaseController {
 					cust.setModifiedBy(user.getId());
 					cust.setModifiedTime(new Date());
 					//保留移交记录
-					CUSTMANAGER_TRANSFER_HISTORY his = new CUSTMANAGER_TRANSFER_HISTORY();
+					/*CUSTMANAGER_TRANSFER_HISTORY his = new CUSTMANAGER_TRANSFER_HISTORY();
 					his.setCustomer_id(form.getCustId());
 					his.setOld_customermanagerid(form.getCustManagerId());
 					his.setNew_customermanagerid(form.getCustomerManagerId());
 					his.setYx_userid(form.getAuditUserIds());
 					his.setJp_userid(form.getCustManagerId());
 					his.setCreatedBy(user.getId());
-					his.setCreatedTime(new Date());
+					his.setCreatedTime(new Date());*/
 					//保存
-					customerInforservice.updateCustomerForAndInsertHis(cust,his);
+					customerInforservice.updateCustomerForAndInsertHis(cust);
 					returnMap.addGlobalMessage(CREATE_SUCCESS);
 				}catch (Exception e) {
 					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
@@ -1887,6 +1864,38 @@ public class CustomerInforUpdateController extends BaseController {
 		mv.addObject("selectvalList", selectlist);
 		return mv;
 	}
+	
+	/**
+	 * 查询客户经理
+	 */
+	@ResponseBody
+	@RequestMapping(value = "mbrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(@ModelAttribute AccountManagerParameterFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		QueryResult<AccountManagerParameterForm> result = accountManagerParameterService.findAccountManagerParametersByFilter(filter);
+		JRadPagedQueryResult<AccountManagerParameterForm> pagedResult = new JRadPagedQueryResult<AccountManagerParameterForm>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("customer/customerInforUpdate/customerinfoupdate_managerbrowse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	/**
+	 * 查询客户经理名下客户
+	 */
+	@ResponseBody
+	@RequestMapping(value = "cbrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView cbrowse(@ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
+        filter.setRequest(request);
+		filter.setUserId(request.getParameter("id"));
+		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilter(filter);
+		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInforUpdate/customerinfoupdate_mbrowse",request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
 	
 }
 

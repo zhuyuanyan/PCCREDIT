@@ -11,9 +11,9 @@
 			<div class="place">
 				<div class="dvTab">
 		          <ul class="com-tab">
-		      	  <li class="tab activeTab"><a href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId">调查报告</a></li>
+		      	  <li class="tab activeTab"><a href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId&yxId=$!yxId">调查报告</a></li>
 		        	#if($!intopiecesType == '1')
-		            	<li class="tab "><a href="${contextPath}/intopieces/intopiecesapprove/bankModel.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId&localExeclId=$!localExeclId">行内模型</a></li>
+		            	<li class="tab "><a href="${contextPath}/intopieces/intopiecesapprove/bankModel.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId&localExeclId=$!localExeclId&yxId=$!yxId">行内模型</a></li>
 		         	#end
 		          </ul>
 		        </div>
@@ -29,6 +29,7 @@
 	       <input type ="hidden" id ="custType" value ="$!custType"/>
 	       <input type ="hidden" id ="productId" value ="$!productId"/> 
 	       <input type ="hidden" id ="localExeclId" value ="$!localExeclId"/>
+	       <input type ="hidden" id ="yxId" value ="$!yxId"/>
             <div class="form-bd" id="formsId" style="border: 0px; ">
             <ul>
               <li style="">
@@ -37,7 +38,7 @@
               
               <li class="search_button">
               <input type="button" value="导入" class="search_button_inquiry" style=" line-height: 24px;"
-              	onclick="importCustomer('${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!result.filter.customerId&productId=$!result.filter.productId&intopiecesType=$!intopiecesType&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&applyQuota=$!applyQuota')"/>
+              	onclick="importCustomer('${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!result.filter.customerId&productId=$!result.filter.productId&intopiecesType=$!intopiecesType&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&applyQuota=$!applyQuota&yxId=$!yxId')"/>
               </li>
             </ul>
             </div>
@@ -129,7 +130,8 @@
 				"ApplyIntopiecesSpareType_2" : $("#ApplyIntopiecesSpareType_2").val(),
 				"custType" : $("#custType").val(),
 				"productId" : $("#productId").val(),
-				"localExeclId" : $("#localExeclId").val()
+				"localExeclId" : $("#localExeclId").val(),
+				"yxId" : $("#yxId").val()
 			      },
 			success : function(data) {
 				if (data.success) {

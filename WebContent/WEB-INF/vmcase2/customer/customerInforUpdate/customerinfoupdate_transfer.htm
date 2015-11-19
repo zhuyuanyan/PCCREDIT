@@ -19,16 +19,16 @@
             </colgroup>
               <tr>
               <td><label for="custName">被移交客户姓名:</label></td>
-              <td><input class="rinpsty" type="text" id="custName" name="custName" value="$!customerName"/>
+              <td><input class="rinpsty" type="text" id="custName" name="custName" value="$!customerName" disabled="disabled" readonly="readonly"/>
               	  <input type="hidden" id="custId" name="custId" value="$!customerId" /></td>
               <td><label for="oldCustomerManager">原客户经理:</label></td>
-              <td><input class="rinpsty" type="text" id="oldCustomerManager" name="oldCustomerManager" value="$!systemUser.displayName"  />
+              <td><input class="rinpsty" type="text" id="oldCustomerManager" name="oldCustomerManager" value="$!systemUser.displayName" disabled="disabled" readonly="readonly"/>
               	  <input type="hidden" id="custManagerId" name="custManagerId" value="$!user.userId" /></td>
             </tr>
             
              <tr>
               <td><label for="oldOrgan">所属机构:</label></td>
-              <td><input class="rinpsty" type="text" id="oldOrgan" name="oldOrgan" value="$organization.name"/>
+              <td><input class="rinpsty" type="text" id="oldOrgan" name="oldOrgan" value="$organization.name" disabled="disabled" readonly="readonly"/>
              	  <input type="hidden" id="oldOrganId" name="oldOrganId" value="$organization.id" /></td>
               <td><label for="customerManagerId">移交客户经理:</label></td>
               <td><select id="customerManagerId" name="customerManagerId">
@@ -38,11 +38,11 @@
               </td>
              </tr>
              
-              <tr>
+             <!--  <tr>
               <td><label for="oldOrgan">营销人员:</label></td>
               <td><input type="text" id="auditUserNames" name="auditUserNames" value="" onclick="selectNodeConfigUsers()" readonly="readonly"/>
               	      <input type="hidden" id="auditUserIds" name="auditUserIds" value=""/></td>
-             </tr>
+             </tr> -->
           </table>
         
         </div>

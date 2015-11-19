@@ -35,6 +35,16 @@ public class SystemUser extends BusinessModel{
 	private String name;//部门名称
 	private String oname;//单位名称
 	
+	private String userId;
+	
+	
+	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public Integer getUserType() {
 		return userType;
 	}

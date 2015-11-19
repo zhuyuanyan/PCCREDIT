@@ -60,10 +60,11 @@
 			<li class="tab"><a href="${contextPath}/xm_appln/report_lsfx.page?appId=${appId}&urlType=${urlType}">流水</a></li>
          </ul>
          </div>
+      <div class="tabplace"></div>
       <form id="id_module_form">
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">$!{tableContent}</div>
       </form>
-      <div class="submit">
+  <!--     <div class="submit">
       #if(!$!lock)
       	<input type="button" class="current" id="id_save_button" value="保存" />
       #end
@@ -72,7 +73,7 @@
       #else
       	<input type="button" onclick="window.location.href='${contextPath}/intopieces/intopiecessearch/search.page'" value="返回" />
       #end
-      </div>
+      </div> -->
     </div>
   </div>
   <script type="text/javascript">

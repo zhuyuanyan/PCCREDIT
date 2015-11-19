@@ -54,53 +54,43 @@
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	var validator = $('#id_module_form').validate({
-			rules : {
-				riskDes : {
-					maxlength : 200,
-					required:true,
-				},
-				riskAttribute:{
-					required:true
-				},
-			},
-			messages : {
-				riskDes : {
-					maxlength : "原因200",
-					required  : '原因不能为空',
-				},
-				riskAttribute:{required:'类型不能为空'},
-			},
-			errorPlacement : function(error, element) {
-				element.after(error);
-				if (layout) {
-					layout.resizeLayout();
-				}
-			}
-		});
 	$(document).ready(function() {	
-		#parse("common/part_create.js")
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+	   	       //var url = "${modulePath}/insert.json";
+	   	       var url = "${contextPath}/riskcontrol/riskcustomer/insert.json";
+				$.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							window.location.href= contextPath+"/customer/basiccustomerinforUpdate/browse.page" ;
+						}
+						else{
+							topWin.Dialog.message(data.message);
+					    }
+						submitFlag = 0;
+					}
+				});
+					
+			}else{
+				submitFlag = 0;
+			}
+	    });
 	});
+	
 	function checkRiskAttribute(obj){
 		$("#riskLevel").val($(obj).attr("riskLevel"));
 	}
 	
-	/* Dialog.load();
-	$.ajax({
-		type:'GET',
-		url:"${contextPath}/riskcontrol/riskcustomer//isInBlacklist.json",
-		data:{'customerId':rowId},
-		success:function(msg){
-			Dialog.closeLoad();
-			if(msg.success == true){
-				var url = "${contextPath}/riskcontrol/riskcustomer//blacklistcreate.page?customerId=" + rowId;
-				url += "&callBackUrl=" + window.location.href;
-				window.location.href = url;
-			}else{
-				Dialog.message(msg.message);
-			}
-		}
-	}); */
 	</script>
 </body>
 #parse ("common/iframe_page_footer.htm")
