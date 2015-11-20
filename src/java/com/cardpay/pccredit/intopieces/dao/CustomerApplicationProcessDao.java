@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationInfoFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.ModelParamConfigure;
 import com.wicresoft.util.annotation.Mapper;
 
 @Mapper
@@ -25,4 +26,6 @@ public interface CustomerApplicationProcessDao {
     public CustomerApplicationProcess findByAppId(String appId);
     
     public CustomerApplicationProcess findById(String id);
+    
+    public ModelParamConfigure findModelByType(String dictType);
 }

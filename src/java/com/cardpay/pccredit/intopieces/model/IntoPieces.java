@@ -21,7 +21,17 @@ public class IntoPieces  extends BusinessModel {
     private String nodeName;
     
     private String serialNumber;
-    //进度
+    
+    private String  finalApproval;//最终额度
+    
+    
+    public String getFinalApproval() {
+		return finalApproval;
+	}
+	public void setFinalApproval(String finalApproval) {
+		this.finalApproval = finalApproval;
+	}
+	//进度
 	public String getId() {
 		return id;
 	}

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.cardpay.pccredit.common.Cn2Spell;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.model.CUSTMANAGER_TRANSFER_HISTORY;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
@@ -714,7 +715,7 @@ public class XM_APPLN_Service {
 						  String custType,
 						  String applyQuota,
 						  String productId,
-						  String localExeclId,XmModel xm){
+						  String localExeclId,XmModel xm,CUSTMANAGER_TRANSFER_HISTORY his){
 		
 		//设置申请
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
@@ -747,7 +748,8 @@ public class XM_APPLN_Service {
 		//modified by songchen 20151019 end
 		
 		commonDao.insertObject(customerApplicationInfo);
-		
+		//保存营销人员历史表
+		commonDao.insertObject(his);
 		//modified by songchen 20151109 start
 		if("1".equals(intopiecesType)){//散件
 			xm.setApp_id(customerApplicationInfo.getId());

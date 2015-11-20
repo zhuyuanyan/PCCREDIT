@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
@@ -51,6 +53,7 @@ import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerService;
 import com.cardpay.pccredit.system.service.NodeAuditService;
+import com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
 import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DBXX;
@@ -960,8 +963,25 @@ public class XM_APPLN_Controller extends BaseController {
 	public  String checkRisk2(HttpServletRequest request)throws Exception {
 		String cardId = request.getParameter("cardId");
 		String result  = riskCustomerService.findProductByCardId(cardId);
-//		String result = "{D:'1000',L:[{T:'2000000',R:'30000',C:'五级分类'}]}";
+		//测试用
+		//String result = "{D:'1000',L:[{T:'2000000',R:'30000',C:'五级分类'}]}";
 		JSONObject obj = JSONObject.fromObject(result);
+		String d = obj.getString("D");
+		JSONArray transitListArray = obj.getJSONArray("L");
+        JSONObject o = (JSONObject)transitListArray.get(0);
+        String T = o.getString("T");
+        String R = o.getString("R");
+        String C = o.getString("C");
+		
+		BANK_PRODUCT_TIME_DATA data = new BANK_PRODUCT_TIME_DATA();
+		data.setCard_id(cardId);
+		data.setThree_month_average(d);
+		data.setCredit_amount(T);
+		data.setBalance(R);
+		data.setFive_stage_classification(C);
+		data.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+		data.setCreatedTime(new Date());
+		customerInforservice.insertBankProductTimeData(data);
 		return obj.toString();
 		}
 	
@@ -1051,7 +1071,9 @@ public class XM_APPLN_Controller extends BaseController {
 				"customerId");
 		String appId = RequestHelper.getStringValue(request, "applicationId");
 		
-
+		String cardId = RequestHelper.getStringValue(request, "cardId");
+		
+		mv.addObject("cardId",cardId);
 		CustomerInforFilter customerInforFilter = new CustomerInforFilter();
 		customerInforFilter.setCustId(customerInforId);
 		QueryResult<ProductAttributeVo> result = customerInforservice.findIntoProdByFilter(customerInforFilter);

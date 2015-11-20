@@ -380,7 +380,7 @@
             	
             	<ref bean="addImportDataTigger"/>
             	<ref bean="addStatisticalTableTigger"/>
-            	<ref bean="makeCardTigger"/>
+            <!-- 	<ref bean="makeCardTigger"/> -->
             	<!-- <ref bean="statisticsYearScheduleServicerTrigger"/>
             	<ref bean="statisticsMonthScheduleServicerTrigger"/>
             	<ref bean="statisticsWeekScheduleServicerTrigger"/>

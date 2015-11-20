@@ -224,8 +224,7 @@ function checkStatus() {
         	$("#descarea").hide();
         	break;
         case ("RETURNAPPROVE"):
-       	    $("#reason").replaceWith("<select id='reason' name='reason'><option value='0'>请选择..</option>   #dict('APPRETURESION','')   </select>"); 
-        	$("#descarea").show();
+       	    $("#reason").replaceWith("<select id='reason' onchange='show();' name='reason'><option value='0'>请选择..</option>   #dict('APPRETURESION','')   </select>"); 
         	break;
         case ("REJECTAPPROVE"):
        	    $('#reason').replaceWith("<textarea class='w200' rows='3'  id='reason'  name='reason'></textarea>"); 
@@ -243,6 +242,14 @@ function checkStatus() {
 		var url = "${contextPath}/customer/basiccustomerinfor/intopiecesspouse.page?cardId="+card;
 		Dialog.table(url, "查询", "get", null, 800, 240);
 		
+	}
+	
+	function show(){
+        if($("#reason").val() =='APPRETURESION13'){
+        	$("#descarea").show();
+		}else{
+			$("#descarea").hide();
+		}
 	}
 </script>
 </html>

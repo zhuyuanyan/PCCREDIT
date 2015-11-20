@@ -89,8 +89,14 @@ public class XmNewTeController extends BaseController {
 		String id = request.getParameter(ID);
 		if (returnMap.isSuccess()) {
 			try {
-				//TODO 判断是否是评审岗
-				String status ="001";//待审核
+				//判断是否是评审岗
+				String status ="";
+				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+				if("3".equals(user.getUserType())){//评审岗
+					status ="002";//通过直接调额
+				}else{
+				    status ="001";//待审核
+				}
 				xmNewTeService.update(id,status);
 				returnMap.put(JRadConstants.SUCCESS, true);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);

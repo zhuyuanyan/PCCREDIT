@@ -14,6 +14,7 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.ModelParamConfigure;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.system.model.NodeControl;
 import com.cardpay.workflow.constant.ApproveOperationTypeEnum;
@@ -145,7 +146,8 @@ public class ProcessService {
 		} //通过 
 		else {
 			//设置额度，对于该额度以下的进件不需要终审
-			if(applyQuota!=null && applyQuota!="" && Float.parseFloat(applyQuota)  < 200000){
+			ModelParamConfigure fig = customerApplicationProcessService.findModelByType("applyQuota");
+			if(applyQuota!=null && applyQuota!="" && Float.parseFloat(applyQuota)  < Float.parseFloat(fig.getTypeCode())){
 				wfProcessRecord.setIsClosed("1");
 				commonDao.updateObject(wfProcessRecord);
 				return ApproveOperationTypeEnum.NORMALEND.toString();
