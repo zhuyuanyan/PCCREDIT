@@ -34,6 +34,12 @@
 	    }
 	}
 </script>
+<style type="text/css">
+	.contentinner{border: 1px solid #c0d9f7;background-color: #f6f9fe;}
+	 .place{margin:0;border-bottom:1px solid #c0d9f7;}		
+	 .place .title{color:#333;font-weight:bold;font-size: 14px;padding-left:15px;}
+	 .tabplace{padding:10px 15px;margin:0;}	
+</style>
 <body class="whitebg">
   <div class="content_main">
     <div class="contentinner">
@@ -58,9 +64,7 @@
 			<li class="tab"><a href="${contextPath}/xm_appln/report_yfys.page?appId=${appId}&urlType=${urlType}">应付预收</a></li>
 			<li class="tab"><a href="${contextPath}/xm_appln/report_ysyf.page?appId=${appId}&urlType=${urlType}">应收预付</a></li>
 			<li class="tab"><a href="${contextPath}/xm_appln/report_lsfx.page?appId=${appId}&urlType=${urlType}">流水</a></li>
-         </ul>
-         </div>
-      <div class="tabplace">
+         </ul>        
       </div>
       <form id="id_module_form">
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">$!{tableContent}</div>

@@ -5,16 +5,19 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
+		        <div class="title">产品信息</div>
+		    </div>
+			 <!-- <div class="place">
 				  <div class="dvTab">
         <ul class="com-tab">
         	<li class="tab activeTab"><a href="${contextPath}/product/productinformation/display.page?id=${productId}">产品属性</a></li>
             <!-- <li class="tab"><a href="${contextPath}/product/productinformation/display_cpfjqd.page?id=${productId}">附件清单</a></li>
             <li class="tab"><a href="${contextPath}/product/productinformation/display_cpgz.page?id=${productId}">产品规则</a></li>
             <li class="tab"><a href="${contextPath}/product/productinformation/display_csgz.page?id=${productId}">催收规则</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/display_cpsxgz.page?id=${productId}">筛选规则</a></li> -->
+            <li class="tab"><a href="${contextPath}/product/productinformation/display_cpsxgz.page?id=${productId}">筛选规则</a></li>
          </ul>
         </div>
-			</div>
+			</div>-->
 			<form id="id_module_form" action="">
 				<div class="forms" id="formsId">
 					<input type="hidden" name="id" value="$!productId" />
@@ -121,7 +124,7 @@
 						</tr> -->
 					</table>
 					
-				  <table style="border: 1px solid #dcdcdc;margin-bottom: 10px;" id="tab";>
+				  <table style="border: 1px solid #dcdcdc;">
 						<colgroup>
 						    <col width="5%" />
 							<col width="24%" />
@@ -130,8 +133,17 @@
 							<col width="24%" />
 						</colgroup>
 						<tr>
-                          <td colspan="5" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">机构清单</td>
-                         </tr>
+	                         <td colspan="5" style="text-align:center;font-weight: bold;background-color:#f6f9fe;">机构清单</td>
+	                        </tr>
+                   </table>
+                   <table style="border: 1px solid #dcdcdc;border-top:none;" id="tab">
+						<colgroup>
+						    <col width="5%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+							<col width="24%" />
+						</colgroup>
 					      #set($total = ($organization.size()/4)) 
 					      
 					      #foreach ($!index in [0 .. $total])
@@ -174,8 +186,8 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		var layout = new FormsLayout("formsId");
-		window.top.currentWindow.setLayout(layout);
+		//var layout = new FormsLayout("formsId");
+		//window.top.currentWindow.setLayout(layout);
 	</script>
 </body>
 
