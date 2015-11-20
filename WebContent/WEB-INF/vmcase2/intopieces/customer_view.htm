@@ -1,15 +1,22 @@
 #parse ("common/iframe_page_header.htm")
 #parse ("common/macro.htm")
-<script src="${contextPath}/js/intopieces/intopieces.js"></script>
+	<script src="${contextPath}/js/intopieces/intopieces.js"></script>
+	<link rel="stylesheet" type="text/css" href="${uicasePath}/xm_appln/box.css" />
+	<style type="text/css">
+		table{margin:0;}
+	</style>
 <body>
+<div class="fixed" >
+	<h1>信息主表查看</h1>
+</div>
   <div class="content_main">
     <div class="contentinner">
-      	<div class="place">
+      	<!-- <div class="place">
       		<div>信息主表查看</div>
-      	</div>
+      	</div> -->
         <div id="topDiv" >
         <form id="allInfoForm">
-        <div class="forms" id="allForm">
+        <div class="forms" id="allForm" style="padding-left:0;padding-top:0;">
             <table class="rule" id="customerBaseInfo" border="1" bordercolor="#CCCCCC">
             <caption>基本资料</caption>
             <colgroup>
@@ -314,11 +321,11 @@
           </table>
           
 <!--联系人 Start-->   
-            <table class="rule" id="contactHead" >
+            <table class="rule" id="contactHead" style="margin-bottom:0;">
             <caption>联系人</caption>
             </table>
            #if (!${customerApplicationContactList} || $!{customerApplicationContactList.size()}==0)
-            <table class="rule" id="contact" border="1" bordercolor="#CCCCCC">
+            <table class="rule" id="contact" border="1" bordercolor="#CCCCCC" style="margin-top:0;">
             <colgroup>
               <col width="10%">
               <col width="40%">
@@ -364,7 +371,7 @@
             
           #else 
             #if($!{customerApplicationContactList.size()}==1)
-            <table class="rule" id="contact"  border="1" bordercolor="#CCCCCC">
+            <table class="rule" id="contact"  border="1" bordercolor="#CCCCCC" style="margin-top:0;">
             <colgroup>
               <col width="10%">
               <col width="40%">
@@ -417,7 +424,7 @@
             #else 
             #foreach ($!{contact} in $!{customerApplicationContactList})
             #if ($!{velocityCount} == 1)
-            <table class="rule" id="contact"  border="1" bordercolor="#CCCCCC">
+            <table class="rule" id="contact"  border="1" bordercolor="#CCCCCC" style="margin-top:0;">
             <colgroup>
               <col width="10%">
               <col width="40%">
@@ -469,7 +476,7 @@
           </table>
             #else 
              #set($size=$velocityCount - 1)
-            <table class="rule" id="contactAdd$!size" border="1" bordercolor="#CCCCCC">
+            <table class="rule" id="contactAdd$!size" border="1" bordercolor="#CCCCCC" style="margin-top:0;">
             <colgroup>
               <col width="10%">
               <col width="40%">
@@ -526,11 +533,11 @@
   <!--联系人End-->         
   
   <!--担保人 Start-->
-            <table class="rule" id="guarantorHead">
+            <table class="rule" id="guarantorHead" style="margin-bottom:0;">
              <caption>担保人</caption>
             </table>
             #if (!${customerApplicationGuarantorList} || $!{customerApplicationGuarantorList.size()}==0)
-            <table class="rule" id="guarantor" border="1" bordercolor="#CCCCCC">
+            <table class="rule" id="guarantor" border="1" bordercolor="#CCCCCC" style="margin-top:0;">
             <colgroup>
               <col width="10%">
               <col width="40%">
@@ -574,7 +581,7 @@
           </table>
           #else 
              #if($!{customerApplicationGuarantorList.size()}==1)
-             <table class="rule" id="guarantor"  border="1" bordercolor="#CCCCCC">
+             <table class="rule" id="guarantor"  border="1" bordercolor="#CCCCCC" style="margin-top:0;">
              <colgroup>
               <col width="10%">
               <col width="40%">
@@ -626,7 +633,7 @@
           #else 
           #foreach ($!{guarantor} in $!{customerApplicationGuarantorList})
             #if ($!{velocityCount} == 1)
-           <table class="rule" id="guarantor"  border="1" bordercolor="#CCCCCC">
+           <table class="rule" id="guarantor"  border="1" bordercolor="#CCCCCC" style="margin-top:0;">
            <colgroup>
               <col width="10%">
               <col width="40%">
@@ -677,7 +684,7 @@
           </table>
           #else 
             #set($size=$velocityCount - 1)
-            <table class="rule" id="guarantorAdd$!size"  border="1" bordercolor="#CCCCCC">
+            <table class="rule" id="guarantorAdd$!size"  border="1" bordercolor="#CCCCCC" style="margin-top:0;">
             <colgroup>
               <col width="10%">
               <col width="40%">
@@ -733,11 +740,11 @@
 <!--担保人 End-->
 
 <!--推荐人 Start--> 
-            <table class="rule" id="recommendHead">
+            <table class="rule" id="recommendHead" style="margin-bottom:0;">
             <caption>推荐人</caption>
             </table>
             #if (!${customerApplicationRecomList} || $!{customerApplicationRecomList.size()}==0)
-            <table class="rule" id="recommend" border="1" bordercolor="#CCCCCC">
+            <table class="rule" id="recommend" border="1" bordercolor="#CCCCCC" style="margin-top:0;">
             <colgroup>
               <col width="10%">
               <col width="40%">
@@ -764,7 +771,7 @@
           
           #else 
            #if($!{customerApplicationRecomList.size()}==1)
-           <table class="rule" id="recommend" border="1" bordercolor="#CCCCCC">
+           <table class="rule" id="recommend" border="1" bordercolor="#CCCCCC" style="margin-top:0;">
            <colgroup>
               <col width="10%">
               <col width="40%">
@@ -791,7 +798,7 @@
           #else
             #foreach ($!{recom} in $!{customerApplicationRecomList})
             #if($!{velocityCount}==1)
-            <table class="rule" id="recommend" border="1" bordercolor="#CCCCCC">
+            <table class="rule" id="recommend" border="1" bordercolor="#CCCCCC" style="margin-top:0;">
             <colgroup>
               <col width="10%">
               <col width="40%">
@@ -820,7 +827,7 @@
           </table>
             #else 
             #set($size=$velocityCount - 1)
-            <table class="rule" id="recommendAdd$!size" border="1" bordercolor="#CCCCCC">
+            <table class="rule" id="recommendAdd$!size" border="1" bordercolor="#CCCCCC" style="margin-top:0;">
             <colgroup>
               <col width="10%">
               <col width="40%">
