@@ -1,0 +1,70 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">行内产品信息</div>
+      </div>
+      
+      <div class="inquiry">
+<!-----------搜索------------------------------------------->  
+  <div class="search_tag">#i18n("label.browse.filter")</div>
+<!-------------- 信息显示 ------------------------------------->        
+        <div id="topDiv" class="inquiry_list inquiry_top">
+        <input type="hidden" id="appId" value="$!appId"/>
+          <table>
+            <colgroup>
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" /> 
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap">客户近三个月日均</th>
+              <th nowrap="nowrap">授信余额</th>
+              <th nowrap="nowrap">余额</th>
+              <th nowrap="nowrap">五级分类</th>
+              <th nowrap="nowrap">查询日期</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="10%" />
+              <col width="10%" />
+              <col width="10%" /> 
+              <col width="10%" />
+              <col width="10%" />
+            </colgroup>
+            #foreach ($history in $historyForms)
+            <tr >
+        <!--       <td class="checkbox"><input type="radio" name="checkbox" value=""/> -->
+              <td nowrap="nowrap">$!history.three_month_average</td>
+              <td nowrap="nowrap">$!history.credit_amount</td>
+              <td nowrap="nowrap">$!history.balance</td>
+              <td nowrap="nowrap">$!history.five_stage_classification</td>
+              <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss',$!history.createdTime)</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+</script>
+#parse ("common/iframe_page_footer.htm")
+ 

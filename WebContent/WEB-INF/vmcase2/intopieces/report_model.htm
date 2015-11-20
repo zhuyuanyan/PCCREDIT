@@ -17,7 +17,7 @@
 		       <input type ="hidden" id ="custType" value ="$!custType"/>
 		       <input type ="hidden" id ="productId" value ="$!productId"/>
 		       <input type ="hidden" id ="localExeclId" value ="$!localExeclId"/>
-
+			   <input type ="hidden" id ="yxId" value ="$!yxId"/>
 				<input id="yf_1" type="hidden" value="$!yf_1" />
 				<input id="yf_2" type="hidden" value="$!yf_2" />
 				<input id="yf_3" type="hidden" value="$!yf_3" />
@@ -43,9 +43,9 @@
 				<input id="by_3" type="hidden" value="$!by_3" />
 				<input id="by_4" type="hidden" value="$!by_4" />
 					<li class="tab "><a
-				href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId">调查报告</a></li>
+				href="${contextPath}/intopieces/intopiecesapprove/reportImport.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId&yxId=$!yxId">调查报告</a></li>
 			   <li class="tab activeTab"><a
-				href="${contextPath}/intopieces/intopiecesapprove/bankModel.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId">行内模型</a></li>
+				href="${contextPath}/intopieces/intopiecesapprove/bankModel.page?customerId=$!customerId&intopiecesType=$!intopiecesType&applyQuota=$!applyQuota&ApplyIntopiecesSpareType_1=$!ApplyIntopiecesSpareType_1&ApplyIntopiecesSpareType_2=$!ApplyIntopiecesSpareType_2&custType=$!custType&productId=$!productId&yxId=$!yxId">行内模型</a></li>
 			  </ul>
 			</div>
 			<!--*******************************************************有房客户********************************************************  -->
@@ -741,6 +741,7 @@
 				"custType" : $("#custType").val(),
 				"productId" : $("#productId").val(),
 				"localExeclId" : $("#localExeclId").val(),
+				"yxId" : $("#yxId").val(),
 				"house_type" :$("#house_type").val(),
 				"house_type1" :$("#house_type1").val(),
 				"value_1" :$("#value_1").val(),
@@ -790,7 +791,7 @@
 			      },
 			success : function(data) {
 				if (data.success) {
-					topWin.Dialog.message("保存成功！");
+					topWin.Dialog.message(data.message);
 					window.location.href= contextPath+"/intopieces/intopiecesapprove/browseProduct.page"
 				} else {
 					topWin.Dialog.message(data.message);

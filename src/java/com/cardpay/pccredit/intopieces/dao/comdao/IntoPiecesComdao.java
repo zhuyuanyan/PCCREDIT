@@ -35,6 +35,7 @@ import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.ManagerProductsConfiguration;
+import com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -56,7 +57,7 @@ public class IntoPiecesComdao {
 		String status = filter.getStatus();
 		StringBuffer sql = null;
 		sql = new StringBuffer(
-				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.status,t.serial_number,t.CREATED_TIME from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.status,t.serial_number,t.CREATED_TIME,t.FINAL_APPROVAL from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
 		if (StringUtils.trimToNull(cardId) != null
 				|| StringUtils.trimToNull(chineseName) != null) {
 			if (StringUtils.trimToNull(cardId) != null
@@ -459,6 +460,7 @@ public class IntoPiecesComdao {
 
 		return commonDao.queryBySql(ApproveHistoryForm.class, sql, params);
 	}
+	
 
 	/**
 	 * 查找进件的审批中的节点

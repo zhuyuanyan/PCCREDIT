@@ -35,6 +35,7 @@ import com.cardpay.pccredit.product.model.ProductMarketingRules;
 import com.cardpay.pccredit.product.model.ProductRewardIncentive;
 import com.cardpay.pccredit.product.model.ProductsAgencyAssociation;
 import com.cardpay.pccredit.product.model.ScreeningResults;
+import com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -494,5 +495,9 @@ public class ProductService {
 	
 	public void updateLocalExecl(String localExeclId,String appId){
 		productDao.updateLocalExecl(localExeclId, appId);
+	}
+	
+	public List<BANK_PRODUCT_TIME_DATA> findBankProdTimeData(String id) {
+		return productDao.findBankProdTimeData(id);
 	}
 }

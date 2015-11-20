@@ -4,7 +4,7 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">客户维护信息</div>
+        <div class="title">客户信息</div>
       </div>
  <div class="inquiry">
         <div class="search_tag">#i18n("label.browse.filter")</div>
@@ -79,10 +79,7 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #btnpriv("maintenance")<a id="id_create_button_1" class="btn_g" href="javascript:void(0);" title="添加客户维护信息">添加客户维护信息</a>#end 
-          #btnpriv("addblacklist")<a id="id_blacklist_button" class="btn_g" href="javascript:void(0);" title="加入黑名单">加入黑名单</a>#end
-<!--           #btnpriv("transfer")<a id="id_transfer_button" class="btn_g" href="javascript:void(0);" title="移交" onclick="transfer()">移交</a>#end  -->
-<!-- 		  <a id="id_transfer_button" class="btn_g" href="javascript:void(0);" title="移交" onclick="turn()">移交</a> -->
+		  <a id="id_transfer_button" class="btn_g" href="javascript:void(0);" title="移交" onclick="turn()">移交</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -93,55 +90,10 @@
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
-
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
-		//改为xm_appln版本
-		//opsObj.createUrl1 = "${contextPath}/customer/basiccustomerinforUpdate/changewh.page";
-		opsObj.createUrl1 = "${contextPath}/xm_appln/changewh_xm_appln.page";
-		opsObj.createUrl = "${contextPath}/customer/basiccustomerinforUpdate/create.page";
-		opsObj.displayUrl = "${contextPath}/customer/basiccustomerinfor/displayclone.page?applicationId = '1000'";
-		opsObj.changeUrl = "${modulePath}/change.page";
-		opsObj.deleteUrl = "${modulePath}/delete.json";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-		opsObj.exportUrl = "${modulePath}/export.page";
-		
-		$("#id_blacklist_button").click(function() {
-			if ($(".checkbox :checked").length == 1) {
-				var rowId = getCurrentRowId().split("&")[0];
-				var url = "${contextPath}/customer/basiccustomerinforUpdate/blacklistcreate.page?customerId=" + rowId;
-				window.location.href = url + "&callBackUrl=" + window.location.href;
-			}
-	    });
-        
-		 if (opsObj.createUrl1) {
-	        $("#id_create_button_1").click(function() {
-	            if ($(".checkbox :checked").length == 1) {
-	                var rowid = $($(".checkbox :checked")[0]).attr("value").split("&")[0];
-	                var url ="";
-	                
-	                if(opsObj.createUrl1.indexOf("?")>=0){
-	                	url = opsObj.createUrl1 + "&id=" + rowid;
-	                }else{
-	                	url = opsObj.createUrl1 + "?id=" + rowid;
-	                }
-	                if (opsObj.formObj) {
-	                    // 回调URL
-	                    var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
-	                    if (callBackUrlObj) {
-	                        url += "&" + $.param({
-	                            'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
-	                        });
-	                    }
-	                }
-	                window.location.href = url;
-	            } else {
-	                Dialog.message("请选择一行");
-	            }
-	        });
-	    }
-		 
 		prepareOperations(opsObj);
 	});
 </script>

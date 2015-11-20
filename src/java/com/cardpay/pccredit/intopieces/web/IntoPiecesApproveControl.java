@@ -38,6 +38,7 @@ import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.dao.comdao.CustomerInforCommDao;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.model.CUSTMANAGER_TRANSFER_HISTORY;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
@@ -60,6 +61,7 @@ import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerService;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.cardpay.pccredit.system.service.NodeAuditService;
 import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
 import com.cardpay.workflow.service.ProcessService;
@@ -75,6 +77,8 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.privilege.model.Organization;
+import com.wicresoft.jrad.modules.privilege.service.OrganizationService;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
@@ -94,6 +98,8 @@ public class IntoPiecesApproveControl extends BaseController {
 	
 	@Autowired
 	private CustomerInforService customerInforservice;
+	
+	
 	
 	@Autowired
 	private XM_APPLN_Service xM_APPLN_Service;
@@ -191,15 +197,20 @@ public class IntoPiecesApproveControl extends BaseController {
 					String productId = request.getParameter("productId");
 					String custType = request.getParameter("custType");
 					String localExeclId = request.getParameter("localExeclId");
-   				 
+   				    String yx_userid = request.getParameter("yxId");
 					//先判断是否已有流程
-					Boolean processBoolean = customerInforservice.ifProcess(customerId);
+					/*Boolean processBoolean = customerInforservice.ifProcess(customerId);
 					if(processBoolean){
 						returnMap.addGlobalMessage("此客户正在申请进件，无法再次申请!");
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.put("message","此客户正在申请进件，无法再次申请!");
-					}else{
+					}else{*/
 						//设置流程开始
+						CUSTMANAGER_TRANSFER_HISTORY his = new CUSTMANAGER_TRANSFER_HISTORY();
+						his.setCustomer_id(customerId);
+						his.setProductId(productId);
+						his.setJp_userid(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+						his.setYx_userid(yx_userid);
 						XmModel xm = getModel(request);
 						xM_APPLN_Service.saveApply(customerId,
 												   intopiecesType,
@@ -208,12 +219,12 @@ public class IntoPiecesApproveControl extends BaseController {
 												   applyQuota,
 												   productId,
 												   localExeclId,
-												   xm);
+												   xm,his);
 						
 						returnMap.put(RECORD_ID, customerId);
 						returnMap.addGlobalMessage(CREATE_SUCCESS);
 						returnMap.put("message","申请成功");
-					}
+					//}
 					
 				}catch (Exception e) {
 					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
@@ -265,7 +276,10 @@ public class IntoPiecesApproveControl extends BaseController {
 			List<XmNewSq> xmNewSq = xmNewSqService.findPassSq();
 			//获取客户经理资格信息
 			List<AccountManagerParameter> parameterList = accountManagerParameterService.getParametersByUserId(user.getId());
-
+			//获取营销人员
+			IUser u = Beans.get(LoginManager.class).getLoggedInUser(request);
+			Organization organization = Beans.get(OrganizationService.class).findOrgByUserId(u.getId());
+			List<SystemUser> yxUser = customerInforservice.findUserByOrgId(organization.getId());
 			if(parameterList.size()>0){
 				mv.addObject("ed", parameterList.get(0).getApplyQuatoLimit());
 				mv.addObject("typeCode", parameterList.get(0).getCustomerTypeCode());
@@ -276,6 +290,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject(PAGED_RESULT, pagedResult);
 			mv.addObject("xmNewSq", xmNewSq);
 			mv.addObject("productId", filter.getProductId());
+			mv.addObject("forms", yxUser);
 			return mv;
 		}
 		
@@ -321,7 +336,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			String ApplyIntopiecesSpareType_2 =request.getParameter("ApplyIntopiecesSpareType_2");
 			String custType =request.getParameter("custType");
 			String productId =request.getParameter("productId");
-			
+			String yxId =request.getParameter("yxId");
 			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer1(filter);
 			JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
 			List<LocalExcelForm> list = pagedResult.getItems();
@@ -341,7 +356,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject("ApplyIntopiecesSpareType_2", ApplyIntopiecesSpareType_2);
 			mv.addObject("custType", custType);
 			mv.addObject("productId", productId);
-			
+			mv.addObject("yxId", yxId);
 			return mv;
 		}
 		//导入调查报告
@@ -393,7 +408,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			String ApplyIntopiecesSpareType_2 =request.getParameter("ApplyIntopiecesSpareType_2");
 			String custType =request.getParameter("custType");
 			String productId =request.getParameter("productId");
-			
+			String yxId =request.getParameter("yxId");
 			mv.addObject("customerId", customerId);
 			mv.addObject("intopiecesType", intopiecesType);
 			mv.addObject("applyQuota", applyQuota);
@@ -401,6 +416,7 @@ public class IntoPiecesApproveControl extends BaseController {
 			mv.addObject("ApplyIntopiecesSpareType_2", ApplyIntopiecesSpareType_2);
 			mv.addObject("custType", custType);
 			mv.addObject("productId", productId);
+			mv.addObject("yxId", yxId);
 			
 			
 			if("2".equals(ApplyIntopiecesSpareType_1)){//2-有房

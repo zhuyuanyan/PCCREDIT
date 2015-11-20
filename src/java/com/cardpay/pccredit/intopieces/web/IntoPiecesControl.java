@@ -1,7 +1,6 @@
 package com.cardpay.pccredit.intopieces.web;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,16 +27,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
-import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.dao.comdao.CustomerInforCommDao;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
-import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
-import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.CardStatus;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
@@ -52,7 +48,6 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantorVo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
-import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
@@ -60,30 +55,13 @@ import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationProcessService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
-import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.AppendixDict;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
-import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
-import com.cardpay.pccredit.system.constants.YesNoEnum;
-import com.cardpay.pccredit.system.model.NodeAudit;
-import com.cardpay.pccredit.system.model.NodeControl;
 import com.cardpay.pccredit.system.service.NodeAuditService;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DBXX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DCSC;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_HKSZ;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KPMX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_QTXYKXX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQED;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_TJINFO;
+import com.cardpay.pccredit.xm_appln.model.BANK_PRODUCT_TIME_DATA;
 import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
-import com.cardpay.pccredit.xm_appln.web.XM_APPLN_Controller;
-import com.cardpay.workflow.models.WfProcessInfo;
-import com.cardpay.workflow.models.WfStatusInfo;
-import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -98,13 +76,7 @@ import com.wicresoft.jrad.base.web.DataBindHelper;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
-import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
-import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
-import com.wicresoft.jrad.modules.dictionary.DictionaryManager;
-import com.wicresoft.jrad.modules.dictionary.model.Dictionary;
-import com.wicresoft.jrad.modules.dictionary.model.DictionaryItem;
-import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
@@ -1230,6 +1202,21 @@ public class IntoPiecesControl extends BaseController {
 			mv.addObject("historyForms", historyForms);
 		}
 		mv.addObject("ifHideUser", ifHideUser);
+		return mv;
+	}
+	
+	/**
+	 * 查看行内产品时点数据
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "findBankProdTimeData.page", method = { RequestMethod.GET })
+	public AbstractModelAndView findBankProdTimeData(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/bank_product_time_data_browse", request);
+		String id = request.getParameter("id");
+		List<BANK_PRODUCT_TIME_DATA> historyForms = productService.findBankProdTimeData(id);
+		mv.addObject("historyForms", historyForms);
 		return mv;
 	}
 

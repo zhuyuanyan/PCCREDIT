@@ -54,6 +54,10 @@
 		<if test="orgName != null and orgName != '' ">
 						<![CDATA[ and SQ.org_name like '%'||#{orgName}||'%']]>
 		</if>
+		
+		<if test="status != null and status != '' ">
+			and SQ.status  =#{status}
+		</if>
 				
 			<![CDATA[
 					) ROW_

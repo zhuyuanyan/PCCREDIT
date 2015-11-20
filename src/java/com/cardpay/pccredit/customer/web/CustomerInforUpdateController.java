@@ -45,6 +45,7 @@ import com.cardpay.pccredit.customer.model.CustomerInforUpdateIncomeStatement;
 import com.cardpay.pccredit.customer.model.CustomerMainManager;
 import com.cardpay.pccredit.customer.model.CustomerQuestionInfo;
 import com.cardpay.pccredit.customer.model.CustomerinforUpdateWorship;
+import com.cardpay.pccredit.customer.model.managerChageForm;
 import com.cardpay.pccredit.customer.service.CustomerCareersService;
 import com.cardpay.pccredit.customer.service.CustomerCreditEvaluationService;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
@@ -61,6 +62,9 @@ import com.cardpay.pccredit.divisional.service.DivisionalService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
+import com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter;
+import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
+import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.riskControl.constant.RiskAttributeEnum;
 import com.cardpay.pccredit.riskControl.constant.RiskAttributeTypeEnum;
@@ -68,30 +72,11 @@ import com.cardpay.pccredit.riskControl.filter.RiskAttributeFilter;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.RiskAttribute;
 import com.cardpay.pccredit.riskControl.service.RiskAttributeService;
+import com.cardpay.pccredit.system.filter.SystemUserFilter;
 import com.cardpay.pccredit.system.model.Dict;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.cardpay.pccredit.system.service.DictService;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ADDR;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DBXX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_DCSC;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_HKSZ;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_JCZL;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHED;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHFW;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KHLB;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_KPMX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_LXRZL;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_POZL;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_QTXYKXX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_SQED;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_TJINFO;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_YWXX;
-import com.cardpay.pccredit.xm_appln.model.XM_APPLN_ZXQSZL;
-import com.cardpay.pccredit.xm_appln.service.XM_APPLN_Service;
-import com.cardpay.pccredit.xm_appln.web.XM_APPLN_ADDR_FORM;
-import com.cardpay.pccredit.xm_appln.web.XM_APPLN_FORM;
-import com.cardpay.pccredit.xm_appln.web.XM_APPLN_JBZL_FORM;
-import com.cardpay.pccredit.xm_appln.web.XM_APPLN_NEW_CUSTOMER_FORM;
+import com.cardpay.pccredit.system.service.SystemUserService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -105,10 +90,9 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
-import com.wicresoft.jrad.modules.dictionary.DictionaryManager;
-import com.wicresoft.jrad.modules.dictionary.model.Dictionary;
-import com.wicresoft.jrad.modules.dictionary.model.DictionaryItem;
+import com.wicresoft.jrad.modules.privilege.model.Organization;
 import com.wicresoft.jrad.modules.privilege.model.User;
+import com.wicresoft.jrad.modules.privilege.service.OrganizationService;
 import com.wicresoft.jrad.modules.privilege.service.UserService;
 import com.wicresoft.util.date.DateHelper;
 import com.wicresoft.util.spring.Beans;
@@ -165,6 +149,13 @@ public class CustomerInforUpdateController extends BaseController {
 	
 	@Autowired
 	private CustomerCreditEvaluationService customerCreditEvaluationService; //授信评估模型
+	
+	
+	@Autowired
+	private SystemUserService systemUserService;
+	
+	@Autowired
+	private AccountManagerParameterService accountManagerParameterService;
 
 	/**
 	 * 浏览页面
@@ -1772,6 +1763,139 @@ public class CustomerInforUpdateController extends BaseController {
 		}
 		return null;
 	}
+	
+	
+	/**
+	 * 移交页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "transferCustomerManager.page")
+	public AbstractModelAndView transferCustomerManager(HttpServletRequest request) {
+		String customerId=request.getParameter("id");
+		String customerName=request.getParameter("custName");
+		// 通过customerId 找到经理Id
+		//IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		CustomerInfor cust = customerInforservice.findCustomerById(customerId);
+		SystemUser systemUser =  customerInforservice.findById(cust.getUserId());
+		// 通过customerId 找到机构Id
+		Organization organization = Beans.get(OrganizationService.class).findOrgByUserId(cust.getUserId());
+		//查询机构下面的客户经理
+	    List<AccountManagerParameterForm> forms =  customerInforservice.findOrganDownManager(organization.getId(),cust.getUserId());
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInforUpdate/customerinfoupdate_transfer", request);
+		mv.addObject("user", cust);
+		mv.addObject("systemUser", systemUser);
+		mv.addObject("organization", organization);
+		mv.addObject("customerId", customerId);
+		mv.addObject("customerName", customerName);
+		mv.addObject("forms", forms);
+		return mv;
+	}
+	
+	
+	/**
+	 * 移交客户
+	 * @param form
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "turnCustManager.json")
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap turnCustManager(@ModelAttribute managerChageForm form, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+			if (returnMap.isSuccess()) {
+				try {
+					IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+					//修改客户所属客户经理
+					CustomerInfor cust = customerInforservice.findCustomerById(form.getCustId());
+					cust.setUserId(form.getCustomerManagerId());
+					cust.setModifiedBy(user.getId());
+					cust.setModifiedTime(new Date());
+					//保留移交记录
+					/*CUSTMANAGER_TRANSFER_HISTORY his = new CUSTMANAGER_TRANSFER_HISTORY();
+					his.setCustomer_id(form.getCustId());
+					his.setOld_customermanagerid(form.getCustManagerId());
+					his.setNew_customermanagerid(form.getCustomerManagerId());
+					his.setYx_userid(form.getAuditUserIds());
+					his.setJp_userid(form.getCustManagerId());
+					his.setCreatedBy(user.getId());
+					his.setCreatedTime(new Date());*/
+					//保存
+					customerInforservice.updateCustomerForAndInsertHis(cust);
+					returnMap.addGlobalMessage(CREATE_SUCCESS);
+				}catch (Exception e) {
+					returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return WebRequestHelper.processException(e);
+				}
+			}
+		return returnMap;
+	}
+	
+	
+	/**
+	 * 用户显示
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+
+	@ResponseBody
+	@RequestMapping(value = "yxbrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(@ModelAttribute SystemUserFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		String selectval = request.getParameter("selectval");
+		List<String> selectlist = new  ArrayList<String>();
+		String [] selectvalarry =null;
+		if(selectval != null){
+		 selectvalarry= selectval.split(",");
+		 for(int i=0;i<selectvalarry.length;i++){ 
+			 selectlist.add(selectvalarry[i]);
+		 }
+	    }
+		QueryResult<SystemUser> result = systemUserService.findSystemUserByFilter(filter);	
+		JRadPagedQueryResult<SystemUser> pagedResult = new JRadPagedQueryResult<SystemUser>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInforUpdate/system_user_browse", request);
+		
+		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("selectvalList", selectlist);
+		return mv;
+	}
+	
+	/**
+	 * 查询客户经理
+	 */
+	@ResponseBody
+	@RequestMapping(value = "mbrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(@ModelAttribute AccountManagerParameterFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		QueryResult<AccountManagerParameterForm> result = accountManagerParameterService.findAccountManagerParametersByFilter(filter);
+		JRadPagedQueryResult<AccountManagerParameterForm> pagedResult = new JRadPagedQueryResult<AccountManagerParameterForm>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("customer/customerInforUpdate/customerinfoupdate_managerbrowse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	/**
+	 * 查询客户经理名下客户
+	 */
+	@ResponseBody
+	@RequestMapping(value = "cbrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView cbrowse(@ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
+        filter.setRequest(request);
+		filter.setUserId(request.getParameter("id"));
+		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilter(filter);
+		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInforUpdate/customerinfoupdate_mbrowse",request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
 	
 }
 

@@ -33,16 +33,18 @@
              <col width="5%" />
               <col width="10%" />
               <col width="10%" />
+              <col width="8%" />
               <col width="10%"/>
               <col width="15%"/>
               <col width="10%"/>
-              <col width="10%"/>
               <col width="13%"/>
+              <col width="10%"/>
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">申请金额</th>
+              <th nowrap="nowrap">最终金额</th>
               <th nowrap="nowrap">证件类型</th>
               <th nowrap="nowrap">证件号码</th>
               <th nowrap="nowrap">审核状态</th>
@@ -57,17 +59,19 @@
               <col width="5%" />
               <col width="10%" />
               <col width="10%" />
+              <col width="8%" />
               <col width="10%"/>
               <col width="15%"/>
               <col width="10%"/>
-              <col width="10%"/>
               <col width="13%"/>
+              <col width="10%"/>
             </colgroup>
            #foreach ($wait in $result.items)
             <tr ondblclick="viewPiecesInfo();">
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.applyQuota</td>
+              <td nowrap="nowrap">$!wait.finalApproval</td>
               <td nowrap="nowrap">#dictVal("RACE_CODE",$!wait.cardType)</td>
               <td nowrap="nowrap">$!wait.cardId</td>
               <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
@@ -162,10 +166,11 @@
 		$("input[name='checkbox']:checked").each(function() {
 			id = $(this).val().split("@")[0];
 			customerId = $(this).val().split("@")[1];
+			cardId = $(this).val().split("@")[5];
 		});
 		if(id!=null){
 			window.location.href = 
-				"${contextPath}/xm_appln/turn_iframe_tab.page?customerId="+customerId+"&applicationId="+id;
+				"${contextPath}/xm_appln/turn_iframe_tab.page?customerId="+customerId+"&applicationId="+id+"&cardId="+cardId;
 		}else{
 			Dialog.message("请选择要查看的进件!");
 		}
