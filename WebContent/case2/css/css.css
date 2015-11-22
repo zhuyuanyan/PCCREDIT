@@ -53,7 +53,7 @@ div { display: block; font-weight: normal;}
 
 /********************sidebar*************************/
 .left_nav{ width:219px; background:#f6f6f6; float:left; margin:0px; border-right:1px solid #c0d9f7;}
-.sidebar{ width:219px; float:left;}
+.sidebar{ width:100%; float:left;}
 .sidelist{border-bottom:1px solid #c8c8cb;}
 .sidelist .category{ background:url(../images/list_bg.png) repeat-x; border-bottom:1px solid #fcfcfc; border-top:1px solid #c8c8cb;}
 .sidelist > li.select{ background:url(../images/list_bg_c.png) repeat-x; color:#fff; }

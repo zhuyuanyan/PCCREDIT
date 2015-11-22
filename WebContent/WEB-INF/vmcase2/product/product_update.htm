@@ -17,16 +17,19 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
+		        <div class="title">修改产品</div>
+		    </div>
+			 <!--  <div class="place">
 				  <div class="dvTab">
             <ul class="com-tab">
             <li class="tab activeTab" ><a href="${contextPath}/product/productinformation/change.page?id=${productId}">产品属性</a></li>
-           <!--  <li class="tab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
+          <li class="tab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
             <li class="tab"><a href="${contextPath}/product/productinformation/change_cpgz.page?id=${productId}">产品规则</a></li>
             <li class="tab"><a href="${contextPath}/product/productinformation/change_csgz.page?id=${productId}">催收规则</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li> -->
+            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li> 
          </ul>
         </div>
-			</div>
+			</div>-->
 			<form id="id_module_form" action="${contextPath}/product/productinformation/update.json"  method="post">
 				<div class="forms" id="formsId">
 					<input type="hidden" name="id" value="$!product.id" />
@@ -60,8 +63,8 @@
 						<tr>
 							<td><label for="name">卡片到期日:</label></td>
 							<td><input type="text" name="endTime" id="endTime"  value="$!accountInfo.endTime"  onmouseover="_calendar()"/></td>
-							
-							
+							<td></td>
+							<td></td>
 						</tr>
 						
 						<!-- <tr>

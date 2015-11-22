@@ -2,22 +2,25 @@
 <script src="${contextPath}/js/intopieces/intopieces.js" charset="utf-8"></script>
 <script type="text/javascript">
 </script>
+<style type="text/css">
+	
+</style>
 <body>
-  <div class="content_main">
+  <div class="content_main" >
     <div class="contentinner">
-      <div class="place">
+      <!-- <div class="place">
         <div class="title">配偶进件查询</div>
-      </div>
+      </div> -->
       <div class="inquiry">
-        <div id="topDiv" class="inquiry_list inquiry_top">
+        <div id="topDiv" class="inquiry_list inquiry_top" >
           <table>
             <colgroup>
               <col width="5%" />
               <col width="15%" />
-              <col width="15%"/>
-              <col width="10%"/>
-              <col width="15%"/>
-              <col width="10%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
               <col />
             </colgroup>
             <tr class="title">
@@ -35,10 +38,10 @@
             <colgroup>
               <col width="5%" />
               <col width="15%" />
-              <col width="15%"/>
-              <col width="10%"/>
-              <col width="15%"/>
-              <col width="10%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
+              <col width="20%"/>
               <col />
             </colgroup>
             #foreach ($intoPieces in $result.items)
@@ -72,7 +75,7 @@
 </body>
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
-	window.top.currentWindow.setLayout(layout);
+	//window.top.currentWindow.setLayout(layout);//加这句有横向滚动条
 
 	$(document).ready(function() {
 		var opsObj = new Object();
@@ -84,7 +87,7 @@
 		opsObj.browseUrl = "${modulePath}/browse.page";
 		opsObj.exportUrl = "${modulePath}/export.page";
 		prepareOperations(opsObj);
-		
+		$(".ui-dialog").css("margin-top","-120px");//弹出框位置上移
 	});
 	
 </script>

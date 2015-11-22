@@ -4,11 +4,11 @@
 		.title{height:30px;}
 		.message tr td{line-height:40px;}
 		.info{width:40px;}
-		.info img{width:15px;vertical-align:middle;}
+		.info img{width:15px;vertical-align:middle;} 		
 	</style>
 </head>
-<body>
-<div class="fixed">
+<body style="overflow-x:hidden;">
+<div class="fixed" >
 	<h1>客户信息新增</h1>
 	<div class="buttons"><!--按钮组放置区域-->
 		<input id="id_save_button" type="button" value="保存" class="button"/>
@@ -24,7 +24,7 @@
 				<td><img src="${contextPath}/images/xm_appln/min.gif"/></td>
 			</tr>
 		</table>
-		<div name="content" class="forms" id="formsId">
+		<div name="content" class="forms" id="formsId" style="width:100%;">
 			<table class="message">
 				<tr>
 					<td class="label">姓名<font color="#ff0000">*</font></td>
@@ -92,7 +92,7 @@
 		<table class="title" onclick="Open(this)">
 			<tr>
 				<td>配偶资料</td>
-				<td><img src="${contextPath}/images/xm_appln/max.gif"/></td>
+				<td><img src="${contextPath}/images/xm_appln/min.gif"/></td>
 			</tr>
 		</table>
 		<div name="content" class="">
@@ -125,7 +125,7 @@
 	<script src="${contextPath}/js/cardValidate.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	var layout=new FormsLayout("formsId");	
-	window.top.currentWindow.setLayout(layout);
+	window.top.currentWindow.setLayout(layout);//加这句有横向滚动条
   	#set ($formName = "'#id_module_form'")
 	#parse ("xm_appln/xm_appln_page1_validation.js")
 	
@@ -234,8 +234,7 @@
 	function checkCard(){
 		var card = $("#spu_custr_nbr").val();
 		var url = contextPath+"/customer/basiccustomerinfor/intopiecesspouse.page?cardId="+card;
-		Dialog.table(url, "查询", "get", null, 800, 340);
-		
+		Dialog.table(url, "配偶进件查询", "get", null, 800, 300);
 	}
 	
 	function checkCardId(){
