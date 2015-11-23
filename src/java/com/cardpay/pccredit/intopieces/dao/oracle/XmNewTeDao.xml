@@ -149,15 +149,15 @@
   <!-- 交易bf -->
 	<insert id="insertJybfCur" parameterType="map" >
     insert into XM_NEW_TRANS_TEMP (CREATED_TIME,
-    							card_nbr, 
-    						    a3,
-    						    inp_date, 
-      							id
+    							   CARD_NBR, 
+    						       A3,
+    						       INP_DATE, 
+      							   ID
     )
     values (#{createdTime,jdbcType=VARCHAR},
-    		#{CARD_NBR,jdbcType=VARCHAR}, 
-    		#{A3,jdbcType=VARCHAR}, 
-    		#{INP_DATE,jdbcType=VARCHAR}, 
+    		#{cardNbr,jdbcType=VARCHAR}, 
+    		#{a3,jdbcType=VARCHAR}, 
+    		#{inpDate,jdbcType=VARCHAR}, 
     		sys_guid()
      )
   </insert>
@@ -349,48 +349,80 @@
 									XTRANNO,
       							    ID
     )
-    values     (#{createdTime   , jdbcType=VARCHAR},
-    		    #{AUTH_CODE     , jdbcType=VARCHAR},
-				#{BANK          , jdbcType=VARCHAR},
-				#{BILL_AMT      , jdbcType=VARCHAR},
-				#{BILL_AMT_SIGN , jdbcType=VARCHAR},
-				#{BRNO          , jdbcType=VARCHAR},
-				#{CANCL_CODE    , jdbcType=VARCHAR},
-				#{CAP_ADDR      , jdbcType=VARCHAR},
-				#{CARD_FLAG     , jdbcType=VARCHAR},
-				#{CARD_NBR      , jdbcType=VARCHAR},
-				#{CB_RIGHTS     , jdbcType=VARCHAR},
-				#{CURRNCY_CD    , jdbcType=VARCHAR},
-				#{DATA_DT       , jdbcType=VARCHAR},
-				#{DESC_PRINT    , jdbcType=VARCHAR},
-				#{DES_LINE1     , jdbcType=VARCHAR},
-				#{DES_LINE2     , jdbcType=VARCHAR},
-				#{EMPNO         , jdbcType=VARCHAR},
-				#{ETL_LOAD_DT   , jdbcType=VARCHAR},
-				#{INP_DATE      , jdbcType=VARCHAR},
-				#{INP_TIME      , jdbcType=VARCHAR},
-				#{INST_NO       , jdbcType=VARCHAR},
-				#{MERCHANT      , jdbcType=VARCHAR},
-				#{MERCH_SEQ     , jdbcType=VARCHAR},
-				#{MER_CAT_CD    , jdbcType=VARCHAR},
-				#{MICRO_REF     , jdbcType=VARCHAR},
-				#{MONTH_NBR     , jdbcType=VARCHAR},
-				#{ORGN_AMT      , jdbcType=VARCHAR},
-				#{ORGN_CURR     , jdbcType=VARCHAR},
-				#{PUR_DATE      , jdbcType=VARCHAR},
-				#{REV_IND       , jdbcType=VARCHAR},
-				#{SCHMFEEAMT    , jdbcType=VARCHAR},
-				#{SEC_LVL       , jdbcType=VARCHAR},
-				#{SETTLE_DAY    , jdbcType=VARCHAR},
-				#{SRC_SYS_NO    , jdbcType=VARCHAR},
-				#{SR_TYPE       , jdbcType=VARCHAR},
-				#{TERMINALI     , jdbcType=VARCHAR},
-				#{TRANS_SRC     , jdbcType=VARCHAR},
-				#{TRANS_TYPE    , jdbcType=VARCHAR},
-				#{VAL_DATE      , jdbcType=VARCHAR},
-				#{XTRANNO       , jdbcType=VARCHAR},
+    values     (#{createdTime  ,  jdbcType=VARCHAR},
+    		    #{authCode     ,  jdbcType=VARCHAR},
+				#{bank         ,  jdbcType=VARCHAR},
+				#{billAmt      ,  jdbcType=VARCHAR},
+				#{billAmtSign  ,  jdbcType=VARCHAR},
+				#{brno         ,  jdbcType=VARCHAR},
+				#{canclCode    ,  jdbcType=VARCHAR},
+				#{capAddr      ,  jdbcType=VARCHAR},
+				#{cardFlag     ,  jdbcType=VARCHAR},
+				#{cardNbr      ,  jdbcType=VARCHAR},
+				#{cb_rights    ,  jdbcType=VARCHAR},
+				#{currncyCd    ,  jdbcType=VARCHAR},
+				#{dataDt       ,  jdbcType=VARCHAR},
+				#{descPrint    ,  jdbcType=VARCHAR},
+				#{desLine1     ,  jdbcType=VARCHAR},
+				#{desLine2     ,  jdbcType=VARCHAR},
+				#{empno        ,  jdbcType=VARCHAR},
+				#{etlLoadDt    ,  jdbcType=VARCHAR},
+				#{inpDate      ,  jdbcType=VARCHAR},
+				#{inpTime      ,  jdbcType=VARCHAR},
+				#{instNo       ,  jdbcType=VARCHAR},
+				#{merchant     ,  jdbcType=VARCHAR},
+				#{merchSeq     ,  jdbcType=VARCHAR},
+				#{merCatCd     ,  jdbcType=VARCHAR},
+				#{MICRO_REF    ,  jdbcType=VARCHAR},
+				#{monthNbr     ,  jdbcType=VARCHAR},
+				#{orgnAmt      ,  jdbcType=VARCHAR},
+				#{orgnCurr     ,  jdbcType=VARCHAR},
+				#{purDate      ,  jdbcType=VARCHAR},
+				#{revInd       ,  jdbcType=VARCHAR},
+				#{schmfeeamt   ,  jdbcType=VARCHAR},
+				#{secLvl       ,  jdbcType=VARCHAR},
+				#{settleDay    ,  jdbcType=VARCHAR},
+				#{srcSysNo     ,  jdbcType=VARCHAR},
+				#{srType       ,  jdbcType=VARCHAR},
+				#{terminali    ,  jdbcType=VARCHAR},
+				#{transSrc     ,  jdbcType=VARCHAR},
+				#{transType    ,  jdbcType=VARCHAR},
+				#{valDate      ,  jdbcType=VARCHAR},
+				#{xtranno      ,  jdbcType=VARCHAR},
     		    sys_guid()
      )
   </insert>
+  
+  
+  
+  <!-- 客户调额信息统计表 -->
+  <insert id="insertXmKuTeTjCur" parameterType="map">
+  insert into xm_ku_te_tj_bb(id,a1,a2,a3,a4,a5,a6,a7,a8)
+   (select sys_guid(),c.id,
+       case when a.a26 >0 then '1' else '0' end,
+       case when a9 !=0 and (a22/a9)>0.8 then '1' else '0' end,
+       '0',
+       '0',
+        case when a.a48 >0 then '1' else '0' end,
+        case when a.a29 =1 then '1' else '0' end,
+         case when a9 !=0 and (a22/a9)>0.5 then '1' else '0' end
+        from xm_new_tz_temp a,
+              xm_new_trans_temp b,
+              basic_customer_information c
+      where a.a4 = c.card_id
+            and a.a1 = b.card_nbr)
+  </insert>
+  
+  <!-- 客户贷款信息统计表（日） -->
+<!-- select a55,
+       sum(a8),
+       '',
+       sum(36),
+       sum(35),
+       '',
+       ''
+ from xm_new_tz_ql  
+       where a55 ='222766' group by a55-->
+
 	
 </mapper>
