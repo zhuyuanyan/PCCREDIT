@@ -1,14 +1,14 @@
-package com.cardpay.pccredit.tools;
+/*package com.cardpay.pccredit.tools;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-/**
+*//**
  * 银行数据文件ftp配置信息
  * @author chenzhifang
  *
  * 2014-12-8下午3:43:34
- */
+ *//*
 @Component
 public class BankFtpConfig {
 	// IP地址
@@ -126,3 +126,4 @@ public class BankFtpConfig {
 		this.remothBackupPath = remothBackupPath;
 	}
 }
+*/

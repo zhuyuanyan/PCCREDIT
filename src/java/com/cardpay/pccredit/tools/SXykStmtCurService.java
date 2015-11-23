@@ -2,9 +2,11 @@ package com.cardpay.pccredit.tools;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.cardpay.pccredit.intopieces.dao.XmNewTeDao;
 
 /**
@@ -17,7 +19,6 @@ public class SXykStmtCurService {
 	@Autowired
 	private XmNewTeDao xmNewTeDao;
 	
-	//****************************客户调额信息统计表(月)****************************//
 	/**
 	 * 台帐（部分）
 	 * @param fileName
@@ -29,7 +30,7 @@ public class SXykStmtCurService {
 		//List<DataFileConf> confList = tools.parseDataFileConf(tools.getFileFullName("/datamapping/sXykStmtCur.xml"));
 		List<DataFileConf> confList = tools.parseDataFileConf("E:\\workspace\\pccredit_xm\\src\\conf\\datamapping\\tzbf.xml");
 		// 解析”帐单记录表“数据文件
-		//fileName = "C:\\Users\\Administrator\\Desktop\\aa\\STA_902_cmis_ACC_CREDIT_ADD_20151011.dat";
+		fileName = "C:\\Users\\Administrator\\Desktop\\bb\\STA_902_cmis_ACC_CREDIT_ADD_20151011.dat";
 		List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList);
 		for(Map<String, Object> map : datas){
 		    xmNewTeDao.insertTzbfCur(map);
@@ -48,14 +49,13 @@ public class SXykStmtCurService {
 		//List<DataFileConf> confList = tools.parseDataFileConf(tools.getFileFullName("/datamapping/sXykStmtCur.xml"));
 		List<DataFileConf> confList = tools.parseDataFileConf("E:\\workspace\\pccredit_xm\\src\\conf\\datamapping\\jybf.xml");
 		// 解析”帐单记录表“数据文件
-		fileName = "C:\\Users\\Administrator\\Desktop\\aa\\STA_902_cmis_ACC_CREDIT_ADD_20151012.dat";
+		fileName = "C:\\Users\\Administrator\\Desktop\\bb\\STA_902_cmis_ACC_CREDIT_ADD_20151012.dat";
 		List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList);
 		for(Map<String, Object> map : datas){
 		    xmNewTeDao.insertJybfCur(map);
 		}
 	}
 	
-	//****************************客户台账表（日）****************************//
 	/**
 	 * 台帐全量
 	 * @param fileName
@@ -67,14 +67,13 @@ public class SXykStmtCurService {
 		//List<DataFileConf> confList = tools.parseDataFileConf(tools.getFileFullName("/datamapping/sXykStmtCur.xml"));
 		List<DataFileConf> confList = tools.parseDataFileConf("E:\\workspace\\pccredit_xm\\src\\conf\\datamapping\\tzql.xml");
 		// 解析”帐单记录表“数据文件
-		fileName = "C:\\Users\\Administrator\\Desktop\\aa\\STA_902_cmis_ACC_CREDIT_ADD_20151011.dat";
+		fileName = "C:\\Users\\Administrator\\Desktop\\bb\\STA_902_cmis_ACC_CREDIT_ADD_20151011.dat";
 		List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList);
 		for(Map<String, Object> map : datas){
-		    xmNewTeDao.insertTzbfCur(map);
+		    xmNewTeDao.insertTzqlCur(map);
 		}
 	}
 	
-	//****************************客户交易数据表****************************//
 	/**
 	 * 交易全量
 	 * @param fileName
@@ -84,13 +83,21 @@ public class SXykStmtCurService {
 		ImportBankDataFileTools tools = new ImportBankDataFileTools();
 		// 解析数据文件配置
 		//List<DataFileConf> confList = tools.parseDataFileConf(tools.getFileFullName("/datamapping/sXykStmtCur.xml"));
-		List<DataFileConf> confList = tools.parseDataFileConf("E:\\workspace\\pccredit_xm\\src\\conf\\datamapping\\jybf.xml");
+		List<DataFileConf> confList = tools.parseDataFileConf("E:\\workspace\\pccredit_xm\\src\\conf\\datamapping\\jyql.xml");
 		// 解析”帐单记录表“数据文件
-		fileName = "C:\\Users\\Administrator\\Desktop\\aa\\STA_902_cmis_ACC_CREDIT_ADD_20151012.dat";
+		fileName = "C:\\Users\\Administrator\\Desktop\\bb\\STA_902_cmis_ACC_CREDIT_ADD_20151012.dat";
 		List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList);
 		for(Map<String, Object> map : datas){
-		    xmNewTeDao.insertJybfCur(map);
+		    xmNewTeDao.insertJyqlCur(map);
 		}
+	}
+	
+	
+	/**
+	 * 生成客户调额信息统计表(月)数据
+	 */
+	public void saveKuTeTj(){
+		xmNewTeDao.insertXmKuTeTjCur();
 	}
 	
 	

@@ -21,7 +21,11 @@ public interface XmNewTeDao {
 	public int insertTzbfCur(Map<String, Object> map);
 	//交易bf
 	public int insertJybfCur(Map<String, Object> map);
-	
 	//台帐ql
     public int insertTzqlCur(Map<String, Object> map);
+    //交易ql
+    public int insertJyqlCur(Map<String, Object> map);
+    
+    //生成客户调额信息统计表(月)数据
+    public void insertXmKuTeTjCur();
 }
