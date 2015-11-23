@@ -5,16 +5,19 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
+		        <div class="title">创建产品</div>
+		    </div>
+			<!-- <div class="place">
 				  <div class="dvTab">
             <ul class="com-tab">
            <li class="tab activeTab" ><a href="${contextPath}/product/productinformation/create.page">产品属性</a></li>
-            <!-- <li class="tab">附件清单</li>
+            <li class="tab">附件清单</li>
             <li class="tab">产品规则</li>
             <li class="tab">催收规则</li>
-            <li class="tab">筛选规则</li> -->
+            <li class="tab">筛选规则</li>
          </ul>
         </div>
-			</div>
+			</div> -->
 			<form id="id_module_form"
 				action="${contextPath}/product/productinformation/insert.json"   method="post">
 				<div class="forms" id="formsId">
@@ -47,8 +50,8 @@
 						<tr>
 							<td><label for="name">卡片到期日:</label></td>
 							<td><input type="text" name="endTime" id="endTime"  value="$!accountInfo.endTime"  onmouseover="_calendar()"/></td>
-							
-							
+							<td></td>
+							<td></td>							
 						</tr>
 						<!-- <tr>
 							<td><label for="name">产品名称:</label></td>
